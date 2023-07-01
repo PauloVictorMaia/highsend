@@ -53,8 +53,8 @@ const CreateFluxogram = () => {
     >
       <MiniMap style={minimapStyle} zoomable pannable />
       <Controls />
-      <Background color="#aaa" gap={16} />
-      <Panel style={{ width: 300, height: '70%', background: '#f2f2f2', borderRadius: 8}} position='top-left'>
+      <Background style={{ background: '#737373' }} color="#aaa" gap={16} />
+      <Panel style={{ width: '20%', height: '70%', background: '#f2f2f2', borderRadius: 8}} position='top-left'>
         
       </Panel>
     </ReactFlow>
