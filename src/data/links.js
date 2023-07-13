@@ -1,9 +1,9 @@
-import { AiOutlineCalendar, AiOutlineShoppingCart, AiOutlineAreaChart, AiOutlineBarChart, AiOutlineStock } from 'react-icons/ai';
-import { FiEdit, FiPieChart } from 'react-icons/fi';
-import { BiColorFill } from 'react-icons/bi';
-import { IoMdContacts } from 'react-icons/io';
-import { RiContactsLine, RiStockLine } from 'react-icons/ri';
-import { GiLouvrePyramid } from 'react-icons/gi';
+// import { AiOutlineCalendar, AiOutlineShoppingCart, AiOutlineAreaChart, AiOutlineBarChart, AiOutlineStock } from 'react-icons/ai';
+// import { FiEdit, FiPieChart } from 'react-icons/fi';
+// import { BiColorFill } from 'react-icons/bi';
+// import { IoMdContacts } from 'react-icons/io';
+// import { RiContactsLine, RiStockLine } from 'react-icons/ri';
+// import { GiLouvrePyramid } from 'react-icons/gi';
 
 export const links = [
   {
