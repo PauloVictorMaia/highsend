@@ -1,4 +1,5 @@
-import React, { useCallback } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useCallback } from 'react';
 import ReactFlow, {
   addEdge,
   MiniMap,
@@ -26,6 +27,7 @@ const minimapStyle = {
 const onInit = (reactFlowInstance) => console.log('flow loaded:', reactFlowInstance);
 
 const CreateFluxogram = () => {
+  // eslint-disable-next-line no-unused-vars
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), []);
@@ -54,8 +56,8 @@ const CreateFluxogram = () => {
       <MiniMap style={minimapStyle} zoomable pannable />
       <Controls />
       <Background style={{ background: '#737373' }} color="#aaa" gap={16} />
-      <Panel style={{ width: '20%', height: '70%', background: '#f2f2f2', borderRadius: 8}} position='top-left'>
-        
+      <Panel style={{ width: '20%', height: '70%', background: '#f2f2f2', borderRadius: 8 }} position='top-left'>
+
       </Panel>
     </ReactFlow>
   );

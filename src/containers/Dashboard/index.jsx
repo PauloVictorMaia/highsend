@@ -1,4 +1,4 @@
-import { HamburguerMenu, DashBoardContainer, DashContent, MenuContainer, MenuItem, IconsContainer } from "./style";
+import { DashBoardContainer, DashContent, MenuContainer, MenuItem, IconsContainer } from "./style";
 import { FaWpforms, FaBezierCurve } from "react-icons/fa";
 import { TiFlowSwitch } from "react-icons/Ti";
 // import { AiOutlineMenu } from "react-icons/Ti";
@@ -8,8 +8,9 @@ import { BsFillPeopleFill } from "react-icons/Bs";
 import { BiChat } from "react-icons/Bi";
 import { TbDeviceAnalytics } from "react-icons/Tb";
 
+// eslint-disable-next-line react/prop-types
 const DashBoard = ({ children }) => {
-  return(
+  return (
     <DashBoardContainer>
       <DashContent>
         <div>
@@ -45,9 +46,9 @@ const DashBoard = ({ children }) => {
           <FiSettings size={30} />
           <BiChat size={30} />
         </IconsContainer>
-      </DashContent> 
+      </DashContent>
       <div style={{ flex: 1 }}>
-        { children }
+        {children}
       </div>
     </DashBoardContainer>
   )

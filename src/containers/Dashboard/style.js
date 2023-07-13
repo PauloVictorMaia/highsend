@@ -4,6 +4,7 @@ export const DashBoardContainer = styled.div`
   display: flex;
   height: 100vh;
   width: 100vw;
+  color: #fff;
 `;
 
 export const DashContent = styled.div`

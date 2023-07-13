@@ -1,3 +1,5 @@
+/* eslint-disable react-refresh/only-export-components */
+/* eslint-disable react/prop-types */
 import { memo } from 'react';
 import { Handle, useReactFlow, useStoreApi, Position } from 'reactflow';
 
