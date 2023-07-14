@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import ReactFlow, {
   ReactFlowProvider,
   addEdge,
@@ -8,16 +8,15 @@ import ReactFlow, {
   Controls,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
-
+import './updatenode.css';
+import './index.css';
 import Sidebar from './Sidebar';
 
-import './index.css';
-
-const initialNodes = [
+const startNode = [
   {
-    id: '1',
+    id: 'start node',
     type: 'input',
-    data: { label: 'input node' },
+    data: { label: 'start' },
     position: { x: 250, y: 5 },
   },
 ];
@@ -27,9 +26,58 @@ const getId = () => `dndnode_${id++}`;
 
 const CreateFluxogram = () => {
   const reactFlowWrapper = useRef(null);
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [nodes, setNodes, onNodesChange] = useNodesState(startNode);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
+
+
+  const selectedNode = nodes.find(node => node.selected);
+  const nodeLabel = selectedNode ? selectedNode.data.label : ''
+  let nodeBgColor = '';
+
+  if (selectedNode) {
+
+    if (selectedNode.style && selectedNode.style.backgroundColor) {
+      nodeBgColor = selectedNode.style.backgroundColor;
+    } else {
+      nodeBgColor = '';
+    }
+  }
+
+
+  const [nodeName, setNodeName] = useState('');
+  const [nodeBg, setNodeBg] = useState('');
+
+  useEffect(() => {
+    setNodes((nds) =>
+      nds.map((node) => {
+        if (node.selected === true) {
+          // it's important that you create a new object here
+          // in order to notify react flow about the change
+          node.data = {
+            ...node.data,
+            label: nodeName,
+          };
+        }
+
+        return node;
+      })
+    );
+  }, [nodeName, setNodes]);
+
+  useEffect(() => {
+    setNodes((nds) =>
+      nds.map((node) => {
+        if (node.selected === true) {
+          // it's important that you create a new object here
+          // in order to notify react flow about the change
+          node.style = { ...node.style, backgroundColor: nodeBg };
+        }
+
+        return node;
+      })
+    );
+  }, [nodeBg, setNodes]);
 
   const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), []);
 
@@ -70,6 +118,14 @@ const CreateFluxogram = () => {
   return (
     <div className="dndflow">
       <Sidebar />
+      <div className="updatenode__controls">
+        <label>label:</label>
+        <input value={nodeLabel} onChange={(evt) => setNodeName(evt.target.value)} />
+
+        <label className="updatenode__bglabel">background:</label>
+        <input value={nodeBgColor} placeholder={selectedNode ? '#fff' : ''} onChange={(evt) => setNodeBg(evt.target.value)} />
+
+      </div>
       <ReactFlowProvider>
         <div className="reactflow-wrapper" ref={reactFlowWrapper}>
           <ReactFlow
