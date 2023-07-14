@@ -30,6 +30,7 @@ const CreateFluxogram = () => {
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
+  console.log(nodes)
 
   const selectedNode = nodes.find(node => node.selected);
   const nodeLabel = selectedNode ? selectedNode.data.label : ''
