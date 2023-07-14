@@ -44,9 +44,21 @@ const CreateFluxogram = () => {
     }
   }
 
+  let nodeColor = '';
+
+  if (selectedNode) {
+
+    if (selectedNode.style && selectedNode.style.color) {
+      nodeColor = selectedNode.style.color;
+    } else {
+      nodeColor = '';
+    }
+  }
+
 
   const [nodeName, setNodeName] = useState('');
   const [nodeBg, setNodeBg] = useState('');
+  const [nodeFontColor, setNodeFontColor] = useState('')
 
   useEffect(() => {
     setNodes((nds) =>
@@ -64,6 +76,20 @@ const CreateFluxogram = () => {
       })
     );
   }, [nodeName, setNodes]);
+
+  useEffect(() => {
+    setNodes((nds) =>
+      nds.map((node) => {
+        if (node.selected === true) {
+          // it's important that you create a new object here
+          // in order to notify react flow about the change
+          node.style = { ...node.style, color: nodeFontColor };
+        }
+
+        return node;
+      })
+    );
+  }, [nodeFontColor, setNodes]);
 
   useEffect(() => {
     setNodes((nds) =>
@@ -119,11 +145,14 @@ const CreateFluxogram = () => {
     <div className="dndflow">
       <Sidebar />
       <div className="updatenode__controls">
-        <label>label:</label>
+        <label>Name:</label>
         <input value={nodeLabel} onChange={(evt) => setNodeName(evt.target.value)} />
 
-        <label className="updatenode__bglabel">background:</label>
+        <label className="updatenode__bglabel">Background-color:</label>
         <input value={nodeBgColor} placeholder={selectedNode ? '#fff' : ''} onChange={(evt) => setNodeBg(evt.target.value)} />
+
+        <label>Font-color:</label>
+        <input value={nodeColor} placeholder={selectedNode ? '#000' : ''} onChange={(evt) => setNodeFontColor(evt.target.value)} />
 
       </div>
       <ReactFlowProvider>
