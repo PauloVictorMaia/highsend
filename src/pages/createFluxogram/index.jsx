@@ -151,7 +151,7 @@ const CreateFluxogram = () => {
         <label className="updatenode__bglabel">Background-color:</label>
         <input value={nodeBgColor} placeholder={selectedNode ? '#fff' : ''} onChange={(evt) => setNodeBg(evt.target.value)} />
 
-        <label>Font-color:</label>
+        <label className='updatenode__bglabel'>Font-color:</label>
         <input value={nodeColor} placeholder={selectedNode ? '#000' : ''} onChange={(evt) => setNodeFontColor(evt.target.value)} />
 
       </div>
