@@ -12,10 +12,16 @@ import './updatenode.css';
 import './index.css';
 import Sidebar from './Sidebar';
 
+import CustomResizerNode from './CustomResizerNode';
+
+const nodeTypes = {
+  CustomResizerNode
+}
+
 const startNode = [
   {
     id: 'start node',
-    type: 'input',
+    type: 'CustomResizerNode',
     data: { label: 'start' },
     position: { x: 250, y: 5 },
   },
@@ -186,6 +192,7 @@ const CreateFluxogram = () => {
             onDrop={onDrop}
             onDragOver={onDragOver}
             fitView
+            nodeTypes={nodeTypes}
           >
             <Controls />
           </ReactFlow>
