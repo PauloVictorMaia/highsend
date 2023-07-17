@@ -119,6 +119,10 @@ const CreateFluxogram = () => {
 
       const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
       const type = event.dataTransfer.getData('application/reactflow');
+      const parentNode = event.dataTransfer.getData('parentNode');
+      const extent = event.dataTransfer.getData('extent');
+
+      console.log(parentNode, extent)
 
       // check if the dropped element is valid
       if (typeof type === 'undefined' || !type) {
@@ -129,14 +133,28 @@ const CreateFluxogram = () => {
         x: event.clientX - reactFlowBounds.left,
         y: event.clientY - reactFlowBounds.top,
       });
-      const newNode = {
-        id: getId(),
-        type,
-        position,
-        data: { label: `${type} node` },
-      };
 
-      setNodes((nds) => nds.concat(newNode));
+      if (parentNode === 'undefined' || !parentNode || extent === 'undefined' || !extent) {
+        const newNode = {
+          id: getId(),
+          type,
+          position,
+          data: { label: `${type} node` },
+        };
+        setNodes((nds) => nds.concat(newNode));
+      } else {
+        const newNode = {
+          id: getId(),
+          type,
+          position,
+          data: { label: `${type} node` },
+          parentNode,
+          extent
+        };
+        setNodes((nds) => nds.concat(newNode));
+      }
+
+
     },
     [reactFlowInstance]
   );
