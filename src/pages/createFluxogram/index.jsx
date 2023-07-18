@@ -21,7 +21,7 @@ const nodeTypes = {
 const startNode = [
   {
     id: 'start node',
-    type: 'CustomResizerNode',
+    type: 'input',
     data: { label: 'start' },
     position: { x: 250, y: 5 },
     style: { height: 75, width: 150 }
@@ -176,6 +176,7 @@ const CreateFluxogram = () => {
 
       const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
       const type = event.dataTransfer.getData('application/reactflow');
+      const label = event.dataTransfer.getData('label');
 
       // check if the dropped element is valid
       if (typeof type === 'undefined' || !type) {
@@ -192,7 +193,7 @@ const CreateFluxogram = () => {
         id: getId(),
         type,
         position,
-        data: { label: `${type} node` },
+        data: { label: `${label} node` },
         style: { width: 150, height: 75 }
       };
       setNodes((nds) => nds.concat(newNode));
