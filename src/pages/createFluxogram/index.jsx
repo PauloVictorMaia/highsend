@@ -24,6 +24,7 @@ const startNode = [
     type: 'CustomResizerNode',
     data: { label: 'start' },
     position: { x: 250, y: 5 },
+    style: { height: 75, width: 150 }
   },
 ];
 
@@ -77,7 +78,7 @@ const CreateFluxogram = () => {
           n = { ...n }
         }
         if (n.id === node.id && target) {
-          n = { ...n, parentNode: targetID, extent: 'parent' }
+          n = { ...n, parentNode: targetID, extent: 'parent', style: { height: target.style.height / 2, width: target.style.width / 2 } }
         }
         return n;
       })
@@ -192,6 +193,7 @@ const CreateFluxogram = () => {
         type,
         position,
         data: { label: `${type} node` },
+        style: { width: 150, height: 75 }
       };
       setNodes((nds) => nds.concat(newNode));
 
