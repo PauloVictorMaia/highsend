@@ -3,10 +3,8 @@
 
 
 export default () => {
-  const onDragStart = (event, nodeType, parentNode, extent) => {
+  const onDragStart = (event, nodeType) => {
     event.dataTransfer.setData('application/reactflow', nodeType);
-    event.dataTransfer.setData('parentNode', parentNode);
-    event.dataTransfer.setData('extent', extent);
     event.dataTransfer.effectAllowed = 'move';
   };
 
@@ -25,7 +23,7 @@ export default () => {
       <div className="dndnode output" onDragStart={(event) => onDragStart(event, 'group')} draggable>
         Group
       </div>
-      <div className="dndnode output" onDragStart={(event) => onDragStart(event, 'default', 'start node', 'parent')} draggable>
+      <div className="dndnode output" onDragStart={(event) => onDragStart(event, 'default')} draggable>
         Son
       </div>
     </aside>

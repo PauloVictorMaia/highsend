@@ -31,12 +31,62 @@ let id = 0;
 const getId = () => `dndnode_${id++}`;
 
 const CreateFluxogram = () => {
+  const dragRef = useRef(null);
+
+  const onNodeDragStart = (evt, node) => {
+    dragRef.current = node;
+  };
+
+  const [target, setTarget] = useState(null);
+
+
+
   const reactFlowWrapper = useRef(null);
   const [nodes, setNodes, onNodesChange] = useNodesState(startNode);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
   console.log(nodes)
+
+  const onNodeDrag = (evt, node) => {
+
+    // calculate the center point of the node from position and dimensions
+    const centerX = node.position.x + node.width / 2;
+    const centerY = node.position.y + node.height / 2;
+
+    // find a node where the center point is inside
+    const targetNode = nodes.find(
+      (n) =>
+        centerX > n.position.x &&
+        centerX < n.position.x + n.width &&
+        centerY > n.position.y &&
+        centerY < n.position.y + n.height &&
+        n.id !== node.id // this is needed, otherwise we would always find the dragged node
+    );
+
+    setTarget(targetNode);
+  };
+
+  const onNodeDragStop = (evt, node) => {
+    // on drag stop, we swap the colors of the nodes
+    const targetID = target?.id;
+
+    setNodes((nodes) =>
+      nodes.map((n) => {
+        if (n.id === target?.id) {
+          n = { ...n }
+        }
+        if (n.id === node.id && target) {
+          n = { ...n, parentNode: targetID, extent: 'parent' }
+        }
+        return n;
+      })
+    );
+
+    setTarget(null);
+    dragRef.current = null;
+  };
+
 
   const selectedNode = nodes.find(node => node.selected);
   const nodeLabel = selectedNode ? selectedNode.data.label : ''
@@ -125,10 +175,6 @@ const CreateFluxogram = () => {
 
       const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
       const type = event.dataTransfer.getData('application/reactflow');
-      const parentNode = event.dataTransfer.getData('parentNode');
-      const extent = event.dataTransfer.getData('extent');
-
-      console.log(parentNode, extent)
 
       // check if the dropped element is valid
       if (typeof type === 'undefined' || !type) {
@@ -140,26 +186,14 @@ const CreateFluxogram = () => {
         y: event.clientY - reactFlowBounds.top,
       });
 
-      if (parentNode === 'undefined' || !parentNode || extent === 'undefined' || !extent) {
-        const newNode = {
-          id: getId(),
-          type,
-          position,
-          data: { label: `${type} node` },
-        };
-        setNodes((nds) => nds.concat(newNode));
-      } else {
-        const newNode = {
-          id: getId(),
-          type,
-          position,
-          data: { label: `${type} node` },
-          parentNode,
-          extent
-        };
-        setNodes((nds) => nds.concat(newNode));
-      }
 
+      const newNode = {
+        id: getId(),
+        type,
+        position,
+        data: { label: `${type} node` },
+      };
+      setNodes((nds) => nds.concat(newNode));
 
     },
     [reactFlowInstance]
@@ -191,6 +225,9 @@ const CreateFluxogram = () => {
             onInit={setReactFlowInstance}
             onDrop={onDrop}
             onDragOver={onDragOver}
+            onNodeDragStart={onNodeDragStart}
+            onNodeDrag={onNodeDrag}
+            onNodeDragStop={onNodeDragStop}
             fitView
             nodeTypes={nodeTypes}
           >
