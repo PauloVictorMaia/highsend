@@ -78,7 +78,7 @@ const CreateFluxogram = () => {
           n = { ...n }
         }
         if (n.id === node.id && target) {
-          n = { ...n, parentNode: targetID, extent: 'parent', style: { height: target.style.height / 2, width: target.style.width / 2 } }
+          n = { ...n, parentNode: targetID, extent: 'parent', style: { height: 25, width: 75, fontSize: '9px' } }
         }
         return n;
       })
