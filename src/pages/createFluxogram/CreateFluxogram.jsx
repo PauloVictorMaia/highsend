@@ -38,6 +38,7 @@ const CreateFluxogram = () => {
 
   const onConnect = useCallback((connection) => {
     return setEdges(edges => addEdge(connection, edges))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   function addDefaultNode() {
