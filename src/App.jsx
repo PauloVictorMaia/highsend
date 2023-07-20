@@ -1,8 +1,6 @@
 import DashBoard from "./containers/Dashboard";
-import CreateFluxogram from "./pages/createFluxogram";
+import CreateFluxogram from "./pages/createFluxogram/CreateFloxogram";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import UpdateNode from "./pages/fluxogram/App";
-
 
 const App = () => {
   return (
@@ -10,7 +8,6 @@ const App = () => {
       <DashBoard>
         <Routes>
           <Route path="/" element={<CreateFluxogram />} />
-          <Route path="/update" element={<UpdateNode />} />
         </Routes>
 
       </DashBoard>
