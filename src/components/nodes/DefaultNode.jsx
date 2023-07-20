@@ -20,6 +20,7 @@ export function DefaultNode({ selected }) {
       />
 
       <Label>Default</Label>
+
     </NodeContainer>
   )
 }
