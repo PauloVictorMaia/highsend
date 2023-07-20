@@ -1,5 +1,5 @@
 import DashBoard from "./containers/Dashboard";
-import CreateFluxogram from "./pages/createFluxogram/CreateFloxogram";
+import CreateFluxogram from "./pages/createFluxogram/CreateFluxogram";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 const App = () => {
