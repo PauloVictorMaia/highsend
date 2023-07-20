@@ -1,28 +1,25 @@
-import { NodeContainer, RightHandle, StyledNodeResizer, TopHandle } from "./DefaultNode.style";
+import { BottomHandle, Label, NodeContainer, TopHandle } from "./DefaultNode.style";
 import { Position } from "reactflow";
 
 
-import '@reactflow/node-resizer/dist/style.css'
-
-
+// eslint-disable-next-line react/prop-types
 export function DefaultNode({ selected }) {
   return (
-    <NodeContainer>
+    <NodeContainer selected={selected}>
 
-      <StyledNodeResizer
-        isVisible={selected}
-      />
-
-      <RightHandle
-        id="right"
-        type="source"
-        position={Position.Right}
-      />
       <TopHandle
         id="top"
         type="target"
         position={Position.Top}
       />
+
+      <BottomHandle
+        id="bottom"
+        type="source"
+        position={Position.Bottom}
+      />
+
+      <Label>Default</Label>
     </NodeContainer>
   )
 }

@@ -4,8 +4,10 @@ import { ButtonAdd, FlowContainer } from "./CreateFluxogram.style";
 import { DefaultNode } from "../../components/nodes/DefaultNode";
 import { useCallback } from "react";
 import DefaultEdge from "../../components/edges/DefaultEdge";
+import { StartNode } from "../../components/nodes/StartNode";
 
 const NODE_TYPES = {
+  startNode: StartNode,
   defaultNode: DefaultNode,
 }
 
@@ -16,15 +18,9 @@ const EDGE_TYPES = {
 const INITIAL_NODE = [
   {
     id: 'start node',
-    type: 'defaultNode',
-    position: { x: 200, y: 200 },
-    data: { label: 'Start' }
-  },
-  {
-    id: 'start node1',
-    type: 'defaultNode',
-    position: { x: 700, y: 200 },
-    data: { label: 'Start' }
+    type: 'startNode',
+    position: { x: 150, y: 50 },
+    data: {},
   }
 ]
 
@@ -37,6 +33,8 @@ const CreateFluxogram = () => {
 
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
   const [nodes, setNodes, onNodesChange] = useNodesState(INITIAL_NODE)
+
+  console.log(nodes)
 
   const onConnect = useCallback((connection) => {
     return setEdges(edges => addEdge(connection, edges))
