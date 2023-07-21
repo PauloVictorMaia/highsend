@@ -30,7 +30,7 @@ const INITIAL_NODE = [
 
 let id = 0;
 let group = 1
-const getId = () => `dndnode_${id++}`;
+const getId = () => `node_${id++}`;
 const getGroup = () => `Group #${group++}`
 
 const CreateFluxogram = () => {
@@ -42,6 +42,7 @@ const CreateFluxogram = () => {
   const { nodeLabel, setNodeLabel } = useStateContext();
 
   console.log(nodes)
+  console.log(edges)
 
   const onConnect = useCallback((connection) => {
     return setEdges(edges => addEdge(connection, edges))
