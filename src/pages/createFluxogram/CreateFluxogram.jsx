@@ -40,12 +40,10 @@ const CreateFluxogram = () => {
   const reactFlowWrapper = useRef(null);
   const [reactFlowInstance, setReactFlowInstance] = useState(null)
   const { nodeLabel, setNodeLabel } = useStateContext();
-
-  console.log(nodes)
+  const { nodeValue, setNodeValue } = useStateContext();
 
   const onConnect = useCallback((connection) => {
     return setEdges(edges => addEdge(connection, edges))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const onDragOver = useCallback((event) => {
@@ -60,7 +58,6 @@ const CreateFluxogram = () => {
       const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
       const type = event.dataTransfer.getData('application/reactflow');
 
-      // check if the dropped element is valid
       if (typeof type === 'undefined' || !type) {
         return;
       }
@@ -69,13 +66,12 @@ const CreateFluxogram = () => {
         x: event.clientX - reactFlowBounds.left,
         y: event.clientY - reactFlowBounds.top,
       });
+
       const newNode = {
         id: getId(),
         type,
         position,
-        data: { label: getGroup() },
-        nodes,
-        setNodes
+        data: { label: getGroup(), value: ""},
       };
 
       setNodes((nds) => nds.concat(newNode));
@@ -87,8 +83,6 @@ const CreateFluxogram = () => {
     setNodes((nds) =>
       nds.map((node) => {
         if (node.selected === true) {
-          // it's important that you create a new object here
-          // in order to notify react flow about the change
           node.data = {
             ...node.data,
             label: nodeLabel,
@@ -99,6 +93,21 @@ const CreateFluxogram = () => {
       })
     );
   }, [nodeLabel, setNodeLabel]);
+
+  useEffect(() => {
+    setNodes((nds) =>
+      nds.map((node) => {
+        if (node.selected === true) {
+          node.data = {
+            ...node.data,
+            value: nodeValue,
+          };
+        }
+
+        return node;
+      })
+    );
+  }, [nodeValue, setNodeValue]);
 
 
   return (
