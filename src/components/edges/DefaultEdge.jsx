@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { getSmoothStepPath } from "reactflow"
 import { PathSVG } from "./DefaultEdge.style";
 
@@ -10,6 +11,7 @@ export default function DefaultEdge({
   sourcePosition,
   targetPosition,
   style = {},
+  // eslint-disable-next-line no-unused-vars
   data,
   markerEnd,
 }) {
