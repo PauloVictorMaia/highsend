@@ -3,9 +3,10 @@ import { Position } from "reactflow";
 import { BottomHandle } from "./StartNode.style";
 
 
-export function StartNode() {
+// eslint-disable-next-line react/prop-types
+export function StartNode({ selected }) {
   return (
-    <NodeContainer>
+    <NodeContainer selected={selected}>
 
       <BottomHandle
         id="bottom"

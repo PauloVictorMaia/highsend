@@ -11,7 +11,7 @@ export const NodeContainer = styled.div`
   padding: 5px;
   box-sizing: border-box;
   background-color: #fff;
-  border: 1px solid #000;
+  border: ${({selected}) => selected ? '2px solid #000' : '1px solid #000'};
   border-radius: 8px;
   color: #000;
 `;

@@ -22,7 +22,7 @@ const INITIAL_NODE = [
   {
     id: 'start node',
     type: 'startNode',
-    position: { x: 150, y: 50 },
+    position: { x: 250, y: 50 },
     data: {},
   }
 ]
@@ -42,7 +42,6 @@ const CreateFluxogram = () => {
   const { nodeLabel, setNodeLabel } = useStateContext();
 
   console.log(nodes)
-  console.log(edges)
 
   const onConnect = useCallback((connection) => {
     return setEdges(edges => addEdge(connection, edges))
