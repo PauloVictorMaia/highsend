@@ -74,6 +74,8 @@ const CreateFluxogram = () => {
         type,
         position,
         data: { label: getGroup() },
+        nodes,
+        setNodes
       };
 
       setNodes((nds) => nds.concat(newNode));
