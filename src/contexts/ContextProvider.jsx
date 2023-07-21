@@ -1,16 +1,17 @@
-import {createContext, useContext, useState} from "react";
+import { createContext, useContext, useState } from "react";
 
 const StateContext = createContext();
 
-export const ContextProvider = ({ children }) =>{
-    
+// eslint-disable-next-line react/prop-types
+export const ContextProvider = ({ children }) => {
+    const [nodeLabel, setNodeLabel] = useState("")
+
     return (
-        <StateContext.Provider value={{
-           
-        }}>
+        <StateContext.Provider value={{ nodeLabel, setNodeLabel }}>
             {children}
         </StateContext.Provider>
     )
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useStateContext = () => useContext(StateContext);

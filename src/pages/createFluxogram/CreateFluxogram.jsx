@@ -1,10 +1,13 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import ReactFlow, { Background, Controls, addEdge, useEdgesState, useNodesState } from "reactflow";
 import 'reactflow/dist/style.css'
-import { ButtonAdd, FlowContainer } from "./CreateFluxogram.style";
+import { FlowContainer } from "./CreateFluxogram.style";
 import { DefaultNode } from "../../components/nodes/DefaultNode";
-import { useCallback } from "react";
+import { useCallback, useRef, useState, useEffect } from "react";
 import DefaultEdge from "../../components/edges/DefaultEdge";
 import { StartNode } from "../../components/nodes/StartNode";
+import Sidebar from '../../components/sidebar/Sidebar'
+import { useStateContext } from "../../contexts/ContextProvider";
 
 const NODE_TYPES = {
   startNode: StartNode,
@@ -26,13 +29,17 @@ const INITIAL_NODE = [
 
 
 let id = 0;
-// eslint-disable-next-line no-unused-vars
+let group = 1
 const getId = () => `dndnode_${id++}`;
+const getGroup = () => `Group #${group++}`
 
 const CreateFluxogram = () => {
 
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
   const [nodes, setNodes, onNodesChange] = useNodesState(INITIAL_NODE)
+  const reactFlowWrapper = useRef(null);
+  const [reactFlowInstance, setReactFlowInstance] = useState(null)
+  const { nodeLabel, setNodeLabel } = useStateContext();
 
   console.log(nodes)
 
@@ -41,22 +48,60 @@ const CreateFluxogram = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  function addDefaultNode() {
-    const type = 'defaultNode'
-    setNodes(nodes => [
-      ...nodes,
-      {
+  const onDragOver = useCallback((event) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'move';
+  }, []);
+
+  const onDrop = useCallback(
+    (event) => {
+      event.preventDefault();
+
+      const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
+      const type = event.dataTransfer.getData('application/reactflow');
+
+      // check if the dropped element is valid
+      if (typeof type === 'undefined' || !type) {
+        return;
+      }
+
+      const position = reactFlowInstance.project({
+        x: event.clientX - reactFlowBounds.left,
+        y: event.clientY - reactFlowBounds.top,
+      });
+      const newNode = {
         id: getId(),
         type,
-        position: { x: 400, y: 200 },
-        data: { label: 'default' }
-      }
-    ])
-  }
+        position,
+        data: { label: getGroup() },
+      };
+
+      setNodes((nds) => nds.concat(newNode));
+    },
+    [reactFlowInstance]
+  );
+
+  useEffect(() => {
+    setNodes((nds) =>
+      nds.map((node) => {
+        if (node.selected === true) {
+          // it's important that you create a new object here
+          // in order to notify react flow about the change
+          node.data = {
+            ...node.data,
+            label: nodeLabel,
+          };
+        }
+
+        return node;
+      })
+    );
+  }, [nodeLabel, setNodeLabel]);
+
 
   return (
-    <FlowContainer>
-      <ButtonAdd onClick={addDefaultNode}>Novo default</ButtonAdd>
+    <FlowContainer ref={reactFlowWrapper}>
+
       <ReactFlow
         nodeTypes={NODE_TYPES}
         edgeTypes={EDGE_TYPES}
@@ -66,6 +111,9 @@ const CreateFluxogram = () => {
         edges={edges}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        onInit={setReactFlowInstance}
+        onDrop={onDrop}
+        onDragOver={onDragOver}
       >
         <Background
           gap={12}
@@ -75,6 +123,7 @@ const CreateFluxogram = () => {
         />
         <Controls />
       </ReactFlow>
+      <Sidebar />
     </FlowContainer>
   );
 };

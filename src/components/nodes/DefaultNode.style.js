@@ -33,6 +33,6 @@ export const BottomHandle = styled(Handle)`
   bottom: -9px;
 `;
 
-export const Label = styled.span`
+export const Label = styled.input`
   font-size: 16px;
 `;
