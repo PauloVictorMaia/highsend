@@ -35,4 +35,6 @@ export const BottomHandle = styled(Handle)`
 
 export const Label = styled.input`
   font-size: 16px;
+  border: none;
+  width: 80%;
 `;
