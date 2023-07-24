@@ -42,6 +42,8 @@ const CreateFluxogram = () => {
   const { nodeLabel, setNodeLabel } = useStateContext();
   const { nodeValue, setNodeValue } = useStateContext();
 
+  console.log(nodes)
+
   const onConnect = useCallback((connection) => {
     return setEdges(edges => addEdge(connection, edges))
   }, [])
@@ -71,7 +73,7 @@ const CreateFluxogram = () => {
         id: getId(),
         type,
         position,
-        data: { label: getGroup(), value: ""},
+        data: { label: getGroup(), value: "" },
       };
 
       setNodes((nds) => nds.concat(newNode));

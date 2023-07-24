@@ -2,7 +2,6 @@
 import { BottomHandle, Label, NodeContainer, TopHandle } from "./DefaultNode.style";
 import { Position } from "reactflow";
 import { useStateContext } from "../../contexts/ContextProvider";
-import { useState } from "react";
 
 export function DefaultNode({ selected, data }) {
   const { setNodeLabel, setNodeValue } = useStateContext();
