@@ -8,10 +8,12 @@ import DefaultEdge from "../../components/edges/DefaultEdge";
 import { StartNode } from "../../components/nodes/StartNode";
 import Sidebar from '../../components/sidebar/Sidebar'
 import { useStateContext } from "../../contexts/ContextProvider";
+import { VideoNode } from "../../components/nodes/VideoNode";
 
 const NODE_TYPES = {
   startNode: StartNode,
   defaultNode: DefaultNode,
+  videoNode: VideoNode,
 }
 
 const EDGE_TYPES = {
@@ -81,6 +83,7 @@ const CreateFluxogram = () => {
     [reactFlowInstance]
   );
 
+  //Mudança de nome do grupo
   useEffect(() => {
     setNodes((nds) =>
       nds.map((node) => {
@@ -96,6 +99,7 @@ const CreateFluxogram = () => {
     );
   }, [nodeLabel, setNodeLabel]);
 
+  //Mudança do conteúdo do input
   useEffect(() => {
     setNodes((nds) =>
       nds.map((node) => {
