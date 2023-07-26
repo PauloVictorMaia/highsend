@@ -18,6 +18,10 @@ export default () => {
       <div onDragStart={(event) => onDragStart(event, 'videoNode')} draggable>
         Video
       </div>
+
+      <div onDragStart={(event) => onDragStart(event, 'imageNode')} draggable>
+        Image
+      </div>
     </SidebarContainer>
   );
 };

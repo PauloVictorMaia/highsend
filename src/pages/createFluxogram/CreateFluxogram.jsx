@@ -9,11 +9,13 @@ import { StartNode } from "../../components/nodes/StartNode";
 import Sidebar from '../../components/sidebar/Sidebar'
 import { useStateContext } from "../../contexts/ContextProvider";
 import { VideoNode } from "../../components/nodes/VideoNode";
+import { ImageNode } from "../../components/nodes/ImageNode";
 
 const NODE_TYPES = {
   startNode: StartNode,
   defaultNode: DefaultNode,
   videoNode: VideoNode,
+  imageNode: ImageNode,
 }
 
 const EDGE_TYPES = {
