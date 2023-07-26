@@ -2,7 +2,8 @@ import { styled } from "styled-components";
 import { Handle } from "reactflow";
 
 export const NodeContainer = styled.div`
-  min-width: 150px;
+  min-width: 210px;
+  max-width: 210px;
   min-height: 75px;
   width: 100%;
   height: 100%;
@@ -15,6 +16,10 @@ export const NodeContainer = styled.div`
   border-radius: 8px;
   color: #000;
   font-size: 12px;
+  
+  > input {
+    margin-bottom: 10px;
+  }
 `;
 
 export const TopHandle = styled(Handle)`
@@ -41,9 +46,24 @@ export const Label = styled.input`
 
 export const VideoPreview = styled.div`
   width: 100%;
+  max-width: 100%;
+  min-height: 30px;
   background-color: #ccc;
   border-radius: 5px;
   display: flex;
   align-items: center;
   column-gap: 5px;
+`;
+
+export const PreviewImage = styled.img`
+  width: 100%;
+  max-width: 170px;
+  height: auto;
+`;
+
+export const LinkInput = styled.input`
+  visibility: ${({isvisible}) => isvisible === "true" ? "visible" : "hidden"};
+  position: relative;
+  left: -205px;
+  top: -60px;
 `;

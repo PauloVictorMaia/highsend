@@ -1,12 +1,18 @@
 /* eslint-disable react/prop-types */
-import { BottomHandle, Label, NodeContainer, TopHandle, VideoPreview } from "./VideoNode.style";
+import { BottomHandle, Label, LinkInput, NodeContainer, PreviewImage, TopHandle, VideoPreview } from "./VideoNode.style";
 import { Position } from "reactflow";
 import { useStateContext } from "../../contexts/ContextProvider";
 import TheatersIcon from '@mui/icons-material/Theaters';
-import ReactPlayer from "react-player";
+import { useState } from "react";
+
+const getYoutubeThumbnail = (url) => {
+  const videoId = url.split("v=")[1];
+  return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+};
 
 export function VideoNode({ selected, data }) {
   const { setNodeLabel, setNodeValue } = useStateContext();
+  const [isVisible, setIsVisible] = useState(false)
 
   return (
     <NodeContainer selected={selected}>
@@ -25,21 +31,26 @@ export function VideoNode({ selected, data }) {
 
       <Label defaultValue={data.label} onChange={(e) => setNodeLabel(e.target.value)} />
 
-      <VideoPreview>
+      <VideoPreview onClick={() => setIsVisible(!isVisible)}>
         <TheatersIcon />
         {data.value === "" ?
           <span>Click to edit...</span>
           :
-          <ReactPlayer
-            url={data.value}
-            controls={false}
-            width="100%"
-            height="100%"
+          <PreviewImage
+            src={getYoutubeThumbnail(data.value)}
+            alt="Video thumbnail"
+            style={{ width: "200px", height: "auto" }}
           />
         }
       </VideoPreview>
 
-      <input type="text" placeholder="link youtube / vimeo" onChange={(e) => setNodeValue(e.target.value)} />
+      <LinkInput
+        isvisible={isVisible ? "true" : "false"}
+        type="text"
+        value={data.value}
+        placeholder="link youtube / vimeo"
+        onChange={(e) => setNodeValue(e.target.value)}
+      />
 
     </NodeContainer>
   )
