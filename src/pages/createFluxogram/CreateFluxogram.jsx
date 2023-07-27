@@ -47,6 +47,7 @@ const CreateFluxogram = () => {
   const { nodeValue, setNodeValue } = useStateContext();
 
   console.log(nodes)
+  console.log(edges)
 
   const onConnect = useCallback((connection) => {
     return setEdges(edges => addEdge(connection, edges))
