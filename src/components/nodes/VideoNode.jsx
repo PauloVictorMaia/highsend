@@ -39,7 +39,6 @@ export function VideoNode({ selected, data }) {
           <PreviewImage
             src={getYoutubeThumbnail(data.value)}
             alt="Video thumbnail"
-            style={{ width: "200px", height: "auto" }}
           />
         }
       </VideoPreview>

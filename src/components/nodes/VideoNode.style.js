@@ -53,6 +53,7 @@ export const VideoPreview = styled.div`
   display: flex;
   align-items: center;
   column-gap: 5px;
+  margin-bottom: 10px; 
 `;
 
 export const PreviewImage = styled.img`
@@ -63,7 +64,8 @@ export const PreviewImage = styled.img`
 
 export const LinkInput = styled.input`
   visibility: ${({isvisible}) => isvisible === "true" ? "visible" : "hidden"};
-  position: relative;
-  left: -205px;
-  top: -60px;
+  position: absolute;
+  width: 350px;
+  left: -360px;
+  top: 30px;
 `;
