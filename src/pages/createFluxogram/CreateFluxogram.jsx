@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import ReactFlow, { Background, Controls, addEdge, useEdgesState, useNodesState } from "reactflow";
+import ReactFlow, { Background, Controls, addEdge, useEdgesState, useNodesState, getConnectedEdges, getOutgoers, getIncomers } from "reactflow";
 import 'reactflow/dist/style.css'
 import { FlowContainer } from "./CreateFluxogram.style";
 import { DefaultNode } from "../../components/nodes/DefaultNode";
@@ -117,6 +117,28 @@ const CreateFluxogram = () => {
     );
   }, [nodeValue, setNodeValue]);
 
+  const onNodesDelete = useCallback(
+    (deleted) => {
+      setEdges(
+        deleted.reduce((acc, node) => {
+          const incomers = getIncomers(node, nodes, edges);
+          const outgoers = getOutgoers(node, nodes, edges);
+          const connectedEdges = getConnectedEdges([node], edges);
+
+          const remainingEdges = acc.filter((edge) => !connectedEdges.includes(edge));
+
+          const createdEdges = incomers.flatMap(({ id: source }) =>
+            outgoers.map(({ id: target }) => ({ id: `${source}->${target}`, source, target }))
+          );
+
+          return [...remainingEdges, ...createdEdges];
+        }, edges)
+      );
+    },
+    [nodes, edges]
+  );
+
+
 
   return (
     <FlowContainer ref={reactFlowWrapper}>
@@ -127,6 +149,7 @@ const CreateFluxogram = () => {
         defaultEdgeOptions={{ type: 'defaultEdge' }}
         nodes={nodes}
         onNodesChange={onNodesChange}
+        onNodesDelete={onNodesDelete}
         edges={edges}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
