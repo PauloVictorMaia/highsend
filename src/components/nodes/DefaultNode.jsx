@@ -12,7 +12,7 @@ export function DefaultNode({ selected, data, id }) {
   }
 
   return (
-    <NodeContainer selected={selected}>
+    <NodeContainer selected={selected} >
 
       <Toolbar
         deleteFunction={deleteThisNode}

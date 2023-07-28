@@ -43,9 +43,11 @@ const CreateFluxogram = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(INITIAL_NODE)
   const reactFlowWrapper = useRef(null);
   const edgeUpdateSuccessful = useRef(true);
+  const dragRef = useRef(null);
   const [reactFlowInstance, setReactFlowInstance] = useState(null)
   const { nodeLabel, setNodeLabel } = useStateContext();
   const { nodeValue, setNodeValue } = useStateContext();
+  const [target, setTarget] = useState(null);
 
   console.log(nodes)
   console.log(edges)
@@ -76,6 +78,44 @@ const CreateFluxogram = () => {
     edgeUpdateSuccessful.current = true;
   }, []);
 
+  const onNodeDragStart = (evt, node) => {
+    dragRef.current = node;
+  };
+
+  const onNodeDrag = (evt, node) => {
+    // calculate the center point of the node from position and dimensions
+    const centerX = node.position.x + node.width / 2;
+    const centerY = node.position.y + node.height / 2;
+
+    // find a node where the center point is inside
+    const targetNode = nodes.find(
+      (n) =>
+        centerX > n.position.x &&
+        centerX < n.position.x + n.width &&
+        centerY > n.position.y &&
+        centerY < n.position.y + n.height &&
+        n.id !== node.id // this is needed, otherwise we would always find the dragged node
+    );
+
+    setTarget(targetNode);
+  };
+
+  const onNodeDragStop = (evt, node) => {
+    // on drag stop, we swap the colors of the nodes
+    const targetID = target?.id
+
+    setNodes((nodes) =>
+      nodes.map((n) => {
+        if (n.id === node.id && target) {
+          n = { ...n, parentNode: targetID, extent: "parent" }
+        }
+        return n;
+      })
+    );
+
+    setTarget(null);
+    dragRef.current = null;
+  };
 
   const onDrop = useCallback(
     (event) => {
@@ -195,6 +235,9 @@ const CreateFluxogram = () => {
         onEdgeUpdate={onEdgeUpdate}
         onEdgeUpdateStart={onEdgeUpdateStart}
         onEdgeUpdateEnd={onEdgeUpdateEnd}
+        onNodeDragStart={onNodeDragStart}
+        onNodeDrag={onNodeDrag}
+        onNodeDragStop={onNodeDragStop}
       >
         <Background
           gap={12}
