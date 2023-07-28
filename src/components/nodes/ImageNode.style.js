@@ -94,15 +94,15 @@ export const Tabs = styled.li`
   cursor: pointer;
 
   &:hover {
-    text-decoration: none; /* Remove o sublinhado no hover */
-    border-bottom: 2px solid ${({ active }) => (active ? "#000" : "transparent")};
+    text-decoration: none;
+    border-bottom: 2px solid  ${({ activetab }) => activetab === "true" ? "#000" : "transparent"};
   }
 
-  ${({ active }) =>
-    active &&
+  ${({ activetab }) =>
+    activetab === "true" &&
     `
-    text-decoration: none; 
-    border-bottom: 2px solid #000; 
+    text-decoration: none;
+    border-bottom: 2px solid #000;
   `}
 `;
 
