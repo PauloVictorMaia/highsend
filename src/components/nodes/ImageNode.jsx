@@ -4,11 +4,13 @@ import { Position } from "reactflow";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { useState } from "react";
 import ImageIcon from '@mui/icons-material/Image';
+import Toolbar from "../Toolbar/Toolbar";
 
-export function ImageNode({ selected, data }) {
+export function ImageNode({ selected, data, id }) {
   const { setNodeLabel, setNodeValue } = useStateContext();
   const [isVisible, setIsVisible] = useState(false)
   const [activeTab, setActiveTab] = useState("tab1");
+  // eslint-disable-next-line no-unused-vars
   const [fileImage, setFileImage] = useState(null)
 
   const handleFileImage = (e) => {
@@ -27,8 +29,18 @@ export function ImageNode({ selected, data }) {
     reader.readAsDataURL(file);
   };
 
+  const deleteThisNode = () => {
+    data.deleteNode(id)
+  }
+
   return (
     <NodeContainer selected={selected}>
+
+      <Toolbar
+        deleteFunction={deleteThisNode}
+        selected={selected === true ? "true" : "false"}
+      />
+
       <TopHandle
         id="top"
         type="target"

@@ -4,18 +4,29 @@ import { Position } from "reactflow";
 import { useStateContext } from "../../contexts/ContextProvider";
 import TheatersIcon from '@mui/icons-material/Theaters';
 import { useState } from "react";
+import Toolbar from "../Toolbar/Toolbar";
 
 const getYoutubeThumbnail = (url) => {
   const videoId = url.split("v=")[1];
   return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
 };
 
-export function VideoNode({ selected, data }) {
+export function VideoNode({ selected, data, id }) {
   const { setNodeLabel, setNodeValue } = useStateContext();
   const [isVisible, setIsVisible] = useState(false)
 
+  const deleteThisNode = () => {
+    data.deleteNode(id)
+  }
+
   return (
     <NodeContainer selected={selected}>
+
+      <Toolbar
+        deleteFunction={deleteThisNode}
+        selected={selected === true ? "true" : "false"}
+      />
+
       <TopHandle
         id="top"
         type="target"

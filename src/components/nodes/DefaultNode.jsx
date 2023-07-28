@@ -2,12 +2,23 @@
 import { BottomHandle, Label, NodeContainer, TopHandle } from "./DefaultNode.style";
 import { Position } from "reactflow";
 import { useStateContext } from "../../contexts/ContextProvider";
+import Toolbar from "../Toolbar/Toolbar";
 
-export function DefaultNode({ selected, data }) {
+export function DefaultNode({ selected, data, id }) {
   const { setNodeLabel, setNodeValue } = useStateContext();
+
+  const deleteThisNode = () => {
+    data.deleteNode(id)
+  }
 
   return (
     <NodeContainer selected={selected}>
+
+      <Toolbar
+        deleteFunction={deleteThisNode}
+        selected={selected === true ? "true" : "false"}
+      />
+
       <TopHandle
         id="top"
         type="target"

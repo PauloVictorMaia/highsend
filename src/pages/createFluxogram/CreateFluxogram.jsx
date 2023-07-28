@@ -33,7 +33,7 @@ const INITIAL_NODE = [
 
 
 let id = 0;
-let group = 1
+let group = 0
 const getId = () => `node_${id++}`;
 const getGroup = () => `Group #${group++}`
 
@@ -78,7 +78,7 @@ const CreateFluxogram = () => {
         id: getId(),
         type,
         position,
-        data: { label: getGroup(), value: "" },
+        data: { label: getGroup(), value: "", deleteNode },
       };
 
       setNodes((nds) => nds.concat(newNode));
@@ -138,6 +138,22 @@ const CreateFluxogram = () => {
     },
     [nodes, edges]
   );
+
+  const deleteNode = useCallback((deletedNodeId) => {
+    setEdges((currentEdges) => {
+      // Filtrar e excluir as edges que estão conectadas ao nó que será excluído
+      const updatedEdges = currentEdges.filter(
+        (edge) => edge.source !== deletedNodeId && edge.target !== deletedNodeId
+      );
+      return updatedEdges;
+    });
+
+    setNodes((currentNodes) => {
+      // Excluir o nó que possui o ID igual ao ID do nó que será excluído
+      const updatedNodes = currentNodes.filter((node) => node.id !== deletedNodeId);
+      return updatedNodes;
+    });
+  }, []);
 
 
 
