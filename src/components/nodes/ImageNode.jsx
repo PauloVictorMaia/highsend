@@ -72,13 +72,13 @@ export function ImageNode({ selected, data, id }) {
               onClick={() => setActiveTab("tab1")}
               activetab={activeTab === "tab1" ? "true" : "false"}
             >
-              Tab 1
+              Link
             </Tabs>
             <Tabs
               onClick={() => setActiveTab("tab2")}
               activetab={activeTab === "tab2" ? "true" : "false"}
             >
-              Tab 2
+              Upload
             </Tabs>
           </ListTabs>
         </Navigation>
