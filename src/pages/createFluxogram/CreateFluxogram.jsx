@@ -101,13 +101,12 @@ const CreateFluxogram = () => {
   };
 
   const onNodeDragStop = (evt, node) => {
-    // on drag stop, we swap the colors of the nodes
     const targetID = target?.id
 
     setNodes((nodes) =>
       nodes.map((n) => {
-        if (n.id === node.id && target) {
-          n = { ...n, parentNode: targetID, extent: "parent" }
+        if (n.id === targetID) {
+          n = { ...n, subNodes: [{ ...n.subNodes, ...node }] }
         }
         return n;
       })
