@@ -12,7 +12,7 @@ export function DefaultNode({ selected, data, id }) {
   }
 
   return (
-    <NodeContainer selected={selected} >
+    <NodeContainer selected={selected} style={{ minWidth: data.style.minWidth, minHeight: data.style.minHeight }}>
 
       <Toolbar
         deleteFunction={deleteThisNode}

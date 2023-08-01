@@ -136,7 +136,7 @@ const CreateFluxogram = () => {
         id: getId(),
         type,
         position,
-        data: { label: getGroup(), value: "", deleteNode },
+        data: { label: getGroup(), value: "", deleteNode, style: { minWidth: '150px', minHeight: '75px' } },
       };
 
       setNodes((nds) => nds.concat(newNode));

@@ -2,10 +2,6 @@ import { styled } from "styled-components";
 import { Handle } from "reactflow";
 
 export const NodeContainer = styled.div`
-  min-width: 150px;
-  min-height: 75px;
-  width: 100%;
-  height: 100%;
   display: Flex;
   flex-direction: column;
   padding: 5px;
