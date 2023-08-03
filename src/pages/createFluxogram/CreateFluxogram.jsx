@@ -12,6 +12,7 @@ import { VideoNode } from "../../components/nodes/VideoNode/VideoNode";
 import { ImageNode } from "../../components/nodes/ImageNode/ImageNode";
 import EmbedNode from "../../components/nodes/EmbedNode/EmbedNode";
 import AudioNode from "../../components/nodes/AudioNode/AudioNode";
+import { TextInputNode } from "../../components/nodes/TextInputNode/TextInputNode";
 
 const NODE_TYPES = {
   startNode: StartNode,
@@ -20,6 +21,7 @@ const NODE_TYPES = {
   imageNode: ImageNode,
   embedNode: EmbedNode,
   audioNode: AudioNode,
+  textInputNode: TextInputNode,
 }
 
 const EDGE_TYPES = {
@@ -50,6 +52,8 @@ const CreateFluxogram = () => {
   const [reactFlowInstance, setReactFlowInstance] = useState(null)
   const { nodeLabel, setNodeLabel } = useStateContext();
   const { nodeValue, setNodeValue } = useStateContext();
+  const { placeholder, setPlaceholder } = useStateContext();
+  const { buttonLabel, setButtonLabel } = useStateContext();
 
   console.log(nodes)
   console.log(edges)
@@ -108,7 +112,7 @@ const CreateFluxogram = () => {
     [reactFlowInstance]
   );
 
-  //Mudança de nome do grupo
+  //Mudança de nome do node
   useEffect(() => {
     setNodes((nds) =>
       nds.map((node) => {
@@ -124,7 +128,7 @@ const CreateFluxogram = () => {
     );
   }, [nodeLabel, setNodeLabel]);
 
-  //Mudança do conteúdo do input
+  //Mudança do value do node
   useEffect(() => {
     setNodes((nds) =>
       nds.map((node) => {
@@ -139,6 +143,22 @@ const CreateFluxogram = () => {
       })
     );
   }, [nodeValue, setNodeValue]);
+
+  useEffect(() => {
+    setNodes((nds) =>
+      nds.map((node) => {
+        if (node.selected === true) {
+          node.data = {
+            ...node.data,
+            placeholder: placeholder,
+            buttonLabel: buttonLabel
+          };
+        }
+
+        return node;
+      })
+    );
+  }, [placeholder, setPlaceholder, buttonLabel, setButtonLabel]);
 
   const onNodesDelete = useCallback(
     (deleted) => {
