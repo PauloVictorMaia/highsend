@@ -11,6 +11,7 @@ import { TextNode } from "../../components/nodes/TextNode/TextNode";
 import { VideoNode } from "../../components/nodes/VideoNode/VideoNode";
 import { ImageNode } from "../../components/nodes/ImageNode/ImageNode";
 import EmbedNode from "../../components/nodes/EmbedNode/EmbedNode";
+import AudioNode from "../../components/nodes/AudioNode/AudioNode";
 
 const NODE_TYPES = {
   startNode: StartNode,
@@ -18,6 +19,7 @@ const NODE_TYPES = {
   videoNode: VideoNode,
   imageNode: ImageNode,
   embedNode: EmbedNode,
+  audioNode: AudioNode,
 }
 
 const EDGE_TYPES = {
