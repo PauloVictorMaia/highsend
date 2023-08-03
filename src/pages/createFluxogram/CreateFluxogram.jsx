@@ -205,7 +205,7 @@ const CreateFluxogram = () => {
           color="#ddd"
           style={{ backgroundColor: "#c1c1c1" }}
         />
-        <Controls />
+        <Controls position="bottom-right" />
       </ReactFlow>
       <Sidebar />
     </FlowContainer>

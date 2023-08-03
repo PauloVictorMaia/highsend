@@ -22,16 +22,20 @@ export const NodeDraggable = styled.div`
   column-gap: 10px;
   padding-left: 15px;
   box-sizing: border-box;
+  font-size: 0.9rem;
+  color: rgba(0,0,0,0.8);
+  cursor: pointer;
 `;
 
 export const NodesType = styled.span`
   font-size: 0.9rem;
 `;
 
-export const BubblesContainer = styled.div`
+export const NodesContainer = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
-  margin-top: 10px;
+  column-gap: 10px;
+  row-gap: 15px;
+  margin: 10px 0;
 `;
