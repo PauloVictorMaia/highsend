@@ -16,6 +16,10 @@ export const NodeContainer = styled.div`
   border-radius: 8px;
   color: #000;
   font-size: 12px;
+  
+  > input {
+    margin-bottom: 10px;
+  }
 `;
 
 export const TopHandle = styled(Handle)`

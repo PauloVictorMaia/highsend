@@ -10,12 +10,14 @@ import { StartNode } from "../../components/nodes/StartNode/StartNode";
 import { TextNode } from "../../components/nodes/TextNode/TextNode";
 import { VideoNode } from "../../components/nodes/VideoNode/VideoNode";
 import { ImageNode } from "../../components/nodes/ImageNode/ImageNode";
+import EmbedNode from "../../components/nodes/EmbedNode/EmbedNode";
 
 const NODE_TYPES = {
   startNode: StartNode,
   textNode: TextNode,
   videoNode: VideoNode,
   imageNode: ImageNode,
+  embedNode: EmbedNode,
 }
 
 const EDGE_TYPES = {
@@ -33,9 +35,9 @@ const INITIAL_NODE = [
 
 
 let id = 0;
-let group = 0
+let label = 0
 const getId = () => `node_${id++}`;
-const getGroup = () => `Group #${group++}`
+const getLabel = () => `Node #${label++}`
 
 const CreateFluxogram = () => {
 
@@ -96,7 +98,7 @@ const CreateFluxogram = () => {
         id: getId(),
         type,
         position,
-        data: { label: getGroup(), value: "", deleteNode, style: { minWidth: '150px', minHeight: '75px' } },
+        data: { label: getLabel(), value: "", deleteNode },
       };
 
       setNodes((nds) => nds.concat(newNode));

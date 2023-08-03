@@ -1,18 +1,20 @@
 /* eslint-disable react/prop-types */
-import { BottomHandle, Label, NodeContainer, TopHandle } from "./TextNode.style";
+import { NodeContainer, TopHandle, BottomHandle, Label } from "./AudioNode.style"
 import { Position } from "reactflow";
+import Toolbar from '../../Toolbar/Toolbar'
 import { useStateContext } from "../../../contexts/ContextProvider";
-import Toolbar from "../../Toolbar/Toolbar";
 
-export function TextNode({ selected, data, id }) {
+function AudioNode({ selected, data, id }) {
+
   const { setNodeLabel, setNodeValue } = useStateContext();
 
   const deleteThisNode = () => {
     data.deleteNode(id)
   }
 
+
   return (
-    <NodeContainer selected={selected} >
+    <NodeContainer selected={selected}>
 
       <Toolbar
         deleteFunction={deleteThisNode}
@@ -34,8 +36,8 @@ export function TextNode({ selected, data, id }) {
 
       <Label defaultValue={data.label} onChange={(e) => setNodeLabel(e.target.value)} />
 
-      <input defaultValue={data.value} type="textarea" onChange={(e) => setNodeValue(e.target.value)} />
-
     </NodeContainer>
   )
 }
+
+export default AudioNode;

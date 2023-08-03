@@ -16,6 +16,10 @@ export const NodeContainer = styled.div`
   border-radius: 8px;
   color: #000;
   font-size: 12px;
+  
+  > input {
+    margin-bottom: 10px;
+  }
 `;
 
 export const TopHandle = styled(Handle)`
@@ -38,4 +42,24 @@ export const Label = styled.input`
   font-size: 16px;
   border: none;
   width: 80%;
+`;
+
+export const AddLink = styled.div`
+  width: 100%;
+  max-width: 100%;
+  min-height: 30px;
+  background-color: #ccc;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  column-gap: 5px;
+  margin-bottom: 10px; 
+`;
+
+export const LinkInput = styled.input`
+  visibility: ${({isvisible}) => isvisible === "true" ? "visible" : "hidden"};
+  position: absolute;
+  width: 350px;
+  left: -360px;
+  top: 30px;
 `;
