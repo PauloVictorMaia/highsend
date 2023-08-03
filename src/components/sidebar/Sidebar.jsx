@@ -1,6 +1,10 @@
 /* eslint-disable react/display-name */
-
-import { SidebarContainer } from "./Sidebar.style";
+import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
+import { BubblesContainer, NodeDraggable, NodesType, SidebarContainer } from "./Sidebar.style";
+import TheatersOutlinedIcon from '@mui/icons-material/TheatersOutlined';
+import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
+import AttachmentOutlinedIcon from '@mui/icons-material/AttachmentOutlined';
+import HeadphonesOutlinedIcon from '@mui/icons-material/HeadphonesOutlined';
 
 /* eslint-disable react-refresh/only-export-components */
 export default () => {
@@ -11,17 +15,34 @@ export default () => {
 
   return (
     <SidebarContainer>
-      <div onDragStart={(event) => onDragStart(event, 'textNode')} draggable>
-        Text
-      </div>
+      <NodesType>Bubbles</NodesType>
+      <BubblesContainer>
+        <NodeDraggable onDragStart={(event) => onDragStart(event, 'textNode')} draggable>
+          <ChatBubbleOutlineOutlinedIcon style={{ fontSize: "large" }} />
+          Text
+        </NodeDraggable>
 
-      <div onDragStart={(event) => onDragStart(event, 'videoNode')} draggable>
-        Video
-      </div>
+        <NodeDraggable onDragStart={(event) => onDragStart(event, 'imageNode')} draggable>
+          <ImageOutlinedIcon style={{ fontSize: "large" }} />
+          Image
+        </NodeDraggable>
 
-      <div onDragStart={(event) => onDragStart(event, 'imageNode')} draggable>
-        Image
-      </div>
+        <NodeDraggable onDragStart={(event) => onDragStart(event, 'videoNode')} draggable>
+          <TheatersOutlinedIcon style={{ fontSize: "large" }} />
+          Video
+        </NodeDraggable>
+
+        <NodeDraggable onDragStart={(event) => onDragStart(event, 'embedNode')} draggable>
+          <AttachmentOutlinedIcon style={{ fontSize: "large" }} />
+          Embed
+        </NodeDraggable>
+
+        <NodeDraggable onDragStart={(event) => onDragStart(event, 'audioNode')} draggable>
+          <HeadphonesOutlinedIcon style={{ fontSize: "large" }} />
+          Audio
+        </NodeDraggable>
+
+      </BubblesContainer>
     </SidebarContainer>
   );
 };

@@ -26,7 +26,7 @@ const INITIAL_NODE = [
   {
     id: 'start node',
     type: 'startNode',
-    position: { x: 250, y: 50 },
+    position: { x: 350, y: 50 },
     data: {},
   }
 ]
