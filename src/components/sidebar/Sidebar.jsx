@@ -11,8 +11,8 @@ export default () => {
 
   return (
     <SidebarContainer>
-      <div onDragStart={(event) => onDragStart(event, 'defaultNode')} draggable>
-        Default
+      <div onDragStart={(event) => onDragStart(event, 'textNode')} draggable>
+        Text
       </div>
 
       <div onDragStart={(event) => onDragStart(event, 'videoNode')} draggable>

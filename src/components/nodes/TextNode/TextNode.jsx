@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
-import { BottomHandle, Label, NodeContainer, TopHandle } from "./DefaultNode.style";
+import { BottomHandle, Label, NodeContainer, TopHandle } from "./TextNode.style";
 import { Position } from "reactflow";
-import { useStateContext } from "../../contexts/ContextProvider";
-import Toolbar from "../Toolbar/Toolbar";
+import { useStateContext } from "../../../contexts/ContextProvider";
+import Toolbar from "../../Toolbar/Toolbar";
 
-export function DefaultNode({ selected, data, id }) {
+export function TextNode({ selected, data, id }) {
   const { setNodeLabel, setNodeValue } = useStateContext();
 
   const deleteThisNode = () => {

@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
 import { BottomHandle, Image, ImageNodeMenu, ImagePreview, Label, NodeContainer, TopHandle, Navigation, ListTabs, Tabs, SendImages, LinkInput, ChooseFileButton, FileInput } from "./ImageNode.style";
 import { Position } from "reactflow";
-import { useStateContext } from "../../contexts/ContextProvider";
+import { useStateContext } from "../../../contexts/ContextProvider";
 import { useState } from "react";
 import ImageIcon from '@mui/icons-material/Image';
-import Toolbar from "../Toolbar/Toolbar";
+import Toolbar from "../../Toolbar/Toolbar";
 
 export function ImageNode({ selected, data, id }) {
   const { setNodeLabel, setNodeValue } = useStateContext();

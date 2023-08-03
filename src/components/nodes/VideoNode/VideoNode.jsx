@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
 import { BottomHandle, Label, LinkInput, NodeContainer, PreviewImage, TopHandle, VideoPreview } from "./VideoNode.style";
 import { Position } from "reactflow";
-import { useStateContext } from "../../contexts/ContextProvider";
+import { useStateContext } from "../../../contexts/ContextProvider";
 import TheatersIcon from '@mui/icons-material/Theaters';
 import { useState } from "react";
-import Toolbar from "../Toolbar/Toolbar";
+import Toolbar from "../../Toolbar/Toolbar";
 
 const getYoutubeThumbnail = (url) => {
   const videoId = url.split("v=")[1];
