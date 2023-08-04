@@ -15,6 +15,7 @@ import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
 import PaymentIcon from '@mui/icons-material/Payment';
 import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 import BackupOutlinedIcon from '@mui/icons-material/BackupOutlined';
+import SpaceDashboardOutlinedIcon from '@mui/icons-material/SpaceDashboardOutlined';
 
 /* eslint-disable react-refresh/only-export-components */
 export default () => {
@@ -50,6 +51,11 @@ export default () => {
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'audioNode')} draggable>
           <HeadphonesOutlinedIcon style={{ fontSize: "large" }} />
           Audio
+        </NodeDraggable>
+
+        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group')} draggable>
+          <SpaceDashboardOutlinedIcon style={{ fontSize: "large" }} />
+          Group
         </NodeDraggable>
 
       </NodesContainer>

@@ -1,28 +1,30 @@
 /* eslint-disable react/prop-types */
 import { NodeContainer, TopHandle, BottomHandle, Label, AddLink, LinkInput } from "./EmbedNode.style"
 import { useState } from "react";
-import { Position } from "reactflow";
-import Toolbar from '../../Toolbar/Toolbar'
+import { Position, useStore, useReactFlow, NodeToolbar } from "reactflow";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import AttachmentIcon from '@mui/icons-material/Attachment';
+import useDetachNodes from '../../../useDetachNodes'
 
 function EmbedNode({ selected, data, id }) {
 
   const { setNodeLabel, setNodeValue } = useStateContext();
   const [isVisible, setIsVisible] = useState(false)
 
-  const deleteThisNode = () => {
-    data.deleteNode(id)
-  }
+  const hasParent = useStore((store) => !!store.nodeInternals.get(id)?.parentNode);
+  const { deleteElements } = useReactFlow();
+  const detachNodes = useDetachNodes();
 
+  const onDelete = () => deleteElements({ nodes: [{ id }] });
+  const onDetach = () => detachNodes([id]);
 
   return (
     <NodeContainer selected={selected}>
 
-      <Toolbar
-        deleteFunction={deleteThisNode}
-        selected={selected === true ? "true" : "false"}
-      />
+      <NodeToolbar className="nodrag">
+        <button onClick={onDelete}>Delete</button>
+        {hasParent && <button onClick={onDetach}>Detach</button>}
+      </NodeToolbar>
 
       <TopHandle
         id="top"

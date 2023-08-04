@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
 import { BottomHandle, Label, LinkInput, NodeContainer, PreviewImage, TopHandle, VideoPreview } from "./VideoNode.style";
-import { Position } from "reactflow";
+import { Position, useStore, useReactFlow, NodeToolbar } from "reactflow";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import TheatersIcon from '@mui/icons-material/Theaters';
 import { useState } from "react";
-import Toolbar from "../../Toolbar/Toolbar";
+import useDetachNodes from '../../../useDetachNodes'
 
 const getYoutubeThumbnail = (url) => {
   const videoId = url.split("v=")[1];
@@ -15,17 +15,20 @@ export function VideoNode({ selected, data, id }) {
   const { setNodeLabel, setNodeValue } = useStateContext();
   const [isVisible, setIsVisible] = useState(false)
 
-  const deleteThisNode = () => {
-    data.deleteNode(id)
-  }
+  const hasParent = useStore((store) => !!store.nodeInternals.get(id)?.parentNode);
+  const { deleteElements } = useReactFlow();
+  const detachNodes = useDetachNodes();
+
+  const onDelete = () => deleteElements({ nodes: [{ id }] });
+  const onDetach = () => detachNodes([id]);
 
   return (
     <NodeContainer selected={selected}>
 
-      <Toolbar
-        deleteFunction={deleteThisNode}
-        selected={selected === true ? "true" : "false"}
-      />
+      <NodeToolbar className="nodrag">
+        <button onClick={onDelete}>Delete</button>
+        {hasParent && <button onClick={onDetach}>Detach</button>}
+      </NodeToolbar>
 
       <TopHandle
         id="top"

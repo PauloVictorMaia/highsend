@@ -1,23 +1,29 @@
+/* eslint-disable react-refresh/only-export-components */
 /* eslint-disable react/prop-types */
+
 import { BottomHandle, Label, NodeContainer, TopHandle } from "./TextNode.style";
-import { Position } from "reactflow";
+import { Position, useStore, useReactFlow, NodeToolbar } from "reactflow";
 import { useStateContext } from "../../../contexts/ContextProvider";
-import Toolbar from "../../Toolbar/Toolbar";
+import useDetachNodes from '../../../useDetachNodes'
 
 export function TextNode({ selected, data, id }) {
   const { setNodeLabel, setNodeValue } = useStateContext();
 
-  const deleteThisNode = () => {
-    data.deleteNode(id)
-  }
+  const hasParent = useStore((store) => !!store.nodeInternals.get(id)?.parentNode);
+  const { deleteElements } = useReactFlow();
+  const detachNodes = useDetachNodes();
+
+  const onDelete = () => deleteElements({ nodes: [{ id }] });
+  const onDetach = () => detachNodes([id]);
+
 
   return (
     <NodeContainer selected={selected} >
 
-      <Toolbar
-        deleteFunction={deleteThisNode}
-        selected={selected === true ? "true" : "false"}
-      />
+      <NodeToolbar className="nodrag">
+        <button onClick={onDelete}>Delete</button>
+        {hasParent && <button onClick={onDetach}>Detach</button>}
+      </NodeToolbar>
 
       <TopHandle
         id="top"
@@ -39,3 +45,4 @@ export function TextNode({ selected, data, id }) {
     </NodeContainer>
   )
 }
+

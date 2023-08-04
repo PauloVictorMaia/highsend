@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import ReactFlow, { Background, Controls, addEdge, useEdgesState, useNodesState, getConnectedEdges, getOutgoers, getIncomers, updateEdge } from "reactflow";
+import ReactFlow, { Background, Controls, addEdge, useEdgesState, useNodesState, getConnectedEdges, getOutgoers, getIncomers, updateEdge, useReactFlow, useStoreApi, ReactFlowProvider, } from "reactflow";
 import 'reactflow/dist/style.css'
 import { FlowContainer } from "./CreateFluxogram.style";
-import { useCallback, useRef, useState, useEffect } from "react";
+import { useCallback, useRef, useEffect } from "react";
 import Sidebar from '../../components/sidebar/Sidebar'
 import { useStateContext } from "../../contexts/ContextProvider";
 import DefaultEdge from "../../components/edges/DefaultEdge/DefaultEdge";
@@ -13,6 +13,13 @@ import { ImageNode } from "../../components/nodes/ImageNode/ImageNode";
 import EmbedNode from "../../components/nodes/EmbedNode/EmbedNode";
 import AudioNode from "../../components/nodes/AudioNode/AudioNode";
 import { TextInputNode } from "../../components/nodes/TextInputNode/TextInputNode";
+import GroupNode from "../../components/nodes/GroupNode/GroupNode";
+import { sortNodes, getId, getNodePositionInsideParent } from '../../utils';
+import SelectedNodesToolbar from '../../components/Toolbar/SelectedNodesToolbar'
+
+const proOptions = {
+  hideAttribution: true,
+};
 
 const NODE_TYPES = {
   startNode: StartNode,
@@ -22,6 +29,7 @@ const NODE_TYPES = {
   embedNode: EmbedNode,
   audioNode: AudioNode,
   textInputNode: TextInputNode,
+  group: GroupNode,
 }
 
 const EDGE_TYPES = {
@@ -38,22 +46,22 @@ const INITIAL_NODE = [
 ]
 
 
-let id = 0;
+
 let label = 0
-const getId = () => `node_${id++}`;
+
 const getLabel = () => `Node #${label++}`
 
-const CreateFluxogram = () => {
-
+const Flow = () => {
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
   const [nodes, setNodes, onNodesChange] = useNodesState(INITIAL_NODE)
-  const reactFlowWrapper = useRef(null);
+  const wrapperRef = useRef(null);
   const edgeUpdateSuccessful = useRef(true);
-  const [reactFlowInstance, setReactFlowInstance] = useState(null)
   const { nodeLabel, setNodeLabel } = useStateContext();
   const { nodeValue, setNodeValue } = useStateContext();
   const { placeholder, setPlaceholder } = useStateContext();
   const { buttonLabel, setButtonLabel } = useStateContext();
+  const { project, getIntersectingNodes } = useReactFlow();
+  const store = useStoreApi();
 
   console.log(nodes)
   console.log(edges)
@@ -84,33 +92,51 @@ const CreateFluxogram = () => {
     edgeUpdateSuccessful.current = true;
   }, []);
 
-  const onDrop = useCallback(
-    (event) => {
-      event.preventDefault();
+  const onDrop = (event) => {
+    event.preventDefault();
 
-      const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
+    if (wrapperRef.current) {
+      const wrapperBounds = wrapperRef.current.getBoundingClientRect();
       const type = event.dataTransfer.getData('application/reactflow');
+      let position = project({ x: event.clientX - wrapperBounds.x - 20, y: event.clientY - wrapperBounds.top - 20 });
+      const nodeStyle = type === 'group' ? { width: 400, height: 200 } : undefined;
 
-      if (typeof type === 'undefined' || !type) {
-        return;
-      }
-
-      const position = reactFlowInstance.project({
-        x: event.clientX - reactFlowBounds.left,
-        y: event.clientY - reactFlowBounds.top,
-      });
+      const intersections = getIntersectingNodes({
+        x: position.x,
+        y: position.y,
+        width: 40,
+        height: 40,
+      }).filter((n) => n.type === 'group');
+      const groupNode = intersections[0];
 
       const newNode = {
         id: getId(),
         type,
         position,
-        data: { label: getLabel(), value: "", deleteNode },
+        data: { label: getLabel(), value: "" },
+        style: nodeStyle,
       };
 
-      setNodes((nds) => nds.concat(newNode));
-    },
-    [reactFlowInstance]
-  );
+      if (groupNode) {
+        // if we drop a node on a group node, we want to position the node inside the group
+        newNode.position = getNodePositionInsideParent(
+          {
+            position,
+            width: 40,
+            height: 40,
+          },
+          groupNode
+        ) ?? { x: 0, y: 0 };
+        newNode.parentNode = groupNode?.id;
+        newNode.extent = groupNode ? 'parent' : undefined;
+      }
+
+      // we need to make sure that the parents are sorted before the children
+      // to make sure that the children are rendered on top of the parents
+      const sortedNodes = store.getState().getNodes().concat(newNode).sort(sortNodes);
+      setNodes(sortedNodes);
+    }
+  };
 
   //Mudança de nome do node
   useEffect(() => {
@@ -181,26 +207,84 @@ const CreateFluxogram = () => {
     [nodes, edges]
   );
 
-  const deleteNode = useCallback((deletedNodeId) => {
-    setEdges((currentEdges) => {
-      // Filtrar e excluir as edges que estão conectadas ao nó que será excluído
-      const updatedEdges = currentEdges.filter(
-        (edge) => edge.source !== deletedNodeId && edge.target !== deletedNodeId
-      );
-      return updatedEdges;
-    });
+  const onNodeDragStop = useCallback(
+    (_, node) => {
+      if (node.type !== 'node' && !node.parentNode) {
+        return;
+      }
 
-    setNodes((currentNodes) => {
-      // Excluir o nó que possui o ID igual ao ID do nó que será excluído
-      const updatedNodes = currentNodes.filter((node) => node.id !== deletedNodeId);
-      return updatedNodes;
-    });
-  }, []);
+      const intersections = getIntersectingNodes(node).filter((n) => n.type === 'group');
+      const groupNode = intersections[0];
+
+      // when there is an intersection on drag stop, we want to attach the node to its new parent
+      if (intersections.length && node.parentNode !== groupNode?.id) {
+        const nextNodes = store
+          .getState()
+          .getNodes()
+          .map((n) => {
+            if (n.id === groupNode.id) {
+              return {
+                ...n,
+                className: '',
+              };
+            } else if (n.id === node.id) {
+              const position = getNodePositionInsideParent(n, groupNode) ?? { x: 0, y: 0 };
+
+              return {
+                ...n,
+                position,
+                parentNode: groupNode.id,
+                // we need to set dragging = false, because the internal change of the dragging state
+                // is not applied yet, so the node would be rendered as dragging
+                dragging: false,
+                extent: 'parent',
+              };
+            }
+
+            return n;
+          })
+          .sort(sortNodes);
+
+        setNodes(nextNodes);
+      }
+    },
+    [getIntersectingNodes, setNodes, store]
+  );
+
+  const onNodeDrag = useCallback(
+    (_, node) => {
+      if (node.type !== 'node' && !node.parentNode) {
+        return;
+      }
+
+      const intersections = getIntersectingNodes(node).filter((n) => n.type === 'group');
+      const groupClassName = intersections.length && node.parentNode !== intersections[0]?.id ? 'active' : '';
+
+      setNodes((nds) => {
+        return nds.map((n) => {
+          if (n.type === 'group') {
+            return {
+              ...n,
+              className: groupClassName,
+            };
+          } else if (n.id === node.id) {
+            return {
+              ...n,
+              position: node.position,
+            };
+          }
+
+          return { ...n };
+        });
+      });
+    },
+    [getIntersectingNodes, setNodes]
+  );
 
 
 
   return (
-    <FlowContainer ref={reactFlowWrapper}>
+    <FlowContainer ref={wrapperRef}>
 
       <ReactFlow
         nodeTypes={NODE_TYPES}
@@ -212,8 +296,10 @@ const CreateFluxogram = () => {
         edges={edges}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
-        onInit={setReactFlowInstance}
         onDrop={onDrop}
+        onNodeDrag={onNodeDrag}
+        onNodeDragStop={onNodeDragStop}
+        proOptions={proOptions}
         onDragOver={onDragOver}
         onEdgeUpdate={onEdgeUpdate}
         onEdgeUpdateStart={onEdgeUpdateStart}
@@ -225,6 +311,7 @@ const CreateFluxogram = () => {
           color="#ddd"
           style={{ backgroundColor: "#c1c1c1" }}
         />
+        <SelectedNodesToolbar />
         <Controls position="bottom-right" />
       </ReactFlow>
       <Sidebar />
@@ -232,4 +319,11 @@ const CreateFluxogram = () => {
   );
 };
 
-export default CreateFluxogram;
+
+export default function CreateFluxogram() {
+  return (
+    <ReactFlowProvider>
+      <Flow />
+    </ReactFlowProvider>
+  );
+}

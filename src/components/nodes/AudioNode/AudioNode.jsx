@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
 import { NodeContainer, TopHandle, BottomHandle, Label, AudioPreview, AudioNodeMenu, SendAudio, Tabs, Navigation, ListTabs, ChooseFileButton, FileInput, LinkInput } from "./AudioNode.style"
-import { Position } from "reactflow";
+import { Position, useStore, useReactFlow, NodeToolbar } from "reactflow";
 import { useState } from "react";
-import Toolbar from '../../Toolbar/Toolbar'
 import { useStateContext } from "../../../contexts/ContextProvider";
 import HeadphonesIcon from '@mui/icons-material/Headphones';
+import useDetachNodes from '../../../useDetachNodes'
 
 function AudioNode({ selected, data, id }) {
 
@@ -12,9 +12,12 @@ function AudioNode({ selected, data, id }) {
   const [activeTab, setActiveTab] = useState("tab1");
   const [isVisible, setIsVisible] = useState(false)
 
-  const deleteThisNode = () => {
-    data.deleteNode(id)
-  }
+  const hasParent = useStore((store) => !!store.nodeInternals.get(id)?.parentNode);
+  const { deleteElements } = useReactFlow();
+  const detachNodes = useDetachNodes();
+
+  const onDelete = () => deleteElements({ nodes: [{ id }] });
+  const onDetach = () => detachNodes([id]);
 
   const handleFileAudio = (e) => {
     const file = e.target.files[0];
@@ -27,10 +30,10 @@ function AudioNode({ selected, data, id }) {
   return (
     <NodeContainer selected={selected}>
 
-      <Toolbar
-        deleteFunction={deleteThisNode}
-        selected={selected === true ? "true" : "false"}
-      />
+      <NodeToolbar className="nodrag">
+        <button onClick={onDelete}>Delete</button>
+        {hasParent && <button onClick={onDetach}>Detach</button>}
+      </NodeToolbar>
 
       <TopHandle
         id="top"
