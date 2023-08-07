@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
-import { BottomHandle, InputConfig, InputPreview, Label, NodeContainer, TopHandle } from "./TextInputNode.style";
+import { BottomHandle, InputConfig, InputPreview, Label, NodeContainer, TopHandle } from "./NumberInputNode.style";
 import { Position, useStore, useReactFlow, NodeToolbar } from "reactflow";
 import { useState } from "react";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import useDetachNodes from '../../../useDetachNodes'
-import TitleIcon from '@mui/icons-material/Title';
+import NumbersIcon from '@mui/icons-material/Numbers';
 
-export function TextInputNode({ selected, data, id }) {
+export function NumberInputNode({ selected, data, id }) {
   const { setNodeLabel, setPlaceholder, setButtonLabel } = useStateContext();
   const [isVisible, setIsVisible] = useState(false)
 
@@ -41,11 +41,11 @@ export function TextInputNode({ selected, data, id }) {
       <Label defaultValue={data.label} onChange={(e) => setNodeLabel(e.target.value)} />
 
       <InputPreview onClick={() => setIsVisible(!isVisible)}>
-        <TitleIcon style={{ fontSize: "large", color: "#E67200" }} />
+        <NumbersIcon style={{ fontSize: "large", color: "#E67200" }} />
         {data.placeholder ?
           <span>{data.placeholder}</span>
           :
-          <span>Type your answer</span>
+          <span>Type a number</span>
         }
       </InputPreview>
 
@@ -53,8 +53,8 @@ export function TextInputNode({ selected, data, id }) {
         <span>Placeholder:</span>
         <input
           type="text"
-          placeholder={data.placeholder ? data.placeholder : "Type your answer"}
-          defaultValue={data.placeholder ? data.placeholder : "Type your answer"}
+          placeholder={data.placeholder ? data.placeholder : "Type a number"}
+          defaultValue={data.placeholder ? data.placeholder : "Type a number"}
           onChange={(e) => setPlaceholder(e.target.value)}
         />
         <span>Button Label:</span>

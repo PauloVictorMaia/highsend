@@ -16,6 +16,7 @@ import { TextInputNode } from "../../components/nodes/TextInputNode/TextInputNod
 import GroupNode from "../../components/nodes/GroupNode/GroupNode";
 import { sortNodes, getId, getNodePositionInsideParent } from '../../utils';
 import SelectedNodesToolbar from '../../components/Toolbar/SelectedNodesToolbar'
+import { NumberInputNode } from "../../components/nodes/NumberInputNode/NumberInputNode";
 
 const proOptions = {
   hideAttribution: true,
@@ -30,6 +31,7 @@ const NODE_TYPES = {
   audioNode: AudioNode,
   textInputNode: TextInputNode,
   group: GroupNode,
+  numberInputNode: NumberInputNode,
 }
 
 const EDGE_TYPES = {
@@ -177,7 +179,7 @@ const Flow = () => {
           node.data = {
             ...node.data,
             placeholder: placeholder,
-            buttonLabel: buttonLabel
+            buttonLabel: buttonLabel,
           };
         }
 

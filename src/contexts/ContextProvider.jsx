@@ -6,7 +6,7 @@ const StateContext = createContext();
 export const ContextProvider = ({ children }) => {
     const [nodeLabel, setNodeLabel] = useState("");
     const [nodeValue, setNodeValue] = useState("");
-    const [placeholder, setPlaceholder] = useState("Type your answer")
+    const [placeholder, setPlaceholder] = useState("")
     const [buttonLabel, setButtonLabel] = useState("Send")
 
     return (
