@@ -36,7 +36,7 @@ export default function GroupNode({ id, selected }) {
   };
 
   return (
-    <div style={{ minWidth: "100%", minHeight: "100%", backgroundColor: "blue" }}>
+    <div style={{ minWidth: "100%", minHeight: "100%", backgroundColor: "transparent" }}>
       <NodeResizer handleStyle={{ width: "5px", height: "5px" }} isVisible={selected} lineStyle={lineStyle} minWidth={minWidth} minHeight={minHeight} />
       <NodeToolbar >
         <button onClick={onDelete}>Delete</button>
