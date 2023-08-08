@@ -101,7 +101,7 @@ const Flow = () => {
       const wrapperBounds = wrapperRef.current.getBoundingClientRect();
       const type = event.dataTransfer.getData('application/reactflow');
       let position = project({ x: event.clientX - wrapperBounds.x - 20, y: event.clientY - wrapperBounds.top - 20 });
-      const nodeStyle = type === 'group' ? { width: 400, height: 200 } : undefined;
+      const nodeStyle = type === 'group' ? { width: 250, height: 170 } : undefined;
 
       const intersections = getIntersectingNodes({
         x: position.x,
@@ -115,29 +115,37 @@ const Flow = () => {
         id: getId(),
         type,
         position,
-        data: { label: getLabel(), value: "" },
+        data: {
+          label: getLabel(),
+          value: "",
+          blocks: [{ id: getId(), type: "textNode", groupId: "1", label: "teste" }]
+        },
         style: nodeStyle,
       };
 
+
       if (groupNode) {
-        // if we drop a node on a group node, we want to position the node inside the group
-        newNode.position = getNodePositionInsideParent(
-          {
-            position,
-            width: 40,
-            height: 40,
-          },
-          groupNode
-        ) ?? { x: 0, y: 0 };
-        newNode.parentNode = groupNode?.id;
-        newNode.extent = groupNode ? 'parent' : undefined;
+        console.log("aqui")
+        setNodes((nds) =>
+          nds.map((node) => {
+            if (node.id === groupNode.id) {
+              const updatedBlocks = [...node.data.blocks, newNode];
+              node.data.blocks = updatedBlocks;
+            }
+            return node;
+          })
+        );
       }
 
-      // we need to make sure that the parents are sorted before the children
-      // to make sure that the children are rendered on top of the parents
-      const sortedNodes = store.getState().getNodes().concat(newNode).sort(sortNodes);
-      setNodes(sortedNodes);
+      if (!groupNode) {
+        const sortedNodes = store.getState().getNodes().concat(newNode).sort(sortNodes);
+        setNodes(sortedNodes);
+      }
+
+
+
     }
+    setNodes(nodes)
   };
 
   //Mudança de nome do node

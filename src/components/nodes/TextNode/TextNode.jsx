@@ -1,13 +1,13 @@
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable react/prop-types */
 
-import { BottomHandle, Label, NodeContainer, TopHandle } from "./TextNode.style";
+import { BottomHandle, NodeContainer, TopHandle } from "./TextNode.style";
 import { Position, useStore, useReactFlow, NodeToolbar } from "reactflow";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import useDetachNodes from '../../../useDetachNodes'
 
 export function TextNode({ selected, data, id }) {
-  const { setNodeLabel, setNodeValue } = useStateContext();
+  const { setNodeValue } = useStateContext();
 
   const hasParent = useStore((store) => !!store.nodeInternals.get(id)?.parentNode);
   const { deleteElements } = useReactFlow();
@@ -18,7 +18,8 @@ export function TextNode({ selected, data, id }) {
 
 
   return (
-    <NodeContainer selected={selected} >
+    <>
+      <NodeContainer type="textarea" selected={selected} defaultValue={data.value ? data.value : "padrao"} onChange={(e) => setNodeValue(e.target.value)} />
 
       <NodeToolbar className="nodrag">
         <button onClick={onDelete}>Delete</button>
@@ -36,13 +37,7 @@ export function TextNode({ selected, data, id }) {
         type="source"
         position={Position.Bottom}
       />
-
-
-      <Label defaultValue={data.label} onChange={(e) => setNodeLabel(e.target.value)} />
-
-      <input defaultValue={data.value} type="textarea" onChange={(e) => setNodeValue(e.target.value)} />
-
-    </NodeContainer>
+    </>
   )
 }
 

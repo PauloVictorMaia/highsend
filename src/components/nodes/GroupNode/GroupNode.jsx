@@ -4,11 +4,17 @@
 import { getRectOfNodes, NodeToolbar, useReactFlow, useStore, useStoreApi } from 'reactflow';
 import { NodeResizer } from '@reactflow/node-resizer';
 import useDetachNodes from '../../../useDetachNodes';
+import { Label } from './GroupNode.style';
+import { useStateContext } from '../../../contexts/ContextProvider';
+
+
 
 const lineStyle = { borderColor: 'white' };
 const padding = 25;
 
-export default function GroupNode({ id, selected }) {
+export default function GroupNode({ id, selected, data }) {
+  console.log("data", data)
+  const { setNodeLabel } = useStateContext();
   const store = useStoreApi();
   const { deleteElements } = useReactFlow();
   const detachNodes = useDetachNodes();
@@ -35,13 +41,44 @@ export default function GroupNode({ id, selected }) {
     detachNodes(childNodeIds, id);
   };
 
+
+
   return (
-    <div style={{ minWidth: "100%", minHeight: "100%", backgroundColor: "transparent" }}>
-      <NodeResizer handleStyle={{ width: "5px", height: "5px" }} isVisible={selected} lineStyle={lineStyle} minWidth={minWidth} minHeight={minHeight} />
+    <div
+      style={
+        {
+          minWidth: "100%",
+          minHeight: "100%",
+          backgroundColor: "white",
+          borderRadius: "8px",
+          padding: "0px",
+          color: "#000",
+          display: "flex",
+          flexDirection: "column"
+        }
+      }
+    >
+      <NodeResizer
+        handleStyle={{ width: "5px", height: "5px" }}
+        isVisible={selected}
+        lineStyle={lineStyle}
+        minWidth={minWidth}
+        minHeight={minHeight}
+      />
+
       <NodeToolbar >
         <button onClick={onDelete}>Delete</button>
         {hasChildNodes && <button onClick={onDetach}>Ungroup</button>}
       </NodeToolbar>
+
+      <Label defaultValue={data.label} onChange={(e) => setNodeLabel(e.target.value)} />
+
+      {
+        data.blocks.map((block, index) => (
+          <span style={{ backgroundColor: "red" }} key={index}>{block.label}</span>
+        ))
+      }
+
     </div>
   );
 }

@@ -28,7 +28,7 @@ export default () => {
     <SidebarContainer>
       <NodesType>Bubbles</NodesType>
       <NodesContainer>
-        <NodeDraggable onDragStart={(event) => onDragStart(event, 'textNode')} draggable>
+        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group')} draggable>
           <ChatBubbleOutlineOutlinedIcon style={{ fontSize: "large" }} />
           Text
         </NodeDraggable>

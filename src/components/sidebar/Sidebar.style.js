@@ -4,7 +4,7 @@ export const SidebarContainer = styled.aside`
   width: 300px;
   position: fixed;
   top: 10px;
-  left: 230px; 
+  left: 20px; 
   color: #000;
   background-color: #fff;
   padding: 15px;
@@ -24,7 +24,7 @@ export const NodeDraggable = styled.div`
   box-sizing: border-box;
   font-size: 0.9rem;
   color: rgba(0,0,0,0.8);
-  cursor: pointer;
+  cursor: grab;
 `;
 
 export const NodesType = styled.span`
