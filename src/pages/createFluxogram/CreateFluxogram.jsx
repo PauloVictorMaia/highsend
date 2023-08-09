@@ -217,7 +217,6 @@ const Flow = () => {
 
   const onNodesDelete = useCallback(
     (deleted) => {
-      console.log('deletado', deleted)
       setEdges(
         deleted.reduce((acc, node) => {
           const incomers = getIncomers(node, nodes, edges);
@@ -236,7 +235,6 @@ const Flow = () => {
 
       const groupID = deleted[0].parentNode
       const parentNodes = nodes.filter((node) => node.parentNode === groupID && deleted[0].id !== node.id)
-      console.log(nodes)
       setNodes((nds) =>
         nds.map((node) => {
           if (node.id === groupID) {
