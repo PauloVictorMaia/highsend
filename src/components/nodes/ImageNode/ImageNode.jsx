@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Image, ImageNodeMenu, ImagePreview, NodeContainer, Navigation, ListTabs, Tabs, SendImages, LinkInput, ChooseFileButton, FileInput } from "./ImageNode.style";
+import { Image, ImageNodeMenu, ImagePreview, NodeContainer, Navigation, ListTabs, Tabs, SendImages, LinkInput, ChooseFileButton, FileInput, ImageContainer } from "./ImageNode.style";
 import { useReactFlow, NodeToolbar } from "reactflow";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import { useState } from "react";
@@ -44,7 +44,10 @@ export function ImageNode({ data, id }) {
         {data.value === "" ?
           <span>Click to edit...</span>
           :
-          <Image src={data.value} alt="preview da imagem" />
+          <ImageContainer>
+            <span>Preview image:</span>
+            <Image src={data.value} alt="preview da imagem" />
+          </ImageContainer>
         }
       </ImagePreview>
 
