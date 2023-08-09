@@ -248,7 +248,6 @@ const Flow = () => {
           }
 
           if (parentNodes.length < 1) {
-            console.log('zerou')
             deleteElements({ nodes: [{ id: groupID }] });
           }
 

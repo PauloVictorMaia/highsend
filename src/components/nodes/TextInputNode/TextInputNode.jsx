@@ -1,28 +1,22 @@
 /* eslint-disable react/prop-types */
 import { InputConfig, InputPreview, NodeContainer } from "./TextInputNode.style";
-import { useStore, useReactFlow, NodeToolbar } from "reactflow";
+import { useReactFlow, NodeToolbar } from "reactflow";
 import { useState } from "react";
 import { useStateContext } from "../../../contexts/ContextProvider";
-import useDetachNodes from '../../../useDetachNodes'
 import TitleIcon from '@mui/icons-material/Title';
 
 export function TextInputNode({ data, id }) {
   const { setPlaceholder, setButtonLabel } = useStateContext();
   const [isVisible, setIsVisible] = useState(false)
-
-  const hasParent = useStore((store) => !!store.nodeInternals.get(id)?.parentNode);
   const { deleteElements } = useReactFlow();
-  const detachNodes = useDetachNodes();
 
   const onDelete = () => deleteElements({ nodes: [{ id }] });
-  const onDetach = () => detachNodes([id]);
 
   return (
     <NodeContainer>
 
       <NodeToolbar className="nodrag">
         <button onClick={onDelete}>Delete</button>
-        {hasParent && <button onClick={onDetach}>Detach</button>}
       </NodeToolbar>
 
       <InputPreview onClick={() => setIsVisible(!isVisible)}>

@@ -1,10 +1,9 @@
 /* eslint-disable react/prop-types */
 import { Image, ImageNodeMenu, ImagePreview, NodeContainer, Navigation, ListTabs, Tabs, SendImages, LinkInput, ChooseFileButton, FileInput } from "./ImageNode.style";
-import { useStore, useReactFlow, NodeToolbar } from "reactflow";
+import { useReactFlow, NodeToolbar } from "reactflow";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import { useState } from "react";
 import ImageIcon from '@mui/icons-material/Image';
-import useDetachNodes from '../../../useDetachNodes'
 
 export function ImageNode({ data, id }) {
   const { setNodeValue } = useStateContext();
@@ -29,19 +28,15 @@ export function ImageNode({ data, id }) {
     reader.readAsDataURL(file);
   };
 
-  const hasParent = useStore((store) => !!store.nodeInternals.get(id)?.parentNode);
   const { deleteElements } = useReactFlow();
-  const detachNodes = useDetachNodes();
 
   const onDelete = () => deleteElements({ nodes: [{ id }] });
-  const onDetach = () => detachNodes([id]);
 
   return (
     <NodeContainer>
 
       <NodeToolbar className="nodrag">
         <button onClick={onDelete}>Delete</button>
-        {hasParent && <button onClick={onDetach}>Detach</button>}
       </NodeToolbar>
 
       <ImagePreview onClick={() => setIsVisible(!isVisible)}>

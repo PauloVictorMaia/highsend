@@ -1,10 +1,9 @@
 /* eslint-disable react/prop-types */
 import { LinkInput, NodeContainer, PreviewImage, VideoPreview } from "./VideoNode.style";
-import { useStore, useReactFlow, NodeToolbar } from "reactflow";
+import { useReactFlow, NodeToolbar } from "reactflow";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import TheatersIcon from '@mui/icons-material/Theaters';
 import { useState } from "react";
-import useDetachNodes from '../../../useDetachNodes'
 
 const getYoutubeThumbnail = (url) => {
   const videoId = url.split("v=")[1];
@@ -15,19 +14,15 @@ export function VideoNode({ data, id }) {
   const { setNodeValue } = useStateContext();
   const [isVisible, setIsVisible] = useState(false)
 
-  const hasParent = useStore((store) => !!store.nodeInternals.get(id)?.parentNode);
   const { deleteElements } = useReactFlow();
-  const detachNodes = useDetachNodes();
 
   const onDelete = () => deleteElements({ nodes: [{ id }] });
-  const onDetach = () => detachNodes([id]);
 
   return (
     <NodeContainer>
 
       <NodeToolbar className="nodrag">
         <button onClick={onDelete}>Delete</button>
-        {hasParent && <button onClick={onDetach}>Detach</button>}
       </NodeToolbar>
 
       <VideoPreview onClick={() => setIsVisible(!isVisible)}>
