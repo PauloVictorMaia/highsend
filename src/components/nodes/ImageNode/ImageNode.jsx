@@ -1,13 +1,13 @@
 /* eslint-disable react/prop-types */
-import { BottomHandle, Image, ImageNodeMenu, ImagePreview, Label, NodeContainer, TopHandle, Navigation, ListTabs, Tabs, SendImages, LinkInput, ChooseFileButton, FileInput } from "./ImageNode.style";
-import { Position, useStore, useReactFlow, NodeToolbar } from "reactflow";
+import { Image, ImageNodeMenu, ImagePreview, NodeContainer, Navigation, ListTabs, Tabs, SendImages, LinkInput, ChooseFileButton, FileInput } from "./ImageNode.style";
+import { useStore, useReactFlow, NodeToolbar } from "reactflow";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import { useState } from "react";
 import ImageIcon from '@mui/icons-material/Image';
 import useDetachNodes from '../../../useDetachNodes'
 
 export function ImageNode({ selected, data, id }) {
-  const { setNodeLabel, setNodeValue } = useStateContext();
+  const { setNodeValue } = useStateContext();
   const [isVisible, setIsVisible] = useState(false)
   const [activeTab, setActiveTab] = useState("tab1");
   // eslint-disable-next-line no-unused-vars
@@ -43,21 +43,6 @@ export function ImageNode({ selected, data, id }) {
         <button onClick={onDelete}>Delete</button>
         {hasParent && <button onClick={onDetach}>Detach</button>}
       </NodeToolbar>
-
-      <TopHandle
-        id="top"
-        type="target"
-        position={Position.Top}
-      />
-
-      <BottomHandle
-        id="bottom"
-        type="source"
-        position={Position.Bottom}
-      />
-
-
-      <Label defaultValue={data.label} onChange={(e) => setNodeLabel(e.target.value)} />
 
       <ImagePreview onClick={() => setIsVisible(!isVisible)}>
         <ImageIcon />

@@ -2,24 +2,16 @@ import { styled } from "styled-components";
 import { Handle } from "reactflow";
 
 export const NodeContainer = styled.div`
-  min-width: 210px;
-  max-width: 210px;
-  min-height: 75px;
   width: 100%;
-  height: 100%;
-  display: Flex;
-  flex-direction: column;
-  padding: 5px;
-  box-sizing: border-box;
-  background-color: #fff;
-  border: ${({selected}) => selected ? '2px solid #000' : '1px solid #000'};
-  border-radius: 8px;
+  height: 40px;
   color: #000;
-  font-size: 12px;
-  
-  > input {
-    margin-bottom: 10px;
-  }
+  display: Flex;
+  align-items: center;
+  border: 1px solid #000;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 0;
+  box-sizing: border-box;
 `;
 
 export const TopHandle = styled(Handle)`
@@ -46,14 +38,9 @@ export const Label = styled.input`
 
 export const ImagePreview = styled.div`
   width: 100%;
-  max-width: 100%;
-  min-height: 30px;
-  background-color: #ccc;
-  border-radius: 5px;
   display: flex;
   align-items: center;
   column-gap: 5px;
-  margin-bottom: 10px;
 `;
 
 export const Image = styled.img`
@@ -67,7 +54,7 @@ export const ImageNodeMenu = styled.div`
   width: 300px;
   height: 90px;
   position: absolute;
-  left: -305px;
+  left: -325px;
   top: -1px;
   border-radius: 5px;
   background-color: #fff;

@@ -135,7 +135,7 @@ const Flow = () => {
         parentNode: newNode.id,
         extent: 'parent',
         draggable: false,
-        style: { width: "200px", display: 'block' }
+        style: { width: "200px", height: "40px", display: 'block' }
       };
 
 

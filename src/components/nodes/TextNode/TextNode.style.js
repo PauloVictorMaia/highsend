@@ -10,6 +10,8 @@ export const NodeContainer = styled.input`
   color: #000;
   font-size: 12px;
   display: block;
+  padding: 0;
+  box-sizing: border-box;
 `;
 
 export const TopHandle = styled(Handle)`
