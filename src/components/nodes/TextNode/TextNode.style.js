@@ -3,9 +3,10 @@ import { Handle } from "reactflow";
 
 export const NodeContainer = styled.input`
   width: 100%;
-  height: ${({selected}) => selected ? '80px' : '40px'};
+  height: 40px;
   background-color: #fff;
-  border: ${({selected}) => selected ? '2px solid #000' : '1px solid #000'};
+  border: 1px solid #000;
+  outline: none;
   border-radius: 8px;
   color: #000;
   font-size: 12px;
