@@ -27,15 +27,15 @@ export function TextNode({ selected, data, id }) {
       </NodeToolbar>
 
       <TopHandle
-        id="top"
+        id="left"
         type="target"
-        position={Position.Top}
+        position={Position.Left}
       />
 
       <BottomHandle
-        id="bottom"
+        id="right"
         type="source"
-        position={Position.Bottom}
+        position={Position.Right}
       />
     </>
   )

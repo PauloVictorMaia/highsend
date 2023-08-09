@@ -17,7 +17,7 @@ export const TopHandle = styled(Handle)`
   height: 7px;
   background-color: transparent;
   border: .400px solid #000;
-  top: -9px;
+  left: -9px;
 `;
 
 export const BottomHandle = styled(Handle)`
@@ -25,5 +25,5 @@ export const BottomHandle = styled(Handle)`
   height: 7px;
   background-color: transparent;
   border: .400px solid #000;
-  bottom: -9px;
+  right: -14px;
 `;
