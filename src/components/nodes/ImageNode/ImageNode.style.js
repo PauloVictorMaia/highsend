@@ -1,5 +1,4 @@
 import { styled } from "styled-components";
-import { Handle } from "reactflow";
 
 export const NodeContainer = styled.div`
   width: 100%;
@@ -12,28 +11,6 @@ export const NodeContainer = styled.div`
   border-radius: 8px;
   padding: 0;
   box-sizing: border-box;
-`;
-
-export const TopHandle = styled(Handle)`
-  width: 7px;
-  height: 7px;
-  background-color: transparent;
-  border: .400px solid #000;
-  top: -9px;
-`;
-
-export const BottomHandle = styled(Handle)`
-  width: 7px;
-  height: 7px;
-  background-color: transparent;
-  border: .400px solid #000;
-  bottom: -9px;
-`;
-
-export const Label = styled.input`
-  font-size: 16px;
-  border: none;
-  width: 80%;
 `;
 
 export const ImagePreview = styled.div`
@@ -55,7 +32,7 @@ export const ImageNodeMenu = styled.div`
   height: 90px;
   position: absolute;
   left: -325px;
-  top: -1px;
+  top: -25px;
   border-radius: 5px;
   background-color: #fff;
   padding: 0 10px;

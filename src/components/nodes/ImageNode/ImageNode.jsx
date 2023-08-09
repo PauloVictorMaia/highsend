@@ -6,7 +6,7 @@ import { useState } from "react";
 import ImageIcon from '@mui/icons-material/Image';
 import useDetachNodes from '../../../useDetachNodes'
 
-export function ImageNode({ selected, data, id }) {
+export function ImageNode({ data, id }) {
   const { setNodeValue } = useStateContext();
   const [isVisible, setIsVisible] = useState(false)
   const [activeTab, setActiveTab] = useState("tab1");
@@ -37,7 +37,7 @@ export function ImageNode({ selected, data, id }) {
   const onDetach = () => detachNodes([id]);
 
   return (
-    <NodeContainer selected={selected}>
+    <NodeContainer>
 
       <NodeToolbar className="nodrag">
         <button onClick={onDelete}>Delete</button>

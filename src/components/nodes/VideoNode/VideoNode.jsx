@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-import { BottomHandle, Label, LinkInput, NodeContainer, PreviewImage, TopHandle, VideoPreview } from "./VideoNode.style";
-import { Position, useStore, useReactFlow, NodeToolbar } from "reactflow";
+import { LinkInput, NodeContainer, PreviewImage, VideoPreview } from "./VideoNode.style";
+import { useStore, useReactFlow, NodeToolbar } from "reactflow";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import TheatersIcon from '@mui/icons-material/Theaters';
 import { useState } from "react";
@@ -11,8 +11,8 @@ const getYoutubeThumbnail = (url) => {
   return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
 };
 
-export function VideoNode({ selected, data, id }) {
-  const { setNodeLabel, setNodeValue } = useStateContext();
+export function VideoNode({ data, id }) {
+  const { setNodeValue } = useStateContext();
   const [isVisible, setIsVisible] = useState(false)
 
   const hasParent = useStore((store) => !!store.nodeInternals.get(id)?.parentNode);
@@ -23,27 +23,12 @@ export function VideoNode({ selected, data, id }) {
   const onDetach = () => detachNodes([id]);
 
   return (
-    <NodeContainer selected={selected}>
+    <NodeContainer>
 
       <NodeToolbar className="nodrag">
         <button onClick={onDelete}>Delete</button>
         {hasParent && <button onClick={onDetach}>Detach</button>}
       </NodeToolbar>
-
-      <TopHandle
-        id="top"
-        type="target"
-        position={Position.Top}
-      />
-
-      <BottomHandle
-        id="bottom"
-        type="source"
-        position={Position.Bottom}
-      />
-
-
-      <Label defaultValue={data.label} onChange={(e) => setNodeLabel(e.target.value)} />
 
       <VideoPreview onClick={() => setIsVisible(!isVisible)}>
         <TheatersIcon />

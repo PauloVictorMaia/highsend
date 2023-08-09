@@ -1,14 +1,14 @@
 /* eslint-disable react/prop-types */
-import { NodeContainer, TopHandle, BottomHandle, Label, AudioPreview, AudioNodeMenu, SendAudio, Tabs, Navigation, ListTabs, ChooseFileButton, FileInput, LinkInput } from "./AudioNode.style"
-import { Position, useStore, useReactFlow, NodeToolbar } from "reactflow";
+import { NodeContainer, AudioPreview, AudioNodeMenu, SendAudio, Tabs, Navigation, ListTabs, ChooseFileButton, FileInput, LinkInput } from "./AudioNode.style"
+import { useStore, useReactFlow, NodeToolbar } from "reactflow";
 import { useState } from "react";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import HeadphonesIcon from '@mui/icons-material/Headphones';
 import useDetachNodes from '../../../useDetachNodes'
 
-function AudioNode({ selected, data, id }) {
+function AudioNode({ data, id }) {
 
-  const { setNodeLabel, setNodeValue } = useStateContext();
+  const { setNodeValue } = useStateContext();
   const [activeTab, setActiveTab] = useState("tab1");
   const [isVisible, setIsVisible] = useState(false)
 
@@ -28,27 +28,12 @@ function AudioNode({ selected, data, id }) {
   }
 
   return (
-    <NodeContainer selected={selected}>
+    <NodeContainer>
 
       <NodeToolbar className="nodrag">
         <button onClick={onDelete}>Delete</button>
         {hasParent && <button onClick={onDetach}>Detach</button>}
       </NodeToolbar>
-
-      <TopHandle
-        id="top"
-        type="target"
-        position={Position.Top}
-      />
-
-      <BottomHandle
-        id="bottom"
-        type="source"
-        position={Position.Bottom}
-      />
-
-
-      <Label defaultValue={data.label} onChange={(e) => setNodeLabel(e.target.value)} />
 
       <AudioPreview onClick={() => setIsVisible(!isVisible)}>
         <HeadphonesIcon />

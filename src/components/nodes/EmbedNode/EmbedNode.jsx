@@ -1,14 +1,14 @@
 /* eslint-disable react/prop-types */
-import { NodeContainer, TopHandle, BottomHandle, Label, AddLink, LinkInput } from "./EmbedNode.style"
+import { NodeContainer, AddLink, LinkInput } from "./EmbedNode.style"
 import { useState } from "react";
-import { Position, useStore, useReactFlow, NodeToolbar } from "reactflow";
+import { useStore, useReactFlow, NodeToolbar } from "reactflow";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import AttachmentIcon from '@mui/icons-material/Attachment';
 import useDetachNodes from '../../../useDetachNodes'
 
-function EmbedNode({ selected, data, id }) {
+function EmbedNode({ data, id }) {
 
-  const { setNodeLabel, setNodeValue } = useStateContext();
+  const { setNodeValue } = useStateContext();
   const [isVisible, setIsVisible] = useState(false)
 
   const hasParent = useStore((store) => !!store.nodeInternals.get(id)?.parentNode);
@@ -19,27 +19,12 @@ function EmbedNode({ selected, data, id }) {
   const onDetach = () => detachNodes([id]);
 
   return (
-    <NodeContainer selected={selected}>
+    <NodeContainer>
 
       <NodeToolbar className="nodrag">
         <button onClick={onDelete}>Delete</button>
         {hasParent && <button onClick={onDetach}>Detach</button>}
       </NodeToolbar>
-
-      <TopHandle
-        id="top"
-        type="target"
-        position={Position.Top}
-      />
-
-      <BottomHandle
-        id="bottom"
-        type="source"
-        position={Position.Bottom}
-      />
-
-
-      <Label defaultValue={data.label} onChange={(e) => setNodeLabel(e.target.value)} />
 
       <AddLink onClick={() => setIsVisible(!isVisible)}>
         <AttachmentIcon />
