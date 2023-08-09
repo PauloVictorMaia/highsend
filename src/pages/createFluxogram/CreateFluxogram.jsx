@@ -252,8 +252,6 @@ const Flow = () => {
             deleteElements({ nodes: [{ id: groupID }] });
           }
 
-          console.log(parentNodes)
-
           return node;
         })
       );
