@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import ReactFlow, { Background, Controls, addEdge, useEdgesState, useNodesState, getConnectedEdges, getOutgoers, getIncomers, updateEdge, useReactFlow, useStoreApi, ReactFlowProvider, } from "reactflow";
+import ReactFlow, { Background, Controls, addEdge, useEdgesState, useNodesState, getConnectedEdges, getOutgoers, getIncomers, updateEdge, useReactFlow, useStoreApi, ReactFlowProvider } from "reactflow";
 import 'reactflow/dist/style.css'
 import { FlowContainer } from "./CreateFluxogram.style";
 import { useCallback, useRef, useEffect } from "react";
@@ -17,6 +17,7 @@ import GroupNode from "../../components/nodes/GroupNode/GroupNode";
 import { sortNodes, getId, getNodePositionInsideParent } from '../../utils';
 import SelectedNodesToolbar from '../../components/Toolbar/SelectedNodesToolbar'
 import { NumberInputNode } from "../../components/nodes/NumberInputNode/NumberInputNode";
+
 
 const proOptions = {
   hideAttribution: true,
@@ -65,6 +66,7 @@ const Flow = () => {
   const { buttonLabel, setButtonLabel } = useStateContext();
   const { project, getIntersectingNodes } = useReactFlow();
   const store = useStoreApi();
+  const { deleteElements } = useReactFlow();
 
   console.log(nodes)
   // console.log(edges)
@@ -244,6 +246,13 @@ const Flow = () => {
           if (parentNodes.indexOf(node) > -1 && !(node.id === groupID)) {
             node.position = { x: node.position.x, y: (parentNodes.indexOf(node) + 1) * 50 }
           }
+
+          if (parentNodes.length < 1) {
+            console.log('zerou')
+            deleteElements({ nodes: [{ id: groupID }] });
+          }
+
+          console.log(parentNodes)
 
           return node;
         })
