@@ -9,23 +9,11 @@ export function ImageNode({ data, id }) {
   const { setNodeValue } = useStateContext();
   const [isVisible, setIsVisible] = useState(false)
   const [activeTab, setActiveTab] = useState("tab1");
-  // eslint-disable-next-line no-unused-vars
-  const [fileImage, setFileImage] = useState(null)
 
   const handleFileImage = (e) => {
     const selectedFile = e.target.files[0];
-    generateImagePreviewUrl(selectedFile);
-  }
-
-  const generateImagePreviewUrl = (file) => {
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setFileImage(reader.result);
-      setNodeValue(reader.result)
-    };
-    reader.readAsDataURL(file);
+    const objectURL = URL.createObjectURL(selectedFile);
+    setNodeValue(objectURL);
   };
 
   const { deleteElements } = useReactFlow();
