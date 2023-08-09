@@ -1,23 +1,19 @@
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable react/prop-types */
 
-import { getRectOfNodes, NodeToolbar, useReactFlow, useStore, useStoreApi } from 'reactflow';
-import { NodeResizer } from '@reactflow/node-resizer';
+import { getRectOfNodes, NodeToolbar, useReactFlow, useStore, useStoreApi, Position } from 'reactflow';
 import useDetachNodes from '../../../useDetachNodes';
-import { Label } from './GroupNode.style';
+import { Label, LeftHandle, RightHandle } from './GroupNode.style';
 import { useStateContext } from '../../../contexts/ContextProvider';
 
-
-
-const lineStyle = { borderColor: 'white' };
 const padding = 25;
 
-export default function GroupNode({ id, selected, data }) {
+export default function GroupNode({ id, data }) {
   const { setNodeLabel } = useStateContext();
   const store = useStoreApi();
   const { deleteElements } = useReactFlow();
   const detachNodes = useDetachNodes();
-  const { minWidth, minHeight, hasChildNodes } = useStore((store) => {
+  const { hasChildNodes } = useStore((store) => {
     const childNodes = Array.from(store.nodeInternals.values()).filter((n) => n.parentNode === id);
     const rect = getRectOfNodes(childNodes);
 
@@ -57,18 +53,23 @@ export default function GroupNode({ id, selected, data }) {
         }
       }
     >
-      <NodeResizer
-        handleStyle={{ width: "5px", height: "5px" }}
-        isVisible={selected}
-        lineStyle={lineStyle}
-        minWidth={minWidth}
-        minHeight={minHeight}
-      />
 
       <NodeToolbar >
         <button onClick={onDelete}>Delete</button>
         {hasChildNodes && <button onClick={onDetach}>Ungroup</button>}
       </NodeToolbar>
+
+      <LeftHandle
+        id="left"
+        type="target"
+        position={Position.Left}
+      />
+
+      <RightHandle
+        id="Right"
+        type="source"
+        position={Position.Right}
+      />
 
       <Label defaultValue={data.label} onChange={(e) => setNodeLabel(e.target.value)} />
 

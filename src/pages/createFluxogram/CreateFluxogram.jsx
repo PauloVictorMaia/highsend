@@ -50,8 +50,9 @@ const INITIAL_NODE = [
 
 
 let label = 0
-
+let subnodeLabel = 0
 const getLabel = () => `Node #${label++}`
+const getSubNodeLabel = () => `Node #${subnodeLabel++}`
 
 const Flow = () => {
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
@@ -65,7 +66,7 @@ const Flow = () => {
   const { project, getIntersectingNodes } = useReactFlow();
   const store = useStoreApi();
 
-  // console.log(nodes)
+  console.log(nodes)
   // console.log(edges)
 
   const onConnect = useCallback((connection) => {
@@ -99,7 +100,8 @@ const Flow = () => {
 
     if (wrapperRef.current) {
       const wrapperBounds = wrapperRef.current.getBoundingClientRect();
-      const type = event.dataTransfer.getData('application/reactflow');
+      const type = event.dataTransfer.getData('application/reactflow/type');
+      const subType = event.dataTransfer.getData('application/reactflow/subtype');
       let position = project({ x: event.clientX - wrapperBounds.x - 20, y: event.clientY - wrapperBounds.top - 20 });
       const nodeStyle = type === 'group' ? { width: 250, height: 170 } : undefined;
 
@@ -124,10 +126,10 @@ const Flow = () => {
 
       let newSubnode = {
         id: getId(),
-        type: 'textNode',
+        type: subType,
         position: { x: 22, y: 50 },
         data: {
-          label: getLabel(),
+          label: getSubNodeLabel(),
           value: "",
         },
         parentNode: newNode.id,
@@ -143,7 +145,7 @@ const Flow = () => {
         newSubnode.position = { x: 22, y: lastParentNode.position.y + 50 };
         newSubnode.parentNode = groupNode?.id;
         newSubnode.extent = groupNode ? 'parent' : undefined;
-        newSubnode.type = 'textNode'
+        newSubnode.type = subType;
         // const sortedNodes = store.getState().getNodes().concat(newSubnode).sort(sortNodes);
         // setNodes(sortedNodes);
         let newNodesGroup = nodes.map((node) => {
