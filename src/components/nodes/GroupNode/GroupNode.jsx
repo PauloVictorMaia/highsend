@@ -73,12 +73,6 @@ export default function GroupNode({ id, selected, data }) {
 
       <Label defaultValue={data.label} onChange={(e) => setNodeLabel(e.target.value)} />
 
-      {
-        data.blocks.map((block, index) => (
-          <span style={{ backgroundColor: "red" }} key={index}>{block.label}</span>
-        ))
-      }
-
     </div>
   );
 }

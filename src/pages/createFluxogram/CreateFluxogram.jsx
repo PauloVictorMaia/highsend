@@ -65,8 +65,8 @@ const Flow = () => {
   const { project, getIntersectingNodes } = useReactFlow();
   const store = useStoreApi();
 
-  console.log(nodes)
-  console.log(edges)
+  // console.log(nodes)
+  // console.log(edges)
 
   const onConnect = useCallback((connection) => {
     return setEdges(edges => addEdge(connection, edges))
@@ -123,29 +123,41 @@ const Flow = () => {
         style: nodeStyle,
       };
 
+      const newSubnode = {
+        id: getId(),
+        type: 'textNode',
+        position: { x: 22, y: 50 },
+        data: {
+          label: getLabel(),
+          value: "",
+        },
+        parentNode: newNode.id,
+        extent: 'parent',
+        draggable: false,
+        style: { width: "200px" }
+      };
+
 
       if (groupNode) {
-        console.log("aqui")
+        console.log(newSubnode)
         setNodes((nds) =>
           nds.map((node) => {
-            if (node.id === groupNode.id) {
-              const updatedBlocks = [...node.data.blocks, newNode];
-              node.data.blocks = updatedBlocks;
+            if (node.id === newSubnode.id) {
+
+              node = { ...node, parentNode: groupNode.id, extent: 'parent', type: 'textNode' }
             }
             return node;
           })
         );
       }
 
-      if (!groupNode) {
-        const sortedNodes = store.getState().getNodes().concat(newNode).sort(sortNodes);
-        setNodes(sortedNodes);
-      }
 
+      const sortedNodes = store.getState().getNodes().concat(newNode, newSubnode).sort(sortNodes);
+      setNodes(sortedNodes);
 
 
     }
-    setNodes(nodes)
+
   };
 
   //Mudança de nome do node
