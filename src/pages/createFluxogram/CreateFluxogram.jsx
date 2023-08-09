@@ -243,7 +243,7 @@ const Flow = () => {
             node = { ...node, style: { width: 250, height: 120 + ((parentNodes.length - 1) * 50), padding: '10px', borderRadius: '8px', backgroundColor: '#fff' } }
           }
 
-          if (parentNodes.indexOf(node) > -1 && !(node.id === groupID)) {
+          if (groupID && parentNodes.indexOf(node) > -1 && !(node.id === groupID)) {
             node.position = { x: node.position.x, y: (parentNodes.indexOf(node) + 1) * 50 }
           }
 
