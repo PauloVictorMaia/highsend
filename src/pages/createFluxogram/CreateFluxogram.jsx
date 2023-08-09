@@ -103,7 +103,7 @@ const Flow = () => {
       const type = event.dataTransfer.getData('application/reactflow/type');
       const subType = event.dataTransfer.getData('application/reactflow/subtype');
       let position = project({ x: event.clientX - wrapperBounds.x - 20, y: event.clientY - wrapperBounds.top - 20 });
-      const nodeStyle = type === 'group' ? { width: 250, height: 170 } : undefined;
+      const nodeStyle = type === 'group' ? { width: 250, height: 170, padding: '10px', borderRadius: '8px', backgroundColor: '#fff' } : undefined;
 
       const intersections = getIntersectingNodes({
         x: position.x,
@@ -150,7 +150,7 @@ const Flow = () => {
         // setNodes(sortedNodes);
         let newNodesGroup = nodes.map((node) => {
           if (node.id === groupNode.id) {
-            node.style = { width: 250, height: 170 + (parentNodes.length * 50) }
+            node.style = { width: 250, height: 170 + (parentNodes.length * 50), padding: '10px', borderRadius: '8px', backgroundColor: '#fff' }
             return node
           }
           return node

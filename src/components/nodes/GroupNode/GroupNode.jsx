@@ -39,21 +39,7 @@ export default function GroupNode({ id, data }) {
 
 
   return (
-    <div
-      style={
-        {
-          minWidth: "100%",
-          minHeight: "100%",
-          backgroundColor: "white",
-          borderRadius: "8px",
-          padding: "0px",
-          color: "#000",
-          display: "flex",
-          flexDirection: "column"
-        }
-      }
-    >
-
+    <div>
       <NodeToolbar >
         <button onClick={onDelete}>Delete</button>
         {hasChildNodes && <button onClick={onDetach}>Ungroup</button>}
@@ -72,7 +58,6 @@ export default function GroupNode({ id, data }) {
       />
 
       <Label defaultValue={data.label} onChange={(e) => setNodeLabel(e.target.value)} />
-
     </div>
   );
 }
