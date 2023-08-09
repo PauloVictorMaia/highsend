@@ -240,7 +240,7 @@ const Flow = () => {
       setNodes((nds) =>
         nds.map((node) => {
           if (node.id === groupID) {
-            node = { ...node, style: { width: 250, height: 120 + (parentNodes.length * 50), padding: '10px', borderRadius: '8px', backgroundColor: '#fff' } }
+            node = { ...node, style: { width: 250, height: 120 + ((parentNodes.length - 1) * 50), padding: '10px', borderRadius: '8px', backgroundColor: '#fff' } }
           }
 
           if (parentNodes.indexOf(node) > -1 && !(node.id === groupID)) {
