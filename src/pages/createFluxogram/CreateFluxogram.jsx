@@ -146,8 +146,6 @@ const Flow = () => {
         newSubnode.parentNode = groupNode?.id;
         newSubnode.extent = groupNode ? 'parent' : undefined;
         newSubnode.type = subType;
-        // const sortedNodes = store.getState().getNodes().concat(newSubnode).sort(sortNodes);
-        // setNodes(sortedNodes);
         let newNodesGroup = nodes.map((node) => {
           if (node.id === groupNode.id) {
             node.style = { width: 250, height: 170 + (parentNodes.length * 50), padding: '10px', borderRadius: '8px', backgroundColor: '#fff' }
