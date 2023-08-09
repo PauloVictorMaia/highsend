@@ -103,7 +103,7 @@ const Flow = () => {
       const type = event.dataTransfer.getData('application/reactflow/type');
       const subType = event.dataTransfer.getData('application/reactflow/subtype');
       let position = project({ x: event.clientX - wrapperBounds.x - 20, y: event.clientY - wrapperBounds.top - 20 });
-      const nodeStyle = type === 'group' ? { width: 250, height: 170, padding: '10px', borderRadius: '8px', backgroundColor: '#fff' } : undefined;
+      const nodeStyle = type === 'group' ? { width: 250, height: 120, padding: '10px', borderRadius: '8px', backgroundColor: '#fff' } : undefined;
 
       const intersections = getIntersectingNodes({
         x: position.x,
@@ -148,7 +148,7 @@ const Flow = () => {
         newSubnode.type = subType;
         let newNodesGroup = nodes.map((node) => {
           if (node.id === groupNode.id) {
-            node.style = { width: 250, height: 170 + (parentNodes.length * 50), padding: '10px', borderRadius: '8px', backgroundColor: '#fff' }
+            node.style = { width: 250, height: 120 + (parentNodes.length * 50), padding: '10px', borderRadius: '8px', backgroundColor: '#fff' }
             return node
           }
           return node
@@ -217,6 +217,7 @@ const Flow = () => {
 
   const onNodesDelete = useCallback(
     (deleted) => {
+      console.log('deletado', deleted)
       setEdges(
         deleted.reduce((acc, node) => {
           const incomers = getIncomers(node, nodes, edges);
@@ -232,6 +233,25 @@ const Flow = () => {
           return [...remainingEdges, ...createdEdges];
         }, edges)
       );
+
+      const groupID = deleted[0].parentNode
+      const parentNodes = nodes.filter((node) => node.parentNode === groupID && deleted[0].id !== node.id)
+      console.log(nodes)
+      setNodes((nds) =>
+        nds.map((node) => {
+          if (node.id === groupID) {
+            node = { ...node, style: { width: 250, height: 120 + (parentNodes.length * 50), padding: '10px', borderRadius: '8px', backgroundColor: '#fff' } }
+          }
+
+          if (parentNodes.indexOf(node) > -1 && !(node.id === groupID)) {
+            node.position = { x: node.position.x, y: (parentNodes.indexOf(node) + 1) * 50 }
+          }
+
+          return node;
+        })
+      );
+
+
     },
     [nodes, edges]
   );

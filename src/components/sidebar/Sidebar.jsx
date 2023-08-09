@@ -12,8 +12,8 @@ import LanguageIcon from '@mui/icons-material/Language';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
-import PaymentIcon from '@mui/icons-material/Payment';
-import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
+// import PaymentIcon from '@mui/icons-material/Payment';
+// import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 import BackupOutlinedIcon from '@mui/icons-material/BackupOutlined';
 
 /* eslint-disable react-refresh/only-export-components */
@@ -98,15 +98,15 @@ export default () => {
           Pic choice
         </NodeDraggable>
 
-        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'paymentInputNode')} draggable>
+        {/* <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'paymentInputNode')} draggable>
           <PaymentIcon style={{ fontSize: "large", color: "#E67200" }} />
           Payment
-        </NodeDraggable>
+        </NodeDraggable> */}
 
-        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'ratingInputNode')} draggable>
+        {/* <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'ratingInputNode')} draggable>
           <StarBorderOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
           Rating
-        </NodeDraggable>
+        </NodeDraggable> */}
 
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'fileInputNode')} draggable>
           <BackupOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
