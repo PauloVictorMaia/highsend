@@ -111,19 +111,18 @@ const Flow = () => {
       }).filter((n) => n.type === 'group');
       const groupNode = intersections[0];
 
-      const newNode = {
+      let newNode = {
         id: getId(),
         type,
         position,
         data: {
           label: getLabel(),
           value: "",
-          blocks: [{ id: getId(), type: "textNode", groupId: "1", label: "teste" }]
         },
         style: nodeStyle,
       };
 
-      const newSubnode = {
+      let newSubnode = {
         id: getId(),
         type: 'textNode',
         position: { x: 22, y: 50 },
@@ -134,26 +133,34 @@ const Flow = () => {
         parentNode: newNode.id,
         extent: 'parent',
         draggable: false,
-        style: { width: "200px" }
+        style: { width: "200px", display: 'block' }
       };
 
 
       if (groupNode) {
-        console.log(newSubnode)
-        setNodes((nds) =>
-          nds.map((node) => {
-            if (node.id === newSubnode.id) {
-
-              node = { ...node, parentNode: groupNode.id, extent: 'parent', type: 'textNode' }
-            }
-            return node;
-          })
-        );
+        const parentNodes = nodes.filter((node) => node.parentNode === groupNode.id)
+        const lastParentNode = parentNodes[parentNodes.length - 1];
+        newSubnode.position = { x: 22, y: lastParentNode.position.y + 50 };
+        newSubnode.parentNode = groupNode?.id;
+        newSubnode.extent = groupNode ? 'parent' : undefined;
+        newSubnode.type = 'textNode'
+        // const sortedNodes = store.getState().getNodes().concat(newSubnode).sort(sortNodes);
+        // setNodes(sortedNodes);
+        let newNodesGroup = nodes.map((node) => {
+          if (node.id === groupNode.id) {
+            node.style = { width: 250, height: 170 + (parentNodes.length * 50) }
+            return node
+          }
+          return node
+        })
+        const sortedNodes = [...newNodesGroup, newSubnode];
+        setNodes(sortedNodes);
       }
 
-
-      const sortedNodes = store.getState().getNodes().concat(newNode, newSubnode).sort(sortNodes);
-      setNodes(sortedNodes);
+      if (!groupNode) {
+        const sortedNodes = store.getState().getNodes().concat(newNode, newSubnode).sort(sortNodes);
+        setNodes(sortedNodes);
+      }
 
 
     }

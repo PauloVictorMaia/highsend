@@ -9,6 +9,7 @@ export const NodeContainer = styled.input`
   border-radius: 8px;
   color: #000;
   font-size: 12px;
+  display: block;
 `;
 
 export const TopHandle = styled(Handle)`

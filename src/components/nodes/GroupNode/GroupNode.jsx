@@ -13,7 +13,6 @@ const lineStyle = { borderColor: 'white' };
 const padding = 25;
 
 export default function GroupNode({ id, selected, data }) {
-  console.log("data", data)
   const { setNodeLabel } = useStateContext();
   const store = useStoreApi();
   const { deleteElements } = useReactFlow();
