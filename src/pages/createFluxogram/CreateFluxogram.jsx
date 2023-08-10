@@ -259,12 +259,15 @@ const Flow = () => {
       );
 
       const groupID = deleted[0].parentNode
+      const parentNodes = nodes.filter((node) => node.parentNode === groupID && deleted[0].id !== node.id)
       if (groupID) {
-        const parentNodes = nodes.filter((node) => node.parentNode === groupID && deleted[0].id !== node.id)
         let parentNodesHeight = parentNodes.reduce((totalHeight, node) => {
           return totalHeight + node.style.height;
         }, 0);
-        const groupNodeHeight = parentNodesHeight + 60
+        const rowGap = 5
+        const groupNodeHeight = parentNodesHeight + ((parentNodes.length + 1) * rowGap) + 60
+        // const firstParentNodePositionY = firstParentNode.position.y
+        // const firstParentNodeHeight = firstParentNode.style.height
         // console.log(lastParentNode)
         setNodes((nds) =>
           nds.map((node) => {
@@ -272,8 +275,15 @@ const Flow = () => {
               node = { ...node, style: { width: 250, height: groupNodeHeight, padding: '10px', borderRadius: '8px', backgroundColor: '#fff' } }
             }
 
-            if (groupID && parentNodes.indexOf(node) > -1 && !(node.id === groupID)) {
-              node.position = { x: node.position.x, y: (parentNodes.indexOf(node) + 1) * 80 }
+            if (parentNodes.indexOf(node) > -1 && !(node.id === groupID) && node.id === parentNodes[0].id) {
+              node.position = { x: node.position.x, y: (parentNodes.indexOf(node) + 1) * 50 }
+            }
+
+            if (groupID && parentNodes.indexOf(node) > -1 && !(node.id === groupID) && node.id !== parentNodes[0].id) {
+              const previousNodeIndex = parentNodes.indexOf(node) - 1;
+              const previousNode = parentNodes[previousNodeIndex];
+              const newPositionY = previousNode.position.y + previousNode.style.height + rowGap;
+              node.position = { x: node.position.x, y: newPositionY };
             }
 
             if (parentNodes.length < 1) {
