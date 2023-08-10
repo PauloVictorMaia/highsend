@@ -17,6 +17,9 @@ import GroupNode from "../../components/nodes/GroupNode/GroupNode";
 import { sortNodes, getId, getNodePositionInsideParent } from '../../utils';
 import SelectedNodesToolbar from '../../components/Toolbar/SelectedNodesToolbar'
 import { NumberInputNode } from "../../components/nodes/NumberInputNode/NumberInputNode";
+import { EmailInputNode } from "../../components/nodes/EmailInputNode/EmailInputNode";
+import { WebsiteInputNode } from "../../components/nodes/WebsiteInputNode/WebsiteInputNode";
+import { PhoneInputNode } from "../../components/nodes/PhoneInputNode/PhoneInputNode";
 
 
 const proOptions = {
@@ -33,6 +36,9 @@ const NODE_TYPES = {
   textInputNode: TextInputNode,
   group: GroupNode,
   numberInputNode: NumberInputNode,
+  emailInputNode: EmailInputNode,
+  websiteInputNode: WebsiteInputNode,
+  phoneInputNode: PhoneInputNode,
 }
 
 const EDGE_TYPES = {
