@@ -74,7 +74,7 @@ const Flow = () => {
   const store = useStoreApi();
   const { deleteElements } = useReactFlow();
 
-  console.log(nodes)
+  // console.log(nodes)
   // console.log(edges)
 
   const onConnect = useCallback((connection) => {
@@ -110,8 +110,10 @@ const Flow = () => {
       const wrapperBounds = wrapperRef.current.getBoundingClientRect();
       const type = event.dataTransfer.getData('application/reactflow/type');
       const subType = event.dataTransfer.getData('application/reactflow/subtype');
+      const heightString = event.dataTransfer.getData('application/reactflow/height');
+      const height = parseFloat(heightString)
       let position = project({ x: event.clientX - wrapperBounds.x - 20, y: event.clientY - wrapperBounds.top - 20 });
-      const nodeStyle = type === 'group' ? { width: 250, height: 120, padding: '10px', borderRadius: '8px', backgroundColor: '#fff' } : undefined;
+      const nodeStyle = type === 'group' ? { width: 250, height: height + 60, padding: '10px', borderRadius: '8px', backgroundColor: '#fff' } : undefined;
 
       const intersections = getIntersectingNodes({
         x: position.x,
@@ -143,24 +145,39 @@ const Flow = () => {
         parentNode: newNode.id,
         extent: 'parent',
         draggable: false,
-        style: { width: "200px", height: "40px", display: 'block' }
+        style: { width: 200, height: height }
       };
 
 
       if (groupNode) {
-        const parentNodes = nodes.filter((node) => node.parentNode === groupNode.id)
+        const parentNodes = nodes.filter((node) => node.parentNode === groupNode.id);
         const lastParentNode = parentNodes[parentNodes.length - 1];
-        newSubnode.position = { x: 22, y: lastParentNode.position.y + 50 };
+        const rowGap = 5
+        const initialGroupHeight = nodeStyle.height
+        let parentNodesHeight = parentNodes.reduce((totalHeight, node) => {
+          return totalHeight + node.style.height;
+        }, 0);
+        const totalGroupHeight = ((initialGroupHeight + parentNodesHeight) + ((parentNodes.length + 1) * rowGap));
+
+        newSubnode.position = { x: 22, y: lastParentNode.position.y + (lastParentNode.style.height + rowGap) };
         newSubnode.parentNode = groupNode?.id;
         newSubnode.extent = groupNode ? 'parent' : undefined;
         newSubnode.type = subType;
+
         let newNodesGroup = nodes.map((node) => {
           if (node.id === groupNode.id) {
-            node.style = { width: 250, height: 120 + (parentNodes.length * 50), padding: '10px', borderRadius: '8px', backgroundColor: '#fff' }
-            return node
+            node.style = {
+              width: 250,
+              height: totalGroupHeight,
+              padding: '10px',
+              borderRadius: '8px',
+              backgroundColor: '#fff'
+            };
+            return node;
           }
-          return node
-        })
+          return node;
+        });
+
         const sortedNodes = [...newNodesGroup, newSubnode];
         setNodes(sortedNodes);
       }
@@ -242,24 +259,32 @@ const Flow = () => {
       );
 
       const groupID = deleted[0].parentNode
-      const parentNodes = nodes.filter((node) => node.parentNode === groupID && deleted[0].id !== node.id)
-      setNodes((nds) =>
-        nds.map((node) => {
-          if (node.id === groupID) {
-            node = { ...node, style: { width: 250, height: 120 + ((parentNodes.length - 1) * 50), padding: '10px', borderRadius: '8px', backgroundColor: '#fff' } }
-          }
+      if (groupID) {
+        const parentNodes = nodes.filter((node) => node.parentNode === groupID && deleted[0].id !== node.id)
+        let parentNodesHeight = parentNodes.reduce((totalHeight, node) => {
+          return totalHeight + node.style.height;
+        }, 0);
+        const groupNodeHeight = parentNodesHeight + 60
+        // console.log(lastParentNode)
+        setNodes((nds) =>
+          nds.map((node) => {
+            if (node.id === groupID) {
+              node = { ...node, style: { width: 250, height: groupNodeHeight, padding: '10px', borderRadius: '8px', backgroundColor: '#fff' } }
+            }
 
-          if (groupID && parentNodes.indexOf(node) > -1 && !(node.id === groupID)) {
-            node.position = { x: node.position.x, y: (parentNodes.indexOf(node) + 1) * 50 }
-          }
+            if (groupID && parentNodes.indexOf(node) > -1 && !(node.id === groupID)) {
+              node.position = { x: node.position.x, y: (parentNodes.indexOf(node) + 1) * 80 }
+            }
 
-          if (parentNodes.length < 1) {
-            deleteElements({ nodes: [{ id: groupID }] });
-          }
+            if (parentNodes.length < 1) {
+              deleteElements({ nodes: [{ id: groupID }] });
+            }
 
-          return node;
-        })
-      );
+            return node;
+          })
+        );
+
+      }
 
 
     },
@@ -275,7 +300,6 @@ const Flow = () => {
       const intersections = getIntersectingNodes(node).filter((n) => n.type === 'group');
       const groupNode = intersections[0];
 
-      // when there is an intersection on drag stop, we want to attach the node to its new parent
       if (intersections.length && node.parentNode !== groupNode?.id) {
         const nextNodes = store
           .getState()
@@ -293,8 +317,6 @@ const Flow = () => {
                 ...n,
                 position,
                 parentNode: groupNode.id,
-                // we need to set dragging = false, because the internal change of the dragging state
-                // is not applied yet, so the node would be rendered as dragging
                 dragging: false,
                 extent: 'parent',
               };

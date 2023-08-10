@@ -18,9 +18,10 @@ import BackupOutlinedIcon from '@mui/icons-material/BackupOutlined';
 
 /* eslint-disable react-refresh/only-export-components */
 export default () => {
-  const onDragStart = (event, nodeType, nodeSubType) => {
+  const onDragStart = (event, nodeType, nodeSubType, height) => {
     event.dataTransfer.setData('application/reactflow/type', nodeType);
     event.dataTransfer.setData('application/reactflow/subtype', nodeSubType);
+    event.dataTransfer.setData('application/reactflow/height', height);
     event.dataTransfer.effectAllowed = 'move';
   };
 
@@ -28,27 +29,27 @@ export default () => {
     <SidebarContainer>
       <NodesType>Bubbles</NodesType>
       <NodesContainer>
-        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'textNode')} draggable>
+        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'textNode', '80')} draggable>
           <ChatBubbleOutlineOutlinedIcon style={{ fontSize: "large" }} />
           Text
         </NodeDraggable>
 
-        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'imageNode')} draggable>
+        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'imageNode', '80')} draggable>
           <ImageOutlinedIcon style={{ fontSize: "large" }} />
           Image
         </NodeDraggable>
 
-        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'videoNode')} draggable>
+        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'videoNode', '80')} draggable>
           <TheatersOutlinedIcon style={{ fontSize: "large" }} />
           Video
         </NodeDraggable>
 
-        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'embedNode')} draggable>
+        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'embedNode', '40')} draggable>
           <AttachmentOutlinedIcon style={{ fontSize: "large" }} />
           Embed
         </NodeDraggable>
 
-        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'audioNode')} draggable>
+        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'audioNode', '40')} draggable>
           <HeadphonesOutlinedIcon style={{ fontSize: "large" }} />
           Audio
         </NodeDraggable>
@@ -58,42 +59,42 @@ export default () => {
 
       <NodesType>Inputs</NodesType>
       <NodesContainer>
-        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'textInputNode')} draggable>
+        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'textInputNode', '40')} draggable>
           <TitleIcon style={{ fontSize: "large", color: "#E67200" }} />
           Text
         </NodeDraggable>
 
-        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'numberInputNode')} draggable>
+        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'numberInputNode', '40')} draggable>
           <NumbersIcon style={{ fontSize: "large", color: "#E67200" }} />
           Number
         </NodeDraggable>
 
-        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'emailInputNode')} draggable>
+        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'emailInputNode', '40')} draggable>
           <AlternateEmailIcon style={{ fontSize: "large", color: "#E67200" }} />
           Email
         </NodeDraggable>
 
-        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'websiteInputNode')} draggable>
+        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'websiteInputNode', '40')} draggable>
           <LanguageIcon style={{ fontSize: "large", color: "#E67200" }} />
           Website
         </NodeDraggable>
 
-        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'dateInputNode')} draggable>
+        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'dateInputNode', '40')} draggable>
           <DateRangeIcon style={{ fontSize: "large", color: "#E67200" }} />
           Date
         </NodeDraggable>
 
-        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'phoneInputNode')} draggable>
+        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'phoneInputNode', '40')} draggable>
           <LocalPhoneIcon style={{ fontSize: "large", color: "#E67200" }} />
           Phone
         </NodeDraggable>
 
-        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'buttonInputNode')} draggable>
+        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'buttonInputNode', '80')} draggable>
           <CheckBoxOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
           Button
         </NodeDraggable>
 
-        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'picChoiceInputNode')} draggable>
+        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'picChoiceInputNode', '80')} draggable>
           <ImageOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
           Pic choice
         </NodeDraggable>
@@ -108,7 +109,7 @@ export default () => {
           Rating
         </NodeDraggable> */}
 
-        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'fileInputNode')} draggable>
+        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'fileInputNode', '40')} draggable>
           <BackupOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
           File
         </NodeDraggable>

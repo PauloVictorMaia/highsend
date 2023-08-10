@@ -3,7 +3,7 @@ import { Handle } from "reactflow";
 
 export const NodeContainer = styled.input`
   width: 100%;
-  height: 40px;
+  height: 100%;
   background-color: #fff;
   border: 1px solid #000;
   outline: none;

@@ -2,7 +2,7 @@ import { styled } from "styled-components";
 
 export const NodeContainer = styled.div`
   width: 100%;
-  height: 40px;
+  height: 100%;
   color: #000;
   display: Flex;
   align-items: center;

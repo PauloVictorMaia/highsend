@@ -6,6 +6,7 @@ import { useReactFlow, NodeToolbar } from "reactflow";
 import { useStateContext } from "../../../contexts/ContextProvider";
 
 export function TextNode({ selected, data, id }) {
+
   const { setNodeValue } = useStateContext();
 
   const { deleteElements } = useReactFlow();
