@@ -8,10 +8,12 @@ export const ContextProvider = ({ children }) => {
     const [nodeLabel, setNodeLabel] = useState("");
     const [nodeValue, setNodeValue] = useState("");
     const [placeholder, setPlaceholder] = useState("");
-    const [buttonLabel, setButtonLabel] = useState("Send");
+    const [buttonLabel, setButtonLabel] = useState("");
+    const [assignedVariable, setAssignedVariable] = useState("")
     const [variables, setVariables] = useState(() => {
         const storedVariables = localStorage.getItem('variables');
-        return storedVariables ? JSON.parse(storedVariables) : [];
+        return storedVariables ? JSON.parse(storedVariables) :
+            [{ id: uuidv4(), name: 'Nome' }, { id: uuidv4(), name: 'Email' }, { id: uuidv4(), name: 'Telefone' }];
     });
     const createNewVariable = (newVariable) => {
         if (newVariable) {
@@ -47,6 +49,8 @@ export const ContextProvider = ({ children }) => {
                 variables,
                 setVariables,
                 createNewVariable,
+                assignedVariable,
+                setAssignedVariable,
             }}
         >
             {children}

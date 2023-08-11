@@ -66,16 +66,20 @@ const Flow = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(INITIAL_NODE);
   const wrapperRef = useRef(null);
   const edgeUpdateSuccessful = useRef(true);
-  const { nodeLabel, setNodeLabel } = useStateContext();
-  const { nodeValue, setNodeValue } = useStateContext();
-  const { placeholder, setPlaceholder } = useStateContext();
-  const { buttonLabel, setButtonLabel } = useStateContext();
-  const { variables } = useStateContext();
+  const {
+    nodeLabel, setNodeLabel,
+    nodeValue, setNodeValue,
+    placeholder, setPlaceholder,
+    buttonLabel, setButtonLabel,
+    variables,
+    assignedVariable, setAssignedVariable
+  } = useStateContext();
+
   const { project, getIntersectingNodes } = useReactFlow();
   const store = useStoreApi();
   const { deleteElements } = useReactFlow();
 
-  // console.log(nodes)
+  console.log(nodes)
   // console.log(edges)
   console.log(variables)
 
@@ -234,13 +238,14 @@ const Flow = () => {
             ...node.data,
             placeholder: placeholder,
             buttonLabel: buttonLabel,
+            variable: assignedVariable,
           };
         }
 
         return node;
       })
     );
-  }, [placeholder, setPlaceholder, buttonLabel, setButtonLabel]);
+  }, [placeholder, setPlaceholder, buttonLabel, setButtonLabel, assignedVariable, setAssignedVariable]);
 
   const onNodesDelete = useCallback(
     (deleted) => {

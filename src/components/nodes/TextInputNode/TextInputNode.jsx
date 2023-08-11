@@ -6,11 +6,17 @@ import { useStateContext } from "../../../contexts/ContextProvider";
 import TitleIcon from '@mui/icons-material/Title';
 
 export function TextInputNode({ data, id }) {
-  const { setPlaceholder, setButtonLabel, createNewVariable } = useStateContext();
-  const [newVariable, setNewVariable] = useState("")
+  const {
+    setPlaceholder,
+    setButtonLabel,
+    createNewVariable,
+    variables,
+    setAssignedVariable
+  } = useStateContext();
   const [isVisible, setIsVisible] = useState(false)
   const { deleteElements } = useReactFlow();
   const onDelete = () => deleteElements({ nodes: [{ id }] });
+  const [newVariable, setNewVariable] = useState("")
 
   const sendNewVariable = async () => {
     try {
@@ -59,6 +65,16 @@ export function TextInputNode({ data, id }) {
           onChange={(e) => setNewVariable(e.target.value)}
         />
         <button onClick={sendNewVariable}>Create</button>
+
+        <span>Assign variable to this input</span>
+        <select defaultValue={data.variable ? data.variable : ""} onChange={(e) => setAssignedVariable(e.target.value)}>
+          <option value="">Select variable</option>
+          {variables &&
+            variables.map((variable, index) => (
+              <option key={index} value={variable.id}>{variable.name}</option>
+            ))
+          }
+        </select>
       </InputConfig>
 
     </NodeContainer>
