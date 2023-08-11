@@ -6,11 +6,19 @@ import { useStateContext } from "../../../contexts/ContextProvider";
 import TitleIcon from '@mui/icons-material/Title';
 
 export function TextInputNode({ data, id }) {
-  const { setPlaceholder, setButtonLabel } = useStateContext();
+  const { setPlaceholder, setButtonLabel, createNewVariable } = useStateContext();
+  const [newVariable, setNewVariable] = useState("")
   const [isVisible, setIsVisible] = useState(false)
   const { deleteElements } = useReactFlow();
-
   const onDelete = () => deleteElements({ nodes: [{ id }] });
+
+  const sendNewVariable = async () => {
+    try {
+      await createNewVariable(newVariable)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <NodeContainer>
@@ -43,6 +51,14 @@ export function TextInputNode({ data, id }) {
           defaultValue={data.buttonLabel ? data.buttonLabel : "Send"}
           onChange={(e) => setButtonLabel(e.target.value)}
         />
+        <span>Create new variable:</span>
+        <input
+          type="text"
+          placeholder="set name of new variable"
+          value={newVariable}
+          onChange={(e) => setNewVariable(e.target.value)}
+        />
+        <button onClick={sendNewVariable}>Create</button>
       </InputConfig>
 
     </NodeContainer>

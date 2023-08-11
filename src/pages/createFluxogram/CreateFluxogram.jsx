@@ -62,20 +62,22 @@ const getLabel = () => `Node #${label++}`
 const getSubNodeLabel = () => `Node #${subnodeLabel++}`
 
 const Flow = () => {
-  const [edges, setEdges, onEdgesChange] = useEdgesState([])
-  const [nodes, setNodes, onNodesChange] = useNodesState(INITIAL_NODE)
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const [nodes, setNodes, onNodesChange] = useNodesState(INITIAL_NODE);
   const wrapperRef = useRef(null);
   const edgeUpdateSuccessful = useRef(true);
   const { nodeLabel, setNodeLabel } = useStateContext();
   const { nodeValue, setNodeValue } = useStateContext();
   const { placeholder, setPlaceholder } = useStateContext();
   const { buttonLabel, setButtonLabel } = useStateContext();
+  const { variables } = useStateContext();
   const { project, getIntersectingNodes } = useReactFlow();
   const store = useStoreApi();
   const { deleteElements } = useReactFlow();
 
   // console.log(nodes)
   // console.log(edges)
+  console.log(variables)
 
   const onConnect = useCallback((connection) => {
     return setEdges(edges => addEdge(connection, edges))
