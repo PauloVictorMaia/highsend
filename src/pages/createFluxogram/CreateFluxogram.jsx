@@ -20,6 +20,7 @@ import { NumberInputNode } from "../../components/nodes/NumberInputNode/NumberIn
 import { EmailInputNode } from "../../components/nodes/EmailInputNode/EmailInputNode";
 import { WebsiteInputNode } from "../../components/nodes/WebsiteInputNode/WebsiteInputNode";
 import { PhoneInputNode } from "../../components/nodes/PhoneInputNode/PhoneInputNode";
+import { DateInputNode } from "../../components/nodes/DateInputNode/DateInputNode";
 
 
 const proOptions = {
@@ -39,6 +40,7 @@ const NODE_TYPES = {
   emailInputNode: EmailInputNode,
   websiteInputNode: WebsiteInputNode,
   phoneInputNode: PhoneInputNode,
+  dateInputNode: DateInputNode,
 }
 
 const EDGE_TYPES = {
