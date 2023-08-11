@@ -16,12 +16,12 @@ export const NodeContainer = styled.div`
   color: #000;
 `;
 
-export const BottomHandle = styled(Handle)`
+export const RightHandle = styled(Handle)`
   width: 7px;
   height: 7px;
   background-color: transparent;
   border: .400px solid #000;
-  bottom: -9px;
+  right: -8px;
 `;
 
 export const Label = styled.span`

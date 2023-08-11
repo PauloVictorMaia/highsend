@@ -21,6 +21,7 @@ import { EmailInputNode } from "../../components/nodes/EmailInputNode/EmailInput
 import { WebsiteInputNode } from "../../components/nodes/WebsiteInputNode/WebsiteInputNode";
 import { PhoneInputNode } from "../../components/nodes/PhoneInputNode/PhoneInputNode";
 import { DateInputNode } from "../../components/nodes/DateInputNode/DateInputNode";
+import { ButtonInputNode } from "../../components/nodes/ButtonInputNode/ButtonInputNode";
 
 
 const proOptions = {
@@ -41,6 +42,7 @@ const NODE_TYPES = {
   websiteInputNode: WebsiteInputNode,
   phoneInputNode: PhoneInputNode,
   dateInputNode: DateInputNode,
+  buttonInputNode: ButtonInputNode,
 }
 
 const EDGE_TYPES = {
@@ -82,7 +84,7 @@ const Flow = () => {
   const { deleteElements } = useReactFlow();
 
   console.log(nodes)
-  // console.log(edges)
+  console.log(edges)
   // console.log(variables)
 
   const onConnect = useCallback((connection) => {

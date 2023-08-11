@@ -89,7 +89,7 @@ export default () => {
           Phone
         </NodeDraggable>
 
-        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'buttonInputNode', '80')} draggable>
+        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'buttonInputNode', '40')} draggable>
           <CheckBoxOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
           Button
         </NodeDraggable>

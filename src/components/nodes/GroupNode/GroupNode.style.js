@@ -13,6 +13,7 @@ export const LeftHandle = styled(Handle)`
   background-color: transparent;
   border: .400px solid #000;
   left: -9px;
+  top: 10px;
 `;
 
 export const RightHandle = styled(Handle)`
