@@ -40,17 +40,16 @@ export function ButtonInputNode({ data, id }) {
 
       <InputPreview onClick={() => setIsVisible(!isVisible)}>
         <CheckBoxOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
-        <span>Click to edit</span>
+        <input
+          type="text"
+          placeholder={data.buttonLabel ? data.buttonLabel : "Click to edit..."}
+          value={data.buttonLabel ? data.buttonLabel : "Click to edit..."}
+          onChange={(e) => setButtonLabel(e.target.value)}
+          style={{ border: "none", outline: "none" }}
+        />
       </InputPreview>
 
       <InputConfig isvisible={isVisible ? "true" : "false"}>
-        <span>Button Label:</span>
-        <input
-          type="text"
-          placeholder={data.buttonLabel ? data.buttonLabel : "Send"}
-          defaultValue={data.buttonLabel ? data.buttonLabel : "Send"}
-          onChange={(e) => setButtonLabel(e.target.value)}
-        />
         <span>Create new variable:</span>
         <input
           type="text"

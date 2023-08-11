@@ -75,7 +75,7 @@ const Flow = () => {
     nodeValue, setNodeValue,
     placeholder, setPlaceholder,
     buttonLabel, setButtonLabel,
-    variables,
+    // variables,
     assignedVariable, setAssignedVariable
   } = useStateContext();
 
@@ -84,7 +84,7 @@ const Flow = () => {
   const { deleteElements } = useReactFlow();
 
   console.log(nodes)
-  console.log(edges)
+  // console.log(edges)
   // console.log(variables)
 
   const onConnect = useCallback((connection) => {
