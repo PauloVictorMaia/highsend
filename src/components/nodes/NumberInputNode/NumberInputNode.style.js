@@ -40,4 +40,18 @@ export const InputConfig = styled.div`
   >input {
     margin-bottom: 10px;
   }
+  >button {
+    width: 70px;
+    height: 25px;
+    border-radius: 5px;
+    background-color: blue;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 `;

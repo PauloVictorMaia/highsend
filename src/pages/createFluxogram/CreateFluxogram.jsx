@@ -81,7 +81,7 @@ const Flow = () => {
 
   console.log(nodes)
   // console.log(edges)
-  console.log(variables)
+  // console.log(variables)
 
   const onConnect = useCallback((connection) => {
     return setEdges(edges => addEdge(connection, edges))
@@ -198,7 +198,7 @@ const Flow = () => {
 
   };
 
-  //Mudança de nome do node
+  //Mudança de nome e do value 
   useEffect(() => {
     setNodes((nds) =>
       nds.map((node) => {
@@ -206,21 +206,6 @@ const Flow = () => {
           node.data = {
             ...node.data,
             label: nodeLabel,
-          };
-        }
-
-        return node;
-      })
-    );
-  }, [nodeLabel, setNodeLabel]);
-
-  //Mudança do value do node
-  useEffect(() => {
-    setNodes((nds) =>
-      nds.map((node) => {
-        if (node.selected === true) {
-          node.data = {
-            ...node.data,
             value: nodeValue,
           };
         }
@@ -228,7 +213,7 @@ const Flow = () => {
         return node;
       })
     );
-  }, [nodeValue, setNodeValue]);
+  }, [nodeLabel, setNodeLabel, nodeValue, setNodeValue]);
 
   useEffect(() => {
     setNodes((nds) =>
