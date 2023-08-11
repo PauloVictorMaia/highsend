@@ -34,12 +34,12 @@ export default () => {
           Text
         </NodeDraggable>
 
-        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'imageNode', '80')} draggable>
+        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'imageNode', '150')} draggable>
           <ImageOutlinedIcon style={{ fontSize: "large" }} />
           Image
         </NodeDraggable>
 
-        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'videoNode', '80')} draggable>
+        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'videoNode', '150')} draggable>
           <TheatersOutlinedIcon style={{ fontSize: "large" }} />
           Video
         </NodeDraggable>

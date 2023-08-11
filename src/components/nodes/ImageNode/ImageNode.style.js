@@ -22,15 +22,8 @@ export const ImagePreview = styled.div`
 
 export const Image = styled.img`
   width: 100%;
-  max-width: 50px;
+  max-width: 175px;
   height: auto;
-`;
-
-export const ImageContainer = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  column-gap: 20px;
 `;
 
 export const ImageNodeMenu = styled.div`

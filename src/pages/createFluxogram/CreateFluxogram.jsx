@@ -137,7 +137,7 @@ const Flow = () => {
       let newSubnode = {
         id: getId(),
         type: subType,
-        position: { x: 22, y: 50 },
+        position: { x: 20, y: 50 },
         data: {
           label: getSubNodeLabel(),
           value: "",
@@ -145,7 +145,7 @@ const Flow = () => {
         parentNode: newNode.id,
         extent: 'parent',
         draggable: false,
-        style: { width: 200, height: height }
+        style: { width: 210, height: height }
       };
 
 
@@ -159,7 +159,7 @@ const Flow = () => {
         }, 0);
         const totalGroupHeight = ((initialGroupHeight + parentNodesHeight) + ((parentNodes.length + 1) * rowGap));
 
-        newSubnode.position = { x: 22, y: lastParentNode.position.y + (lastParentNode.style.height + rowGap) };
+        newSubnode.position = { x: 20, y: lastParentNode.position.y + (lastParentNode.style.height + rowGap) };
         newSubnode.parentNode = groupNode?.id;
         newSubnode.extent = groupNode ? 'parent' : undefined;
         newSubnode.type = subType;

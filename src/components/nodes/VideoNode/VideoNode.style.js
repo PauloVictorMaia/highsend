@@ -22,7 +22,7 @@ export const VideoPreview = styled.div`
 
 export const PreviewImage = styled.img`
   width: 100%;
-  max-width: 170px;
+  max-width: 175px;
   height: auto;
 `;
 
