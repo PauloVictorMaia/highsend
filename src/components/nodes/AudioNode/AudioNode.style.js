@@ -15,13 +15,13 @@ export const NodeContainer = styled.div`
 
 export const AudioPreview = styled.div`
   width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   column-gap: 5px;
 
   > audio {
-    height: 40px;
-    margin: 10px 0;
+    height: 100%;
   }
 `;
 
