@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 
 export const DashBoardContainer = styled.div`
   display: flex;
@@ -48,5 +49,13 @@ export const MenuItem = styled.div`
     margin: 0 0 0 5px;
     font-size: 17px;
     margin-left: 15px;
+  }
+`;
+
+export const Link = styled(NavLink)`
+  text-decoration: none;
+  color: inherit;
+  &:hover {
+    color: inherit;
   }
 `;

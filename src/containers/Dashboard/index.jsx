@@ -1,4 +1,4 @@
-import { DashBoardContainer, DashContent, MenuContainer, MenuItem, IconsContainer } from "./style";
+import { DashBoardContainer, DashContent, MenuContainer, MenuItem, IconsContainer, Link } from "./style";
 import { TiFlowSwitch } from "react-icons/Ti";
 // import { AiOutlineMenu } from "react-icons/Ti";
 import { TfiAgenda } from "react-icons/Tfi";
@@ -7,18 +7,11 @@ import { BsFillPeopleFill } from "react-icons/Bs";
 import { BiChat } from "react-icons/Bi";
 import { TbDeviceAnalytics } from "react-icons/Tb";
 import { useStateContext } from "../../contexts/ContextProvider";
-import { useNavigate } from "react-router-dom";
 
 // eslint-disable-next-line react/prop-types
 const DashBoard = ({ children }) => {
 
   const { openMenu, setOpenMenu } = useStateContext()
-  const navigate = useNavigate()
-
-  const redirect = () => {
-    setOpenMenu(false)
-    navigate('/fluxograms')
-  }
 
   return (
     <DashBoardContainer>
@@ -26,22 +19,35 @@ const DashBoard = ({ children }) => {
         <div>
           <h2>High Send</h2>
           <MenuContainer>
-            <MenuItem onClick={redirect}>
-              <TiFlowSwitch size={20} />
-              <span>Fluxos de Bot</span>
-            </MenuItem>
-            <MenuItem>
-              <TfiAgenda size={20} />
-              <span>Agendas</span>
-            </MenuItem>
-            <MenuItem>
-              <BsFillPeopleFill size={20} />
-              <span>Meus leads</span>
-            </MenuItem>
-            <MenuItem>
-              <TbDeviceAnalytics size={20} />
-              <span>Analytics</span>
-            </MenuItem>
+
+            <Link to='fluxograms' onClick={() => setOpenMenu(false)}>
+              <MenuItem>
+                <TiFlowSwitch size={20} />
+                <span>Fluxos de Bot</span>
+              </MenuItem>
+            </Link>
+
+            <Link to='schedules' onClick={() => setOpenMenu(false)}>
+              <MenuItem>
+                <TfiAgenda size={20} />
+                <span>Agendas</span>
+              </MenuItem>
+            </Link>
+
+            <Link to='leads' onClick={() => setOpenMenu(false)}>
+              <MenuItem>
+                <BsFillPeopleFill size={20} />
+                <span>Meus leads</span>
+              </MenuItem>
+            </Link>
+
+            <Link to='analytics' onClick={() => setOpenMenu(false)}>
+              <MenuItem>
+                <TbDeviceAnalytics size={20} />
+                <span>Analytics</span>
+              </MenuItem>
+            </Link>
+
           </MenuContainer>
         </div>
         <IconsContainer>

@@ -18,10 +18,9 @@ export const NodeContainer = styled.div`
 `;
 
 export const RightHandle = styled(Handle)`
-  width: 7px;
-  height: 7px;
-  background-color: transparent;
-  border: .400px solid #000;
+  width: 10px;
+  height: 10px;
+  background-color: rgba(153, 153, 255,1);
   right: -8px;
 `;
 

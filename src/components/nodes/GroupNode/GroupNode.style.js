@@ -5,7 +5,7 @@ export const NodeContainer = styled.div`
   width: 100%;
   height: 100%;
   background-color: #fff;
-  border: ${({selected}) => selected ? '2px solid rgba(153, 153, 255,0.5)' : '0.5px solid rgba(0,0,0,0.15)'};
+  border: ${({selected}) => selected ? '' : '0.5px solid rgba(0,0,0,0.15)'};
   box-shadow: 0 5px 7px 0 rgba(0,0,0,0.15);
   border-radius: 8px;
   color: #000;
@@ -21,18 +21,17 @@ export const Label = styled.input`
 `;
 
 export const LeftHandle = styled(Handle)`
-  width: 7px;
-  height: 7px;
-  background-color: transparent;
-  border: .400px solid #000;
+  width: 10px;
+  height: 10px;
+  background-color: rgba(153, 153, 255,1);
+ 
   left: -9px;
   top: 10px;
 `;
 
 export const RightHandle = styled(Handle)`
-  width: 7px;
-  height: 7px;
-  background-color: transparent;
-  border: .400px solid #000;
+  width: 10px;
+  height: 10px;
+  background-color: rgba(153, 153, 255,1);
   right: -9px;
 `;
