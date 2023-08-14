@@ -7,11 +7,18 @@ import { BsFillPeopleFill } from "react-icons/Bs";
 import { BiChat } from "react-icons/Bi";
 import { TbDeviceAnalytics } from "react-icons/Tb";
 import { useStateContext } from "../../contexts/ContextProvider";
+import { useNavigate } from "react-router-dom";
 
 // eslint-disable-next-line react/prop-types
 const DashBoard = ({ children }) => {
 
-  const { openMenu } = useStateContext()
+  const { openMenu, setOpenMenu } = useStateContext()
+  const navigate = useNavigate()
+
+  const redirect = () => {
+    setOpenMenu(false)
+    navigate('/fluxograms')
+  }
 
   return (
     <DashBoardContainer>
@@ -19,7 +26,7 @@ const DashBoard = ({ children }) => {
         <div>
           <h2>High Send</h2>
           <MenuContainer>
-            <MenuItem>
+            <MenuItem onClick={redirect}>
               <TiFlowSwitch size={20} />
               <span>Fluxos de Bot</span>
             </MenuItem>
