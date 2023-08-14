@@ -1,18 +1,19 @@
-import { Cards, Container, Content, HeaderContainer, NewFluxogramCard } from "./Fluxograms.style";
-import HomeIcon from '@mui/icons-material/Home';
+import { Cards, Container, Content, NewFluxogramCard } from "./Fluxograms.style";
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from "react-router-dom";
+import Header from "../../components/Header/Header";
+import { useStateContext } from "../../contexts/ContextProvider";
 
 function Fluxograms() {
 
   const navigate = useNavigate()
 
+  const { openMenu } = useStateContext()
+
   return (
     <Container>
-      <HeaderContainer>
-        <HomeIcon onClick={() => navigate('/')} />
-      </HeaderContainer>
-      <Content>
+      <Header />
+      <Content openmenu={openMenu ? "true" : "false"} >
         <Cards>
 
           <NewFluxogramCard onClick={() => navigate('/fluxograms/create')}>

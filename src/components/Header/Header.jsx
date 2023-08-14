@@ -10,6 +10,7 @@ function Header() {
   return (
     <HeaderContainer>
       {openMenu ?
+
         <CloseIcon onClick={() => setOpenMenu(!openMenu)} />
         :
         <MenuIcon onClick={() => setOpenMenu(!openMenu)} />
