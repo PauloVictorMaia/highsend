@@ -141,6 +141,7 @@ const Flow = () => {
         data: {
           label: getLabel(),
           value: "",
+          blocks: [],
         },
         style: nodeStyle,
       };
@@ -158,6 +159,8 @@ const Flow = () => {
         draggable: false,
         style: { width: 210, height: height }
       };
+
+      newNode.data.blocks = [newSubnode]
 
 
       if (groupNode) {
@@ -185,6 +188,7 @@ const Flow = () => {
               padding: '0',
               borderRadius: '8px'
             };
+            node.data.blocks = [...node.data.blocks, newSubnode]
             return node;
           }
           return node;
@@ -268,6 +272,7 @@ const Flow = () => {
           nds.map((node) => {
             if (node.id === groupID) {
               node = { ...node, style: { width: 250, height: groupNodeHeight, padding: '0px', borderRadius: '8px', backgroundColor: '#fff', border: "none" } }
+              node.data.blocks = [...parentNodes]
             }
 
             if (parentNodes.indexOf(node) > -1 && !(node.id === groupID) && node.id === parentNodes[0].id) {
