@@ -2,7 +2,7 @@
 import { LinkInput, NodeContainer, PreviewImage, VideoPreview } from "./VideoNode.style";
 import { useReactFlow, NodeToolbar } from "reactflow";
 import { useStateContext } from "../../../contexts/ContextProvider";
-import TheatersIcon from '@mui/icons-material/Theaters';
+import MovieCreationOutlinedIcon from '@mui/icons-material/MovieCreationOutlined';
 import { useState } from "react";
 
 const getYoutubeThumbnail = (url) => {
@@ -26,7 +26,7 @@ export function VideoNode({ data, id }) {
       </NodeToolbar>
 
       <VideoPreview onClick={() => setIsVisible(!isVisible)}>
-        <TheatersIcon />
+        <MovieCreationOutlinedIcon />
         {data.value === "" ?
           <span>Click to edit...</span>
           :

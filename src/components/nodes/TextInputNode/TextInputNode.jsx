@@ -3,7 +3,7 @@ import { InputConfig, InputPreview, NodeContainer } from "./TextInputNode.style"
 import { useReactFlow, NodeToolbar } from "reactflow";
 import { useState } from "react";
 import { useStateContext } from "../../../contexts/ContextProvider";
-import TitleIcon from '@mui/icons-material/Title';
+import TextFieldsIcon from '@mui/icons-material/TextFields';
 
 export function TextInputNode({ data, id }) {
   const {
@@ -34,7 +34,7 @@ export function TextInputNode({ data, id }) {
       </NodeToolbar>
 
       <InputPreview onClick={() => setIsVisible(!isVisible)}>
-        <TitleIcon style={{ fontSize: "large", color: "#E67200" }} />
+        <TextFieldsIcon style={{ fontSize: "large", color: "#E67200" }} />
         {data.placeholder ?
           <span>{data.placeholder}</span>
           :

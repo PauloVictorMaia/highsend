@@ -8,7 +8,7 @@ export const NodeContainer = styled.div`
   padding: 0;
   box-sizing: border-box;
   background-color: #fff;
-  border: 1px solid #000;
+  border: 0.5px solid rgba(0,0,0,0.15);
   border-radius: 8px;
   color: #000;
 `;

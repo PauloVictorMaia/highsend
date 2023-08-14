@@ -3,7 +3,7 @@ import { InputConfig, InputPreview, NodeContainer } from "./PhoneInputNode.style
 import { useReactFlow, NodeToolbar } from "reactflow";
 import { useState } from "react";
 import { useStateContext } from "../../../contexts/ContextProvider";
-import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
+import PhoneIphoneOutlinedIcon from '@mui/icons-material/PhoneIphoneOutlined';
 
 export function PhoneInputNode({ data, id }) {
   const {
@@ -34,7 +34,7 @@ export function PhoneInputNode({ data, id }) {
       </NodeToolbar>
 
       <InputPreview onClick={() => setIsVisible(!isVisible)}>
-        <LocalPhoneIcon style={{ fontSize: "large", color: "#E67200" }} />
+        <PhoneIphoneOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
         {data.placeholder ?
           <span>{data.placeholder}</span>
           :

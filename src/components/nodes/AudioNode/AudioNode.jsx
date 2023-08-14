@@ -3,7 +3,7 @@ import { NodeContainer, AudioPreview, AudioNodeMenu, SendAudio, Tabs, Navigation
 import { useReactFlow, NodeToolbar } from "reactflow";
 import { useState } from "react";
 import { useStateContext } from "../../../contexts/ContextProvider";
-import HeadphonesIcon from '@mui/icons-material/Headphones';
+import AudioFileOutlinedIcon from '@mui/icons-material/AudioFileOutlined';
 
 
 function AudioNode({ data, id }) {
@@ -32,7 +32,7 @@ function AudioNode({ data, id }) {
       </NodeToolbar>
 
       <AudioPreview onClick={() => setIsVisible(!isVisible)}>
-        <HeadphonesIcon />
+        <AudioFileOutlinedIcon />
         {data.value === "" ?
           <span>Click to edit...</span>
           :

@@ -5,7 +5,7 @@ export const NodeContainer = styled.input`
   width: 100%;
   height: 100%;
   background-color: #fff;
-  border: 1px solid #000;
+  border: 0.5px solid rgba(0,0,0,0.15);
   outline: none;
   border-radius: 8px;
   color: #000;

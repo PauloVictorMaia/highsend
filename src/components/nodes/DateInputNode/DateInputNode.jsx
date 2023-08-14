@@ -3,7 +3,7 @@ import { InputConfig, InputPreview, NodeContainer } from "./DateInputNode.style"
 import { useReactFlow, NodeToolbar } from "reactflow";
 import { useState } from "react";
 import { useStateContext } from "../../../contexts/ContextProvider";
-import DateRangeIcon from '@mui/icons-material/DateRange';
+import EditCalendarOutlinedIcon from '@mui/icons-material/EditCalendarOutlined';
 
 export function DateInputNode({ data, id }) {
   const {
@@ -33,7 +33,7 @@ export function DateInputNode({ data, id }) {
       </NodeToolbar>
 
       <InputPreview onClick={() => setIsVisible(!isVisible)}>
-        <DateRangeIcon style={{ fontSize: "large", color: "#E67200" }} />
+        <EditCalendarOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
         <span>Pick a  date</span>
       </InputPreview>
 

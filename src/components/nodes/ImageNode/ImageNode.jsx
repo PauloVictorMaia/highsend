@@ -3,7 +3,7 @@ import { Image, ImageNodeMenu, ImagePreview, NodeContainer, Navigation, ListTabs
 import { useReactFlow, NodeToolbar } from "reactflow";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import { useState } from "react";
-import ImageIcon from '@mui/icons-material/Image';
+import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined';
 
 export function ImageNode({ data, id }) {
   const { setNodeValue } = useStateContext();
@@ -28,7 +28,7 @@ export function ImageNode({ data, id }) {
       </NodeToolbar>
 
       <ImagePreview onClick={() => setIsVisible(!isVisible)}>
-        <ImageIcon />
+        <PhotoCameraOutlinedIcon />
         {data.value === "" ?
           <span>Click to edit...</span>
           :

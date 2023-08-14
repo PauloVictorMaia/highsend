@@ -3,7 +3,7 @@ import { NodeContainer, AddLink, LinkInput } from "./EmbedNode.style"
 import { useState } from "react";
 import { useReactFlow, NodeToolbar } from "reactflow";
 import { useStateContext } from "../../../contexts/ContextProvider";
-import AttachmentIcon from '@mui/icons-material/Attachment';
+import LinkOutlinedIcon from '@mui/icons-material/LinkOutlined';
 
 function EmbedNode({ data, id }) {
 
@@ -22,7 +22,7 @@ function EmbedNode({ data, id }) {
       </NodeToolbar>
 
       <AddLink onClick={() => setIsVisible(!isVisible)}>
-        <AttachmentIcon />
+        <LinkOutlinedIcon />
         {data.value === "" ?
           <span>Click to edit...</span>
           :

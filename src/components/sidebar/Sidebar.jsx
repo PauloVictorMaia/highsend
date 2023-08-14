@@ -1,17 +1,16 @@
 /* eslint-disable react/display-name */
-import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
+import TextFieldsIcon from '@mui/icons-material/TextFields';
 import { NodesContainer, NodeDraggable, NodesType, SidebarContainer } from "./Sidebar.style";
-import TheatersOutlinedIcon from '@mui/icons-material/TheatersOutlined';
-import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
-import AttachmentOutlinedIcon from '@mui/icons-material/AttachmentOutlined';
-import HeadphonesOutlinedIcon from '@mui/icons-material/HeadphonesOutlined';
-import TitleIcon from '@mui/icons-material/Title';
+import MovieCreationOutlinedIcon from '@mui/icons-material/MovieCreationOutlined';
+import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined';
+import LinkOutlinedIcon from '@mui/icons-material/LinkOutlined';
+import AudioFileOutlinedIcon from '@mui/icons-material/AudioFileOutlined';
 import NumbersIcon from '@mui/icons-material/Numbers';
-import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
-import LanguageIcon from '@mui/icons-material/Language';
-import DateRangeIcon from '@mui/icons-material/DateRange';
-import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
-import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
+import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
+import MouseOutlinedIcon from '@mui/icons-material/MouseOutlined';
+import EditCalendarOutlinedIcon from '@mui/icons-material/EditCalendarOutlined';
+import PhoneIphoneOutlinedIcon from '@mui/icons-material/PhoneIphoneOutlined';
+import TaskAltOutlinedIcon from '@mui/icons-material/TaskAltOutlined';
 import { useStateContext } from '../../contexts/ContextProvider';
 // import PaymentIcon from '@mui/icons-material/Payment';
 // import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
@@ -33,27 +32,27 @@ export default () => {
       <NodesType>Bubbles</NodesType>
       <NodesContainer>
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'textNode', '80')} draggable>
-          <ChatBubbleOutlineOutlinedIcon style={{ fontSize: "large" }} />
+          <TextFieldsIcon style={{ fontSize: "large" }} />
           Text
         </NodeDraggable>
 
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'imageNode', '150')} draggable>
-          <ImageOutlinedIcon style={{ fontSize: "large" }} />
+          <PhotoCameraOutlinedIcon style={{ fontSize: "large" }} />
           Image
         </NodeDraggable>
 
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'videoNode', '150')} draggable>
-          <TheatersOutlinedIcon style={{ fontSize: "large" }} />
+          <MovieCreationOutlinedIcon style={{ fontSize: "large" }} />
           Video
         </NodeDraggable>
 
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'embedNode', '40')} draggable>
-          <AttachmentOutlinedIcon style={{ fontSize: "large" }} />
+          <LinkOutlinedIcon style={{ fontSize: "large" }} />
           Embed
         </NodeDraggable>
 
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'audioNode', '40')} draggable>
-          <HeadphonesOutlinedIcon style={{ fontSize: "large" }} />
+          <AudioFileOutlinedIcon style={{ fontSize: "large" }} />
           Audio
         </NodeDraggable>
 
@@ -63,7 +62,7 @@ export default () => {
       <NodesType>Inputs</NodesType>
       <NodesContainer>
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'textInputNode', '40')} draggable>
-          <TitleIcon style={{ fontSize: "large", color: "#E67200" }} />
+          <TextFieldsIcon style={{ fontSize: "large", color: "#E67200" }} />
           Text
         </NodeDraggable>
 
@@ -73,27 +72,27 @@ export default () => {
         </NodeDraggable>
 
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'emailInputNode', '40')} draggable>
-          <AlternateEmailIcon style={{ fontSize: "large", color: "#E67200" }} />
+          <EmailOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
           Email
         </NodeDraggable>
 
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'websiteInputNode', '40')} draggable>
-          <LanguageIcon style={{ fontSize: "large", color: "#E67200" }} />
+          <MouseOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
           Website
         </NodeDraggable>
 
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'dateInputNode', '40')} draggable>
-          <DateRangeIcon style={{ fontSize: "large", color: "#E67200" }} />
+          <EditCalendarOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
           Date
         </NodeDraggable>
 
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'phoneInputNode', '40')} draggable>
-          <LocalPhoneIcon style={{ fontSize: "large", color: "#E67200" }} />
+          <PhoneIphoneOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
           Phone
         </NodeDraggable>
 
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'buttonInputNode', '40')} draggable>
-          <CheckBoxOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
+          <TaskAltOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
           Button
         </NodeDraggable>
 

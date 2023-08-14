@@ -3,7 +3,7 @@ import { InputConfig, InputPreview, NodeContainer } from "./EmailInputNode.style
 import { useReactFlow, NodeToolbar } from "reactflow";
 import { useState } from "react";
 import { useStateContext } from "../../../contexts/ContextProvider";
-import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
+import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 
 export function EmailInputNode({ data, id }) {
   const {
@@ -34,7 +34,7 @@ export function EmailInputNode({ data, id }) {
       </NodeToolbar>
 
       <InputPreview onClick={() => setIsVisible(!isVisible)}>
-        <AlternateEmailIcon style={{ fontSize: "large", color: "#E67200" }} />
+        <EmailOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
         {data.placeholder ?
           <span>{data.placeholder}</span>
           :

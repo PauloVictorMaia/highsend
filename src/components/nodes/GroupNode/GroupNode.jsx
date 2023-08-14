@@ -3,10 +3,10 @@
 
 import { NodeToolbar, useReactFlow, Position } from 'reactflow';
 
-import { Label, LeftHandle, RightHandle } from './GroupNode.style';
+import { Label, LeftHandle, NodeContainer, RightHandle } from './GroupNode.style';
 import { useStateContext } from '../../../contexts/ContextProvider';
 
-export default function GroupNode({ id, data }) {
+export default function GroupNode({ id, data, selected }) {
   const { setNodeLabel } = useStateContext();
   const { deleteElements } = useReactFlow();
 
@@ -15,7 +15,7 @@ export default function GroupNode({ id, data }) {
   };
 
   return (
-    <div>
+    <NodeContainer selected={selected}>
       <NodeToolbar >
         <button onClick={onDelete}>Delete</button>
       </NodeToolbar>
@@ -33,6 +33,6 @@ export default function GroupNode({ id, data }) {
       />
 
       <Label defaultValue={data.label} onChange={(e) => setNodeLabel(e.target.value)} />
-    </div>
+    </NodeContainer>
   );
 }

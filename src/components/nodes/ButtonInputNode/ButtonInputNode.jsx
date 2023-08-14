@@ -3,7 +3,7 @@ import { InputConfig, InputPreview, NodeContainer, RightHandle } from "./ButtonI
 import { useReactFlow, NodeToolbar, Position } from "reactflow";
 import { useState } from "react";
 import { useStateContext } from "../../../contexts/ContextProvider";
-import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
+import TaskAltOutlinedIcon from '@mui/icons-material/TaskAltOutlined';
 
 export function ButtonInputNode({ data, id }) {
   const {
@@ -39,7 +39,7 @@ export function ButtonInputNode({ data, id }) {
       />
 
       <InputPreview onClick={() => setIsVisible(!isVisible)}>
-        <CheckBoxOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
+        <TaskAltOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
         <input
           type="text"
           placeholder={data.buttonLabel ? data.buttonLabel : "Click to edit..."}

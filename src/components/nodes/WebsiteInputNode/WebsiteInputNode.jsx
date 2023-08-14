@@ -3,7 +3,7 @@ import { InputConfig, InputPreview, NodeContainer } from "./WebsiteInputNode.sty
 import { useReactFlow, NodeToolbar } from "reactflow";
 import { useState } from "react";
 import { useStateContext } from "../../../contexts/ContextProvider";
-import LanguageIcon from '@mui/icons-material/Language';
+import MouseOutlinedIcon from '@mui/icons-material/MouseOutlined';
 
 export function WebsiteInputNode({ data, id }) {
   const {
@@ -34,7 +34,7 @@ export function WebsiteInputNode({ data, id }) {
       </NodeToolbar>
 
       <InputPreview onClick={() => setIsVisible(!isVisible)}>
-        <LanguageIcon style={{ fontSize: "large", color: "#E67200" }} />
+        <MouseOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
         {data.placeholder ?
           <span>{data.placeholder}</span>
           :

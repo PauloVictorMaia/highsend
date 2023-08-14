@@ -124,7 +124,8 @@ const Flow = () => {
       const heightString = event.dataTransfer.getData('application/reactflow/height');
       const height = parseFloat(heightString)
       let position = project({ x: event.clientX - wrapperBounds.x - 20, y: event.clientY - wrapperBounds.top - 20 });
-      const nodeStyle = type === 'group' ? { width: 250, height: height + 60, padding: '10px', borderRadius: '8px', backgroundColor: '#fff' } : undefined;
+      const nodeStyle = type === 'group' ?
+        { width: 250, height: height + 60, border: "none", padding: '0', borderRadius: '8px' } : undefined;
 
       const intersections = getIntersectingNodes({
         x: position.x,
@@ -180,9 +181,10 @@ const Flow = () => {
             node.style = {
               width: 250,
               height: totalGroupHeight,
-              padding: '10px',
-              borderRadius: '8px',
-              backgroundColor: '#fff'
+              backgroundColor: '#fff',
+              border: "none",
+              padding: '0',
+              borderRadius: '8px'
             };
             return node;
           }
@@ -263,13 +265,10 @@ const Flow = () => {
         }, 0);
         const rowGap = 5
         const groupNodeHeight = parentNodesHeight + ((parentNodes.length + 1) * rowGap) + 60
-        // const firstParentNodePositionY = firstParentNode.position.y
-        // const firstParentNodeHeight = firstParentNode.style.height
-        // console.log(lastParentNode)
         setNodes((nds) =>
           nds.map((node) => {
             if (node.id === groupID) {
-              node = { ...node, style: { width: 250, height: groupNodeHeight, padding: '10px', borderRadius: '8px', backgroundColor: '#fff' } }
+              node = { ...node, style: { width: 250, height: groupNodeHeight, padding: '0px', borderRadius: '8px', backgroundColor: '#fff', border: "none" } }
             }
 
             if (parentNodes.indexOf(node) > -1 && !(node.id === groupID) && node.id === parentNodes[0].id) {

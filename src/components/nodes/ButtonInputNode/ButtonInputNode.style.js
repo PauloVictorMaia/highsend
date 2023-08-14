@@ -7,7 +7,7 @@ export const NodeContainer = styled.div`
   color: #000;
   display: Flex;
   align-items: center;
-  border: 1px solid #000;
+  border: 0.5px solid rgba(0,0,0,0.15);
   background-color: #fff;
   border-radius: 8px;
   padding: 0;
