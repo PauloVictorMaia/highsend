@@ -5,6 +5,7 @@ import { NodeToolbar, useReactFlow, Position } from 'reactflow';
 
 import { Label, LeftHandle, NodeContainer, RightHandle } from './GroupNode.style';
 import { useStateContext } from '../../../contexts/ContextProvider';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 export default function GroupNode({ id, data, selected }) {
   const { setNodeLabel } = useStateContext();
@@ -16,8 +17,18 @@ export default function GroupNode({ id, data, selected }) {
 
   return (
     <NodeContainer selected={selected}>
-      <NodeToolbar >
-        <button onClick={onDelete}>Delete</button>
+      <NodeToolbar
+        offset={5}
+        align='end'
+        style={{
+          backgroundColor: '#fff',
+          color: '#000',
+          border: '0.5px solid rgba(0,0,0,0.15)',
+          borderRadius: '8px',
+
+        }}
+      >
+        <DeleteOutlineIcon style={{ cursor: 'pointer', fontSize: 'large' }} onClick={onDelete} />
       </NodeToolbar>
 
       <LeftHandle

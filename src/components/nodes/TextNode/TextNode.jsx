@@ -4,6 +4,7 @@
 import { NodeContainer } from "./TextNode.style";
 import { useReactFlow, NodeToolbar } from "reactflow";
 import { useStateContext } from "../../../contexts/ContextProvider";
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 export function TextNode({ selected, data, id }) {
 
@@ -17,8 +18,18 @@ export function TextNode({ selected, data, id }) {
     <>
       <NodeContainer type="textarea" selected={selected} defaultValue={data.label ? data.label : "padrao"} onChange={(e) => setNodeValue(e.target.value)} />
 
-      <NodeToolbar className="nodrag">
-        <button onClick={onDelete}>Delete</button>
+      <NodeToolbar
+        offset={5}
+        align='end'
+        style={{
+          backgroundColor: '#fff',
+          color: '#000',
+          border: '0.5px solid rgba(0,0,0,0.15)',
+          borderRadius: '8px',
+
+        }}
+      >
+        <DeleteOutlineIcon style={{ cursor: 'pointer', fontSize: 'large' }} onClick={onDelete} />
       </NodeToolbar>
     </>
   )

@@ -15,7 +15,6 @@ import AudioNode from "../../components/nodes/AudioNode/AudioNode";
 import { TextInputNode } from "../../components/nodes/TextInputNode/TextInputNode";
 import GroupNode from "../../components/nodes/GroupNode/GroupNode";
 import { sortNodes, getId, getNodePositionInsideParent } from '../../utils';
-import SelectedNodesToolbar from '../../components/Toolbar/SelectedNodesToolbar'
 import { NumberInputNode } from "../../components/nodes/NumberInputNode/NumberInputNode";
 import { EmailInputNode } from "../../components/nodes/EmailInputNode/EmailInputNode";
 import { WebsiteInputNode } from "../../components/nodes/WebsiteInputNode/WebsiteInputNode";
@@ -399,7 +398,6 @@ const Flow = () => {
           color="#ddd"
           style={{ backgroundColor: "#f4f5f8" }}
         />
-        <SelectedNodesToolbar />
         <Controls position="bottom-right" />
       </ReactFlow>
       <Sidebar />

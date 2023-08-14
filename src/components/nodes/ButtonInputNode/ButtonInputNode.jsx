@@ -4,6 +4,7 @@ import { useReactFlow, NodeToolbar, Position } from "reactflow";
 import { useState } from "react";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import TaskAltOutlinedIcon from '@mui/icons-material/TaskAltOutlined';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 export function ButtonInputNode({ data, id }) {
   const {
@@ -28,8 +29,18 @@ export function ButtonInputNode({ data, id }) {
   return (
     <NodeContainer>
 
-      <NodeToolbar className="nodrag">
-        <button onClick={onDelete}>Delete</button>
+      <NodeToolbar
+        offset={5}
+        align='end'
+        style={{
+          backgroundColor: '#fff',
+          color: '#000',
+          border: '0.5px solid rgba(0,0,0,0.15)',
+          borderRadius: '8px',
+
+        }}
+      >
+        <DeleteOutlineIcon style={{ cursor: 'pointer', fontSize: 'large' }} onClick={onDelete} />
       </NodeToolbar>
 
       <RightHandle

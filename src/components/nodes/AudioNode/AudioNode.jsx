@@ -4,6 +4,7 @@ import { useReactFlow, NodeToolbar } from "reactflow";
 import { useState } from "react";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import AudioFileOutlinedIcon from '@mui/icons-material/AudioFileOutlined';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 
 function AudioNode({ data, id }) {
@@ -27,8 +28,18 @@ function AudioNode({ data, id }) {
   return (
     <NodeContainer>
 
-      <NodeToolbar className="nodrag">
-        <button onClick={onDelete}>Delete</button>
+      <NodeToolbar
+        offset={5}
+        align='end'
+        style={{
+          backgroundColor: '#fff',
+          color: '#000',
+          border: '0.5px solid rgba(0,0,0,0.15)',
+          borderRadius: '8px',
+
+        }}
+      >
+        <DeleteOutlineIcon style={{ cursor: 'pointer', fontSize: 'large' }} onClick={onDelete} />
       </NodeToolbar>
 
       <AudioPreview onClick={() => setIsVisible(!isVisible)}>
