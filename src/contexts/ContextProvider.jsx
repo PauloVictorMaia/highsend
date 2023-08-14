@@ -15,6 +15,7 @@ export const ContextProvider = ({ children }) => {
         return storedVariables ? JSON.parse(storedVariables) :
             [{ id: uuidv4(), name: 'Nome' }, { id: uuidv4(), name: 'Email' }, { id: uuidv4(), name: 'Telefone' }];
     });
+    const [openMenu, setOpenMenu] = useState(false)
     const createNewVariable = (newVariable) => {
         if (newVariable) {
             const nameExists = variables.some(variable => variable.name === newVariable);
@@ -51,6 +52,8 @@ export const ContextProvider = ({ children }) => {
                 createNewVariable,
                 assignedVariable,
                 setAssignedVariable,
+                openMenu,
+                setOpenMenu,
             }}
         >
             {children}

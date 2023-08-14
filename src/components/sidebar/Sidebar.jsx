@@ -12,6 +12,7 @@ import LanguageIcon from '@mui/icons-material/Language';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
+import { useStateContext } from '../../contexts/ContextProvider';
 // import PaymentIcon from '@mui/icons-material/Payment';
 // import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 // import BackupOutlinedIcon from '@mui/icons-material/BackupOutlined';
@@ -25,8 +26,10 @@ export default () => {
     event.dataTransfer.effectAllowed = 'move';
   };
 
+  const { openMenu } = useStateContext()
+
   return (
-    <SidebarContainer>
+    <SidebarContainer openmenu={openMenu ? "true" : "false"}>
       <NodesType>Bubbles</NodesType>
       <NodesContainer>
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'textNode', '80')} draggable>

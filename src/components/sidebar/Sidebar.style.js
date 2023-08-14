@@ -1,15 +1,17 @@
 import { styled } from "styled-components";
 
 export const SidebarContainer = styled.aside`
-  width: 300px;
+  width: 305px;
   position: fixed;
-  top: 10px;
-  left: 230px; 
+  top: 70px;
+  left: ${({openmenu}) => openmenu === "true" ? "230px" : "20px"}; 
   color: #000;
   background-color: #fff;
   padding: 15px;
   box-sizing: border-box;
   border-radius: 8px;
+  border: 0.5px solid rgba(0,0,0,0.15);
+  box-shadow: 0 5px 7px 0 rgba(0,0,0,0.15);
 `;
 
 export const NodeDraggable = styled.div`

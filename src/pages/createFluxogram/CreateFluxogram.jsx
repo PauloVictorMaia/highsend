@@ -22,6 +22,7 @@ import { WebsiteInputNode } from "../../components/nodes/WebsiteInputNode/Websit
 import { PhoneInputNode } from "../../components/nodes/PhoneInputNode/PhoneInputNode";
 import { DateInputNode } from "../../components/nodes/DateInputNode/DateInputNode";
 import { ButtonInputNode } from "../../components/nodes/ButtonInputNode/ButtonInputNode";
+import Header from "../../components/Header/Header";
 
 
 const proOptions = {
@@ -53,7 +54,7 @@ const INITIAL_NODE = [
   {
     id: 'start node',
     type: 'startNode',
-    position: { x: 350, y: 50 },
+    position: { x: 350, y: 80 },
     data: {},
   }
 ]
@@ -392,16 +393,18 @@ const Flow = () => {
         onEdgeUpdateStart={onEdgeUpdateStart}
         onEdgeUpdateEnd={onEdgeUpdateEnd}
       >
+
         <Background
           gap={12}
           size={2}
           color="#ddd"
-          style={{ backgroundColor: "#c1c1c1" }}
+          style={{ backgroundColor: "#f4f5f8" }}
         />
         <SelectedNodesToolbar />
         <Controls position="bottom-right" />
       </ReactFlow>
       <Sidebar />
+      <Header />
     </FlowContainer>
   );
 };

@@ -12,7 +12,7 @@ export const DashContent = styled.div`
   width: 220px;
   padding: 20px;
   box-sizing: border-box;
-  display: flex;
+  display: ${({openmenu}) => openmenu === "true" ? "flex" : "none"};
   flex-direction: column;
   justify-content: space-between;
 `;

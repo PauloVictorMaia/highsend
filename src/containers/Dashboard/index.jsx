@@ -6,12 +6,16 @@ import { FiSettings } from "react-icons/Fi";
 import { BsFillPeopleFill } from "react-icons/Bs";
 import { BiChat } from "react-icons/Bi";
 import { TbDeviceAnalytics } from "react-icons/Tb";
+import { useStateContext } from "../../contexts/ContextProvider";
 
 // eslint-disable-next-line react/prop-types
 const DashBoard = ({ children }) => {
+
+  const { openMenu } = useStateContext()
+
   return (
     <DashBoardContainer>
-      <DashContent>
+      <DashContent openmenu={openMenu ? "true" : "false"}>
         <div>
           <h2>High Send</h2>
           <MenuContainer>
