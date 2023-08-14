@@ -60,7 +60,7 @@ export const InputConfig = styled.div`
 export const RightHandle = styled(Handle)`
   width: 7px;
   height: 7px;
-  background-color: transparent;
+  background-color: blue;
   border: .400px solid #000;
-  right: -9px;
+  right: -29px;
 `;

@@ -8,8 +8,6 @@ export const DashBoardContainer = styled.div`
 `;
 
 export const DashContent = styled.div`
-  position: fixed;
-  left: -220px;
   background: #333;
   width: 220px;
   padding: 20px;

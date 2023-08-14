@@ -1,5 +1,4 @@
 import { DashBoardContainer, DashContent, MenuContainer, MenuItem, IconsContainer } from "./style";
-import { FaWpforms, FaBezierCurve } from "react-icons/fa";
 import { TiFlowSwitch } from "react-icons/Ti";
 // import { AiOutlineMenu } from "react-icons/Ti";
 import { TfiAgenda } from "react-icons/Tfi";
@@ -21,16 +20,8 @@ const DashBoard = ({ children }) => {
               <span>Fluxos de Bot</span>
             </MenuItem>
             <MenuItem>
-              <FaWpforms size={20} />
-              <span>Fluxos de Formulário</span>
-            </MenuItem>
-            <MenuItem>
               <TfiAgenda size={20} />
               <span>Agendas</span>
-            </MenuItem>
-            <MenuItem>
-              <FaBezierCurve size={20} />
-              <span>Eventos</span>
             </MenuItem>
             <MenuItem>
               <BsFillPeopleFill size={20} />

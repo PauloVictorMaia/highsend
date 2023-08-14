@@ -4,7 +4,7 @@ export const SidebarContainer = styled.aside`
   width: 300px;
   position: fixed;
   top: 10px;
-  left: 20px; 
+  left: 230px; 
   color: #000;
   background-color: #fff;
   padding: 15px;
