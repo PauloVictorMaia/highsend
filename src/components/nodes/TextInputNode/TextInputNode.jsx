@@ -1,23 +1,50 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { InputConfig, InputPreview, NodeContainer } from "./TextInputNode.style";
 import { useReactFlow, NodeToolbar } from "reactflow";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import TextFieldsIcon from '@mui/icons-material/TextFields';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
+
 export function TextInputNode({ data, id }) {
-  const {
-    setPlaceholder,
-    setButtonLabel,
-    createNewVariable,
-    variables,
-    setAssignedVariable
-  } = useStateContext();
+  const { setNodes } = useReactFlow();
+  const { createNewVariable, variables } = useStateContext();
   const [isVisible, setIsVisible] = useState(false)
   const { deleteElements } = useReactFlow();
   const onDelete = () => deleteElements({ nodes: [{ id }] });
   const [newVariable, setNewVariable] = useState("")
+  const [placeholder, setPlaceholder] = useState("Type your answer")
+  const [buttonLabel, setButtonLabel] = useState("Send")
+  const [assignedVariable, setAssignedVariable] = useState("")
+
+  useEffect(() => {
+    setNodes((nds) =>
+      nds.map((node) => {
+        if (node.id === id) {
+          const groupID = node.parentNode
+          const parentNodes = nds.filter((node) => node.parentNode === groupID)
+          node.data = {
+            ...node.data,
+            placeholder: placeholder,
+            buttonLabel: buttonLabel,
+            variable: assignedVariable,
+          };
+          setNodes((nds) =>
+            nds.map((node) => {
+              if (node.id === groupID) {
+                node.data.blocks = [...parentNodes]
+              }
+              return node;
+            })
+          )
+        }
+
+        return node;
+      })
+    );
+  }, [placeholder, buttonLabel, assignedVariable]);
 
   const sendNewVariable = async () => {
     try {
@@ -57,15 +84,15 @@ export function TextInputNode({ data, id }) {
         <span>Placeholder:</span>
         <input
           type="text"
-          placeholder={data.placeholder ? data.placeholder : "Type your answer"}
-          defaultValue={data.placeholder ? data.placeholder : "Type your answer"}
+          placeholder={data.placeholder}
+          defaultValue={data.placeholder}
           onChange={(e) => setPlaceholder(e.target.value)}
         />
         <span>Button Label:</span>
         <input
           type="text"
-          placeholder={data.buttonLabel ? data.buttonLabel : "Send"}
-          defaultValue={data.buttonLabel ? data.buttonLabel : "Send"}
+          placeholder={data.buttonLabel}
+          defaultValue={data.buttonLabel}
           onChange={(e) => setButtonLabel(e.target.value)}
         />
         <span>Create new variable:</span>
@@ -78,7 +105,7 @@ export function TextInputNode({ data, id }) {
         <button onClick={sendNewVariable}>Create</button>
 
         <span>Assign variable to this input</span>
-        <select defaultValue={data.variable ? data.variable : ""} onChange={(e) => setAssignedVariable(e.target.value)}>
+        <select defaultValue={data.variable} onChange={(e) => setAssignedVariable(e.target.value)}>
           <option value="">Select variable</option>
           {variables &&
             variables.map((variable, index) => (

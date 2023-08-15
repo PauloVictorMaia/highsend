@@ -1,15 +1,22 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { NodeContainer, AudioPreview, AudioNodeMenu, SendAudio, Tabs, Navigation, ListTabs, ChooseFileButton, FileInput, LinkInput } from "./AudioNode.style"
+import {
+  NodeContainer, AudioPreview,
+  AudioNodeMenu, SendAudio,
+  Tabs, Navigation,
+  ListTabs, ChooseFileButton,
+  FileInput, LinkInput
+} from "./AudioNode.style"
 import { useReactFlow, NodeToolbar } from "reactflow";
-import { useState } from "react";
-import { useStateContext } from "../../../contexts/ContextProvider";
+import { useState, useEffect } from "react";
 import AudioFileOutlinedIcon from '@mui/icons-material/AudioFileOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 
 function AudioNode({ data, id }) {
 
-  const { setNodeValue } = useStateContext();
+  const [nodeValue, setNodeValue] = useState(data.value || "")
+  const { setNodes } = useReactFlow();
   const [activeTab, setActiveTab] = useState("tab1");
   const [isVisible, setIsVisible] = useState(false)
 
@@ -24,6 +31,28 @@ function AudioNode({ data, id }) {
       setNodeValue(audioUrl)
     }
   }
+
+  useEffect(() => {
+    setNodes((nds) =>
+      nds.map((node) => {
+        if (node.id === id) {
+          const groupID = node.parentNode
+          const parentNodes = nds.filter((node) => node.parentNode === groupID)
+          node.data.value = nodeValue
+          setNodes((nds) =>
+            nds.map((node) => {
+              if (node.id === groupID) {
+                node.data.blocks = [...parentNodes]
+              }
+              return node;
+            })
+          )
+        }
+
+        return node;
+      })
+    );
+  }, [nodeValue]);
 
   return (
     <NodeContainer>
@@ -44,12 +73,12 @@ function AudioNode({ data, id }) {
 
       <AudioPreview onClick={() => setIsVisible(!isVisible)}>
         <AudioFileOutlinedIcon />
-        {data.value === "" ?
+        {nodeValue === "" ?
           <span>Click to edit...</span>
           :
           <audio controls>
-            <source src={data.value} type="audio/mpeg" />
-            <source src={data.value} type="audio/wav" />
+            <source src={nodeValue} type="audio/mpeg" />
+            <source src={nodeValue} type="audio/wav" />
           </audio>
         }
       </AudioPreview>
@@ -76,7 +105,7 @@ function AudioNode({ data, id }) {
             <LinkInput
               type="text"
               onChange={(e) => setNodeValue(e.target.value)}
-              value={data.value || ""}
+              value={nodeValue}
             />
           )}
           {activeTab === "tab2" && (

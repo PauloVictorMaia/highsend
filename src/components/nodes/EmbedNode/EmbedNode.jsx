@@ -1,19 +1,41 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { NodeContainer, AddLink, LinkInput } from "./EmbedNode.style"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useReactFlow, NodeToolbar } from "reactflow";
-import { useStateContext } from "../../../contexts/ContextProvider";
 import LinkOutlinedIcon from '@mui/icons-material/LinkOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 function EmbedNode({ data, id }) {
 
-  const { setNodeValue } = useStateContext();
+  const [nodeValue, setNodeValue] = useState(data.value || "")
   const [isVisible, setIsVisible] = useState(false)
-
+  const { setNodes } = useReactFlow();
   const { deleteElements } = useReactFlow();
 
   const onDelete = () => deleteElements({ nodes: [{ id }] });
+
+  useEffect(() => {
+    setNodes((nds) =>
+      nds.map((node) => {
+        if (node.id === id) {
+          const groupID = node.parentNode
+          const parentNodes = nds.filter((node) => node.parentNode === groupID)
+          node.data.value = nodeValue
+          setNodes((nds) =>
+            nds.map((node) => {
+              if (node.id === groupID) {
+                node.data.blocks = [...parentNodes]
+              }
+              return node;
+            })
+          )
+        }
+
+        return node;
+      })
+    );
+  }, [nodeValue]);
 
   return (
     <NodeContainer>
@@ -34,7 +56,7 @@ function EmbedNode({ data, id }) {
 
       <AddLink onClick={() => setIsVisible(!isVisible)}>
         <LinkOutlinedIcon />
-        {data.value === "" ?
+        {nodeValue === "" ?
           <span>Click to edit...</span>
           :
           <span>Show embed</span>
@@ -44,7 +66,7 @@ function EmbedNode({ data, id }) {
       <LinkInput
         isvisible={isVisible ? "true" : "false"}
         type="text"
-        value={data.value}
+        value={nodeValue}
         placeholder="Paste the link"
         onChange={(e) => setNodeValue(e.target.value)}
       />

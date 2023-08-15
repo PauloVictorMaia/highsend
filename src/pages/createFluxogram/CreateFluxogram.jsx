@@ -9,9 +9,8 @@ import ReactFlow, {
 } from "reactflow";
 import 'reactflow/dist/style.css'
 import { FlowContainer } from "./CreateFluxogram.style";
-import { useCallback, useRef, useEffect } from "react";
+import { useCallback, useRef } from "react";
 import Sidebar from '../../components/sidebar/Sidebar'
-import { useStateContext } from "../../contexts/ContextProvider";
 import DefaultEdge from "../../components/edges/DefaultEdge/DefaultEdge";
 import { StartNode } from "../../components/nodes/StartNode/StartNode";
 import { TextNode } from "../../components/nodes/TextNode/TextNode";
@@ -66,24 +65,14 @@ const INITIAL_NODE = [
 ]
 
 
-
 let label = 0
-let subnodeLabel = 0
 const getLabel = () => `Node #${label++}`
-const getSubNodeLabel = () => `Node #${subnodeLabel++}`
 
 const Flow = () => {
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [nodes, setNodes, onNodesChange] = useNodesState(INITIAL_NODE);
   const wrapperRef = useRef(null);
   const edgeUpdateSuccessful = useRef(true);
-  const {
-    nodeLabel, setNodeLabel,
-    nodeValue, setNodeValue,
-    placeholder, setPlaceholder,
-    buttonLabel, setButtonLabel,
-    assignedVariable, setAssignedVariable
-  } = useStateContext();
 
   const { project, getIntersectingNodes } = useReactFlow();
   const store = useStoreApi();
@@ -157,10 +146,7 @@ const Flow = () => {
         id: getId(),
         type: subType,
         position: { x: 20, y: 50 },
-        data: {
-          label: getSubNodeLabel(),
-          value: "",
-        },
+        data: {},
         parentNode: newNode.id,
         extent: 'parent',
         draggable: false,
@@ -215,80 +201,80 @@ const Flow = () => {
 
   };
 
-  useEffect(() => {
-    setNodes((nds) =>
-      nds.map((node) => {
-        if (node.selected === true) {
-          const groupID = node.parentNode
-          const parentNodes = nodes.filter((node) => node.parentNode === groupID)
-          node.data = {
-            ...node.data,
-            label: nodeLabel,
-          };
-          setNodes((nds) =>
-            nds.map((node) => {
-              if (node.id === groupID) {
-                node.data.blocks = [...parentNodes]
-              }
-              return node;
-            })
-          )
-        }
-        return node;
-      })
-    );
-  }, [nodeLabel, setNodeLabel]);
+  // useEffect(() => {
+  //   setNodes((nds) =>
+  //     nds.map((node) => {
+  //       if (node.selected === true) {
+  //         const groupID = node.parentNode
+  //         const parentNodes = nodes.filter((node) => node.parentNode === groupID)
+  //         node.data = {
+  //           ...node.data,
+  //           label: nodeLabel,
+  //         };
+  //         setNodes((nds) =>
+  //           nds.map((node) => {
+  //             if (node.id === groupID) {
+  //               node.data.blocks = [...parentNodes]
+  //             }
+  //             return node;
+  //           })
+  //         )
+  //       }
+  //       return node;
+  //     })
+  //   );
+  // }, [nodeLabel]);
 
-  useEffect(() => {
-    setNodes((nds) =>
-      nds.map((node) => {
-        if (node.selected === true) {
-          const groupID = node.parentNode
-          const parentNodes = nodes.filter((node) => node.parentNode === groupID)
-          node.data = {
-            ...node.data,
-            value: nodeValue,
-          };
-          setNodes((nds) =>
-            nds.map((node) => {
-              if (node.id === groupID) {
-                node.data.blocks = [...parentNodes]
-              }
-              return node;
-            })
-          )
-        }
-        return node;
-      })
-    );
-  }, [nodeValue, setNodeValue]);
+  // useEffect(() => {
+  //   setNodes((nds) =>
+  //     nds.map((node) => {
+  //       if (node.selected === true) {
+  //         const groupID = node.parentNode
+  //         const parentNodes = nodes.filter((node) => node.parentNode === groupID)
+  //         node.data = {
+  //           ...node.data,
+  //           value: nodeValue,
+  //         };
+  //         setNodes((nds) =>
+  //           nds.map((node) => {
+  //             if (node.id === groupID) {
+  //               node.data.blocks = [...parentNodes]
+  //             }
+  //             return node;
+  //           })
+  //         )
+  //       }
+  //       return node;
+  //     })
+  //   );
+  // }, [nodeValue]);
 
-  useEffect(() => {
-    setNodes((nds) =>
-      nds.map((node) => {
-        if (node.selected === true) {
-          const groupID = node.parentNode
-          const parentNodes = nodes.filter((node) => node.parentNode === groupID)
-          node.data = {
-            ...node.data,
-            placeholder: placeholder,
-            buttonLabel: buttonLabel,
-            variable: assignedVariable,
-          };
-          setNodes((nds) =>
-            nds.map((node) => {
-              if (node.id === groupID) {
-                node.data.blocks = [...parentNodes]
-              }
-              return node;
-            })
-          )
-        }
+  // useEffect(() => {
+  //   setNodes((nds) =>
+  //     nds.map((node) => {
+  //       if (node.selected === true) {
+  //         const groupID = node.parentNode
+  //         const parentNodes = nodes.filter((node) => node.parentNode === groupID)
+  //         node.data = {
+  //           ...node.data,
+  //           placeholder: placeholder,
+  //           buttonLabel: buttonLabel,
+  //           variable: assignedVariable,
+  //         };
+  //         setNodes((nds) =>
+  //           nds.map((node) => {
+  //             if (node.id === groupID) {
+  //               node.data.blocks = [...parentNodes]
+  //             }
+  //             return node;
+  //           })
+  //         )
+  //       }
 
-        return node;
-      })
-    );
-  }, [placeholder, setPlaceholder, buttonLabel, setButtonLabel, assignedVariable, setAssignedVariable]);
+  //       return node;
+  //     })
+  //   );
+  // }, [placeholder, buttonLabel, assignedVariable]);
 
   const onNodesDelete = useCallback(
     (deleted) => {

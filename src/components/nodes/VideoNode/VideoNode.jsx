@@ -1,23 +1,53 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { LinkInput, NodeContainer, PreviewImage, VideoPreview } from "./VideoNode.style";
 import { useReactFlow, NodeToolbar } from "reactflow";
-import { useStateContext } from "../../../contexts/ContextProvider";
 import MovieCreationOutlinedIcon from '@mui/icons-material/MovieCreationOutlined';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
-const getYoutubeThumbnail = (url) => {
-  const videoId = url.split("v=")[1];
-  return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-};
 
 export function VideoNode({ data, id }) {
-  const { setNodeValue } = useStateContext();
+  const [nodeValue, setNodeValue] = useState(data.value || "")
+  const [videoLink, setVideoLink] = useState("")
+  const { setNodes } = useReactFlow();
   const [isVisible, setIsVisible] = useState(false)
 
   const { deleteElements } = useReactFlow();
 
   const onDelete = () => deleteElements({ nodes: [{ id }] });
+
+  const getYoutubeThumbnail = (url) => {
+    if (url === "") {
+      return
+    }
+    setNodeValue(url)
+    const videoId = url.split("v=")[1];
+    setVideoLink(`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`)
+  };
+
+  useEffect(() => {
+    setNodes((nds) =>
+      nds.map((node) => {
+        if (node.id === id) {
+          const groupID = node.parentNode
+          const parentNodes = nds.filter((node) => node.parentNode === groupID)
+          node.data.value = nodeValue
+          setNodes((nds) =>
+            nds.map((node) => {
+              if (node.id === groupID) {
+                node.data.blocks = [...parentNodes]
+              }
+              return node;
+            })
+          )
+        }
+
+        return node;
+      })
+    );
+    getYoutubeThumbnail(nodeValue)
+  }, [nodeValue]);
 
   return (
     <NodeContainer>
@@ -38,11 +68,11 @@ export function VideoNode({ data, id }) {
 
       <VideoPreview onClick={() => setIsVisible(!isVisible)}>
         <MovieCreationOutlinedIcon />
-        {data.value === "" ?
+        {videoLink === "" ?
           <span>Click to edit...</span>
           :
           <PreviewImage
-            src={getYoutubeThumbnail(data.value)}
+            src={videoLink}
             alt="Video thumbnail"
           />
         }
@@ -51,9 +81,9 @@ export function VideoNode({ data, id }) {
       <LinkInput
         isvisible={isVisible ? "true" : "false"}
         type="text"
-        value={data.value}
+        value={nodeValue}
         placeholder="link youtube / vimeo"
-        onChange={(e) => setNodeValue(e.target.value)}
+        onChange={(e) => getYoutubeThumbnail(e.target.value)}
       />
 
     </NodeContainer>

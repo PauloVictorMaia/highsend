@@ -1,13 +1,21 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { Image, ImageNodeMenu, ImagePreview, NodeContainer, Navigation, ListTabs, Tabs, SendImages, LinkInput, ChooseFileButton, FileInput } from "./ImageNode.style";
+import {
+  Image, ImageNodeMenu,
+  ImagePreview, NodeContainer,
+  Navigation, ListTabs,
+  Tabs, SendImages,
+  LinkInput, ChooseFileButton,
+  FileInput
+} from "./ImageNode.style";
 import { useReactFlow, NodeToolbar } from "reactflow";
-import { useStateContext } from "../../../contexts/ContextProvider";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
-export function ImageNode({ data, id }) {
-  const { setNodeValue } = useStateContext();
+export function ImageNode({ id, data }) {
+  const [nodeValue, setNodeValue] = useState(data.value || "")
+  const { setNodes } = useReactFlow();
   const [isVisible, setIsVisible] = useState(false)
   const [activeTab, setActiveTab] = useState("tab1");
 
@@ -18,8 +26,29 @@ export function ImageNode({ data, id }) {
   };
 
   const { deleteElements } = useReactFlow();
-
   const onDelete = () => deleteElements({ nodes: [{ id }] });
+
+  useEffect(() => {
+    setNodes((nds) =>
+      nds.map((node) => {
+        if (node.id === id) {
+          const groupID = node.parentNode
+          const parentNodes = nds.filter((node) => node.parentNode === groupID)
+          node.data.value = nodeValue
+          setNodes((nds) =>
+            nds.map((node) => {
+              if (node.id === groupID) {
+                node.data.blocks = [...parentNodes]
+              }
+              return node;
+            })
+          )
+        }
+
+        return node;
+      })
+    );
+  }, [nodeValue]);
 
   return (
     <NodeContainer>
@@ -40,10 +69,10 @@ export function ImageNode({ data, id }) {
 
       <ImagePreview onClick={() => setIsVisible(!isVisible)}>
         <PhotoCameraOutlinedIcon />
-        {data.value === "" ?
+        {nodeValue === "" ?
           <span>Click to edit...</span>
           :
-          <Image src={data.value} alt="preview da imagem" />
+          <Image src={nodeValue} alt="preview da imagem" />
         }
       </ImagePreview>
 
@@ -68,6 +97,7 @@ export function ImageNode({ data, id }) {
           {activeTab === "tab1" && (
             <LinkInput
               type="text"
+              value={nodeValue}
               onChange={(e) => setNodeValue(e.target.value)}
             />
           )}
