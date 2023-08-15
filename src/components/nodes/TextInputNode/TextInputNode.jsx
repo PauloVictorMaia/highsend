@@ -15,9 +15,9 @@ export function TextInputNode({ data, id }) {
   const { deleteElements } = useReactFlow();
   const onDelete = () => deleteElements({ nodes: [{ id }] });
   const [newVariable, setNewVariable] = useState("")
-  const [placeholder, setPlaceholder] = useState("Type your answer")
-  const [buttonLabel, setButtonLabel] = useState("Send")
-  const [assignedVariable, setAssignedVariable] = useState("")
+  const [placeholder, setPlaceholder] = useState(data.placeholder || "Type your answer...")
+  const [buttonLabel, setButtonLabel] = useState(data.buttonLabel || "Send")
+  const [assignedVariable, setAssignedVariable] = useState(data.variable || "")
 
   useEffect(() => {
     setNodes((nds) =>
@@ -73,39 +73,34 @@ export function TextInputNode({ data, id }) {
 
       <InputPreview onClick={() => setIsVisible(!isVisible)}>
         <TextFieldsIcon style={{ fontSize: "large", color: "#E67200" }} />
-        {data.placeholder ?
-          <span>{data.placeholder}</span>
-          :
-          <span>Type your answer</span>
-        }
+        <span>{placeholder}</span>
       </InputPreview>
 
       <InputConfig isvisible={isVisible ? "true" : "false"}>
         <span>Placeholder:</span>
         <input
           type="text"
-          placeholder={data.placeholder}
-          defaultValue={data.placeholder}
+          placeholder={placeholder}
+          value={placeholder}
           onChange={(e) => setPlaceholder(e.target.value)}
         />
         <span>Button Label:</span>
         <input
           type="text"
-          placeholder={data.buttonLabel}
-          defaultValue={data.buttonLabel}
+          placeholder={buttonLabel}
+          value={buttonLabel}
           onChange={(e) => setButtonLabel(e.target.value)}
         />
         <span>Create new variable:</span>
         <input
           type="text"
           placeholder="set name of new variable"
-          value={newVariable}
           onChange={(e) => setNewVariable(e.target.value)}
         />
         <button onClick={sendNewVariable}>Create</button>
 
         <span>Assign variable to this input</span>
-        <select defaultValue={data.variable} onChange={(e) => setAssignedVariable(e.target.value)}>
+        <select value={assignedVariable} onChange={(e) => setAssignedVariable(e.target.value)}>
           <option value="">Select variable</option>
           {variables &&
             variables.map((variable, index) => (

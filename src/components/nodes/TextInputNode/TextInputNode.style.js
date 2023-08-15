@@ -28,11 +28,12 @@ export const InputConfig = styled.div`
   flex-direction: column;
   box-sizing: border-box;
   left: -325px;
-  top: -30px;
+  top: -130px;
   border-radius: 5px;
   background-color: #fff;
   padding: 10px;
   box-sizing: border-box;
+  box-shadow: 0 5px 7px 0 rgba(0,0,0,0.15);
 
   >span {
     font-size: 1rem;
