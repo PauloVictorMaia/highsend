@@ -29,11 +29,12 @@ export const InputConfig = styled.div`
   flex-direction: column;
   box-sizing: border-box;
   left: -325px;
-  top: -30px;
+  top: -100px;
   border-radius: 5px;
   background-color: #fff;
   padding: 10px;
   box-sizing: border-box;
+  box-shadow: 0 5px 7px 0 rgba(0,0,0,0.15);
 
   >span {
     font-size: 1rem;
@@ -58,9 +59,15 @@ export const InputConfig = styled.div`
 `;
 
 export const RightHandle = styled(Handle)`
-  width: 7px;
-  height: 7px;
-  background-color: blue;
-  border: .400px solid #000;
+  width: 10px;
+  height: 10px;
+  background-color: rgba(153, 51, 255);
   right: -29px;
+`;
+
+export const MultipleChoiceInput = styled.div`
+  width: 100%;
+  height: 30px;
+  display: flex;
+  justify-content: space-between;
 `;

@@ -18,6 +18,12 @@ export const Label = styled.input`
   font-size: 16px;
   border: none;
   width: 80%;
+  outline: none;
+  border-radius: 8px;
+
+  &:focus {
+    border: 1px solid rgba(153, 153, 255,1);
+  }
 `;
 
 export const LeftHandle = styled(Handle)`
