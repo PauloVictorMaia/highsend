@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { InputConfig, InputPreview, NodeContainer } from "./DateInputNode.style";
+import { InputConfig, InputPreview, IsRangeInputContainer, LabelsInputContainer, NodeContainer } from "./DateInputNode.style";
 import { useReactFlow, NodeToolbar } from "reactflow";
 import { useState, useEffect } from "react";
 import { useStateContext } from "../../../contexts/ContextProvider";
@@ -16,6 +16,10 @@ export function DateInputNode({ data, id }) {
   const [newVariable, setNewVariable] = useState("")
   const [buttonLabel, setButtonLabel] = useState(data.buttonLabel || "Send")
   const [assignedVariable, setAssignedVariable] = useState(data.variable || "")
+  const [isRange, setIsRange] = useState(data.isRange || false)
+  const [hasTime, setHasTime] = useState(data.hasTime || false)
+  const [to, setTo] = useState(data.to || 'To')
+  const [from, setFrom] = useState(data.from || 'From')
 
   const sendNewVariable = async () => {
     try {
@@ -35,6 +39,10 @@ export function DateInputNode({ data, id }) {
             ...node.data,
             buttonLabel: buttonLabel,
             variable: assignedVariable,
+            isRange: isRange,
+            hasTime: hasTime,
+            from: from,
+            to: to,
           };
           setNodes((nds) =>
             nds.map((node) => {
@@ -49,7 +57,7 @@ export function DateInputNode({ data, id }) {
         return node;
       })
     );
-  }, [buttonLabel, assignedVariable]);
+  }, [buttonLabel, assignedVariable, isRange, hasTime, to, from]);
 
   return (
     <NodeContainer>
@@ -74,6 +82,38 @@ export function DateInputNode({ data, id }) {
       </InputPreview>
 
       <InputConfig isvisible={isVisible ? "true" : "false"}>
+        <IsRangeInputContainer>
+          <span>Is range?</span>
+          <input
+            type="checkbox"
+            checked={isRange}
+            onChange={() => setIsRange(!isRange)}
+          />
+        </IsRangeInputContainer>
+        <IsRangeInputContainer>
+          <span>With time?</span>
+          <input
+            type="checkbox"
+            checked={hasTime}
+            onChange={() => setHasTime(!hasTime)}
+          />
+        </IsRangeInputContainer>
+        <LabelsInputContainer visible={isRange ? "true" : "false"}>
+          <span>From:</span>
+          <input
+            type="text"
+            placeholder={from}
+            value={from}
+            onChange={(e) => setFrom(e.target.value)}
+          />
+          <span>To:</span>
+          <input
+            type="text"
+            placeholder={to}
+            value={to}
+            onChange={(e) => setTo(e.target.value)}
+          />
+        </LabelsInputContainer>
         <span>Button Label:</span>
         <input
           type="text"

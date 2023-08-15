@@ -56,3 +56,16 @@ export const InputConfig = styled.div`
     justify-content: center;
   }
 `;
+
+export const IsRangeInputContainer = styled.div`
+  width: 100%;
+  height: 30px;
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const LabelsInputContainer = styled.div`
+  width: 100%;
+  display: ${({visible}) => visible === "true" ? 'flex' : 'none'};
+  flex-direction: column;
+`;
