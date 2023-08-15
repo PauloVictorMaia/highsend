@@ -219,10 +219,20 @@ const Flow = () => {
     setNodes((nds) =>
       nds.map((node) => {
         if (node.selected === true) {
+          const groupID = node.parentNode
+          const parentNodes = nodes.filter((node) => node.parentNode === groupID)
           node.data = {
             ...node.data,
             label: nodeLabel,
           };
+          setNodes((nds) =>
+            nds.map((node) => {
+              if (node.id === groupID) {
+                node.data.blocks = [...parentNodes]
+              }
+              return node;
+            })
+          )
         }
         return node;
       })
@@ -233,10 +243,20 @@ const Flow = () => {
     setNodes((nds) =>
       nds.map((node) => {
         if (node.selected === true) {
+          const groupID = node.parentNode
+          const parentNodes = nodes.filter((node) => node.parentNode === groupID)
           node.data = {
             ...node.data,
             value: nodeValue,
           };
+          setNodes((nds) =>
+            nds.map((node) => {
+              if (node.id === groupID) {
+                node.data.blocks = [...parentNodes]
+              }
+              return node;
+            })
+          )
         }
         return node;
       })
@@ -247,12 +267,22 @@ const Flow = () => {
     setNodes((nds) =>
       nds.map((node) => {
         if (node.selected === true) {
+          const groupID = node.parentNode
+          const parentNodes = nodes.filter((node) => node.parentNode === groupID)
           node.data = {
             ...node.data,
             placeholder: placeholder,
             buttonLabel: buttonLabel,
             variable: assignedVariable,
           };
+          setNodes((nds) =>
+            nds.map((node) => {
+              if (node.id === groupID) {
+                node.data.blocks = [...parentNodes]
+              }
+              return node;
+            })
+          )
         }
 
         return node;
