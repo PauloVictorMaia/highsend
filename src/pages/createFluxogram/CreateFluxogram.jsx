@@ -1,5 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import ReactFlow, { Background, Controls, addEdge, useEdgesState, useNodesState, getConnectedEdges, getOutgoers, getIncomers, updateEdge, useReactFlow, useStoreApi, ReactFlowProvider } from "reactflow";
+import ReactFlow, {
+  Background, Controls,
+  addEdge, useEdgesState,
+  useNodesState, getConnectedEdges,
+  getOutgoers, getIncomers,
+  updateEdge, useReactFlow,
+  useStoreApi, ReactFlowProvider
+} from "reactflow";
 import 'reactflow/dist/style.css'
 import { FlowContainer } from "./CreateFluxogram.style";
 import { useCallback, useRef, useEffect } from "react";
@@ -10,17 +17,17 @@ import { StartNode } from "../../components/nodes/StartNode/StartNode";
 import { TextNode } from "../../components/nodes/TextNode/TextNode";
 import { VideoNode } from "../../components/nodes/VideoNode/VideoNode";
 import { ImageNode } from "../../components/nodes/ImageNode/ImageNode";
+import { TextInputNode } from "../../components/nodes/TextInputNode/TextInputNode";
 import EmbedNode from "../../components/nodes/EmbedNode/EmbedNode";
 import AudioNode from "../../components/nodes/AudioNode/AudioNode";
-import { TextInputNode } from "../../components/nodes/TextInputNode/TextInputNode";
 import GroupNode from "../../components/nodes/GroupNode/GroupNode";
-import { sortNodes, getId, getNodePositionInsideParent } from '../../utils';
 import { NumberInputNode } from "../../components/nodes/NumberInputNode/NumberInputNode";
 import { EmailInputNode } from "../../components/nodes/EmailInputNode/EmailInputNode";
 import { WebsiteInputNode } from "../../components/nodes/WebsiteInputNode/WebsiteInputNode";
 import { PhoneInputNode } from "../../components/nodes/PhoneInputNode/PhoneInputNode";
 import { DateInputNode } from "../../components/nodes/DateInputNode/DateInputNode";
 import { ButtonInputNode } from "../../components/nodes/ButtonInputNode/ButtonInputNode";
+import { sortNodes, getId, getNodePositionInsideParent } from '../../utils';
 import Header from "../../components/Header/Header";
 
 
@@ -75,7 +82,6 @@ const Flow = () => {
     nodeValue, setNodeValue,
     placeholder, setPlaceholder,
     buttonLabel, setButtonLabel,
-    // variables,
     assignedVariable, setAssignedVariable
   } = useStateContext();
 
@@ -84,8 +90,6 @@ const Flow = () => {
   const { deleteElements } = useReactFlow();
 
   console.log(nodes)
-  // console.log(edges)
-  // console.log(variables)
 
   const onConnect = useCallback((connection) => {
     return setEdges(edges => addEdge(connection, edges))
@@ -109,7 +113,6 @@ const Flow = () => {
     if (!edgeUpdateSuccessful.current) {
       setEdges((eds) => eds.filter((e) => e.id !== edge.id));
     }
-
     edgeUpdateSuccessful.current = true;
   }, []);
 
@@ -123,8 +126,13 @@ const Flow = () => {
       const heightString = event.dataTransfer.getData('application/reactflow/height');
       const height = parseFloat(heightString)
       let position = project({ x: event.clientX - wrapperBounds.x - 20, y: event.clientY - wrapperBounds.top - 20 });
-      const nodeStyle = type === 'group' ?
-        { width: 250, height: height + 60, border: "none", padding: '0', borderRadius: '8px' } : undefined;
+      const nodeStyle = type === 'group' ? {
+        width: 250,
+        height: height + 60,
+        border: "none",
+        padding: '0',
+        borderRadius: '8px'
+      } : undefined;
 
       const intersections = getIntersectingNodes({
         x: position.x,
@@ -140,7 +148,6 @@ const Flow = () => {
         position,
         data: {
           label: getLabel(),
-          value: "",
           blocks: [],
         },
         style: nodeStyle,
@@ -208,7 +215,6 @@ const Flow = () => {
 
   };
 
-  //Mudança de nome e do value 
   useEffect(() => {
     setNodes((nds) =>
       nds.map((node) => {
@@ -216,14 +222,26 @@ const Flow = () => {
           node.data = {
             ...node.data,
             label: nodeLabel,
-            value: nodeValue,
           };
         }
-
         return node;
       })
     );
-  }, [nodeLabel, setNodeLabel, nodeValue, setNodeValue]);
+  }, [nodeLabel, setNodeLabel]);
+
+  useEffect(() => {
+    setNodes((nds) =>
+      nds.map((node) => {
+        if (node.selected === true) {
+          node.data = {
+            ...node.data,
+            value: nodeValue,
+          };
+        }
+        return node;
+      })
+    );
+  }, [nodeValue, setNodeValue]);
 
   useEffect(() => {
     setNodes((nds) =>
@@ -271,7 +289,17 @@ const Flow = () => {
         setNodes((nds) =>
           nds.map((node) => {
             if (node.id === groupID) {
-              node = { ...node, style: { width: 250, height: groupNodeHeight, padding: '0px', borderRadius: '8px', backgroundColor: '#fff', border: "none" } }
+              node = {
+                ...node,
+                style: {
+                  width: 250,
+                  height: groupNodeHeight,
+                  padding: '0px',
+                  borderRadius: '8px',
+                  backgroundColor: '#fff',
+                  border: "none"
+                }
+              }
               node.data.blocks = [...parentNodes]
             }
 
