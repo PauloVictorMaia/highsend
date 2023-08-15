@@ -8,10 +8,9 @@ import PhoneIphoneOutlinedIcon from '@mui/icons-material/PhoneIphoneOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import countries from 'countries-list';
 
-export function PhoneInputNode({ data, id }) {
+export function PhoneInputNode({ data, id, selected }) {
   const { createNewVariable, variables } = useStateContext();
   const { setNodes } = useReactFlow();
-  const [isVisible, setIsVisible] = useState(false)
   const { deleteElements } = useReactFlow();
   const onDelete = () => deleteElements({ nodes: [{ id }] });
   const [newVariable, setNewVariable] = useState("")
@@ -80,12 +79,12 @@ export function PhoneInputNode({ data, id }) {
         <DeleteOutlineIcon style={{ cursor: 'pointer', fontSize: 'large' }} onClick={onDelete} />
       </NodeToolbar>
 
-      <InputPreview onClick={() => setIsVisible(!isVisible)}>
+      <InputPreview>
         <PhoneIphoneOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
         <span>{placeholder}</span>
       </InputPreview>
 
-      <InputConfig isvisible={isVisible ? "true" : "false"}>
+      <InputConfig isvisible={selected ? "true" : "false"}>
         <span>Placeholder:</span>
         <input
           type="text"

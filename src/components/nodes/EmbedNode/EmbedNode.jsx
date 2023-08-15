@@ -6,10 +6,9 @@ import { useReactFlow, NodeToolbar } from "reactflow";
 import LinkOutlinedIcon from '@mui/icons-material/LinkOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
-function EmbedNode({ data, id }) {
+function EmbedNode({ data, id, selected }) {
 
   const [nodeValue, setNodeValue] = useState(data.value || "")
-  const [isVisible, setIsVisible] = useState(false)
   const { setNodes } = useReactFlow();
   const { deleteElements } = useReactFlow();
 
@@ -54,7 +53,7 @@ function EmbedNode({ data, id }) {
         <DeleteOutlineIcon style={{ cursor: 'pointer', fontSize: 'large' }} onClick={onDelete} />
       </NodeToolbar>
 
-      <AddLink onClick={() => setIsVisible(!isVisible)}>
+      <AddLink>
         <LinkOutlinedIcon />
         {nodeValue === "" ?
           <span>Click to edit...</span>
@@ -64,7 +63,7 @@ function EmbedNode({ data, id }) {
       </AddLink>
 
       <LinkInput
-        isvisible={isVisible ? "true" : "false"}
+        isvisible={selected ? "true" : "false"}
         type="text"
         value={nodeValue}
         placeholder="Paste the link"

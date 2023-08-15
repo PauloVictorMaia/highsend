@@ -8,10 +8,9 @@ import TextFieldsIcon from '@mui/icons-material/TextFields';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 
-export function TextInputNode({ data, id }) {
+export function TextInputNode({ data, id, selected }) {
   const { setNodes } = useReactFlow();
   const { createNewVariable, variables } = useStateContext();
-  const [isVisible, setIsVisible] = useState(false)
   const { deleteElements } = useReactFlow();
   const onDelete = () => deleteElements({ nodes: [{ id }] });
   const [newVariable, setNewVariable] = useState("")
@@ -71,12 +70,12 @@ export function TextInputNode({ data, id }) {
         <DeleteOutlineIcon style={{ cursor: 'pointer', fontSize: 'large' }} onClick={onDelete} />
       </NodeToolbar>
 
-      <InputPreview onClick={() => setIsVisible(!isVisible)}>
+      <InputPreview>
         <TextFieldsIcon style={{ fontSize: "large", color: "#E67200" }} />
         <span>{placeholder}</span>
       </InputPreview>
 
-      <InputConfig isvisible={isVisible ? "true" : "false"}>
+      <InputConfig isvisible={selected ? "true" : "false"}>
         <span>Placeholder:</span>
         <input
           type="text"

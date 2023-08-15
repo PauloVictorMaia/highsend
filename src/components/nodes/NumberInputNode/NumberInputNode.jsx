@@ -7,10 +7,9 @@ import { useStateContext } from "../../../contexts/ContextProvider";
 import NumbersIcon from '@mui/icons-material/Numbers';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
-export function NumberInputNode({ data, id }) {
+export function NumberInputNode({ data, id, selected }) {
   const { createNewVariable, variables } = useStateContext();
   const { setNodes } = useReactFlow();
-  const [isVisible, setIsVisible] = useState(false)
   const { deleteElements } = useReactFlow();
   const onDelete = () => deleteElements({ nodes: [{ id }] });
   const [newVariable, setNewVariable] = useState("")
@@ -74,12 +73,12 @@ export function NumberInputNode({ data, id }) {
         <DeleteOutlineIcon style={{ cursor: 'pointer', fontSize: 'large' }} onClick={onDelete} />
       </NodeToolbar>
 
-      <InputPreview onClick={() => setIsVisible(!isVisible)}>
+      <InputPreview>
         <NumbersIcon style={{ fontSize: "large", color: "#E67200" }} />
         <span>{placeholder}</span>
       </InputPreview>
 
-      <InputConfig isvisible={isVisible ? "true" : "false"}>
+      <InputConfig isvisible={selected ? "true" : "false"}>
         <span>Placeholder:</span>
         <input
           type="text"

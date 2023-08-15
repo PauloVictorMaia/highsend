@@ -13,12 +13,11 @@ import AudioFileOutlinedIcon from '@mui/icons-material/AudioFileOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 
-function AudioNode({ data, id }) {
+function AudioNode({ data, id, selected }) {
 
   const [nodeValue, setNodeValue] = useState(data.value || "")
   const { setNodes } = useReactFlow();
   const [activeTab, setActiveTab] = useState("tab1");
-  const [isVisible, setIsVisible] = useState(false)
 
   const { deleteElements } = useReactFlow();
 
@@ -71,7 +70,7 @@ function AudioNode({ data, id }) {
         <DeleteOutlineIcon style={{ cursor: 'pointer', fontSize: 'large' }} onClick={onDelete} />
       </NodeToolbar>
 
-      <AudioPreview onClick={() => setIsVisible(!isVisible)}>
+      <AudioPreview>
         <AudioFileOutlinedIcon />
         {nodeValue === "" ?
           <span>Click to edit...</span>
@@ -83,7 +82,7 @@ function AudioNode({ data, id }) {
         }
       </AudioPreview>
 
-      <AudioNodeMenu isvisible={isVisible ? "true" : "false"}>
+      <AudioNodeMenu isvisible={selected ? "true" : "false"}>
         <Navigation>
           <ListTabs>
             <Tabs

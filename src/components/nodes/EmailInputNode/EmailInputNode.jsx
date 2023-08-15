@@ -7,10 +7,9 @@ import { useStateContext } from "../../../contexts/ContextProvider";
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
-export function EmailInputNode({ data, id }) {
+export function EmailInputNode({ data, id, selected }) {
   const { createNewVariable, variables } = useStateContext();
   const { setNodes } = useReactFlow();
-  const [isVisible, setIsVisible] = useState(false)
   const { deleteElements } = useReactFlow();
   const onDelete = () => deleteElements({ nodes: [{ id }] });
   const [newVariable, setNewVariable] = useState("")
@@ -72,12 +71,12 @@ export function EmailInputNode({ data, id }) {
         <DeleteOutlineIcon style={{ cursor: 'pointer', fontSize: 'large' }} onClick={onDelete} />
       </NodeToolbar>
 
-      <InputPreview onClick={() => setIsVisible(!isVisible)}>
+      <InputPreview>
         <EmailOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
         <span>{placeholder}</span>
       </InputPreview>
 
-      <InputConfig isvisible={isVisible ? "true" : "false"}>
+      <InputConfig isvisible={selected ? "true" : "false"}>
         <span>Placeholder:</span>
         <input
           type="text"

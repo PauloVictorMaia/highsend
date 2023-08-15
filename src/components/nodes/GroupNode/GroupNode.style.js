@@ -19,7 +19,7 @@ export const Label = styled.input`
   border: none;
   width: 80%;
   outline: none;
-  border-radius: 8px;
+  border-radius: 5px;
 
   &:focus {
     border: 1px solid rgba(153, 153, 255,1);

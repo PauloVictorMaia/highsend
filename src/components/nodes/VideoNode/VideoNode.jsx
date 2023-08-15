@@ -7,11 +7,10 @@ import { useState, useEffect } from "react";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 
-export function VideoNode({ data, id }) {
+export function VideoNode({ data, id, selected }) {
   const [nodeValue, setNodeValue] = useState(data.value || "")
   const [videoLink, setVideoLink] = useState("")
   const { setNodes } = useReactFlow();
-  const [isVisible, setIsVisible] = useState(false)
 
   const { deleteElements } = useReactFlow();
 
@@ -66,7 +65,7 @@ export function VideoNode({ data, id }) {
         <DeleteOutlineIcon style={{ cursor: 'pointer', fontSize: 'large' }} onClick={onDelete} />
       </NodeToolbar>
 
-      <VideoPreview onClick={() => setIsVisible(!isVisible)}>
+      <VideoPreview>
         <MovieCreationOutlinedIcon />
         {videoLink === "" ?
           <span>Click to edit...</span>
@@ -79,7 +78,7 @@ export function VideoNode({ data, id }) {
       </VideoPreview>
 
       <LinkInput
-        isvisible={isVisible ? "true" : "false"}
+        isvisible={selected ? "true" : "false"}
         type="text"
         value={nodeValue}
         placeholder="link youtube / vimeo"

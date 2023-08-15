@@ -13,10 +13,9 @@ import { useState, useEffect } from "react";
 import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
-export function ImageNode({ id, data }) {
+export function ImageNode({ id, data, selected }) {
   const [nodeValue, setNodeValue] = useState(data.value || "")
   const { setNodes } = useReactFlow();
-  const [isVisible, setIsVisible] = useState(false)
   const [activeTab, setActiveTab] = useState("tab1");
 
   const handleFileImage = (e) => {
@@ -67,7 +66,7 @@ export function ImageNode({ id, data }) {
         <DeleteOutlineIcon style={{ cursor: 'pointer', fontSize: 'large' }} onClick={onDelete} />
       </NodeToolbar>
 
-      <ImagePreview onClick={() => setIsVisible(!isVisible)}>
+      <ImagePreview>
         <PhotoCameraOutlinedIcon />
         {nodeValue === "" ?
           <span>Click to edit...</span>
@@ -76,7 +75,7 @@ export function ImageNode({ id, data }) {
         }
       </ImagePreview>
 
-      <ImageNodeMenu isvisible={isVisible ? "true" : "false"}>
+      <ImageNodeMenu isvisible={selected ? "true" : "false"}>
         <Navigation>
           <ListTabs>
             <Tabs

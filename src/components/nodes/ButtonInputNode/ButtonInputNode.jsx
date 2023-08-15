@@ -7,10 +7,9 @@ import { useStateContext } from "../../../contexts/ContextProvider";
 import TaskAltOutlinedIcon from '@mui/icons-material/TaskAltOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
-export function ButtonInputNode({ data, id }) {
+export function ButtonInputNode({ data, id, selected }) {
   const { createNewVariable, variables } = useStateContext();
   const { setNodes } = useReactFlow();
-  const [isVisible, setIsVisible] = useState(false)
   const { deleteElements } = useReactFlow();
   const onDelete = () => deleteElements({ nodes: [{ id }] });
   const [newVariable, setNewVariable] = useState("")
@@ -76,7 +75,7 @@ export function ButtonInputNode({ data, id }) {
         position={Position.Right}
       />
 
-      <InputPreview onClick={() => setIsVisible(!isVisible)}>
+      <InputPreview>
         <TaskAltOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
         <input
           type="text"
@@ -87,7 +86,7 @@ export function ButtonInputNode({ data, id }) {
         />
       </InputPreview>
 
-      <InputConfig isvisible={isVisible ? "true" : "false"}>
+      <InputConfig isvisible={selected ? "true" : "false"}>
         <MultipleChoiceInput>
           <span>Multiple choice?</span>
           <input

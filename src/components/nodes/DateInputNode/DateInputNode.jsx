@@ -7,10 +7,9 @@ import { useStateContext } from "../../../contexts/ContextProvider";
 import EditCalendarOutlinedIcon from '@mui/icons-material/EditCalendarOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
-export function DateInputNode({ data, id }) {
+export function DateInputNode({ data, id, selected }) {
   const { createNewVariable, variables } = useStateContext();
   const { setNodes } = useReactFlow();
-  const [isVisible, setIsVisible] = useState(false)
   const { deleteElements } = useReactFlow();
   const onDelete = () => deleteElements({ nodes: [{ id }] });
   const [newVariable, setNewVariable] = useState("")
@@ -76,12 +75,12 @@ export function DateInputNode({ data, id }) {
         <DeleteOutlineIcon style={{ cursor: 'pointer', fontSize: 'large' }} onClick={onDelete} />
       </NodeToolbar>
 
-      <InputPreview onClick={() => setIsVisible(!isVisible)}>
+      <InputPreview>
         <EditCalendarOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
         <span>Pick a  date...</span>
       </InputPreview>
 
-      <InputConfig isvisible={isVisible ? "true" : "false"}>
+      <InputConfig isvisible={selected ? "true" : "false"}>
         <IsRangeInputContainer>
           <span>Is range?</span>
           <input
