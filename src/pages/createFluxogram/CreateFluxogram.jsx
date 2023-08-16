@@ -5,7 +5,7 @@ import ReactFlow, {
   useNodesState, getConnectedEdges,
   getOutgoers, getIncomers,
   updateEdge, useReactFlow,
-  useStoreApi, ReactFlowProvider
+  useStoreApi, ReactFlowProvider, Panel
 } from "reactflow";
 import 'reactflow/dist/style.css'
 import { FlowContainer } from "./CreateFluxogram.style";
@@ -27,8 +27,7 @@ import { PhoneInputNode } from "../../components/nodes/PhoneInputNode/PhoneInput
 import { DateInputNode } from "../../components/nodes/DateInputNode/DateInputNode";
 import { ButtonInputNode } from "../../components/nodes/ButtonInputNode/ButtonInputNode";
 import { sortNodes, getId, getNodePositionInsideParent } from '../../utils';
-import Header from "../../components/Header/Header";
-
+import { useStateContext } from "../../contexts/ContextProvider";
 
 const proOptions = {
   hideAttribution: true,
@@ -61,6 +60,7 @@ const INITIAL_NODE = [
     type: 'startNode',
     position: { x: 350, y: 80 },
     data: {},
+    draggable: false,
   }
 ]
 
@@ -74,11 +74,11 @@ const Flow = () => {
   const wrapperRef = useRef(null);
   const edgeUpdateSuccessful = useRef(true);
 
+  const { openMenu } = useStateContext()
+
   const { project, getIntersectingNodes } = useReactFlow();
   const store = useStoreApi();
   const { deleteElements } = useReactFlow();
-
-  console.log(nodes)
 
   const onConnect = useCallback((connection) => {
     return setEdges(edges => addEdge(connection, edges))
@@ -341,11 +341,8 @@ const Flow = () => {
     [getIntersectingNodes, setNodes]
   );
 
-
-
   return (
-    <FlowContainer ref={wrapperRef}>
-
+    <FlowContainer style={{ width: '100%', heigth: '100%' }} ref={wrapperRef}>
       <ReactFlow
         nodeTypes={NODE_TYPES}
         edgeTypes={EDGE_TYPES}
@@ -374,8 +371,9 @@ const Flow = () => {
         />
         <Controls position="bottom-right" />
       </ReactFlow>
-      <Sidebar />
-      <Header />
+      <Panel position="top-left" style={openMenu? { left: 230 } : { left: 90 }}>
+        <Sidebar />
+      </Panel>
     </FlowContainer>
   );
 };

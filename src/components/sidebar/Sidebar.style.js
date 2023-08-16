@@ -2,9 +2,6 @@ import { styled } from "styled-components";
 
 export const SidebarContainer = styled.aside`
   width: 305px;
-  position: fixed;
-  top: 70px;
-  left: ${({openmenu}) => openmenu === "true" ? "230px" : "20px"}; 
   color: #000;
   background-color: #fff;
   padding: 15px;

@@ -28,7 +28,7 @@ export default () => {
   const { openMenu } = useStateContext()
 
   return (
-    <SidebarContainer openmenu={openMenu ? "true" : "false"}>
+    <SidebarContainer openmenu={openMenu}>
       <NodesType>Bubbles</NodesType>
       <NodesContainer>
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'textNode', '80')} draggable>

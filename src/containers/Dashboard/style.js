@@ -8,12 +8,27 @@ export const DashBoardContainer = styled.div`
   color: #fff;
 `;
 
+export const IconContainer = styled.div`
+ position: fixed;
+ background-color: #000;
+ width: 40px;
+ height: 40px;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ border-radius: 50%;
+ left: 198px;
+ top: 10;
+ z-index: 100000000;
+ cursor: pointer;
+`;
+
 export const DashContent = styled.div`
   background: #333;
-  width: 220px;
+  width: ${({openmenu}) => openmenu ? '220px' : '80px'};
   padding: 20px;
   box-sizing: border-box;
-  display: ${({openmenu}) => openmenu === "true" ? "flex" : "none"};
+  display: flex;
   flex-direction: column;
   justify-content: space-between;
 `;
@@ -49,6 +64,7 @@ export const MenuItem = styled.div`
     margin: 0 0 0 5px;
     font-size: 17px;
     margin-left: 15px;
+    display: ${({openmenu}) => openmenu ? 'block' : 'none'};
   }
 `;
 

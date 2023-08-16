@@ -13,7 +13,7 @@ export const ContextProvider = ({ children }) => {
             [{ id: uuidv4(), name: 'Nome' }, { id: uuidv4(), name: 'Email' }, { id: uuidv4(), name: 'Telefone' }];
     });
 
-    const [openMenu, setOpenMenu] = useState(false)
+    const [openMenu, setOpenMenu] = useState(true);
 
     const createNewVariable = (newVariable) => {
         if (newVariable) {

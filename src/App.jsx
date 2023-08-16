@@ -19,7 +19,6 @@ const App = () => {
           <Route path="/leads" element={<Leads />} />
           <Route path="/analytics" element={<Analytics />} />
         </Routes>
-
       </DashBoard>
     </BrowserRouter>
   );

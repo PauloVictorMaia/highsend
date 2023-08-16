@@ -1,7 +1,6 @@
 import { Cards, Container, Content, NewFluxogramCard } from "./Fluxograms.style";
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from "react-router-dom";
-import Header from "../../components/Header/Header";
 import { useStateContext } from "../../contexts/ContextProvider";
 
 function Fluxograms() {
@@ -12,7 +11,6 @@ function Fluxograms() {
 
   return (
     <Container>
-      <Header />
       <Content openmenu={openMenu ? "true" : "false"} >
         <Cards>
 
