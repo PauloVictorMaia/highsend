@@ -34,7 +34,7 @@ export const Cards = styled.div`
 export const Content = styled.div`
   width: 100%;
   height: 100%;
-  padding: ${({openmenu}) => openmenu === "true" ? '90px 200px 0 20px' : '90px 200px 0 200px'};
+  padding: 70px 20px 0 20px;
   box-sizing: border-box;
 `;
 

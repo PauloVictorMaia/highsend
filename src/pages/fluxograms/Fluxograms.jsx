@@ -11,7 +11,7 @@ function Fluxograms() {
 
   return (
     <Container>
-      <Content openmenu={openMenu ? "true" : "false"} >
+      <Content openmenu={openMenu} >
         <Cards>
 
           <NewFluxogramCard onClick={() => navigate('/fluxograms/create')}>

@@ -10,11 +10,13 @@ import Analytics from "./pages/analytics/Analytics";
 const App = () => {
   return (
     <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<SignIn />} />
+      </Routes>
       <DashBoard>
         <Routes>
-          <Route path="/" element={<SignIn />} />
           <Route path="/fluxograms" element={<Fluxograms />} />
-          <Route path="/fluxograms/create" element={<CreateFluxogram />} />
+          <Route path="/fluxograms/create/:id?" element={<CreateFluxogram />} />
           <Route path="/schedules" element={<Schedules />} />
           <Route path="/leads" element={<Leads />} />
           <Route path="/analytics" element={<Analytics />} />
