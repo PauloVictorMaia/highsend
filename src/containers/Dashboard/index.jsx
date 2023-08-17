@@ -69,7 +69,7 @@ const DashBoard = ({ children }) => {
           <BiChat size={30} />
         </IconsContainer>
       </DashContent>
-      <div style={{ flex: 1 }}>
+      <div style={{ flex: 1, background: '#e6e6e6' }}>
         {children}
       </div>
     </DashBoardContainer>

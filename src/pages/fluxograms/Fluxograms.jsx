@@ -6,13 +6,16 @@ import api from '../../api'
 import { useParams } from "react-router-dom";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { useNavigate } from "react-router-dom";
+import ContentPageContainer from "../../containers/ContentPageContainer";
+import { flowMenu } from "../../data/menus";
+import CustomPageHeader from "../../components/CustomPageHeader";
 
 function Fluxograms() {
-
+  const [menuComponent, setMenuComponent] = useState(0);
+  const navigate = useNavigate();
   const [flows, setFlows] = useState([]);
   const params = useParams();
-  const { createFlow } = useStateContext();
-  const navigate = useNavigate();
+  const { createFlow, openMenu } = useStateContext();
 
   async function getFlows() {
     try {
@@ -28,27 +31,38 @@ function Fluxograms() {
   }, [])
 
   return (
-    <Container>
-      <Content>
-        <Cards>
+    <ContentPageContainer
+      header={
+        <CustomPageHeader
+          menu={flowMenu}
+          name={'Fluxos de atendimento'}
+          setMenuComponent={setMenuComponent}
+          menuComponent={menuComponent}
+        />
+      }
+    >
+      <Container>
+        <Content openmenu={openMenu} >
+          <Cards>
 
-          <NewFluxogramCard onClick={() => createFlow(params.userid)}>
-            <AddIcon style={{ fontSize: "2.2rem" }} />
-            <span>Create fluxogram</span>
-          </NewFluxogramCard>
+            <NewFluxogramCard onClick={() => createFlow(params.userid)}>
+              <AddIcon style={{ fontSize: "2.2rem" }} />
+              <span>Create fluxogram</span>
+            </NewFluxogramCard>
 
-          {
-            flows &&
-            flows.map((flow, index) => (
-              <FluxogramCard key={index} onClick={() => navigate(`/fluxograms/edit/${params.userid}/${flow.id}`)}>
-                <span>{flow.name}</span>
-              </FluxogramCard>
-            ))
-          }
+            {
+              flows &&
+              flows.map((flow, index) => (
+                <FluxogramCard key={index} onClick={() => navigate(`/fluxograms/edit/${params.userid}/${flow.id}`)}>
+                  <span>{flow.name}</span>
+                </FluxogramCard>
+              ))
+            }
 
-        </Cards>
-      </Content>
-    </Container>
+          </Cards>
+        </Content>
+      </Container>
+    </ContentPageContainer>
   )
 }
 

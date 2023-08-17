@@ -1,26 +1,13 @@
 import { styled } from "styled-components";
 
 export const Container = styled.div`
-  width: 100%;
-  min-height: 100vh;
   color: #000;
-  display: flex;
-  flex-direction: column;
-`;
-
-export const HeaderContainer = styled.header`
-  width: 100%;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  padding: 0 20px;
+  padding: 20px 0;
   box-sizing: border-box;
-  border-bottom: 0.5px solid rgba(0,0,0,0.15);
-  background-color: #fff;
-  >svg {
-    color: #000;
-    cursor: pointer;
-  }
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 30px;
+  row-gap: 30px;
 `;
 
 export const Cards = styled.div`
@@ -34,7 +21,6 @@ export const Cards = styled.div`
 export const Content = styled.div`
   width: 100%;
   height: 100%;
-  padding: 70px 20px 0 20px;
   box-sizing: border-box;
 `;
 
