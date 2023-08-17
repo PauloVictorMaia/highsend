@@ -13,9 +13,11 @@ const App = () => {
   return (
     <BrowserRouter>
       <ContextProvider>
+        <Routes>
+          <Route path="/" element={<SignIn />} />
+        </Routes>
         <DashBoard>
           <Routes>
-            <Route path="/" element={<SignIn />} />
             <Route path="/fluxograms/:userid?" element={<Fluxograms />} />
             <Route path="/fluxograms/edit/:userid?/:flowid?" element={<CreateFluxogram />} />
             <Route path="/schedules" element={<Schedules />} />

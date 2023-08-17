@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Cards, Container, Content, FluxogramCard, NewFluxogramCard } from "./Fluxograms.style";
+import { Container, FluxogramCard, NewFluxogramCard } from "./Fluxograms.style";
 import AddIcon from '@mui/icons-material/Add';
 import { useEffect, useState } from "react";
 import api from '../../api'
@@ -15,7 +15,7 @@ function Fluxograms() {
   const navigate = useNavigate();
   const [flows, setFlows] = useState([]);
   const params = useParams();
-  const { createFlow, openMenu } = useStateContext();
+  const { createFlow } = useStateContext();
 
   async function getFlows() {
     try {
@@ -41,27 +41,25 @@ function Fluxograms() {
         />
       }
     >
+
       <Container>
-        <Content openmenu={openMenu} >
-          <Cards>
 
-            <NewFluxogramCard onClick={() => createFlow(params.userid)}>
-              <AddIcon style={{ fontSize: "2.2rem" }} />
-              <span>Create fluxogram</span>
-            </NewFluxogramCard>
+        <NewFluxogramCard onClick={() => createFlow(params.userid)}>
+          <AddIcon style={{ fontSize: "2.2rem" }} />
+          <span>Create fluxogram</span>
+        </NewFluxogramCard>
 
-            {
-              flows &&
-              flows.map((flow, index) => (
-                <FluxogramCard key={index} onClick={() => navigate(`/fluxograms/edit/${params.userid}/${flow.id}`)}>
-                  <span>{flow.name}</span>
-                </FluxogramCard>
-              ))
-            }
+        {
+          flows &&
+          flows.map((flow, index) => (
+            <FluxogramCard key={index} onClick={() => navigate(`/fluxograms/edit/${params.userid}/${flow.id}`)}>
+              <span>{flow.name}</span>
+            </FluxogramCard>
+          ))
+        }
 
-          </Cards>
-        </Content>
       </Container>
+
     </ContentPageContainer>
   )
 }

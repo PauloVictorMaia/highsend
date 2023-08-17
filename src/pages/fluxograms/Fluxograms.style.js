@@ -5,23 +5,9 @@ export const Container = styled.div`
   padding: 20px 0;
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   column-gap: 30px;
   row-gap: 30px;
-`;
-
-export const Cards = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  width: 100%;
-  height: 100%;
-`;
-
-export const Content = styled.div`
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
 `;
 
 export const NewFluxogramCard = styled.div`
