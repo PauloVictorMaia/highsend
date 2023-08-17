@@ -1,7 +1,8 @@
 import { styled } from "styled-components";
 
 export const HeaderContainer = styled.header`
-  
+  padding: 0 20px;
+  box-sizing: border-box;
 `;
 
 export const TitleHeader = styled.span`
