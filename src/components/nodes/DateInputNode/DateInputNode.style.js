@@ -21,7 +21,7 @@ export const InputPreview = styled.div`
 `;
 
 export const InputConfig = styled.div`
-  visibility: ${({isvisible}) => isvisible === "true" ? "visible" : "hidden"};
+  visibility: ${({isvisible}) => isvisible ? "visible" : "hidden"};
   width: 300px;
   position: absolute;
   display: flex;
@@ -66,6 +66,6 @@ export const IsRangeInputContainer = styled.div`
 
 export const LabelsInputContainer = styled.div`
   width: 100%;
-  display: ${({visible}) => visible === "true" ? 'flex' : 'none'};
+  display: ${({isvisible}) => isvisible ? 'flex' : 'none'};
   flex-direction: column;
 `;

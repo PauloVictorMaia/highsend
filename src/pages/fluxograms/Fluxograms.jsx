@@ -1,17 +1,14 @@
 import { Cards, Container, Content, NewFluxogramCard } from "./Fluxograms.style";
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from "react-router-dom";
-import { useStateContext } from "../../contexts/ContextProvider";
 
 function Fluxograms() {
 
   const navigate = useNavigate()
 
-  const { openMenu } = useStateContext()
-
   return (
     <Container>
-      <Content openmenu={openMenu} >
+      <Content>
         <Cards>
 
           <NewFluxogramCard onClick={() => navigate('/fluxograms/create')}>

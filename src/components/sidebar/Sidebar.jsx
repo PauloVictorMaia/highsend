@@ -11,7 +11,6 @@ import MouseOutlinedIcon from '@mui/icons-material/MouseOutlined';
 import EditCalendarOutlinedIcon from '@mui/icons-material/EditCalendarOutlined';
 import PhoneIphoneOutlinedIcon from '@mui/icons-material/PhoneIphoneOutlined';
 import TaskAltOutlinedIcon from '@mui/icons-material/TaskAltOutlined';
-import { useStateContext } from '../../contexts/ContextProvider';
 // import PaymentIcon from '@mui/icons-material/Payment';
 // import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 // import BackupOutlinedIcon from '@mui/icons-material/BackupOutlined';
@@ -25,10 +24,8 @@ export default () => {
     event.dataTransfer.effectAllowed = 'move';
   };
 
-  const { openMenu } = useStateContext()
-
   return (
-    <SidebarContainer openmenu={openMenu}>
+    <SidebarContainer>
       <NodesType>Bubbles</NodesType>
       <NodesContainer>
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'textNode', '80')} draggable>

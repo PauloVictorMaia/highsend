@@ -86,7 +86,7 @@ export function ButtonInputNode({ data, id, selected }) {
         />
       </InputPreview>
 
-      <InputConfig isvisible={selected ? "true" : "false"}>
+      <InputConfig isvisible={selected}>
         <MultipleChoiceInput>
           <span>Multiple choice?</span>
           <input

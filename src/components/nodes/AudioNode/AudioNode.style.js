@@ -26,7 +26,7 @@ export const AudioPreview = styled.div`
 `;
 
 export const AudioNodeMenu = styled.div`
-  visibility: ${({isvisible}) => isvisible === "true" ? "visible" : "hidden"};
+  visibility: ${({isvisible}) => isvisible ? "visible" : "hidden"};
   width: 300px;
   height: 90px;
   position: absolute;

@@ -22,7 +22,7 @@ export const AddLink = styled.div`
 `;
 
 export const LinkInput = styled.input`
-  visibility: ${({isvisible}) => isvisible === "true" ? "visible" : "hidden"};
+  visibility: ${({isvisible}) => isvisible ? "visible" : "hidden"};
   position: absolute;
   width: 350px;
   left: -385px;
