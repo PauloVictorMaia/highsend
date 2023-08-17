@@ -7,21 +7,21 @@ import Schedules from "./pages/schedules/Schedules";
 import Leads from "./pages/leads/Leads";
 import Analytics from "./pages/analytics/Analytics";
 import { ContextProvider } from "./contexts/ContextProvider";
+import AddSchedule from "./pages/addSchedules";
 
 const App = () => {
   return (
     <BrowserRouter>
       <ContextProvider>
-        <Routes>
-          <Route path="/" element={<SignIn />} />
-        </Routes>
         <DashBoard>
           <Routes>
+            <Route path="/" element={<SignIn />} />
             <Route path="/fluxograms/:userid?" element={<Fluxograms />} />
             <Route path="/fluxograms/edit/:userid?/:flowid?" element={<CreateFluxogram />} />
             <Route path="/schedules" element={<Schedules />} />
             <Route path="/leads" element={<Leads />} />
             <Route path="/analytics" element={<Analytics />} />
+            <Route path="/add-schedule/:id" element={<AddSchedule />} />
           </Routes>
         </DashBoard>
       </ContextProvider>

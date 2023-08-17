@@ -6,15 +6,17 @@ function CustomPageHeader({ menu, setMenuComponent, menuComponent, button, name 
     <HeaderContainer>
       <TitleHeader>{name}</TitleHeader>
       <ContentHeader>
-        <MenuItems>
-          {menu.map((item, index) => (
-            <ItemElement onClick={() => setMenuComponent(index)} key={index}>
-              <Item active={menuComponent == index} >{item.name}</Item>
-            </ItemElement>
-          ))}
-        </MenuItems>
+        {menu &&
+          <MenuItems>
+            {menu.map((item, index) => (
+              <ItemElement onClick={() => setMenuComponent(index)} key={index}>
+                <Item active={menuComponent == index} >{item.name}</Item>
+              </ItemElement>
+            ))}
+          </MenuItems>
+        }
         {button &&
-          <Button>
+          <Button onClick={button}>
             Criar Agenda
           </Button>
         }

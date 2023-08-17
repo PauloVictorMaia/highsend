@@ -3,9 +3,11 @@ import CustomPageHeader from "../../components/CustomPageHeader";
 import ContentPageContainer from "../../containers/ContentPageContainer";
 import { scheduleMenu } from "../../data/menus";
 import SchedulesList from "./SchedulesList";
+import { useNavigate } from "react-router-dom";
 
 function Schedules() {
   const [menuComponent, setMenuComponent] = useState(0);
+  const navigate = useNavigate();
 
   return (
     <ContentPageContainer
@@ -14,7 +16,7 @@ function Schedules() {
           menu={scheduleMenu}
           name={'Agendas'} setMenuComponent={setMenuComponent}
           menuComponent={menuComponent}
-          button={() => { }}
+          button={() => navigate('/add-schedule/usadhau2323')}
         />
       }
     >
