@@ -6,6 +6,8 @@ export const calendars = [
       active: true,
       color: '#ffa366',
       title: 'Sessão estratégica JP Moreira',
+      eventDuration: 30,
+      eventInterval: 15
     },
     calendar: {
       type: "daysAhead",
@@ -72,6 +74,8 @@ export const calendars = [
       active: true,
       color: '#ff6699',
       title: 'Sessão estratégica JP Moreira',
+      eventDuration: 30,
+      eventInterval: 15
     },
     calendar: {
       type: "specificDate",
@@ -139,6 +143,8 @@ export const calendars = [
       acitve: false,
       color: '#00cc66',
       title: 'Sessão estratégica JP Moreira',
+      eventDuration: 30,
+      eventInterval: 15
     },
     calendar: {
       type: "specificDate",
@@ -206,6 +212,8 @@ export const calendars = [
       active: true,
       color: '#0080ff',
       title: 'Sessão estratégica JP Moreira',
+      eventDuration: 30,
+      eventInterval: 15
     },
     calendar: {
       type: "specificDate",
@@ -273,6 +281,8 @@ export const calendars = [
       active: false,
       color: '#cc6600',
       title: 'Sessão estratégica JP Moreira',
+      eventDuration: 30,
+      eventInterval: 15
     },
     calendar: {
       type: "specificDate",

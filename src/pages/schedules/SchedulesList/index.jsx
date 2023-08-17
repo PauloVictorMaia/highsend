@@ -32,7 +32,7 @@ function SchedulesList() {
             </ButtonText>
           </TitleContainer>
           <div>
-            <CardDetails>30 min, Um a Um</CardDetails>
+            <CardDetails>{calendar.room.eventDuration} min, Individual</CardDetails>
             <CardDetails marginTop={15}>
               Tempo de agendamento: 
               {calendar.calendar.type === 'daysAhead' && ` ${calendar.calendar.daysAhead}
