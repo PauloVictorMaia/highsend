@@ -9,7 +9,7 @@ import ReactFlow, {
 } from "reactflow";
 import 'reactflow/dist/style.css'
 import { FlowContainer } from "./CreateFluxogram.style";
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import Sidebar from '../../components/sidebar/Sidebar'
 import DefaultEdge from "../../components/edges/DefaultEdge/DefaultEdge";
 import { StartNode } from "../../components/nodes/StartNode/StartNode";
@@ -28,6 +28,8 @@ import { DateInputNode } from "../../components/nodes/DateInputNode/DateInputNod
 import { ButtonInputNode } from "../../components/nodes/ButtonInputNode/ButtonInputNode";
 import { sortNodes, getId, getNodePositionInsideParent } from '../../utils';
 import { useStateContext } from "../../contexts/ContextProvider";
+import { useParams } from "react-router-dom";
+import api from '../../api'
 
 const proOptions = {
   hideAttribution: true,
@@ -54,29 +56,38 @@ const EDGE_TYPES = {
   defaultEdge: DefaultEdge,
 }
 
-const INITIAL_NODE = [
-  {
-    id: 'start node',
-    type: 'startNode',
-    position: { x: 350, y: 80 },
-    data: {},
-    draggable: false,
-  }
-]
-
-
 let label = 0
 const getLabel = () => `Node #${label++}`
 
 const Flow = () => {
+  const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-  const [nodes, setNodes, onNodesChange] = useNodesState(INITIAL_NODE);
+  const { setVariables } = useStateContext();
   const wrapperRef = useRef(null);
   const edgeUpdateSuccessful = useRef(true);
   const { openMenu } = useStateContext()
   const { project, getIntersectingNodes } = useReactFlow();
   const store = useStoreApi();
   const { deleteElements } = useReactFlow();
+
+  const params = useParams();
+
+  async function getNodeData() {
+    try {
+      const response = await api.get(`/flows/get-flow/${params.userid}/${params.flowid}`);
+      if (response.status === 200) {
+        setNodes(response.data.nodes)
+        setEdges(response.data.edges)
+        setVariables(response.data.variables)
+      }
+    } catch (error) {
+      console.log('Erro ao buscar dados do flow', error);
+    }
+  }
+
+  useEffect(() => {
+    getNodeData()
+  }, [])
 
   const onConnect = useCallback((connection) => {
     return setEdges(edges => addEdge(connection, edges))

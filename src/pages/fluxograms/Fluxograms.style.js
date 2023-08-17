@@ -54,3 +54,19 @@ export const NewFluxogramCard = styled.div`
   border-radius: 8px;
   cursor: pointer;
 `;
+
+export const FluxogramCard = styled.div`
+  width: 225px;
+  height: 270px;
+  background-color: #d9d9d9;
+  color: #333;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  cursor: pointer;
+`;

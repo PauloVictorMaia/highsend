@@ -6,22 +6,25 @@ import Fluxograms from "./pages/fluxograms/Fluxograms";
 import Schedules from "./pages/schedules/Schedules";
 import Leads from "./pages/leads/Leads";
 import Analytics from "./pages/analytics/Analytics";
+import { ContextProvider } from "./contexts/ContextProvider";
 
 const App = () => {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<SignIn />} />
-      </Routes>
-      <DashBoard>
+      <ContextProvider>
         <Routes>
-          <Route path="/fluxograms" element={<Fluxograms />} />
-          <Route path="/fluxograms/create/:id?" element={<CreateFluxogram />} />
-          <Route path="/schedules" element={<Schedules />} />
-          <Route path="/leads" element={<Leads />} />
-          <Route path="/analytics" element={<Analytics />} />
+          <Route path="/" element={<SignIn />} />
         </Routes>
-      </DashBoard>
+        <DashBoard>
+          <Routes>
+            <Route path="/fluxograms/:userid?" element={<Fluxograms />} />
+            <Route path="/fluxograms/edit/:userid?/:flowid?" element={<CreateFluxogram />} />
+            <Route path="/schedules" element={<Schedules />} />
+            <Route path="/leads" element={<Leads />} />
+            <Route path="/analytics" element={<Analytics />} />
+          </Routes>
+        </DashBoard>
+      </ContextProvider>
     </BrowserRouter>
   );
 }
