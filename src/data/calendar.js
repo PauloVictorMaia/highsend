@@ -1,6 +1,7 @@
 export const calendars = [
   {
     room: {
+      id: 'duahsd2323',
       type: "oneaone",
       vacancies: 1,
       active: true,
@@ -10,6 +11,8 @@ export const calendars = [
       eventInterval: 15
     },
     calendar: {
+      lunchStartTime: '12:00',
+      lunchEndTime: '13:00',
       type: "daysAhead",
       startDate: null,
       endDate: null,
@@ -69,6 +72,7 @@ export const calendars = [
   },
   {
     room: {
+      id: 'duahsd2323',
       type: "oneaone",
       vacancies: 1,
       active: true,
@@ -78,6 +82,8 @@ export const calendars = [
       eventInterval: 15
     },
     calendar: {
+      lunchStartTime: '12:00',
+      lunchEndTime: '13:00',
       type: "specificDate",
       startDate: "Sat Dec 30 2023 00:00:00 GMT-0300 (Horário Padrão de Brasília)",
       endDate: "Mon Jan 01 2024 00:00:00 GMT-0300 (Horário Padrão de Brasília)",
@@ -138,6 +144,7 @@ export const calendars = [
   },
   {
     room: {
+      id: 'duahsd2323',
       type: "oneaone",
       vacancies: 1,
       acitve: false,
@@ -147,6 +154,8 @@ export const calendars = [
       eventInterval: 15
     },
     calendar: {
+      lunchStartTime: '12:00',
+      lunchEndTime: '13:00',
       type: "specificDate",
       startDate: "Sat Dec 30 2023 00:00:00 GMT-0300 (Horário Padrão de Brasília)",
       endDate: "Mon Jan 01 2024 00:00:00 GMT-0300 (Horário Padrão de Brasília)",
@@ -207,6 +216,7 @@ export const calendars = [
   },
   {
     room: {
+      id: 'duahsd2323',
       type: "oneaone",
       vacancies: 1,
       active: true,
@@ -216,6 +226,8 @@ export const calendars = [
       eventInterval: 15
     },
     calendar: {
+      lunchStartTime: '12:00',
+      lunchEndTime: '13:00',
       type: "specificDate",
       startDate: "Sat Dec 30 2023 00:00:00 GMT-0300 (Horário Padrão de Brasília)",
       endDate: "Mon Jan 01 2024 00:00:00 GMT-0300 (Horário Padrão de Brasília)",
@@ -276,6 +288,7 @@ export const calendars = [
   },
   {
     room: {
+      id: 'duahsd2323',
       type: "oneaone",
       vacancies: 1,
       active: false,
@@ -285,6 +298,8 @@ export const calendars = [
       eventInterval: 15
     },
     calendar: {
+      lunchStartTime: '12:00',
+      lunchEndTime: '13:00',
       type: "specificDate",
       startDate: "Sat Dec 30 2023 00:00:00 GMT-0300 (Horário Padrão de Brasília)",
       endDate: "Mon Jan 01 2024 00:00:00 GMT-0300 (Horário Padrão de Brasília)",

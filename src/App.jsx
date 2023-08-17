@@ -6,6 +6,7 @@ import Fluxograms from "./pages/fluxograms/Fluxograms";
 import Schedules from "./pages/schedules/Schedules";
 import Leads from "./pages/leads/Leads";
 import Analytics from "./pages/analytics/Analytics";
+import AddSchedule from "./pages/addSchedules";
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
           <Route path="/fluxograms" element={<Fluxograms />} />
           <Route path="/fluxograms/create/:id?" element={<CreateFluxogram />} />
           <Route path="/schedules" element={<Schedules />} />
+          <Route path="/add-schedule/:id" element={<AddSchedule />} />
           <Route path="/leads" element={<Leads />} />
           <Route path="/analytics" element={<Analytics />} />
         </Routes>

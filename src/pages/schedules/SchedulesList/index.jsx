@@ -6,10 +6,12 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useEffect, useState } from "react";
 import { calendars } from "../../../data/calendar";
 import { months } from "../../../data/menus";
+import { useNavigate } from "react-router-dom";
 
 function SchedulesList() {
   const [indexDrop, setIndexDrop] = useState(null);
   const [calendarsData, setCalendarsData] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setCalendarsData(calendars);
@@ -23,7 +25,7 @@ function SchedulesList() {
   return (
     <Container>
       {calendarsData.map((calendar, index) => (
-        <ScheduleCard key={index}>
+        <ScheduleCard onClick={() => navigate(`/add-schedule/${calendar.room.id}`)} key={index}>
           <TitleContainer>
             <CardTitle>{calendar.room.title}</CardTitle>
             <ButtonText onClick={() => openMenuDropDown(index)} hover>
