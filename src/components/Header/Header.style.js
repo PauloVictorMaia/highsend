@@ -9,8 +9,6 @@ export const HeaderContainer = styled.header`
   box-sizing: border-box;
   background-color: white;
   border-bottom: 0.5px solid rgba(0,0,0,0.15);
-  position: fixed;
-  top: 0;
   >svg {
     color: #000;
     cursor: pointer;
