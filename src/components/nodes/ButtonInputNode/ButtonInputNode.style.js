@@ -22,7 +22,7 @@ export const InputPreview = styled.div`
 `;
 
 export const InputConfig = styled.div`
-  visibility: ${({isvisible}) => isvisible === "true" ? "visible" : "hidden"};
+  visibility: ${({isvisible}) => isvisible ? "visible" : "hidden"};
   width: 300px;
   position: absolute;
   display: flex;

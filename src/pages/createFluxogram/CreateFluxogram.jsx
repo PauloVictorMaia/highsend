@@ -73,9 +73,7 @@ const Flow = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(INITIAL_NODE);
   const wrapperRef = useRef(null);
   const edgeUpdateSuccessful = useRef(true);
-
   const { openMenu } = useStateContext()
-
   const { project, getIntersectingNodes } = useReactFlow();
   const store = useStoreApi();
   const { deleteElements } = useReactFlow();
@@ -371,7 +369,7 @@ const Flow = () => {
         />
         <Controls position="bottom-right" />
       </ReactFlow>
-      <Panel position="top-left" style={openMenu? { left: 230 } : { left: 90 }}>
+      <Panel position="top-left" style={openMenu ? { left: 230 } : { left: 90 }}>
         <Sidebar />
       </Panel>
     </FlowContainer>

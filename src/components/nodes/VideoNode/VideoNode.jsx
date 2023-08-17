@@ -78,7 +78,7 @@ export function VideoNode({ data, id, selected }) {
       </VideoPreview>
 
       <LinkInput
-        isvisible={selected ? "true" : "false"}
+        isvisible={selected}
         type="text"
         value={nodeValue}
         placeholder="link youtube / vimeo"

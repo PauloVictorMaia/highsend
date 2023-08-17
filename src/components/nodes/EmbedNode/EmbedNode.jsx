@@ -63,7 +63,7 @@ function EmbedNode({ data, id, selected }) {
       </AddLink>
 
       <LinkInput
-        isvisible={selected ? "true" : "false"}
+        isvisible={selected}
         type="text"
         value={nodeValue}
         placeholder="Paste the link"

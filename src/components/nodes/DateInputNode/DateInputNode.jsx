@@ -80,7 +80,7 @@ export function DateInputNode({ data, id, selected }) {
         <span>Pick a  date...</span>
       </InputPreview>
 
-      <InputConfig isvisible={selected ? "true" : "false"}>
+      <InputConfig isvisible={selected}>
         <IsRangeInputContainer>
           <span>Is range?</span>
           <input
@@ -97,7 +97,7 @@ export function DateInputNode({ data, id, selected }) {
             onChange={() => setHasTime(!hasTime)}
           />
         </IsRangeInputContainer>
-        <LabelsInputContainer visible={isRange ? "true" : "false"}>
+        <LabelsInputContainer isvisible={isRange}>
           <span>From:</span>
           <input
             type="text"

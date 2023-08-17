@@ -78,7 +78,7 @@ export function NumberInputNode({ data, id, selected }) {
         <span>{placeholder}</span>
       </InputPreview>
 
-      <InputConfig isvisible={selected ? "true" : "false"}>
+      <InputConfig isvisible={selected}>
         <span>Placeholder:</span>
         <input
           type="text"

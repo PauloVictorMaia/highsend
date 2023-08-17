@@ -1,17 +1,13 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState } from "react";
 import { v4 as uuidv4 } from 'uuid'
 
 const StateContext = createContext();
 
 export const ContextProvider = ({ children }) => {
 
-    const [variables, setVariables] = useState(() => {
-        const storedVariables = localStorage.getItem('variables');
-        return storedVariables ? JSON.parse(storedVariables) :
-            [{ id: uuidv4(), name: 'Nome' }, { id: uuidv4(), name: 'Email' }, { id: uuidv4(), name: 'Telefone' }];
-    });
+    const [variables, setVariables] = useState([])
 
     const [openMenu, setOpenMenu] = useState(true);
 
@@ -21,8 +17,7 @@ export const ContextProvider = ({ children }) => {
             if (!nameExists) {
                 const variable = { id: uuidv4(), name: newVariable };
                 setVariables([...variables, variable]);
-                localStorage.setItem('variables', JSON.stringify([...variables, variable]));
-                console.log('Variável criada com sucesso!')
+                console.log('Variável criada com sucesso!');
             } else {
                 console.log("Já existe uma variável com esse nome!");
             }
@@ -30,10 +25,6 @@ export const ContextProvider = ({ children }) => {
             console.log('Campo vazio.')
         }
     }
-
-    useEffect(() => {
-        localStorage.setItem('variables', JSON.stringify(variables));
-    }, [variables]);
 
     return (
         <StateContext.Provider

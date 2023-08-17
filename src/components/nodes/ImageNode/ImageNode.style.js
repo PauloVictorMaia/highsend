@@ -27,7 +27,7 @@ export const Image = styled.img`
 `;
 
 export const ImageNodeMenu = styled.div`
-  visibility: ${({isvisible}) => isvisible === "true" ? "visible" : "hidden"};
+  visibility: ${({isvisible}) => isvisible ? "visible" : "hidden"};
   width: 300px;
   height: 90px;
   position: absolute;

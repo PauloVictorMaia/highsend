@@ -82,7 +82,7 @@ function AudioNode({ data, id, selected }) {
         }
       </AudioPreview>
 
-      <AudioNodeMenu isvisible={selected ? "true" : "false"}>
+      <AudioNodeMenu isvisible={selected}>
         <Navigation>
           <ListTabs>
             <Tabs

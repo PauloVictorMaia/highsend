@@ -75,7 +75,7 @@ export function ImageNode({ id, data, selected }) {
         }
       </ImagePreview>
 
-      <ImageNodeMenu isvisible={selected ? "true" : "false"}>
+      <ImageNodeMenu isvisible={selected}>
         <Navigation>
           <ListTabs>
             <Tabs
