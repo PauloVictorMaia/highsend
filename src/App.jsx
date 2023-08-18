@@ -16,18 +16,15 @@ const App = () => {
       <ContextProvider>
         <Routes>
           <Route path="/" element={<SignIn />} />
+          <Route path="/dashboard/*" element={<DashBoard />}>
+            <Route path="fluxograms" element={<Fluxograms />} />
+            <Route path="fluxograms/edit/:flowid?" element={<CreateFluxogram />} />
+            <Route path="schedules" element={<Schedules />} />
+            <Route path="leads" element={<Leads />} />
+            <Route path="analytics" element={<Analytics />} />
+            <Route path="add-schedule/:id" element={<AddSchedule />} />
+          </Route>
         </Routes>
-
-        <DashBoard>
-          <Routes>
-            <Route path="/fluxograms/" element={<Fluxograms />} />
-            <Route path="/fluxograms/edit/:flowid?" element={<CreateFluxogram />} />
-            <Route path="/schedules" element={<Schedules />} />
-            <Route path="/leads" element={<Leads />} />
-            <Route path="/analytics" element={<Analytics />} />
-            <Route path="/add-schedule/:id" element={<AddSchedule />} />
-          </Routes>
-        </DashBoard>
       </ContextProvider>
     </BrowserRouter>
   );

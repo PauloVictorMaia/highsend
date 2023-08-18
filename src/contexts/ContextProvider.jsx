@@ -51,6 +51,7 @@ export const ContextProvider = ({ children }) => {
             }
         } catch (error) {
             console.log('Usuário não autenticado', error);
+            navigate('/');
         }
     }
 
@@ -69,7 +70,6 @@ export const ContextProvider = ({ children }) => {
         }
         catch (error) {
             alert('Usuário ou senha incorretos. Verifique os dados e tente novamente.')
-            navigate('/')
         }
     }
 
