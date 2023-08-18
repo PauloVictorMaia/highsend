@@ -18,8 +18,8 @@ const App = () => {
         </Routes>
         <DashBoard>
           <Routes>
-            <Route path="/fluxograms/:userid?" element={<Fluxograms />} />
-            <Route path="/fluxograms/edit/:userid?/:flowid?" element={<CreateFluxogram />} />
+            <Route path="/fluxograms/" element={<Fluxograms />} />
+            <Route path="/fluxograms/edit/:flowid?" element={<CreateFluxogram />} />
             <Route path="/schedules" element={<Schedules />} />
             <Route path="/leads" element={<Leads />} />
             <Route path="/analytics" element={<Analytics />} />

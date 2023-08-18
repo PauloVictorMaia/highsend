@@ -65,7 +65,7 @@ const Flow = () => {
   const { setVariables } = useStateContext();
   const wrapperRef = useRef(null);
   const edgeUpdateSuccessful = useRef(true);
-  const { openMenu } = useStateContext()
+  const { openMenu, user } = useStateContext()
   const { project, getIntersectingNodes } = useReactFlow();
   const store = useStoreApi();
   const { deleteElements } = useReactFlow();
@@ -74,7 +74,7 @@ const Flow = () => {
 
   async function getNodeData() {
     try {
-      const response = await api.get(`/flows/get-flow/${params.userid}/${params.flowid}`);
+      const response = await api.get(`/flows/get-flow/${user.id}/${params.flowid}`);
       if (response.status === 200) {
         setNodes(response.data.nodes)
         setEdges(response.data.edges)
@@ -86,8 +86,10 @@ const Flow = () => {
   }
 
   useEffect(() => {
-    getNodeData()
-  }, [])
+    if (Object.keys(user).length > 0) {
+      getNodeData()
+    }
+  }, [user])
 
   const onConnect = useCallback((connection) => {
     return setEdges(edges => addEdge(connection, edges))

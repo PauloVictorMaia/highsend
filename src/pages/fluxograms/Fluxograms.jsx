@@ -1,9 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Container, FluxogramCard, NewFluxogramCard } from "./Fluxograms.style";
 import AddIcon from '@mui/icons-material/Add';
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import api from '../../api'
-import { useParams } from "react-router-dom";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { useNavigate } from "react-router-dom";
 import ContentPageContainer from "../../containers/ContentPageContainer";
@@ -13,22 +12,34 @@ import CustomPageHeader from "../../components/CustomPageHeader";
 function Fluxograms() {
   const [menuComponent, setMenuComponent] = useState(0);
   const navigate = useNavigate();
-  const [flows, setFlows] = useState([]);
-  const params = useParams();
-  const { createFlow } = useStateContext();
+  const { user } = useStateContext();
+  const [flows, setFlows] = useState([])
 
-  async function getFlows() {
+  const createFlow = async () => {
     try {
-      const response = await api.get(`/flows/get-flows/${params.userid}`);
+      const response = await api.post(`/flows/create-flow/${user.id}`);
+      if (response.status === 201) {
+        navigate(`/fluxograms/edit/${response.data.id}`)
+      }
+    } catch (error) {
+      console.log('Erro ao criar novo flow', error);
+    }
+  }
+
+  const getFlows = async () => {
+    try {
+      const response = await api.get(`/flows/get-flows/${user.id}`);
       setFlows(response.data)
     } catch (error) {
-      console.log('erro ao carregar flows')
+      console.log('Erro ao carregar flows', error)
     }
   }
 
   useEffect(() => {
-    getFlows()
-  }, [])
+    if (Object.keys(user).length > 0) {
+      getFlows()
+    }
+  }, [user])
 
   return (
     <ContentPageContainer
@@ -44,7 +55,7 @@ function Fluxograms() {
 
       <Container>
 
-        <NewFluxogramCard onClick={() => createFlow(params.userid)}>
+        <NewFluxogramCard onClick={createFlow}>
           <AddIcon style={{ fontSize: "2.2rem" }} />
           <span>Create fluxogram</span>
         </NewFluxogramCard>
@@ -52,7 +63,7 @@ function Fluxograms() {
         {
           flows &&
           flows.map((flow, index) => (
-            <FluxogramCard key={index} onClick={() => navigate(`/fluxograms/edit/${params.userid}/${flow.id}`)}>
+            <FluxogramCard key={index} onClick={() => navigate(`/fluxograms/edit/${flow.id}`)}>
               <span>{flow.name}</span>
             </FluxogramCard>
           ))

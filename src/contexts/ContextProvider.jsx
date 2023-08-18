@@ -1,10 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { v4 as uuidv4 } from 'uuid'
 import api from '../api'
-import { useNavigate } from "react-router-dom";
 
 const StateContext = createContext();
 
@@ -14,8 +13,8 @@ export const ContextProvider = ({ children }) => {
     const [openMenu, setOpenMenu] = useState(true);
     const [login, setLogin] = useState(false);
     const [user, setUser] = useState({});
+    // eslint-disable-next-line no-unused-vars
     const [token, setToken] = useState(localStorage.getItem('token'))
-    const navigate = useNavigate()
 
     const createNewVariable = (newVariable) => {
         if (newVariable) {
@@ -34,30 +33,23 @@ export const ContextProvider = ({ children }) => {
 
     const getUser = async (token) => {
         if (!token) {
-            return
+            console.log("Token inválido.")
+            return;
         }
         try {
             const response = await api.get('/users/get-user', { headers: { authorization: token } });
             if (response.status === 200) {
                 setUser(response.data)
-                setLogin(true)
-                navigate(`/fluxograms/${response.data.id}`)
+
             }
         } catch (error) {
             console.log('Usuário não autenticado', error);
         }
     }
 
-    const createFlow = async (userID) => {
-        try {
-            const response = await api.post(`/flows/create-flow/${userID}`);
-            if (response.status === 201) {
-                navigate(`/fluxograms/edit/${userID}/${response.data.id}`)
-            }
-        } catch (error) {
-            console.log('Erro ao criar novo flow', error);
-        }
-    }
+    useEffect(() => {
+        getUser(token)
+    }, [token])
 
     return (
         <StateContext.Provider
@@ -70,11 +62,8 @@ export const ContextProvider = ({ children }) => {
                 login,
                 setLogin,
                 user,
-                setUser,
-                token,
                 setToken,
                 getUser,
-                createFlow,
             }}
         >
             {children}
