@@ -69,8 +69,7 @@ export const ContextProvider = ({ children }) => {
             }
         }
         catch (error) {
-            alert('Usuário ou senha incorretos. Verifique os dados e tente novamente.');
-            navigate('/');
+            alert('Usuário ou senha incorretos. Verifique os dados e tente novamente.')
         }
     };
 
