@@ -4,6 +4,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { v4 as uuidv4 } from 'uuid'
 import api from '../api'
+import { useNavigate } from "react-router-dom";
 
 const StateContext = createContext();
 
@@ -14,7 +15,12 @@ export const ContextProvider = ({ children }) => {
     const [login, setLogin] = useState(false);
     const [user, setUser] = useState({});
     // eslint-disable-next-line no-unused-vars
-    const [token, setToken] = useState(localStorage.getItem('token'))
+    const [token, setToken] = useState(localStorage.getItem('token'));
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        getUser(token)
+    }, [token])
 
     const createNewVariable = (newVariable) => {
         if (newVariable) {
@@ -32,24 +38,46 @@ export const ContextProvider = ({ children }) => {
     }
 
     const getUser = async (token) => {
-        if (!token) {
-            console.log("Token inválido.")
-            return;
-        }
+        if (!token) return navigate('/');
+
         try {
             const response = await api.get('/users/get-user', { headers: { authorization: token } });
             if (response.status === 200) {
-                setUser(response.data)
-
+                setUser(response.data);
+                setLogin(true);
+                const location = window.location.pathname;
+                if (location !== '/') return navigate(location);
+                return navigate('/fluxograms')
             }
         } catch (error) {
             console.log('Usuário não autenticado', error);
         }
     }
 
-    useEffect(() => {
-        getUser(token)
-    }, [token])
+    const signIn = async (email, password) => {
+        if (!email || !password) return alert('Faltam dados!');
+
+        try {
+            const response = await api.post('/users/sign-in', { email, password });
+            if (response.status === 200) {
+                getUser(response.data.token)
+                setToken(response.data.token)
+                localStorage.setItem('token', response.data.token);
+                setLogin(true)
+                navigate('/fluxograms')
+            }
+        }
+        catch (error) {
+            alert('Usuário ou senha incorretos. Verifique os dados e tente novamente.')
+            navigate('/')
+        }
+    }
+
+    const signOut = () => {
+        localStorage.removeItem('token');
+        setLogin(false);
+        navigate('/')
+    }
 
     return (
         <StateContext.Provider
@@ -64,6 +92,8 @@ export const ContextProvider = ({ children }) => {
                 user,
                 setToken,
                 getUser,
+                signOut,
+                signIn
             }}
         >
             {children}

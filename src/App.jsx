@@ -10,12 +10,14 @@ import { ContextProvider } from "./contexts/ContextProvider";
 import AddSchedule from "./pages/addSchedules";
 
 const App = () => {
+
   return (
     <BrowserRouter>
       <ContextProvider>
         <Routes>
           <Route path="/" element={<SignIn />} />
         </Routes>
+
         <DashBoard>
           <Routes>
             <Route path="/fluxograms/" element={<Fluxograms />} />
