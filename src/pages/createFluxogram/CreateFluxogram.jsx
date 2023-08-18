@@ -7,10 +7,10 @@ import ReactFlow, {
   updateEdge, useReactFlow,
   useStoreApi, ReactFlowProvider, Panel
 } from "reactflow";
-import 'reactflow/dist/style.css'
+import 'reactflow/dist/style.css';
 import { FlowContainer } from "./CreateFluxogram.style";
 import { useCallback, useEffect, useRef } from "react";
-import Sidebar from '../../components/sidebar/Sidebar'
+import Sidebar from '../../components/sidebar/Sidebar';
 import DefaultEdge from "../../components/edges/DefaultEdge/DefaultEdge";
 import { StartNode } from "../../components/nodes/StartNode/StartNode";
 import { TextNode } from "../../components/nodes/TextNode/TextNode";
@@ -29,7 +29,8 @@ import { ButtonInputNode } from "../../components/nodes/ButtonInputNode/ButtonIn
 import { sortNodes, getId, getNodePositionInsideParent } from '../../utils';
 import { useStateContext } from "../../contexts/ContextProvider";
 import { useParams } from "react-router-dom";
-import api from '../../api'
+import api from '../../api';
+import PanelButtons from "../../components/PanelButtons/PanelButtons";
 
 const proOptions = {
   hideAttribution: true,
@@ -50,22 +51,23 @@ const NODE_TYPES = {
   phoneInputNode: PhoneInputNode,
   dateInputNode: DateInputNode,
   buttonInputNode: ButtonInputNode,
-}
+};
 
 const EDGE_TYPES = {
   defaultEdge: DefaultEdge,
-}
+};
 
-let label = 0
-const getLabel = () => `Node #${label++}`
+let label = 0;
+const getLabel = () => `Node #${label++}`;
 
 const Flow = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-  const { setVariables } = useStateContext();
+  const { setVariables, variables } = useStateContext();
   const wrapperRef = useRef(null);
   const edgeUpdateSuccessful = useRef(true);
-  const { openMenu, user } = useStateContext()
+  const { openMenu, user } = useStateContext();
+  const token = localStorage.getItem('token');
   const { project, getIntersectingNodes } = useReactFlow();
   const store = useStoreApi();
   const { deleteElements } = useReactFlow();
@@ -74,26 +76,40 @@ const Flow = () => {
 
   async function getNodeData() {
     try {
-      const response = await api.get(`/flows/get-flow/${user.id}/${params.flowid}`);
+      const response = await api.get(`/flows/get-flow/${user.id}/${params.flowid}`,
+        { headers: { authorization: token } });
       if (response.status === 200) {
-        setNodes(response.data.nodes)
-        setEdges(response.data.edges)
-        setVariables(response.data.variables)
+        setNodes(response.data.nodes);
+        setEdges(response.data.edges);
+        setVariables(response.data.variables);
       }
     } catch (error) {
       console.log('Erro ao buscar dados do flow', error);
     }
   }
 
+  async function saveNodeData() {
+    try {
+      const response = await api.patch(`/flows/update-flow/${user.id}/${params.flowid}`,
+        { nodes, edges, variables },
+        { headers: { authorization: token } });
+      if (response.status === 200) {
+        alert('dados salvos')
+      }
+    } catch (error) {
+      alert('erro ao salvar')
+    }
+  }
+
   useEffect(() => {
     if (Object.keys(user).length > 0) {
-      getNodeData()
+      getNodeData();
     }
-  }, [user])
+  }, [user]);
 
   const onConnect = useCallback((connection) => {
-    return setEdges(edges => addEdge(connection, edges))
-  }, [])
+    return setEdges(edges => addEdge(connection, edges));
+  }, []);
 
   const onDragOver = useCallback((event) => {
     event.preventDefault();
@@ -124,7 +140,7 @@ const Flow = () => {
       const type = event.dataTransfer.getData('application/reactflow/type');
       const subType = event.dataTransfer.getData('application/reactflow/subtype');
       const heightString = event.dataTransfer.getData('application/reactflow/height');
-      const height = parseFloat(heightString)
+      const height = parseFloat(heightString);
       let position = project({ x: event.clientX - wrapperBounds.x - 20, y: event.clientY - wrapperBounds.top - 20 });
       const nodeStyle = type === 'group' ? {
         width: 250,
@@ -164,7 +180,7 @@ const Flow = () => {
         style: { width: 210, height: height }
       };
 
-      newNode.data.blocks = [newSubnode]
+      newNode.data.blocks = [newSubnode];
 
 
       if (groupNode) {
@@ -230,14 +246,14 @@ const Flow = () => {
         }, edges)
       );
 
-      const groupID = deleted[0].parentNode
-      const parentNodes = nodes.filter((node) => node.parentNode === groupID && deleted[0].id !== node.id)
+      const groupID = deleted[0].parentNode;
+      const parentNodes = nodes.filter((node) => node.parentNode === groupID && deleted[0].id !== node.id);
       if (groupID) {
         let parentNodesHeight = parentNodes.reduce((totalHeight, node) => {
           return totalHeight + node.style.height;
         }, 0);
-        const rowGap = 5
-        const groupNodeHeight = parentNodesHeight + ((parentNodes.length + 1) * rowGap) + 60
+        const rowGap = 5;
+        const groupNodeHeight = parentNodesHeight + ((parentNodes.length + 1) * rowGap) + 60;
         setNodes((nds) =>
           nds.map((node) => {
             if (node.id === groupID) {
@@ -252,7 +268,7 @@ const Flow = () => {
                   border: "none"
                 }
               }
-              node.data.blocks = [...parentNodes]
+              node.data.blocks = [...parentNodes];
             }
 
             if (parentNodes.indexOf(node) > -1 && !(node.id === groupID) && node.id === parentNodes[0].id) {
@@ -384,6 +400,9 @@ const Flow = () => {
       </ReactFlow>
       <Panel position="top-left" style={openMenu ? { left: 230 } : { left: 90 }}>
         <Sidebar />
+      </Panel>
+      <Panel position="top-right">
+        <PanelButtons save={saveNodeData} />
       </Panel>
     </FlowContainer>
   );

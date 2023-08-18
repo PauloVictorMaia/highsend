@@ -6,7 +6,7 @@ import { useStateContext } from "../../contexts/ContextProvider";
 
 function SignIn() {
 
-  const { setLogin, setToken, getUser, signOut, signIn } = useStateContext();
+  const { signOut, signIn } = useStateContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 

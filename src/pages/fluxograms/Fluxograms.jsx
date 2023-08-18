@@ -2,7 +2,7 @@
 import { Container, FluxogramCard, NewFluxogramCard } from "./Fluxograms.style";
 import AddIcon from '@mui/icons-material/Add';
 import { useState, useEffect } from "react";
-import api from '../../api'
+import api from '../../api';
 import { useStateContext } from "../../contexts/ContextProvider";
 import { useNavigate } from "react-router-dom";
 import ContentPageContainer from "../../containers/ContentPageContainer";
@@ -13,13 +13,14 @@ function Fluxograms() {
   const [menuComponent, setMenuComponent] = useState(0);
   const navigate = useNavigate();
   const { user } = useStateContext();
-  const [flows, setFlows] = useState([])
+  const token = localStorage.getItem('token');
+  const [flows, setFlows] = useState([]);
 
   const createFlow = async () => {
     try {
-      const response = await api.post(`/flows/create-flow/${user.id}`);
+      const response = await api.post(`/flows/create-flow/${user.id}`, {}, { headers: { authorization: token } });
       if (response.status === 201) {
-        navigate(`/fluxograms/edit/${response.data.id}`)
+        navigate(`/fluxograms/edit/${response.data.id}`);
       }
     } catch (error) {
       console.log('Erro ao criar novo flow', error);
@@ -28,18 +29,18 @@ function Fluxograms() {
 
   const getFlows = async () => {
     try {
-      const response = await api.get(`/flows/get-flows/${user.id}`);
-      setFlows(response.data)
+      const response = await api.get(`/flows/get-flows/${user.id}`, { headers: { authorization: token } });
+      setFlows(response.data);
     } catch (error) {
-      console.log('Erro ao carregar flows', error)
+      console.log('Erro ao carregar flows', error);
     }
-  }
+  };
 
   useEffect(() => {
     if (Object.keys(user).length > 0) {
-      getFlows()
+      getFlows();
     }
-  }, [user])
+  }, [user]);
 
   return (
     <ContentPageContainer
