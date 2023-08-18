@@ -47,7 +47,7 @@ export const ContextProvider = ({ children }) => {
                 setLogin(true);
                 const location = window.location.pathname;
                 if (location !== '/') return navigate(location);
-                return navigate('/fluxograms');
+                return navigate('/dashboard/fluxograms');
             }
         } catch (error) {
             console.log('Usuário não autenticado', error);
@@ -65,7 +65,7 @@ export const ContextProvider = ({ children }) => {
                 setToken(response.data.token);
                 localStorage.setItem('token', response.data.token);
                 setLogin(true);
-                navigate('/fluxograms');
+                navigate('/dashboard/fluxograms');
             }
         }
         catch (error) {

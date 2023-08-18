@@ -20,7 +20,7 @@ function Fluxograms() {
     try {
       const response = await api.post(`/flows/create-flow/${user.id}`, {}, { headers: { authorization: token } });
       if (response.status === 201) {
-        navigate(`/fluxograms/edit/${response.data.id}`);
+        navigate(`/dashboard/fluxograms/edit/${response.data.id}`);
       }
     } catch (error) {
       console.log('Erro ao criar novo flow', error);
@@ -64,7 +64,7 @@ function Fluxograms() {
         {
           flows &&
           flows.map((flow, index) => (
-            <FluxogramCard key={index} onClick={() => navigate(`/fluxograms/edit/${flow.id}`)}>
+            <FluxogramCard key={index} onClick={() => navigate(`/dashboard/fluxograms/edit/${flow.id}`)}>
               <span>{flow.name}</span>
             </FluxogramCard>
           ))
