@@ -10,6 +10,7 @@ import { ContextProvider } from "./contexts/ContextProvider";
 import AddSchedule from "./pages/addSchedules";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.min.css';
+import ScheduleEvent from "./pages/scheduleEvent";
 
 const App = () => {
 
@@ -18,6 +19,7 @@ const App = () => {
       <ContextProvider>
         <Routes>
           <Route path="/" element={<SignIn />} />
+          <Route path="/agendar-evento/:userId/:eventId" element={<ScheduleEvent />} />
           <Route path="/dashboard/*" element={<DashBoard />}>
             <Route path="fluxograms" element={<Fluxograms />} />
             <Route path="fluxograms/edit/:flowid" element={<CreateFluxogram />} />

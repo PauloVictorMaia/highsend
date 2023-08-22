@@ -7,26 +7,93 @@ import 'react-date-range/dist/theme/default.css';
 import { format, setHours, setMinutes, addMinutes } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 import CheckIcon from '../../assets/check.png';
-import { CheckboxContainer, DaysContainer, StyledCheckbox, Text, Container } from './styles.js';
+import {
+  CheckboxContainer,
+  DaysContainer,
+  StyledCheckbox,
+  Text,
+  Container,
+  IntervalsContainer,
+  ToggleContainer,
+  OptionLabel,
+  ContentContainer,
+  TitleInput,
+  EventItem,
+  EnventsContainer,
+  EventsContent
+} from './styles.js';
 import { calendars } from "../../data/calendar";
+import { CalendarMenu } from "../../data/menus";
 
 function AddSchedule() {
+  const [menuComponent, setMenuComponent] = useState(0);
+
+  const [selectedOption, setSelectedOption] = useState('daysAhead');
+  const [eventTitle, setEventTitle] = useState('');
+  const [eventColor, setEventColor] = useState('');
+  const [eventActive, setEventActive] = useState(null);
+  const [daysAhead, setDaysAhead] = useState(null);
+
   const [eventDuration, setEventDuration] = useState(30);
   const [eventInterval, setEventInterval] = useState(15);
   const [lunchStartTime, setLunchStartTime] = useState('12:00');
   const [lunchEndTime, setLunchEndTime] = useState('13:00');
 
-  const [eventIntervals, setEventIntervals] = useState([]);
-  console.log(eventIntervals)
-
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-
   const [eventConfigurations, setEventConfigurations] = useState([]);
+  const [eventIntervals, setEventIntervals] = useState([]);
+
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
   useEffect(() => {
-    setEventConfigurations(calendars[0].calendar.daysOfTheWeek)
-  }, [])
+    setEventConfigurations(calendars[1].calendar.daysOfTheWeek);
+    setEventIntervals(calendars[1].calendar.eventsIntervals);
+    setEventDuration(calendars[1].room.eventDuration);
+    setEventInterval(calendars[1].room.eventInterval);
+    setLunchStartTime(calendars[1].calendar.lunchStartTime);
+    setLunchEndTime(calendars[1].calendar.lunchEndTime);
+
+    setStartDate(new Date(calendars[1].calendar.startDate));
+    setEndDate(new Date(calendars[1].calendar.endDate));
+    setDaysAhead(calendars[1].calendar.daysAhead);
+    setSelectedOption(calendars[1].calendar.type)
+
+    setEventTitle(calendars[1].room.title);
+    setEventColor(calendars[1].room.color);
+    setEventActive(calendars[1].room.active);
+  }, []);
+
+  useEffect(() => {
+    calculateAllEventIntervals();
+  }, [eventConfigurations, eventDuration, eventInterval, lunchStartTime, lunchEndTime]);
+
+  const saveCalendar = () => {
+    const calendar = {
+      room: {
+        id: '',
+        useId: '',
+        type: 'oneaone',
+        vacancies: 1,
+        active: eventActive,
+        color: eventColor,
+        title: eventTitle,
+        eventDuration: eventDuration,
+        eventInterval: eventInterval
+      },
+      calendar: {
+        lunchStartTime: lunchStartTime,
+        lunchEndTime: lunchEndTime,
+        type: selectedOption,
+        startDate: startDate,
+        endDate: endDate,
+        eventsIntervals: eventIntervals,
+        daysOfTheWeek: eventConfigurations,
+        daysAhead: daysAhead,
+      }
+    }
+
+    console.log(calendar)
+  }
 
   const handleAvailabilityChange = (index, value) => {
     let newWeekDays = [...eventConfigurations];
@@ -72,7 +139,7 @@ function AddSchedule() {
   };
 
   const calculateAllEventIntervals = () => {
-    const allEventIntervals = {};
+    const allEventIntervals = [];
 
     eventConfigurations.forEach((day) => {
       if (day.available) {
@@ -84,7 +151,7 @@ function AddSchedule() {
           eventInterval
         );
 
-        allEventIntervals[day.day] = dayEvents;
+        allEventIntervals.push({ day: day.day, ...dayEvents });
       }
     });
 
@@ -95,109 +162,177 @@ function AddSchedule() {
     <ContentPageContainer
       header={
         <CustomPageHeader
+          menu={CalendarMenu}
           name={'Informações da agenda'}
+          button={() => saveCalendar()}
+          buttonName={'Salvar Agenda'}
+          menuComponent={menuComponent}
+          setMenuComponent={setMenuComponent}
         />
       }
     >
       <Container>
-        <h2>Escolha o Range de Datas:</h2>
-        <div>
-          <Calendar
-            date={startDate}
-            onChange={(date) => setStartDate(date)}
-            minDate={new Date()}
-            locale={ptBR}
-          />
-          <Calendar
-            date={endDate}
-            onChange={(date) => setEndDate(date)}
-            minDate={new Date()}
-            locale={ptBR}
-          />
-        </div>
+        <ContentContainer>
+          <h2>Título do evento</h2>
+          <TitleInput value={eventTitle} onChange={(e) => setEventTitle(e.target.value)} />
+        </ContentContainer>
 
-        <label>Horário de Início do Almoço:</label>
-        <input
-          type="time"
-          value={lunchStartTime}
-          onChange={(e) => setLunchStartTime(e.target.value)}
-        />
-        <label>Horário de Término do Almoço:</label>
-        <input
-          type="time"
-          value={lunchEndTime}
-          onChange={(e) => setLunchEndTime(e.target.value)}
-        />
+        <ContentContainer>
+          <h2>Intervalo de datas do evento</h2>
 
-        <h2>Disponibilidade para os dias da semana</h2>
-        {eventConfigurations.map((day, index) => (
-          <DaysContainer key={day}>
-            <CheckboxContainer
-              onClick={() => handleAvailabilityChange(index, !day.available)}
-              checked={day.available}
-            >
-              <StyledCheckbox
+          <ToggleContainer>
+            <OptionLabel>
+              <input
+                type="radio"
+                value="daysAhead"
+                checked={selectedOption === 'daysAhead'}
+                onChange={() => setSelectedOption('daysAhead')}
+              />
+              Dias corridos no futuro
+            </OptionLabel>
+            {selectedOption === 'daysAhead' &&
+              <div>
+                <input type="number" value={daysAhead} onChange={(e) => setDaysAhead(e.target.value)} />
+                <span>dias a frente no futuro</span>
+              </div>
+            }
+            <OptionLabel>
+              <input
+                type="radio"
+                value="specificDate"
+                checked={selectedOption === 'specificDate'}
+                onChange={() => setSelectedOption('specificDate')}
+              />
+              Intervalo de data específico
+            </OptionLabel>
+            {selectedOption === 'specificDate' &&
+              <div style={{ marginBottom: 10 }}>
+                <h3>Escolha a data de início e fim:</h3>
+                <div style={{ display: 'flex', columnGap: 10 }}>
+                  <Calendar
+                    date={startDate}
+                    onChange={(date) => setStartDate(date)}
+                    minDate={new Date()}
+                    locale={ptBR}
+                    style={{ minHeight: 200 }}
+                  />
+                  <Calendar
+                    date={endDate}
+                    onChange={(date) => setEndDate(date)}
+                    minDate={new Date()}
+                    locale={ptBR}
+                    style={{ minHeight: 200 }}
+                  />
+                </div>
+              </div>
+            }
+            <OptionLabel>
+              <input
+                type="radio"
+                value="indefinitely"
+                checked={selectedOption === 'indefinitely'}
+                onChange={() => setSelectedOption('indefinitely')}
+              />
+              Indefinidamente no futuro
+            </OptionLabel>
+          </ToggleContainer>
+        </ContentContainer>
+
+        <ContentContainer>
+          <label>Horário de Início do Almoço:</label>
+          <input
+            type="time"
+            value={lunchStartTime}
+            onChange={(e) => setLunchStartTime(e.target.value)}
+          />
+          <label>Horário de Término do Almoço:</label>
+          <input
+            type="time"
+            value={lunchEndTime}
+            onChange={(e) => setLunchEndTime(e.target.value)}
+          />
+        </ContentContainer>
+
+        <ContentContainer>
+
+          <h2>Disponibilidade para os dias da semana</h2>
+          {eventConfigurations.map((day, index) => (
+            <DaysContainer key={index}>
+              <CheckboxContainer
+                onClick={() => handleAvailabilityChange(index, !day.available)}
                 checked={day.available}
               >
-                {day.available &&
-                  <img
-                    alt="tick icon"
-                    style={{ width: '15px' }}
-                    src={CheckIcon}
+                <StyledCheckbox
+                  checked={day.available}
+                >
+                  {day.available &&
+                    <img
+                      alt="tick icon"
+                      style={{ width: '15px' }}
+                      src={CheckIcon}
+                    />
+                  }
+                </StyledCheckbox>
+                <Text checked={day.available}>{day.day}</Text>
+              </CheckboxContainer>
+              {day.available && (
+                <>
+                  <label>Início:</label>
+                  <input
+                    type="time"
+                    value={day.startTime}
+                    onChange={(e) => handleStartTimeChange(index, e.target.value)}
                   />
-                }
-              </StyledCheckbox>
-              <Text checked={day.available}>{day.day}</Text>
-            </CheckboxContainer>
-            {day.available && (
-              <>
-                <label>Início:</label>
-                <input
-                  type="time"
-                  value={day.startTime}
-                  onChange={(e) => handleStartTimeChange(index, e.target.value)}
-                />
-                <label>Término:</label>
-                <input
-                  type="time"
-                  value={day.endTime}
-                  onChange={(e) => handleEndTimeChange(index, e.target.value)}
-                />
-              </>
-            )}
-          </DaysContainer>
-        ))}
-        <h2>Configurar Horário e Duração do Evento</h2>
-        <label>Duração do Evento (em minutos):</label>
-        <input
-          type="number"
-          min="1"
-          value={eventDuration}
-          onChange={(e) => setEventDuration(parseInt(e.target.value))}
-        />
-        <label>Intervalo entre os Eventos (em minutos):</label>
-        <input
-          type="number"
-          min="1"
-          value={eventInterval}
-          onChange={(e) => setEventInterval(parseInt(e.target.value))}
-        />
-        <button onClick={calculateAllEventIntervals}>Calcular Intervalos</button>
+                  <label>Término:</label>
+                  <input
+                    type="time"
+                    value={day.endTime}
+                    onChange={(e) => handleEndTimeChange(index, e.target.value)}
+                  />
+                </>
+              )}
+            </DaysContainer>
+          ))}
+        </ContentContainer>
 
-        <h2>Intervalos de Evento:</h2>
-        {Object.keys(eventIntervals).map((day) => (
-          <div key={day}>
-            <h3>{day.charAt(0).toUpperCase() + day.slice(1)}</h3>
-            <p>Quantidade de Eventos Possíveis: {eventIntervals[day].eventCount}</p>
-            <ul>
-              {eventIntervals[day].eventTimes.map((interval, index) => (
-                <li key={index}>
-                  Início: {interval.start}, Término: {interval.end}
-                </li>
+        <ContentContainer>
+          <h2>Configurar Horário e Duração do Evento</h2>
+          <label>Duração do Evento (em minutos):</label>
+          <input
+            type="number"
+            min="1"
+            value={eventDuration}
+            onChange={(e) => setEventDuration(parseInt(e.target.value))}
+          />
+          <label>Intervalo entre os Eventos (em minutos):</label>
+          <input
+            type="number"
+            min="1"
+            value={eventInterval}
+            onChange={(e) => setEventInterval(parseInt(e.target.value))}
+          />
+        </ContentContainer>
+
+        <ContentContainer>
+
+          <h2>Intervalos de Evento:</h2>
+          <IntervalsContainer>
+            <EnventsContainer columns={eventIntervals.length}>
+              {eventIntervals?.map((day, index) => (
+                <EventsContent key={index}>
+                  <h3>{day.day}</h3>
+                  <p>Eventos: {day.eventCount}</p>
+                  {day.eventTimes?.map((interval, index) => (
+                    <EventItem key={index}>
+                      <div>Início: {interval.start}, </div>
+                      <div>Término: {interval.end}</div>
+                    </EventItem>
+                  ))}
+                </EventsContent>
               ))}
-            </ul>
-          </div>
-        ))}
+            </EnventsContainer>
+          </IntervalsContainer>
+        </ContentContainer>
       </Container>
     </ContentPageContainer>
   )
