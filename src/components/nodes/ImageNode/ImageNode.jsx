@@ -12,16 +12,30 @@ import { useReactFlow, NodeToolbar } from "reactflow";
 import { useState, useEffect } from "react";
 import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import api from '../../../api';
+import { toast } from "react-toastify";
 
 export function ImageNode({ id, data, selected }) {
   const [nodeValue, setNodeValue] = useState(data.value || "")
   const { setNodes } = useReactFlow();
   const [activeTab, setActiveTab] = useState("tab1");
 
-  const handleFileImage = (e) => {
-    const selectedFile = e.target.files[0];
-    const objectURL = URL.createObjectURL(selectedFile);
-    setNodeValue(objectURL);
+  const uploadImage = async (e) => {
+    const file = e.target.files[0];
+    try {
+      const formData = new FormData();
+      formData.append('nodeImage', file);
+      const response = await api.post('/flows/upload-image', formData,
+        {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        });
+      if (response.status === 201) {
+        setNodeValue(response.data.imageUrl)
+        toast.success('Upload realizado com sucesso.')
+      }
+    } catch {
+      toast.error('Erro ao realizar upload da imagem.')
+    }
   };
 
   const { deleteElements } = useReactFlow();
@@ -102,11 +116,11 @@ export function ImageNode({ id, data, selected }) {
           )}
           {activeTab === "tab2" && (
             <>
-              <ChooseFileButton htmlFor="fileInput">Choose File</ChooseFileButton>
+              <ChooseFileButton htmlFor={id}>Choose File</ChooseFileButton>
               <FileInput
                 type="file"
-                id="fileInput"
-                onChange={handleFileImage}
+                id={id}
+                onChange={uploadImage}
                 accept=".jpg, .png, .gif"
               />
             </>

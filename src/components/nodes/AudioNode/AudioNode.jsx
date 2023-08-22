@@ -11,7 +11,8 @@ import { useReactFlow, NodeToolbar } from "reactflow";
 import { useState, useEffect } from "react";
 import AudioFileOutlinedIcon from '@mui/icons-material/AudioFileOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-
+import api from '../../../api';
+import { toast } from "react-toastify";
 
 function AudioNode({ data, id, selected }) {
 
@@ -23,13 +24,23 @@ function AudioNode({ data, id, selected }) {
 
   const onDelete = () => deleteElements({ nodes: [{ id }] });
 
-  const handleFileAudio = (e) => {
+  const uploadAudio = async (e) => {
     const file = e.target.files[0];
-    if (file) {
-      const audioUrl = URL.createObjectURL(file);
-      setNodeValue(audioUrl)
+    try {
+      const formData = new FormData();
+      formData.append('nodeAudio', file);
+      const response = await api.post('/flows/upload-audio', formData,
+        {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        });
+      if (response.status === 201) {
+        setNodeValue(response.data.audioUrl)
+        toast.success('Upload realizado com sucesso.')
+      }
+    } catch {
+      toast.error('Erro ao realizar upload da imagem.')
     }
-  }
+  };
 
   useEffect(() => {
     setNodes((nds) =>
@@ -109,11 +120,11 @@ function AudioNode({ data, id, selected }) {
           )}
           {activeTab === "tab2" && (
             <>
-              <ChooseFileButton htmlFor="fileInput">Choose File</ChooseFileButton>
+              <ChooseFileButton htmlFor={id}>Choose File</ChooseFileButton>
               <FileInput
                 type="file"
-                id="fileInput"
-                onChange={handleFileAudio}
+                id={id}
+                onChange={uploadAudio}
                 accept=".mp3, .wav"
               />
             </>

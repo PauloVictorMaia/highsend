@@ -8,6 +8,8 @@ import Leads from "./pages/leads/Leads";
 import Analytics from "./pages/analytics/Analytics";
 import { ContextProvider } from "./contexts/ContextProvider";
 import AddSchedule from "./pages/addSchedules";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.min.css';
 
 const App = () => {
 
@@ -18,7 +20,7 @@ const App = () => {
           <Route path="/" element={<SignIn />} />
           <Route path="/dashboard/*" element={<DashBoard />}>
             <Route path="fluxograms" element={<Fluxograms />} />
-            <Route path="fluxograms/edit/:flowid?" element={<CreateFluxogram />} />
+            <Route path="fluxograms/edit/:flowid" element={<CreateFluxogram />} />
             <Route path="schedules" element={<Schedules />} />
             <Route path="leads" element={<Leads />} />
             <Route path="analytics" element={<Analytics />} />
@@ -26,6 +28,11 @@ const App = () => {
           </Route>
         </Routes>
       </ContextProvider>
+      <ToastContainer
+        position="top-right"
+        style={{ right: "80px" }}
+        autoClose={2000}
+      />
     </BrowserRouter>
   );
 }

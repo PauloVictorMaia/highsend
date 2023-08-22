@@ -5,6 +5,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import api from '../api';
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const StateContext = createContext();
 
@@ -28,12 +29,12 @@ export const ContextProvider = ({ children }) => {
             if (!nameExists) {
                 const variable = { id: uuidv4(), name: newVariable };
                 setVariables((variables) => [...variables, variable]);
-                console.log('Variável criada com sucesso!');
+                toast.success('Variável criada com sucesso.');
             } else {
-                console.log("Já existe uma variável com esse nome!");
+                toast.info('Já existe uma variável com esse nome.');
             }
         } else {
-            console.log('Campo vazio.');
+            toast.warning('Campo vazio.');
         }
     };
 
@@ -49,8 +50,8 @@ export const ContextProvider = ({ children }) => {
                 if (location !== '/') return navigate(location);
                 return navigate('/dashboard/fluxograms');
             }
-        } catch (error) {
-            console.log('Usuário não autenticado', error);
+        } catch {
+            toast.error('Usuário não autenticado. Faça login novamente.');
             navigate('/');
         }
     };
@@ -68,8 +69,8 @@ export const ContextProvider = ({ children }) => {
                 navigate('/dashboard/fluxograms');
             }
         }
-        catch (error) {
-            alert('Usuário ou senha incorretos. Verifique os dados e tente novamente.')
+        catch {
+            toast.warning('Usuário ou senha incorretos. Verifique os dados e tente novamente.');
         }
     };
 
@@ -93,7 +94,7 @@ export const ContextProvider = ({ children }) => {
                 setToken,
                 getUser,
                 signOut,
-                signIn
+                signIn,
             }}
         >
             {children}

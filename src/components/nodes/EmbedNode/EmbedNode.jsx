@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { NodeContainer, AddLink, LinkInput } from "./EmbedNode.style"
+import { NodeContainer, AddLink, LinkInput, LinkInputContainer } from "./EmbedNode.style"
 import { useState, useEffect } from "react";
 import { useReactFlow, NodeToolbar } from "reactflow";
 import LinkOutlinedIcon from '@mui/icons-material/LinkOutlined';
@@ -62,13 +62,15 @@ function EmbedNode({ data, id, selected }) {
         }
       </AddLink>
 
-      <LinkInput
-        isvisible={selected}
-        type="text"
-        value={nodeValue}
-        placeholder="Paste the link"
-        onChange={(e) => setNodeValue(e.target.value)}
-      />
+      <LinkInputContainer isvisible={selected}>
+        <span>Link</span>
+        <LinkInput
+          type="text"
+          value={nodeValue}
+          placeholder="Paste the link"
+          onChange={(e) => setNodeValue(e.target.value)}
+        />
+      </LinkInputContainer>
 
     </NodeContainer>
   )

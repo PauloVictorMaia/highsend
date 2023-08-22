@@ -32,11 +32,12 @@ export const ImageNodeMenu = styled.div`
   height: 90px;
   position: absolute;
   left: -325px;
-  top: -25px;
+  top: 10px;
   border-radius: 5px;
   background-color: #fff;
   padding: 0 10px;
   box-sizing: border-box;
+  box-shadow: 0 5px 7px 0 rgba(0,0,0,0.15);
 `;
 
 export const Navigation = styled.nav`

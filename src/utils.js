@@ -1,6 +1,3 @@
-
-
-// we have to make sure that parent nodes are rendered before their children
 export const sortNodes = (a, b) => {
   if (a.type === b.type) {
     return 0;

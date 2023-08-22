@@ -15,10 +15,28 @@ export const Container = styled.div`
   box-sizing: border-box;
 `;
 
-export const SaveButton = styled.button`
+export const Button = styled.button`
   border: none;
   outline: none;
   width: 100%;
   height: 50px;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &:disabled {
+    opacity: 0.5;
+  }
+
+  >svg {
+    color: ${({color}) => color ? "#ff8c1a" : "#333"};
+    width: 90%;
+    height: auto;
+  }
+`;
+
+export const Label = styled.span`
+  font-size: 9px;
+  color: #333;
 `;

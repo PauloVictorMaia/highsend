@@ -1,13 +1,26 @@
 /* eslint-disable react/prop-types */
-import { Container, SaveButton } from "./PanelButtons.style"
+import { Container, Label, Button } from "./PanelButtons.style"
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
+import IosShareIcon from '@mui/icons-material/IosShare';
+import SettingsIcon from '@mui/icons-material/Settings';
 
-function PanelButtons({ save }) {
+function PanelButtons({ save, hasChanges }) {
   return (
     <Container>
-      <SaveButton onClick={() => save()}>
-        <SaveOutlinedIcon style={{ fontSize: "large", width: "100%", height: "auto", color: "#333" }} />
-      </SaveButton>
+      <Button disabled={!hasChanges} onClick={() => save()} color={hasChanges}>
+        <SaveOutlinedIcon />
+        <Label>Salvar</Label>
+      </Button>
+
+      <Button>
+        <IosShareIcon />
+        <Label>Exportar</Label>
+      </Button>
+
+      <Button>
+        <SettingsIcon />
+        <Label>Configurar</Label>
+      </Button>
     </Container>
   )
 }

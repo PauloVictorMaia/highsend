@@ -9,7 +9,7 @@ import ReactFlow, {
 } from "reactflow";
 import 'reactflow/dist/style.css';
 import { FlowContainer } from "./CreateFluxogram.style";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Sidebar from '../../components/sidebar/Sidebar';
 import DefaultEdge from "../../components/edges/DefaultEdge/DefaultEdge";
 import { StartNode } from "../../components/nodes/StartNode/StartNode";
@@ -31,6 +31,8 @@ import { useStateContext } from "../../contexts/ContextProvider";
 import { useParams } from "react-router-dom";
 import api from '../../api';
 import PanelButtons from "../../components/PanelButtons/PanelButtons";
+import lodash from 'lodash';
+import { toast } from "react-toastify";
 
 const proOptions = {
   hideAttribution: true,
@@ -71,10 +73,13 @@ const Flow = () => {
   const { project, getIntersectingNodes } = useReactFlow();
   const store = useStoreApi();
   const { deleteElements } = useReactFlow();
-
   const params = useParams();
+  const [hasChanges, setHasChanges] = useState(false);
+  const [originalNodes, setOriginalNodes] = useState([]);
+  const [originalEdges, setOriginalEdges] = useState([]);
+  const [originalVariables, setOriginalVariables] = useState([]);
 
-  async function getNodeData() {
+  async function getFlowData() {
     try {
       const response = await api.get(`/flows/get-flow/${user.id}/${params.flowid}`,
         { headers: { authorization: token } });
@@ -82,30 +87,60 @@ const Flow = () => {
         setNodes(response.data.nodes);
         setEdges(response.data.edges);
         setVariables(response.data.variables);
+        setOriginalNodes(response.data.nodes);
+        setOriginalEdges(response.data.edges);
+        setOriginalVariables(response.data.variables);
       }
-    } catch (error) {
-      console.log('Erro ao buscar dados do flow', error);
+    } catch {
+      toast.error('Erro ao buscar dados do flow.');
     }
   }
 
-  async function saveNodeData() {
+  async function saveFlowData() {
     try {
       const response = await api.patch(`/flows/update-flow/${user.id}/${params.flowid}`,
         { nodes, edges, variables },
         { headers: { authorization: token } });
       if (response.status === 200) {
-        alert('dados salvos')
+        toast.success('Dados salvos!');
+        setHasChanges(false);
+        getFlowData;
       }
     } catch (error) {
-      alert('erro ao salvar')
+      toast.error('Erro ao salvar.');
     }
   }
 
+  window.addEventListener("beforeunload", function (event) {
+    event.preventDefault();
+    event.returnValue = "";
+    return "";
+  });
+
   useEffect(() => {
     if (Object.keys(user).length > 0) {
-      getNodeData();
+      getFlowData();
     }
   }, [user]);
+
+  useEffect(() => {
+
+    const nodesChanged = !lodash.isEqual(
+      nodes.map(node => lodash.omit(node, 'selected')),
+      originalNodes.map(node => lodash.omit(node, 'selected'))
+    );
+    const edgesChanged = !lodash.isEqual(
+      edges.map(edge => lodash.omit(edge, 'selected')),
+      originalEdges.map(edge => lodash.omit(edge, 'selected'))
+    );
+    const variablesChanged = !lodash.isEqual(variables, originalVariables);
+
+    if (nodesChanged || edgesChanged || variablesChanged) {
+      setHasChanges(true);
+    } else {
+      setHasChanges(false);
+    }
+  }, [nodes, edges, variables]);
 
   const onConnect = useCallback((connection) => {
     return setEdges(edges => addEdge(connection, edges));
@@ -402,7 +437,7 @@ const Flow = () => {
         <Sidebar />
       </Panel>
       <Panel position="top-right">
-        <PanelButtons save={saveNodeData} />
+        <PanelButtons save={saveFlowData} hasChanges={hasChanges} />
       </Panel>
     </FlowContainer>
   );

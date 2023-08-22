@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { LinkInput, NodeContainer, PreviewImage, VideoPreview } from "./VideoNode.style";
+import { LinkInput, LinkInputContainer, NodeContainer, PreviewImage, VideoPreview } from "./VideoNode.style";
 import { useReactFlow, NodeToolbar } from "reactflow";
 import MovieCreationOutlinedIcon from '@mui/icons-material/MovieCreationOutlined';
 import { useState, useEffect } from "react";
@@ -77,13 +77,15 @@ export function VideoNode({ data, id, selected }) {
         }
       </VideoPreview>
 
-      <LinkInput
-        isvisible={selected}
-        type="text"
-        value={nodeValue}
-        placeholder="link youtube / vimeo"
-        onChange={(e) => getYoutubeThumbnail(e.target.value)}
-      />
+      <LinkInputContainer isvisible={selected}>
+        <span>Link</span>
+        <LinkInput
+          type="text"
+          value={nodeValue}
+          placeholder="link youtube / vimeo"
+          onChange={(e) => getYoutubeThumbnail(e.target.value)}
+        />
+      </LinkInputContainer>
 
     </NodeContainer>
   )
