@@ -36,6 +36,9 @@ export const CardTitle = styled.span`
   font-size: 20px;
   color: #333;
   display: block;
+   &:hover {
+    text-decoration: underline;
+   }
 `;
 
 export const CardColor = styled.div`

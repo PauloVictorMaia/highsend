@@ -11,4 +11,8 @@ export const flowMenu = [
   {name: 'Configuração'},
 ]
 
+export const CalendarMenu = [
+  {name: 'Edição de agenda'}, 
+]
+
 export const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']

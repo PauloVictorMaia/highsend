@@ -14,9 +14,11 @@ function Schedules() {
       header={
         <CustomPageHeader
           menu={scheduleMenu}
-          name={'Agendas'} setMenuComponent={setMenuComponent}
+          name={'Agendas'} 
           menuComponent={menuComponent}
-          button={() => navigate('/add-schedule/usadhau2323')}
+          setMenuComponent={setMenuComponent}
+          buttonName={'Criar Agenda'}
+          button={() => navigate('/dashboard/add-schedule/usadhau2323')}
         />
       }
     >

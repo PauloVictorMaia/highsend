@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { HeaderContainer, TitleHeader, MenuItems, Item, ItemElement, Button, ContentHeader } from "./styles";
 
-function CustomPageHeader({ menu, setMenuComponent, menuComponent, button, name }) {
+function CustomPageHeader({ menu, setMenuComponent, menuComponent, button, name, buttonName }) {
   return (
     <HeaderContainer>
       <TitleHeader>{name}</TitleHeader>
@@ -17,7 +17,7 @@ function CustomPageHeader({ menu, setMenuComponent, menuComponent, button, name 
         }
         {button &&
           <Button onClick={button}>
-            Criar Agenda
+            {buttonName}
           </Button>
         }
       </ContentHeader>

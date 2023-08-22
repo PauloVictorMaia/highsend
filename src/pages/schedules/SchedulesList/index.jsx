@@ -25,9 +25,9 @@ function SchedulesList() {
   return (
     <Container>
       {calendarsData.map((calendar, index) => (
-        <ScheduleCard onClick={() => navigate(`/add-schedule/${calendar.room.id}`)} key={index}>
+        <ScheduleCard key={index}>
           <TitleContainer>
-            <CardTitle>{calendar.room.title}</CardTitle>
+            <CardTitle  onClick={() => navigate(`/dashboard/add-schedule/${calendar.room.id}`)}>{calendar.room.title}</CardTitle>
             <ButtonText onClick={() => openMenuDropDown(index)} hover>
               <SettingsApplicationsIcon />
               <ArrowDropDownIcon />

@@ -12,7 +12,7 @@ export const ContextProvider = ({ children }) => {
 
     const [variables, setVariables] = useState([]);
     const [openMenu, setOpenMenu] = useState(true);
-    const [login, setLogin] = useState(false);
+    const [login, setLogin] = useState(true);
     const [user, setUser] = useState({});
     // eslint-disable-next-line no-unused-vars
     const [token, setToken] = useState(localStorage.getItem('token'));
@@ -38,7 +38,7 @@ export const ContextProvider = ({ children }) => {
     };
 
     const getUser = async (token) => {
-        if (!token) return navigate('/');
+        // if (!token) return navigate('/');
 
         try {
             const response = await api.get('/users/get-user', { headers: { authorization: token } });
@@ -51,7 +51,7 @@ export const ContextProvider = ({ children }) => {
             }
         } catch (error) {
             console.log('Usuário não autenticado', error);
-            navigate('/');
+            // navigate('/');
         }
     };
 
