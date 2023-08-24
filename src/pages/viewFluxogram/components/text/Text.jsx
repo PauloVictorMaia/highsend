@@ -1,5 +1,7 @@
+import { BubleText } from "./styles";
+
 function Text({ data }) {
-  return <p>{data.value}</p>;
+  return <BubleText>{data.value}</BubleText>;
 }
 
 export default Text;
