@@ -13,7 +13,7 @@ export function DateInputNode({ data, id, selected }) {
   const { deleteElements } = useReactFlow();
   const onDelete = () => deleteElements({ nodes: [{ id }] });
   const [newVariable, setNewVariable] = useState("")
-  const [buttonLabel, setButtonLabel] = useState(data.buttonLabel || "Send")
+  const [buttonLabel, setButtonLabel] = useState(data.buttonLabel || "Enviar")
   const [assignedVariable, setAssignedVariable] = useState(data.variable || "")
   const [isRange, setIsRange] = useState(data.isRange || false)
   const [hasTime, setHasTime] = useState(data.hasTime || false)
@@ -77,12 +77,12 @@ export function DateInputNode({ data, id, selected }) {
 
       <InputPreview>
         <EditCalendarOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
-        <span>Pick a  date...</span>
+        <span>Escolha uma data...</span>
       </InputPreview>
 
       <InputConfig isvisible={selected}>
         <IsRangeInputContainer>
-          <span>Is range?</span>
+          <span>Com intervalo?</span>
           <input
             type="checkbox"
             checked={isRange}
@@ -90,7 +90,7 @@ export function DateInputNode({ data, id, selected }) {
           />
         </IsRangeInputContainer>
         <IsRangeInputContainer>
-          <span>With time?</span>
+          <span>Com horário?</span>
           <input
             type="checkbox"
             checked={hasTime}
@@ -98,14 +98,14 @@ export function DateInputNode({ data, id, selected }) {
           />
         </IsRangeInputContainer>
         <LabelsInputContainer isvisible={isRange}>
-          <span>From:</span>
+          <span>De:</span>
           <input
             type="text"
             placeholder={from}
             value={from}
             onChange={(e) => setFrom(e.target.value)}
           />
-          <span>To:</span>
+          <span>Até:</span>
           <input
             type="text"
             placeholder={to}
@@ -113,24 +113,24 @@ export function DateInputNode({ data, id, selected }) {
             onChange={(e) => setTo(e.target.value)}
           />
         </LabelsInputContainer>
-        <span>Button Label:</span>
+        <span>Nome do botão:</span>
         <input
           type="text"
           placeholder={buttonLabel}
           value={buttonLabel}
           onChange={(e) => setButtonLabel(e.target.value)}
         />
-        <span>Create new variable:</span>
+        <span>Criar nova variável:</span>
         <input
           type="text"
-          placeholder="set name of new variable"
+          placeholder="Defina o nome da nova variável"
           onChange={(e) => setNewVariable(e.target.value)}
         />
-        <button onClick={sendNewVariable}>Create</button>
+        <button onClick={sendNewVariable}>Criar</button>
 
-        <span>Assign variable to this input</span>
+        <span>Atribuir variável a esse input</span>
         <select value={assignedVariable} onChange={(e) => setAssignedVariable(e.target.value)}>
-          <option value="">Select variable</option>
+          <option value="">Selecionar variável</option>
           {variables &&
             variables.map((variable, index) => (
               <option key={index} value={variable.id}>{variable.name}</option>

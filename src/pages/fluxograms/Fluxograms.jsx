@@ -1,5 +1,6 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Buttons, Container, Content, FluxogramCard, Modal, ModalContent, NewFluxogramCard, CloseButton, EditFlowName } from "./Fluxograms.style";
+import { Buttons, Container, Content, FluxogramCard, Modal, ModalContent, NewFluxogramCard, CloseButton, EditFlowName, DeleteFlow } from "./Fluxograms.style";
 import AddIcon from '@mui/icons-material/Add';
 import { useState, useEffect } from "react";
 import api from '../../api';
@@ -12,6 +13,7 @@ import { toast } from "react-toastify";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ClearIcon from '@mui/icons-material/Clear';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
 
 function Fluxograms() {
   const [menuComponent, setMenuComponent] = useState(0);
@@ -57,6 +59,31 @@ function Fluxograms() {
     }
   };
 
+  const cloneFlow = async (flowID) => {
+    try {
+      const response = await api.post(`/flows/clone-flow/${user.id}/${flowID}`, {}, { headers: { authorization: token } });
+      if (response.status === 200) {
+        getFlows();
+        closeEditModal();
+      }
+    } catch {
+      toast.error('Erro ao clonar flow.');
+    }
+  };
+
+  const deleteFlow = async (flowID) => {
+    try {
+      const response = await api.delete(`/flows/delete-flow/${user.id}/${flowID}`, { headers: { authorization: token } });
+      if (response.status === 200) {
+        toast.success('Flow deletado.')
+        getFlows();
+        setModalDeleteIsVisible(false);
+      }
+    } catch {
+      toast.error('Erro ao deletar flow.');
+    }
+  };
+
   const closeEditModal = () => {
     setFlowName("");
     setModalEditIsVisible(false);
@@ -93,6 +120,7 @@ function Fluxograms() {
             <FluxogramCard key={index}>
               <Buttons>
                 <EditIcon onClick={() => setModalEditIsVisible(true)} />
+                <FileCopyIcon onClick={() => cloneFlow(flow.id)} />
                 <DeleteIcon onClick={() => setModalDeleteIsVisible(true)} />
               </Buttons>
               <Content onClick={() => navigate(`/dashboard/fluxograms/edit/${flow.id}`)}>
@@ -122,6 +150,11 @@ function Fluxograms() {
                   <CloseButton onClick={() => setModalDeleteIsVisible(false)}>
                     <ClearIcon />
                   </CloseButton>
+
+                  <DeleteFlow>
+                    <span>Tem certeza que deseja deletar o flow "{flow.name}" ?</span>
+                    <button onClick={() => deleteFlow(flow.id)}>Deletar</button>
+                  </DeleteFlow>
                 </ModalContent>
               </Modal>
             </FluxogramCard>

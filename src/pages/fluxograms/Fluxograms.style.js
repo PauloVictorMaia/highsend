@@ -135,3 +135,28 @@ export const EditFlowName = styled.div`
     justify-content: center;
   }
 `;
+
+export const DeleteFlow = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0 10px;
+  box-sizing: border-box;
+  row-gap: 20px;
+  
+  >button {
+    width: 70px;
+    height: 25px;
+    border-radius: 5px;
+    background-color: red;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 35%;
+  }
+`;

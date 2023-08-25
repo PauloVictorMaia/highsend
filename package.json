@@ -16,6 +16,7 @@
     "@mui/material": "^5.14.1",
     "@reactflow/node-resizer": "^2.1.1",
     "axios": "^1.4.0",
+    "clipboard-copy": "^4.0.1",
     "countries-list": "^2.6.1",
     "date-fns": "^2.30.0",
     "deep-diff": "^1.0.2",

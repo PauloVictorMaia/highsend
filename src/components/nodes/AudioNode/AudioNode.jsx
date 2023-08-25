@@ -84,7 +84,7 @@ function AudioNode({ data, id, selected }) {
       <AudioPreview>
         <AudioFileOutlinedIcon />
         {nodeValue === "" ?
-          <span>Click to edit...</span>
+          <span>Click para editar...</span>
           :
           <audio controls>
             <source src={nodeValue} type="audio/mpeg" />
@@ -120,7 +120,7 @@ function AudioNode({ data, id, selected }) {
           )}
           {activeTab === "tab2" && (
             <>
-              <ChooseFileButton htmlFor={id}>Choose File</ChooseFileButton>
+              <ChooseFileButton htmlFor={id}>Escolher arquivo</ChooseFileButton>
               <FileInput
                 type="file"
                 id={id}

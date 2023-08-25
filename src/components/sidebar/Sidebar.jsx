@@ -30,12 +30,12 @@ export default () => {
       <NodesContainer>
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'textNode', '80')} draggable>
           <TextFieldsIcon style={{ fontSize: "large" }} />
-          Text
+          Texto
         </NodeDraggable>
 
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'imageNode', '150')} draggable>
           <PhotoCameraOutlinedIcon style={{ fontSize: "large" }} />
-          Image
+          Imagem
         </NodeDraggable>
 
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'videoNode', '150')} draggable>
@@ -45,7 +45,7 @@ export default () => {
 
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'embedNode', '40')} draggable>
           <LinkOutlinedIcon style={{ fontSize: "large" }} />
-          Embed
+          Link
         </NodeDraggable>
 
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'audioNode', '40')} draggable>
@@ -60,12 +60,12 @@ export default () => {
       <NodesContainer>
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'textInputNode', '40')} draggable>
           <TextFieldsIcon style={{ fontSize: "large", color: "#E67200" }} />
-          Text
+          Texto
         </NodeDraggable>
 
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'numberInputNode', '40')} draggable>
           <NumbersIcon style={{ fontSize: "large", color: "#E67200" }} />
-          Number
+          Numero
         </NodeDraggable>
 
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'emailInputNode', '40')} draggable>
@@ -80,17 +80,17 @@ export default () => {
 
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'dateInputNode', '40')} draggable>
           <EditCalendarOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
-          Date
+          Data
         </NodeDraggable>
 
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'phoneInputNode', '40')} draggable>
           <PhoneIphoneOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
-          Phone
+          Telefone
         </NodeDraggable>
 
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'buttonInputNode', '40')} draggable>
           <TaskAltOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
-          Button
+          Botão
         </NodeDraggable>
 
         {/* <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'picChoiceInputNode', '80')} draggable>

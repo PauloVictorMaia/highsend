@@ -3,18 +3,49 @@
 /* eslint-disable react/prop-types */
 
 import { NodeToolbar, useReactFlow, Position } from 'reactflow';
-
+import { getId } from '../../../utils';
 import { Label, LeftHandle, NodeContainer, RightHandle } from './GroupNode.style';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { useState, useEffect } from 'react';
 
-export default function GroupNode({ id, data, selected }) {
+export default function GroupNode({ data, id, selected }) {
   const [nodeLabel, setNodeLabel] = useState(data.label)
   const { deleteElements } = useReactFlow();
   const { setNodes } = useReactFlow();
 
   const onDelete = () => {
     deleteElements({ nodes: [{ id }] });
+  };
+
+  const cloneGroup = () => {
+    setNodes((nodes) => {
+      const originalNode = nodes.find((node) => node.id === id);
+      const parentNodes = nodes.filter((node) => node.parentNode === id);
+
+      if (!originalNode) {
+        return nodes;
+      }
+
+      const clonedNode = {
+        ...originalNode,
+        id: getId(),
+        position: { x: originalNode.position.x + 260, y: originalNode.position.y + 30 },
+        positionAbsolute: {
+          x: originalNode.positionAbsolute.x + 260,
+          y: originalNode.positionAbsolute.y + 30,
+        },
+        selected: false,
+      };
+
+      const clonedChildren = parentNodes.map((child) => ({
+        ...child,
+        id: getId(),
+        parentNode: clonedNode.id,
+      }));
+
+      return [...nodes, clonedNode, ...clonedChildren];
+    });
   };
 
   useEffect(() => {
@@ -38,10 +69,15 @@ export default function GroupNode({ id, data, selected }) {
           color: '#000',
           border: '0.5px solid rgba(0,0,0,0.15)',
           borderRadius: '8px',
-
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          width: "45px",
+          height: "30px"
         }}
       >
-        <DeleteOutlineIcon style={{ cursor: 'pointer', fontSize: 'large' }} onClick={onDelete} />
+        <ContentCopyIcon style={{ cursor: 'pointer', fontSize: 'medium' }} onClick={() => cloneGroup()} />
+        <DeleteOutlineIcon style={{ cursor: 'pointer', fontSize: 'large' }} onClick={() => onDelete()} />
       </NodeToolbar>
 
       <LeftHandle

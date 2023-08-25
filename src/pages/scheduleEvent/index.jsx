@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import "./styles.css";
-import { calendars, events } from "../../data/calendar";
+// import { events } from "../../data/calendar";
+import { toast } from "react-toastify";
+import api from '../../api';
+import { useParams } from "react-router-dom";
+import { v4 as uuidv4 } from 'uuid';
 
 const daysValue = {
   0: 'domingo',
@@ -19,34 +23,79 @@ function ScheduleEvent() {
   const [currMonth, setCurrMonth] = useState(null);
   const [currYear, setCurrYear] = useState(null);
   const [currentDate, setCurrentDate] = useState("");
-  const [calendarData, setCalendarData] = useState(calendars[1]);
+  const [calendarData, setCalendarData] = useState([]);
   const [selectedTime, setSelectedTime] = useState({ start: '', end: '' });
   const [selectedDate, setSelectedDate] = useState(null);
-  
-  const [unavailableHours, setUnavailableHours] = useState(events);
+  const [dataLoaded, setDataLoaded] = useState(false);
+  const [dayEvents, setDayEvents] = useState([]);
+  const [unavailableHours, setUnavailableHours] = useState([]);
+  const [calendarActiveDays, setCalendarActiveDays] = useState("");
+  const [availableEventTimes, setAvailableEventTimes] = useState([]);
+  const params = useParams();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
 
-  const dayEvents = (calendarData.calendar.eventsIntervals.filter((times) => times.day === daysValue[new Date(selectedDate).getDay()]))
-
   useEffect(() => {
-    setCalendarData(calendars[1]);
+    getCalendarData();
   }, []);
 
   useEffect(() => {
-    if (calendarData.calendar.type === "specificDate") {
-      setDate(new Date(calendarData.calendar.startDate));
-      setEndDate(new Date(calendarData.calendar.endDate));
-      setCurrMonth(new Date(calendarData.calendar.startDate).getMonth());
-      setCurrYear(new Date(calendarData.calendar.startDate).getFullYear());
-    } else {
-      setDate(new Date());
-      setCurrMonth(new Date().getMonth());
-      setCurrYear(new Date().getFullYear());
-    }
+    let dateItem = document.querySelectorAll(".active");
   }, [calendarData]);
+
+  useEffect(() => {
+    if (Object.keys(calendarData).length > 1) {
+      renderCalendar();
+      selectDate();
+    }
+  }, [currMonth, currYear, calendarData]);
+
+  useEffect(() => {
+    if (dataLoaded && selectedDate) {
+      const events = calendarData.calendar.eventsIntervals.filter((times) => times.day === daysValue[new Date(selectedDate).getDay()]);
+      setDayEvents(events);
+    }
+  }, [dataLoaded, selectedDate]);
+
+  useEffect(() => {
+    if (dayEvents.length > 0) {
+      const availableTimes = dayEvents[0].eventTimes.filter(time => {
+        const isOverlapping = unavailableHours.some(usedTime => {
+          return isTimeOverlapping(time, usedTime.time);
+        });
+        return !isOverlapping;
+      });
+      setAvailableEventTimes(availableTimes);
+    }
+  }, [dayEvents, unavailableHours]);
+
+  async function getCalendarData() {
+    try {
+      const response = await api.get(`/calendars/get-full-calendar/${params.userId}/${params.calendarId}`);
+      if (response.status === 201) {
+        setDataLoaded(true);
+        const calendarData = response.data.calendar;
+        setUnavailableHours(calendarData.events);
+        setCalendarData(calendarData);
+        setUnavailableHours(calendarData.events);
+        setCalendarActiveDays(calendarData.calendar.daysAhead);
+        if (calendarData.calendar.type === "specificDate") {
+          setDate(new Date(calendarData.calendar.startDate));
+          setEndDate(new Date(calendarData.calendar.endDate));
+          setCurrMonth(new Date(calendarData.calendar.startDate).getMonth());
+          setCurrYear(new Date(calendarData.calendar.startDate).getFullYear());
+        } else {
+          setDate(new Date());
+          setCurrMonth(new Date().getMonth());
+          setCurrYear(new Date().getFullYear());
+        }
+      }
+    } catch {
+      toast.error('Erro ao buscar agenda.');
+    }
+  }
 
   const handleTimeSelection = (time) => {
     setSelectedTime(time);
@@ -55,7 +104,6 @@ function ScheduleEvent() {
   const renderCalendar = useCallback(() => {
     const months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
 
-    const calendarActiveDays = calendarData.calendar.daysAhead;
     const calendarArrayDays = [];
 
     for (let i = 1; i <= calendarActiveDays; i++) {
@@ -93,8 +141,12 @@ function ScheduleEvent() {
   const selectDate = () => {
     let dateItem = document.querySelectorAll(".active");
     for (let i = 0; i < dateItem.length; i++) {
+      console.log(dateItem)
       dateItem[i].addEventListener("click", function () {
+        const selectedDate = dateItem[i].getAttribute('data-value')
+        //requisição para API
         setStep(1);
+        console.log(dateItem[i].getAttribute('data-value'))
         setSelectedDate(dateItem[i].getAttribute('data-value'))
       });
     }
@@ -107,15 +159,9 @@ function ScheduleEvent() {
     );
   };
 
-  const availableEventTimes = dayEvents[0].eventTimes.filter(time => {
-    const isOverlapping = unavailableHours.some(usedTime => {
-      return isTimeOverlapping(time, usedTime.time);
-    });
-    return !isOverlapping;
-  });
-
-  const saveEvent = () => {
+  const saveEvent = async () => {
     const newSaveEvent = {
+      id: uuidv4(),
       day: selectedDate,
       name: name,
       email: email,
@@ -123,13 +169,15 @@ function ScheduleEvent() {
       time: selectedTime,
     }
 
-    console.log(newSaveEvent)
+    try {
+      const response = await api.post(`/calendars/add-event/${params.userId}/${params.calendarId}`, { newSaveEvent });
+      if (response.status === 201) {
+        toast.success('Seu evento foi agendado com sucesso!');
+      }
+    } catch {
+      toast.error('Erro ao agendar evento.');
+    }
   }
-
-  useEffect(() => {
-    renderCalendar();
-    selectDate();
-  }, [currMonth, currYear, renderCalendar]);
 
   const previousMonth = () => {
     if (currMonth <= 0) {

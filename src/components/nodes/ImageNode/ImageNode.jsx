@@ -83,7 +83,7 @@ export function ImageNode({ id, data, selected }) {
       <ImagePreview>
         <PhotoCameraOutlinedIcon />
         {nodeValue === "" ?
-          <span>Click to edit...</span>
+          <span>Click para editar...</span>
           :
           <Image src={nodeValue} alt="preview da imagem" />
         }
@@ -116,7 +116,7 @@ export function ImageNode({ id, data, selected }) {
           )}
           {activeTab === "tab2" && (
             <>
-              <ChooseFileButton htmlFor={id}>Choose File</ChooseFileButton>
+              <ChooseFileButton htmlFor={id}>Escolher arquivo</ChooseFileButton>
               <FileInput
                 type="file"
                 id={id}

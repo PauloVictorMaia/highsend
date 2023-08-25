@@ -31,8 +31,9 @@ export const Button = styled.button`
 
   >svg {
     color: ${({color}) => color ? "#ff8c1a" : "#333"};
-    width: 90%;
+    width: 70%;
     height: auto;
+    font-size: small;
   }
 `;
 

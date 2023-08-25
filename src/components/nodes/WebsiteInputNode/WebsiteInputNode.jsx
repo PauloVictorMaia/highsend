@@ -12,11 +12,11 @@ export function WebsiteInputNode({ data, id, selected }) {
   const { setNodes } = useReactFlow();
   const { deleteElements } = useReactFlow();
   const onDelete = () => deleteElements({ nodes: [{ id }] });
-  const [newVariable, setNewVariable] = useState("")
-  const [placeholder, setPlaceholder] = useState(data.placeholder || "Type a URL...")
-  const [buttonLabel, setButtonLabel] = useState(data.buttonLabel || "Send")
-  const [assignedVariable, setAssignedVariable] = useState(data.variable || "")
-  const [retryMessage, setRetryMessage] = useState(data.retryMessage || "This URL doesn't seem to be valid. Can you type it again?")
+  const [newVariable, setNewVariable] = useState("");
+  const [placeholder, setPlaceholder] = useState(data.placeholder || "Digite uma URL...");
+  const [buttonLabel, setButtonLabel] = useState(data.buttonLabel || "Enviar");
+  const [assignedVariable, setAssignedVariable] = useState(data.variable || "");
+  const [retryMessage, setRetryMessage] = useState(data.retryMessage || "Esta URL não parece ser válida. Você pode digitá-la novamente?");
 
   const sendNewVariable = async () => {
     try {
@@ -84,31 +84,31 @@ export function WebsiteInputNode({ data, id, selected }) {
           value={placeholder}
           onChange={(e) => setPlaceholder(e.target.value)}
         />
-        <span>Button Label:</span>
+        <span>Nome do botão:</span>
         <input
           type="text"
           placeholder={buttonLabel}
           value={buttonLabel}
           onChange={(e) => setButtonLabel(e.target.value)}
         />
-        <span>Retry message:</span>
+        <span>Mensagem de nova tentativa:</span>
         <input
           type="text"
           placeholder={retryMessage}
           value={retryMessage}
           onChange={(e) => setRetryMessage(e.target.value)}
         />
-        <span>Create new variable:</span>
+        <span>Criar nova variável:</span>
         <input
           type="text"
           placeholder="set name of new variable"
           onChange={(e) => setNewVariable(e.target.value)}
         />
-        <button onClick={sendNewVariable}>Create</button>
+        <button onClick={sendNewVariable}>Criar</button>
 
-        <span>Assign variable to this input</span>
+        <span>Atribuir variável a esse input</span>
         <select value={assignedVariable} onChange={(e) => setAssignedVariable(e.target.value)}>
-          <option value="">Select variable</option>
+          <option value="">Selecionar variável</option>
           {variables &&
             variables.map((variable, index) => (
               <option key={index} value={variable.id}>{variable.name}</option>

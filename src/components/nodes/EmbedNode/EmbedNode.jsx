@@ -56,9 +56,9 @@ function EmbedNode({ data, id, selected }) {
       <AddLink>
         <LinkOutlinedIcon />
         {nodeValue === "" ?
-          <span>Click to edit...</span>
+          <span>Click para editar...</span>
           :
-          <span>Show embed</span>
+          <span>Ver link</span>
         }
       </AddLink>
 

@@ -68,7 +68,7 @@ export function VideoNode({ data, id, selected }) {
       <VideoPreview>
         <MovieCreationOutlinedIcon />
         {videoLink === "" ?
-          <span>Click to edit...</span>
+          <span>Click para editar...</span>
           :
           <PreviewImage
             src={videoLink}

@@ -22,12 +22,18 @@ import {
   EnventsContainer,
   EventsContent
 } from './styles.js';
-import { calendars } from "../../data/calendar";
 import { CalendarMenu } from "../../data/menus";
+import { toast } from "react-toastify";
+import api from "../../api";
+import { useStateContext } from "../../contexts/ContextProvider";
+import { useNavigate, useParams } from "react-router-dom";
 
 function AddSchedule() {
+  const { user } = useStateContext();
+  const token = localStorage.getItem('token');
+  const navigate = useNavigate();
+  const params = useParams();
   const [menuComponent, setMenuComponent] = useState(0);
-
   const [selectedOption, setSelectedOption] = useState('daysAhead');
   const [eventTitle, setEventTitle] = useState('');
   const [eventColor, setEventColor] = useState('');
@@ -45,33 +51,46 @@ function AddSchedule() {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
+  async function getCalendarData() {
+    try {
+      const response = await api.get(`/calendars/get-calendar/${user.id}/${params.id}`, { headers: { authorization: token } });
+      if (response.status === 201) {
+        const calendar = response.data.filteredTargetCalendar;
+        setEventConfigurations(calendar.calendar.daysOfTheWeek);
+        setEventIntervals(calendar.calendar.eventsIntervals);
+        setEventDuration(calendar.room.eventDuration);
+        setEventInterval(calendar.room.eventInterval);
+        setLunchStartTime(calendar.calendar.lunchStartTime);
+        setLunchEndTime(calendar.calendar.lunchEndTime);
+
+        setStartDate(new Date(calendar.calendar.startDate));
+        setEndDate(new Date(calendar.calendar.endDate));
+        setDaysAhead(calendar.calendar.daysAhead);
+        setSelectedOption(calendar.calendar.type)
+
+        setEventTitle(calendar.room.title);
+        setEventColor(calendar.room.color);
+        setEventActive(calendar.room.active);
+      }
+    } catch {
+      toast.error('Erro ao buscar agenda.');
+    }
+  }
+
   useEffect(() => {
-    setEventConfigurations(calendars[1].calendar.daysOfTheWeek);
-    setEventIntervals(calendars[1].calendar.eventsIntervals);
-    setEventDuration(calendars[1].room.eventDuration);
-    setEventInterval(calendars[1].room.eventInterval);
-    setLunchStartTime(calendars[1].calendar.lunchStartTime);
-    setLunchEndTime(calendars[1].calendar.lunchEndTime);
-
-    setStartDate(new Date(calendars[1].calendar.startDate));
-    setEndDate(new Date(calendars[1].calendar.endDate));
-    setDaysAhead(calendars[1].calendar.daysAhead);
-    setSelectedOption(calendars[1].calendar.type)
-
-    setEventTitle(calendars[1].room.title);
-    setEventColor(calendars[1].room.color);
-    setEventActive(calendars[1].room.active);
-  }, []);
+    if (Object.keys(user).length > 0) {
+      getCalendarData();
+    }
+  }, [user]);
 
   useEffect(() => {
     calculateAllEventIntervals();
   }, [eventConfigurations, eventDuration, eventInterval, lunchStartTime, lunchEndTime]);
 
-  const saveCalendar = () => {
+  const saveCalendar = async () => {
     const calendar = {
       room: {
-        id: '',
-        useId: '',
+        id: params.id,
         type: 'oneaone',
         vacancies: 1,
         active: eventActive,
@@ -89,10 +108,19 @@ function AddSchedule() {
         eventsIntervals: eventIntervals,
         daysOfTheWeek: eventConfigurations,
         daysAhead: daysAhead,
-      }
+      },
+      events: []
     }
 
-    console.log(calendar)
+    try {
+      const response = await api.patch(`/calendars/edit-calendar/${user.id}/${params.id}`, { calendar }, { headers: { authorization: token } });
+      if (response.status === 201) {
+        toast.success('Dados salvos!');
+        navigate('/dashboard/schedules');
+      }
+    } catch {
+      toast.error('Erro ao salvar agenda.');
+    }
   }
 
   const handleAvailabilityChange = (index, value) => {
@@ -156,6 +184,17 @@ function AddSchedule() {
     });
 
     setEventIntervals(allEventIntervals);
+  };
+
+  const formatDates = (startDate, endDate) => {
+    const formattedStartDate = format(startDate, 'd MMMM yyyy', { locale: ptBR });
+    const formattedEndDate = format(endDate, 'd MMMM yyyy', { locale: ptBR });
+    return `De: ${formattedStartDate} Até: ${formattedEndDate}`;
+  };
+
+  const handleDaysAhead = () => {
+    setDaysAhead("36000");
+    setSelectedOption('indefinitely');
   };
 
   return (
@@ -224,6 +263,9 @@ function AddSchedule() {
                     style={{ minHeight: 200 }}
                   />
                 </div>
+                <div style={{ marginTop: '10px', paddingLeft: '20px' }}>
+                  <span>{formatDates(startDate, endDate)}</span>
+                </div>
               </div>
             }
             <OptionLabel>
@@ -231,7 +273,7 @@ function AddSchedule() {
                 type="radio"
                 value="indefinitely"
                 checked={selectedOption === 'indefinitely'}
-                onChange={() => setSelectedOption('indefinitely')}
+                onChange={() => handleDaysAhead()}
               />
               Indefinidamente no futuro
             </OptionLabel>

@@ -19,7 +19,7 @@ const App = () => {
       <ContextProvider>
         <Routes>
           <Route path="/" element={<SignIn />} />
-          <Route path="/agendar-evento/:userId/:eventId" element={<ScheduleEvent />} />
+          <Route path="/agendar-evento/:userId/:calendarId" element={<ScheduleEvent />} />
           <Route path="/dashboard/*" element={<DashBoard />}>
             <Route path="fluxograms" element={<Fluxograms />} />
             <Route path="fluxograms/edit/:flowid" element={<CreateFluxogram />} />
