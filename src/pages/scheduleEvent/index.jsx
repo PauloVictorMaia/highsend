@@ -77,9 +77,7 @@ function ScheduleEvent() {
       if (response.status === 201) {
         setDataLoaded(true);
         const calendarData = response.data.calendar;
-        setUnavailableHours(calendarData.events);
         setCalendarData(calendarData);
-        setUnavailableHours(calendarData.events);
         setCalendarActiveDays(calendarData.calendar.daysAhead);
         if (calendarData.calendar.type === "specificDate") {
           setDate(new Date(calendarData.calendar.startDate));
@@ -141,12 +139,17 @@ function ScheduleEvent() {
   const selectDate = () => {
     let dateItem = document.querySelectorAll(".active");
     for (let i = 0; i < dateItem.length; i++) {
-      console.log(dateItem)
-      dateItem[i].addEventListener("click", function () {
+      dateItem[i].addEventListener("click", async function () {
         const selectedDate = dateItem[i].getAttribute('data-value')
-        //requisição para API
-        setStep(1);
-        console.log(dateItem[i].getAttribute('data-value'))
+        try {
+          const response = await api.get(`/calendars/get-events-in-selected-date/${params.userId}/${params.calendarId}/${selectedDate}`);
+          if (response.status === 200) {
+            setUnavailableHours(response.data.events);
+            setStep(1);
+          }
+        } catch {
+          toast.error('Erro ao buscar eventos agendados nessa data.')
+        }
         setSelectedDate(dateItem[i].getAttribute('data-value'))
       });
     }
