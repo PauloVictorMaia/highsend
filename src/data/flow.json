@@ -1,0 +1,1578 @@
+{
+  "nodes": [
+      {
+          "width": 250,
+          "height": 230,
+          "id": "node_9774.14893856713",
+          "type": "group",
+          "position": {
+              "x": 421,
+              "y": 384
+          },
+          "data": {
+              "label": "Node #1",
+              "blocks": [
+                  {
+                      "width": 210,
+                      "height": 80,
+                      "id": "node_9539.990645994247",
+                      "type": "textNode",
+                      "position": {
+                          "x": 20,
+                          "y": 50
+                      },
+                      "data": {
+                          "value": "outro node"
+                      },
+                      "parentNode": "node_9774.14893856713",
+                      "extent": "parent",
+                      "draggable": false,
+                      "style": {
+                          "width": 210,
+                          "height": 80
+                      },
+                      "positionAbsolute": {
+                          "x": 441,
+                          "y": 434
+                      },
+                      "selected": false
+                  },
+                  {
+                      "width": 210,
+                      "height": 80,
+                      "id": "node_5463.230609252699",
+                      "type": "textNode",
+                      "position": {
+                          "x": 20,
+                          "y": 135
+                      },
+                      "data": {
+                          "value": "texto diferente"
+                      },
+                      "parentNode": "node_9774.14893856713",
+                      "extent": "parent",
+                      "draggable": false,
+                      "style": {
+                          "width": 210,
+                          "height": 80
+                      },
+                      "positionAbsolute": {
+                          "x": 441,
+                          "y": 519
+                      },
+                      "selected": false
+                  }
+              ]
+          },
+          "style": {
+              "width": 250,
+              "height": 230,
+              "backgroundColor": "#fff",
+              "border": "none",
+              "padding": "0",
+              "borderRadius": "8px"
+          },
+          "positionAbsolute": {
+              "x": 421,
+              "y": 384
+          },
+          "selected": false,
+          "dragging": false
+      },
+      {
+          "width": 250,
+          "height": 430,
+          "id": "node_7394.808173413508",
+          "type": "group",
+          "position": {
+              "x": 1095,
+              "y": 107
+          },
+          "data": {
+              "label": "Node #2",
+              "blocks": [
+                  {
+                      "width": 210,
+                      "height": 80,
+                      "id": "node_1163.6308801468685",
+                      "type": "textNode",
+                      "position": {
+                          "x": 20,
+                          "y": 50
+                      },
+                      "data": {
+                          "value": "texto"
+                      },
+                      "parentNode": "node_7394.808173413508",
+                      "extent": "parent",
+                      "draggable": false,
+                      "style": {
+                          "width": 210,
+                          "height": 80
+                      },
+                      "positionAbsolute": {
+                          "x": 1115,
+                          "y": 157
+                      },
+                      "selected": false
+                  },
+                  {
+                      "width": 210,
+                      "height": 80,
+                      "id": "node_5433.603514871214",
+                      "type": "textNode",
+                      "position": {
+                          "x": 20,
+                          "y": 135
+                      },
+                      "data": {
+                          "value": "texto 2"
+                      },
+                      "parentNode": "node_7394.808173413508",
+                      "extent": "parent",
+                      "draggable": false,
+                      "style": {
+                          "width": 210,
+                          "height": 80
+                      },
+                      "positionAbsolute": {
+                          "x": 1115,
+                          "y": 242
+                      },
+                      "selected": false
+                  },
+                  {
+                      "width": 210,
+                      "height": 150,
+                      "id": "node_2960.987590895243",
+                      "type": "videoNode",
+                      "position": {
+                          "x": 20,
+                          "y": 220
+                      },
+                      "data": {
+                          "value": "https://www.youtube.com/watch?v=kAi1dvl-wiM"
+                      },
+                      "parentNode": "node_7394.808173413508",
+                      "extent": "parent",
+                      "draggable": false,
+                      "style": {
+                          "width": 210,
+                          "height": 150
+                      },
+                      "positionAbsolute": {
+                          "x": 1115,
+                          "y": 327
+                      },
+                      "selected": false
+                  },
+                  {
+                      "width": 210,
+                      "height": 40,
+                      "id": "node_692.3840425952177",
+                      "type": "audioNode",
+                      "position": {
+                          "x": 20,
+                          "y": 375
+                      },
+                      "data": {
+                          "value": "https://hisend.s3.amazonaws.com/audios/836f248a-be50-4ef3-a903-d5570acfd5e1-WhatsApp-Ptt-2023-08-23-at-09.43.59.mp3"
+                      },
+                      "parentNode": "node_7394.808173413508",
+                      "extent": "parent",
+                      "draggable": false,
+                      "style": {
+                          "width": 210,
+                          "height": 40
+                      },
+                      "positionAbsolute": {
+                          "x": 1115,
+                          "y": 482
+                      },
+                      "selected": false
+                  }
+              ]
+          },
+          "style": {
+              "width": 250,
+              "height": 430,
+              "backgroundColor": "#fff",
+              "border": "none",
+              "padding": "0",
+              "borderRadius": "8px"
+          },
+          "positionAbsolute": {
+              "x": 1095,
+              "y": 107
+          },
+          "selected": false,
+          "dragging": false
+      },
+      {
+          "width": 250,
+          "height": 140,
+          "id": "node_7114.832411503302",
+          "type": "group",
+          "position": {
+              "x": -38.20024529658373,
+              "y": 667.6791192469549
+          },
+          "data": {
+              "label": "Node #7",
+              "blocks": [
+                  {
+                      "width": 210,
+                      "height": 80,
+                      "id": "node_8475.608699986231",
+                      "type": "textNode",
+                      "position": {
+                          "x": 20,
+                          "y": 50
+                      },
+                      "data": {
+                          "value": "testando"
+                      },
+                      "parentNode": "node_7114.832411503302",
+                      "extent": "parent",
+                      "draggable": false,
+                      "style": {
+                          "width": 210,
+                          "height": 80
+                      },
+                      "positionAbsolute": {
+                          "x": -18.20024529658373,
+                          "y": 717.6791192469549
+                      },
+                      "selected": false
+                  }
+              ]
+          },
+          "style": {
+              "width": 250,
+              "height": 140,
+              "border": "none",
+              "padding": "0",
+              "borderRadius": "8px"
+          },
+          "positionAbsolute": {
+              "x": -38.20024529658373,
+              "y": 667.6791192469549
+          }
+      },
+      {
+          "width": 250,
+          "height": 140,
+          "id": "node_8318.05077460344",
+          "type": "group",
+          "position": {
+              "x": 537.5154850836379,
+              "y": 751.2892875594351
+          },
+          "data": {
+              "label": "Node #8",
+              "blocks": [
+                  {
+                      "width": 210,
+                      "height": 80,
+                      "id": "node_9690.822307553715",
+                      "type": "textNode",
+                      "position": {
+                          "x": 20,
+                          "y": 50
+                      },
+                      "data": {
+                          "value": "testando 2"
+                      },
+                      "parentNode": "node_8318.05077460344",
+                      "extent": "parent",
+                      "draggable": false,
+                      "style": {
+                          "width": 210,
+                          "height": 80
+                      },
+                      "positionAbsolute": {
+                          "x": 557.5154850836379,
+                          "y": 801.2892875594351
+                      },
+                      "selected": false
+                  }
+              ]
+          },
+          "style": {
+              "width": 250,
+              "height": 140,
+              "border": "none",
+              "padding": "0",
+              "borderRadius": "8px"
+          },
+          "positionAbsolute": {
+              "x": 537.5154850836379,
+              "y": 751.2892875594351
+          }
+      },
+      {
+          "width": 250,
+          "height": 210,
+          "id": "node_3583.2613304907723",
+          "type": "group",
+          "position": {
+              "x": 729.8188722023427,
+              "y": 1000.9253615209835
+          },
+          "data": {
+              "label": "Node #9",
+              "blocks": [
+                  {
+                      "width": 210,
+                      "height": 150,
+                      "id": "node_6330.586679959307",
+                      "type": "videoNode",
+                      "position": {
+                          "x": 20,
+                          "y": 50
+                      },
+                      "data": {
+                          "value": "https://www.youtube.com/watch?v=EteJLJdE7D0"
+                      },
+                      "parentNode": "node_3583.2613304907723",
+                      "extent": "parent",
+                      "draggable": false,
+                      "style": {
+                          "width": 210,
+                          "height": 150
+                      },
+                      "positionAbsolute": {
+                          "x": 749.8188722023427,
+                          "y": 1050.9253615209836
+                      },
+                      "selected": false
+                  }
+              ]
+          },
+          "style": {
+              "width": 250,
+              "height": 210,
+              "border": "none",
+              "padding": "0",
+              "borderRadius": "8px"
+          },
+          "positionAbsolute": {
+              "x": 729.8188722023427,
+              "y": 1000.9253615209835
+          }
+      },
+      {
+          "width": 250,
+          "height": 140,
+          "id": "node_7089.970466545917",
+          "type": "group",
+          "position": {
+              "x": 4.799269835548955,
+              "y": 261.5725874434789
+          },
+          "data": {
+              "label": "Node #10",
+              "blocks": [
+                  {
+                      "width": 210,
+                      "height": 80,
+                      "id": "node_73.3591170905834",
+                      "type": "textNode",
+                      "position": {
+                          "x": 20,
+                          "y": 50
+                      },
+                      "data": {
+                          "value": "node solto"
+                      },
+                      "parentNode": "node_7089.970466545917",
+                      "extent": "parent",
+                      "draggable": false,
+                      "style": {
+                          "width": 210,
+                          "height": 80
+                      },
+                      "positionAbsolute": {
+                          "x": 24.799269835548955,
+                          "y": 311.5725874434789
+                      },
+                      "selected": false
+                  }
+              ]
+          },
+          "style": {
+              "width": 250,
+              "height": 140,
+              "border": "none",
+              "padding": "0",
+              "borderRadius": "8px"
+          },
+          "positionAbsolute": {
+              "x": 4.799269835548955,
+              "y": 261.5725874434789
+          },
+          "selected": false,
+          "dragging": false
+      },
+      {
+          "width": 250,
+          "height": 195,
+          "id": "node_5902.141640207592",
+          "type": "group",
+          "position": {
+              "x": 1278.0626901370351,
+              "y": 808.6219744022789
+          },
+          "data": {
+              "label": "Node #12",
+              "blocks": [
+                  {
+                      "width": 210,
+                      "height": 40,
+                      "id": "node_5198.217647604532",
+                      "type": "buttonInputNode",
+                      "position": {
+                          "x": 20,
+                          "y": 50
+                      },
+                      "data": {
+                          "buttonLabel": "Click to edit...",
+                          "variable": "",
+                          "multipleChoice": false
+                      },
+                      "parentNode": "node_5902.141640207592",
+                      "extent": "parent",
+                      "draggable": false,
+                      "style": {
+                          "width": 210,
+                          "height": 40
+                      },
+                      "positionAbsolute": {
+                          "x": 1298.0626901370351,
+                          "y": 858.6219744022789
+                      }
+                  },
+                  {
+                      "width": 210,
+                      "height": 40,
+                      "id": "node_9558.667455167173",
+                      "type": "buttonInputNode",
+                      "position": {
+                          "x": 20,
+                          "y": 95
+                      },
+                      "data": {
+                          "buttonLabel": "Click to edit...",
+                          "variable": "",
+                          "multipleChoice": false
+                      },
+                      "parentNode": "node_5902.141640207592",
+                      "extent": "parent",
+                      "draggable": false,
+                      "style": {
+                          "width": 210,
+                          "height": 40
+                      },
+                      "positionAbsolute": {
+                          "x": 1298.0626901370351,
+                          "y": 903.6219744022789
+                      }
+                  },
+                  {
+                      "width": 210,
+                      "height": 40,
+                      "id": "node_8464.664660244538",
+                      "type": "buttonInputNode",
+                      "position": {
+                          "x": 20,
+                          "y": 140
+                      },
+                      "data": {
+                          "buttonLabel": "Click to edit...",
+                          "variable": "",
+                          "multipleChoice": false
+                      },
+                      "parentNode": "node_5902.141640207592",
+                      "extent": "parent",
+                      "draggable": false,
+                      "style": {
+                          "width": 210,
+                          "height": 40
+                      },
+                      "positionAbsolute": {
+                          "x": 1298.0626901370351,
+                          "y": 948.6219744022789
+                      }
+                  }
+              ]
+          },
+          "style": {
+              "width": 250,
+              "height": 195,
+              "backgroundColor": "#fff",
+              "border": "none",
+              "padding": "0",
+              "borderRadius": "8px"
+          },
+          "positionAbsolute": {
+              "x": 1278.0626901370351,
+              "y": 808.6219744022789
+          }
+      },
+      {
+          "width": 250,
+          "height": 140,
+          "id": "node_7086.2615067766055",
+          "type": "group",
+          "position": {
+              "x": 1829.753957308416,
+              "y": 731.7029390266906
+          },
+          "data": {
+              "label": "Node #16",
+              "blocks": [
+                  {
+                      "width": 210,
+                      "height": 80,
+                      "id": "node_6873.228634198805",
+                      "type": "textNode",
+                      "position": {
+                          "x": 20,
+                          "y": 50
+                      },
+                      "data": {
+                          "value": "Botão 1"
+                      },
+                      "parentNode": "node_7086.2615067766055",
+                      "extent": "parent",
+                      "draggable": false,
+                      "style": {
+                          "width": 210,
+                          "height": 80
+                      },
+                      "positionAbsolute": {
+                          "x": 1849.753957308416,
+                          "y": 781.7029390266906
+                      },
+                      "selected": false
+                  }
+              ]
+          },
+          "style": {
+              "width": 250,
+              "height": 140,
+              "border": "none",
+              "padding": "0",
+              "borderRadius": "8px"
+          },
+          "positionAbsolute": {
+              "x": 1829.753957308416,
+              "y": 731.7029390266906
+          },
+          "selected": false,
+          "dragging": false
+      },
+      {
+          "width": 250,
+          "height": 140,
+          "id": "node_9881.884932493069",
+          "type": "group",
+          "position": {
+              "x": 1829.8898009994055,
+              "y": 912.537469304933
+          },
+          "data": {
+              "label": "Node #17",
+              "blocks": [
+                  {
+                      "width": 210,
+                      "height": 80,
+                      "id": "node_3056.7087107525313",
+                      "type": "textNode",
+                      "position": {
+                          "x": 20,
+                          "y": 50
+                      },
+                      "data": {
+                          "value": "Botão 2"
+                      },
+                      "parentNode": "node_9881.884932493069",
+                      "extent": "parent",
+                      "draggable": false,
+                      "style": {
+                          "width": 210,
+                          "height": 80
+                      },
+                      "positionAbsolute": {
+                          "x": 1849.8898009994055,
+                          "y": 962.537469304933
+                      },
+                      "selected": false
+                  }
+              ]
+          },
+          "style": {
+              "width": 250,
+              "height": 140,
+              "border": "none",
+              "padding": "0",
+              "borderRadius": "8px"
+          },
+          "positionAbsolute": {
+              "x": 1829.8898009994055,
+              "y": 912.537469304933
+          },
+          "selected": false,
+          "dragging": false
+      },
+      {
+          "width": 250,
+          "height": 140,
+          "id": "node_3979.904462384174",
+          "type": "group",
+          "position": {
+              "x": 1833.4730939270833,
+              "y": 1095.0418834775307
+          },
+          "data": {
+              "label": "Node #18",
+              "blocks": [
+                  {
+                      "width": 210,
+                      "height": 80,
+                      "id": "node_260.8027172372829",
+                      "type": "textNode",
+                      "position": {
+                          "x": 20,
+                          "y": 50
+                      },
+                      "data": {
+                          "value": "Botão 3"
+                      },
+                      "parentNode": "node_3979.904462384174",
+                      "extent": "parent",
+                      "draggable": false,
+                      "style": {
+                          "width": 210,
+                          "height": 80
+                      },
+                      "positionAbsolute": {
+                          "x": 1853.4730939270833,
+                          "y": 1145.0418834775307
+                      },
+                      "selected": false
+                  }
+              ]
+          },
+          "style": {
+              "width": 250,
+              "height": 140,
+              "border": "none",
+              "padding": "0",
+              "borderRadius": "8px"
+          },
+          "positionAbsolute": {
+              "x": 1833.4730939270833,
+              "y": 1095.0418834775307
+          },
+          "selected": false,
+          "dragging": false
+      },
+      {
+          "width": 250,
+          "height": 405,
+          "id": "node_7346.358147308927",
+          "type": "group",
+          "position": {
+              "x": 2281.3648397904985,
+              "y": 533.7636816333594
+          },
+          "data": {
+              "label": "Node #19",
+              "blocks": [
+                  {
+                      "width": 210,
+                      "height": 80,
+                      "id": "node_8043.364842097167",
+                      "type": "textNode",
+                      "position": {
+                          "x": 20,
+                          "y": 50
+                      },
+                      "data": {
+                          "value": "continuação"
+                      },
+                      "parentNode": "node_7346.358147308927",
+                      "extent": "parent",
+                      "draggable": false,
+                      "style": {
+                          "width": 210,
+                          "height": 80
+                      },
+                      "positionAbsolute": {
+                          "x": 2301.3648397904985,
+                          "y": 583.7636816333594
+                      },
+                      "selected": false
+                  },
+                  {
+                      "width": 210,
+                      "height": 40,
+                      "id": "node_4187.814953946149",
+                      "type": "audioNode",
+                      "position": {
+                          "x": 20,
+                          "y": 135
+                      },
+                      "data": {
+                          "value": "https://hisend.s3.amazonaws.com/audios/c4ea55a5-5bde-47e3-879f-eb895ee80936-WhatsApp-Ptt-2023-08-23-at-09.43.59.mp3"
+                      },
+                      "parentNode": "node_7346.358147308927",
+                      "extent": "parent",
+                      "draggable": false,
+                      "style": {
+                          "width": 210,
+                          "height": 40
+                      },
+                      "positionAbsolute": {
+                          "x": 2301.3648397904985,
+                          "y": 668.7636816333594
+                      },
+                      "selected": false
+                  },
+                  {
+                      "width": 210,
+                      "height": 40,
+                      "id": "node_6939.009363154438",
+                      "type": "textInputNode",
+                      "position": {
+                          "x": 20,
+                          "y": 180
+                      },
+                      "data": {
+                          "placeholder": "Type your answer...",
+                          "buttonLabel": "Send",
+                          "variable": "a749700e-6cc3-4316-8068-763a83f7867d"
+                      },
+                      "parentNode": "node_7346.358147308927",
+                      "extent": "parent",
+                      "draggable": false,
+                      "style": {
+                          "width": 210,
+                          "height": 40
+                      },
+                      "positionAbsolute": {
+                          "x": 2301.3648397904985,
+                          "y": 713.7636816333594
+                      }
+                  },
+                  {
+                      "width": 210,
+                      "height": 80,
+                      "id": "node_3875.705022923155",
+                      "type": "textNode",
+                      "position": {
+                          "x": 20,
+                          "y": 225
+                      },
+                      "data": {
+                          "value": "continuação depois do input"
+                      },
+                      "parentNode": "node_7346.358147308927",
+                      "extent": "parent",
+                      "draggable": false,
+                      "style": {
+                          "width": 210,
+                          "height": 80
+                      },
+                      "positionAbsolute": {
+                          "x": 2301.3648397904985,
+                          "y": 758.7636816333594
+                      },
+                      "selected": false
+                  },
+                  {
+                      "width": 210,
+                      "height": 80,
+                      "id": "node_1615.9397904082073",
+                      "type": "textNode",
+                      "position": {
+                          "x": 20,
+                          "y": 310
+                      },
+                      "data": {
+                          "value": "aaaaaa"
+                      },
+                      "parentNode": "node_7346.358147308927",
+                      "extent": "parent",
+                      "draggable": false,
+                      "style": {
+                          "width": 210,
+                          "height": 80
+                      },
+                      "positionAbsolute": {
+                          "x": 2301.3648397904985,
+                          "y": 843.7636816333594
+                      },
+                      "selected": true
+                  }
+              ]
+          },
+          "style": {
+              "width": 250,
+              "height": 405,
+              "backgroundColor": "#fff",
+              "border": "none",
+              "padding": "0",
+              "borderRadius": "8px"
+          },
+          "positionAbsolute": {
+              "x": 2281.3648397904985,
+              "y": 533.7636816333594
+          }
+      },
+      {
+          "width": 250,
+          "height": 140,
+          "id": "node_3039.1414713877584",
+          "type": "group",
+          "position": {
+              "x": 2705.1213181232865,
+              "y": 562.9021316297999
+          },
+          "data": {
+              "label": "Node #24",
+              "blocks": [
+                  {
+                      "width": 210,
+                      "height": 80,
+                      "id": "node_6906.943117538564",
+                      "type": "textNode",
+                      "position": {
+                          "x": 20,
+                          "y": 50
+                      },
+                      "data": {
+                          "value": "aaaaaaaaaaa"
+                      },
+                      "parentNode": "node_3039.1414713877584",
+                      "extent": "parent",
+                      "draggable": false,
+                      "style": {
+                          "width": 210,
+                          "height": 80
+                      },
+                      "positionAbsolute": {
+                          "x": 2725.1213181232865,
+                          "y": 612.9021316297999
+                      },
+                      "selected": true
+                  }
+              ]
+          },
+          "style": {
+              "width": 250,
+              "height": 140,
+              "border": "none",
+              "padding": "0",
+              "borderRadius": "8px"
+          },
+          "positionAbsolute": {
+              "x": 2705.1213181232865,
+              "y": 562.9021316297999
+          }
+      },
+      {
+          "width": 150,
+          "height": 75,
+          "id": "start node",
+          "type": "startNode",
+          "position": {
+              "x": 350,
+              "y": 80
+          },
+          "draggable": false,
+          "positionAbsolute": {
+              "x": 350,
+              "y": 80
+          }
+      },
+      {
+          "width": 210,
+          "height": 80,
+          "id": "node_9539.990645994247",
+          "type": "textNode",
+          "position": {
+              "x": 20,
+              "y": 50
+          },
+          "data": {
+              "value": "outro node"
+          },
+          "parentNode": "node_9774.14893856713",
+          "extent": "parent",
+          "draggable": false,
+          "style": {
+              "width": 210,
+              "height": 80
+          },
+          "positionAbsolute": {
+              "x": 441,
+              "y": 434
+          },
+          "selected": false
+      },
+      {
+          "width": 210,
+          "height": 80,
+          "id": "node_1163.6308801468685",
+          "type": "textNode",
+          "position": {
+              "x": 20,
+              "y": 50
+          },
+          "data": {
+              "value": "texto"
+          },
+          "parentNode": "node_7394.808173413508",
+          "extent": "parent",
+          "draggable": false,
+          "style": {
+              "width": 210,
+              "height": 80
+          },
+          "positionAbsolute": {
+              "x": 1115,
+              "y": 157
+          },
+          "selected": false
+      },
+      {
+          "width": 210,
+          "height": 80,
+          "id": "node_5433.603514871214",
+          "type": "textNode",
+          "position": {
+              "x": 20,
+              "y": 135
+          },
+          "data": {
+              "value": "texto 2"
+          },
+          "parentNode": "node_7394.808173413508",
+          "extent": "parent",
+          "draggable": false,
+          "style": {
+              "width": 210,
+              "height": 80
+          },
+          "positionAbsolute": {
+              "x": 1115,
+              "y": 242
+          },
+          "selected": false
+      },
+      {
+          "width": 210,
+          "height": 150,
+          "id": "node_2960.987590895243",
+          "type": "videoNode",
+          "position": {
+              "x": 20,
+              "y": 220
+          },
+          "data": {
+              "value": "https://www.youtube.com/watch?v=kAi1dvl-wiM"
+          },
+          "parentNode": "node_7394.808173413508",
+          "extent": "parent",
+          "draggable": false,
+          "style": {
+              "width": 210,
+              "height": 150
+          },
+          "positionAbsolute": {
+              "x": 1115,
+              "y": 327
+          },
+          "selected": false
+      },
+      {
+          "width": 210,
+          "height": 80,
+          "id": "node_5463.230609252699",
+          "type": "textNode",
+          "position": {
+              "x": 20,
+              "y": 135
+          },
+          "data": {
+              "value": "texto diferente"
+          },
+          "parentNode": "node_9774.14893856713",
+          "extent": "parent",
+          "draggable": false,
+          "style": {
+              "width": 210,
+              "height": 80
+          },
+          "positionAbsolute": {
+              "x": 441,
+              "y": 519
+          },
+          "selected": false
+      },
+      {
+          "width": 210,
+          "height": 80,
+          "id": "node_8475.608699986231",
+          "type": "textNode",
+          "position": {
+              "x": 20,
+              "y": 50
+          },
+          "data": {
+              "value": "testando"
+          },
+          "parentNode": "node_7114.832411503302",
+          "extent": "parent",
+          "draggable": false,
+          "style": {
+              "width": 210,
+              "height": 80
+          },
+          "positionAbsolute": {
+              "x": -18.20024529658373,
+              "y": 717.6791192469549
+          },
+          "selected": false
+      },
+      {
+          "width": 210,
+          "height": 80,
+          "id": "node_9690.822307553715",
+          "type": "textNode",
+          "position": {
+              "x": 20,
+              "y": 50
+          },
+          "data": {
+              "value": "testando 2"
+          },
+          "parentNode": "node_8318.05077460344",
+          "extent": "parent",
+          "draggable": false,
+          "style": {
+              "width": 210,
+              "height": 80
+          },
+          "positionAbsolute": {
+              "x": 557.5154850836379,
+              "y": 801.2892875594351
+          },
+          "selected": false
+      },
+      {
+          "width": 210,
+          "height": 150,
+          "id": "node_6330.586679959307",
+          "type": "videoNode",
+          "position": {
+              "x": 20,
+              "y": 50
+          },
+          "data": {
+              "value": "https://www.youtube.com/watch?v=EteJLJdE7D0"
+          },
+          "parentNode": "node_3583.2613304907723",
+          "extent": "parent",
+          "draggable": false,
+          "style": {
+              "width": 210,
+              "height": 150
+          },
+          "positionAbsolute": {
+              "x": 749.8188722023427,
+              "y": 1050.9253615209836
+          },
+          "selected": false
+      },
+      {
+          "width": 210,
+          "height": 80,
+          "id": "node_73.3591170905834",
+          "type": "textNode",
+          "position": {
+              "x": 20,
+              "y": 50
+          },
+          "data": {
+              "value": "node solto"
+          },
+          "parentNode": "node_7089.970466545917",
+          "extent": "parent",
+          "draggable": false,
+          "style": {
+              "width": 210,
+              "height": 80
+          },
+          "positionAbsolute": {
+              "x": 24.799269835548955,
+              "y": 311.5725874434789
+          },
+          "selected": false
+      },
+      {
+          "width": 210,
+          "height": 40,
+          "id": "node_692.3840425952177",
+          "type": "audioNode",
+          "position": {
+              "x": 20,
+              "y": 375
+          },
+          "data": {
+              "value": "https://hisend.s3.amazonaws.com/audios/836f248a-be50-4ef3-a903-d5570acfd5e1-WhatsApp-Ptt-2023-08-23-at-09.43.59.mp3"
+          },
+          "parentNode": "node_7394.808173413508",
+          "extent": "parent",
+          "draggable": false,
+          "style": {
+              "width": 210,
+              "height": 40
+          },
+          "positionAbsolute": {
+              "x": 1115,
+              "y": 482
+          },
+          "selected": false
+      },
+      {
+          "width": 210,
+          "height": 40,
+          "id": "node_5198.217647604532",
+          "type": "buttonInputNode",
+          "position": {
+              "x": 20,
+              "y": 50
+          },
+          "data": {
+              "buttonLabel": "Click to edit...",
+              "variable": "",
+              "multipleChoice": false
+          },
+          "parentNode": "node_5902.141640207592",
+          "extent": "parent",
+          "draggable": false,
+          "style": {
+              "width": 210,
+              "height": 40
+          },
+          "positionAbsolute": {
+              "x": 1298.0626901370351,
+              "y": 858.6219744022789
+          }
+      },
+      {
+          "width": 210,
+          "height": 40,
+          "id": "node_9558.667455167173",
+          "type": "buttonInputNode",
+          "position": {
+              "x": 20,
+              "y": 95
+          },
+          "data": {
+              "buttonLabel": "Click to edit...",
+              "variable": "",
+              "multipleChoice": false
+          },
+          "parentNode": "node_5902.141640207592",
+          "extent": "parent",
+          "draggable": false,
+          "style": {
+              "width": 210,
+              "height": 40
+          },
+          "positionAbsolute": {
+              "x": 1298.0626901370351,
+              "y": 903.6219744022789
+          }
+      },
+      {
+          "width": 210,
+          "height": 40,
+          "id": "node_8464.664660244538",
+          "type": "buttonInputNode",
+          "position": {
+              "x": 20,
+              "y": 140
+          },
+          "data": {
+              "buttonLabel": "Click to edit...",
+              "variable": "",
+              "multipleChoice": false
+          },
+          "parentNode": "node_5902.141640207592",
+          "extent": "parent",
+          "draggable": false,
+          "style": {
+              "width": 210,
+              "height": 40
+          },
+          "positionAbsolute": {
+              "x": 1298.0626901370351,
+              "y": 948.6219744022789
+          }
+      },
+      {
+          "width": 210,
+          "height": 80,
+          "id": "node_6873.228634198805",
+          "type": "textNode",
+          "position": {
+              "x": 20,
+              "y": 50
+          },
+          "data": {
+              "value": "Botão 1"
+          },
+          "parentNode": "node_7086.2615067766055",
+          "extent": "parent",
+          "draggable": false,
+          "style": {
+              "width": 210,
+              "height": 80
+          },
+          "positionAbsolute": {
+              "x": 1849.753957308416,
+              "y": 781.7029390266906
+          },
+          "selected": false
+      },
+      {
+          "width": 210,
+          "height": 80,
+          "id": "node_3056.7087107525313",
+          "type": "textNode",
+          "position": {
+              "x": 20,
+              "y": 50
+          },
+          "data": {
+              "value": "Botão 2"
+          },
+          "parentNode": "node_9881.884932493069",
+          "extent": "parent",
+          "draggable": false,
+          "style": {
+              "width": 210,
+              "height": 80
+          },
+          "positionAbsolute": {
+              "x": 1849.8898009994055,
+              "y": 962.537469304933
+          },
+          "selected": false
+      },
+      {
+          "width": 210,
+          "height": 80,
+          "id": "node_260.8027172372829",
+          "type": "textNode",
+          "position": {
+              "x": 20,
+              "y": 50
+          },
+          "data": {
+              "value": "Botão 3"
+          },
+          "parentNode": "node_3979.904462384174",
+          "extent": "parent",
+          "draggable": false,
+          "style": {
+              "width": 210,
+              "height": 80
+          },
+          "positionAbsolute": {
+              "x": 1853.4730939270833,
+              "y": 1145.0418834775307
+          },
+          "selected": false
+      },
+      {
+          "width": 210,
+          "height": 80,
+          "id": "node_8043.364842097167",
+          "type": "textNode",
+          "position": {
+              "x": 20,
+              "y": 50
+          },
+          "data": {
+              "value": "continuação"
+          },
+          "parentNode": "node_7346.358147308927",
+          "extent": "parent",
+          "draggable": false,
+          "style": {
+              "width": 210,
+              "height": 80
+          },
+          "positionAbsolute": {
+              "x": 2301.3648397904985,
+              "y": 583.7636816333594
+          },
+          "selected": false
+      },
+      {
+          "width": 210,
+          "height": 40,
+          "id": "node_4187.814953946149",
+          "type": "audioNode",
+          "position": {
+              "x": 20,
+              "y": 135
+          },
+          "data": {
+              "value": "https://hisend.s3.amazonaws.com/audios/c4ea55a5-5bde-47e3-879f-eb895ee80936-WhatsApp-Ptt-2023-08-23-at-09.43.59.mp3"
+          },
+          "parentNode": "node_7346.358147308927",
+          "extent": "parent",
+          "draggable": false,
+          "style": {
+              "width": 210,
+              "height": 40
+          },
+          "positionAbsolute": {
+              "x": 2301.3648397904985,
+              "y": 668.7636816333594
+          },
+          "selected": false
+      },
+      {
+          "width": 210,
+          "height": 40,
+          "id": "node_6939.009363154438",
+          "type": "textInputNode",
+          "position": {
+              "x": 20,
+              "y": 180
+          },
+          "data": {
+              "placeholder": "Type your answer...",
+              "buttonLabel": "Send",
+              "variable": ""
+          },
+          "parentNode": "node_7346.358147308927",
+          "extent": "parent",
+          "draggable": false,
+          "style": {
+              "width": 210,
+              "height": 40
+          },
+          "positionAbsolute": {
+              "x": 2301.3648397904985,
+              "y": 713.7636816333594
+          }
+      },
+      {
+          "width": 210,
+          "height": 80,
+          "id": "node_3875.705022923155",
+          "type": "textNode",
+          "position": {
+              "x": 20,
+              "y": 225
+          },
+          "data": {
+              "value": "continuação depois do input"
+          },
+          "parentNode": "node_7346.358147308927",
+          "extent": "parent",
+          "draggable": false,
+          "style": {
+              "width": 210,
+              "height": 80
+          },
+          "positionAbsolute": {
+              "x": 2301.3648397904985,
+              "y": 758.7636816333594
+          },
+          "selected": false
+      },
+      {
+          "width": 210,
+          "height": 80,
+          "id": "node_1615.9397904082073",
+          "type": "textNode",
+          "position": {
+              "x": 20,
+              "y": 310
+          },
+          "data": {
+              "value": "aaaaaa"
+          },
+          "parentNode": "node_7346.358147308927",
+          "extent": "parent",
+          "draggable": false,
+          "style": {
+              "width": 210,
+              "height": 80
+          },
+          "positionAbsolute": {
+              "x": 2301.3648397904985,
+              "y": 843.7636816333594
+          },
+          "selected": false
+      },
+      {
+          "width": 210,
+          "height": 80,
+          "id": "node_6906.943117538564",
+          "type": "textNode",
+          "position": {
+              "x": 20,
+              "y": 50
+          },
+          "data": {
+              "value": "aaaaaaaaaaa"
+          },
+          "parentNode": "node_3039.1414713877584",
+          "extent": "parent",
+          "draggable": false,
+          "style": {
+              "width": 210,
+              "height": 80
+          },
+          "positionAbsolute": {
+              "x": 2725.1213181232865,
+              "y": 612.9021316297999
+          },
+          "selected": false
+      }
+  ],
+  "edges": [
+      {
+          "type": "defaultEdge",
+          "source": "start node",
+          "sourceHandle": "right",
+          "target": "node_7394.808173413508",
+          "targetHandle": "left",
+          "id": "reactflow__edge-start noderight-node_7394.808173413508left",
+          "animated": true
+      },
+      {
+          "type": "defaultEdge",
+          "source": "node_7394.808173413508",
+          "sourceHandle": "Right",
+          "target": "node_9774.14893856713",
+          "targetHandle": "left",
+          "id": "reactflow__edge-node_7394.808173413508Right-node_9774.14893856713left",
+          "animated": true
+      },
+      {
+          "type": "defaultEdge",
+          "source": "node_9774.14893856713",
+          "sourceHandle": "Right",
+          "target": "node_8318.05077460344",
+          "targetHandle": "left",
+          "id": "reactflow__edge-node_9774.14893856713Right-node_8318.05077460344left",
+          "animated": true
+      },
+      {
+          "type": "defaultEdge",
+          "source": "node_8318.05077460344",
+          "sourceHandle": "Right",
+          "target": "node_7114.832411503302",
+          "targetHandle": "left",
+          "id": "reactflow__edge-node_8318.05077460344Right-node_7114.832411503302left",
+          "animated": true
+      },
+      {
+          "type": "defaultEdge",
+          "source": "node_7114.832411503302",
+          "sourceHandle": "Right",
+          "target": "node_3583.2613304907723",
+          "targetHandle": "left",
+          "id": "reactflow__edge-node_7114.832411503302Right-node_3583.2613304907723left",
+          "animated": true
+      },
+      {
+          "type": "defaultEdge",
+          "source": "node_3583.2613304907723",
+          "sourceHandle": "Right",
+          "target": "node_5902.141640207592",
+          "targetHandle": "left",
+          "id": "reactflow__edge-node_3583.2613304907723Right-node_5902.141640207592left",
+          "animated": true
+      },
+      {
+          "type": "defaultEdge",
+          "source": "node_5198.217647604532",
+          "sourceHandle": "Right",
+          "target": "node_7086.2615067766055",
+          "targetHandle": "left",
+          "id": "reactflow__edge-node_5198.217647604532Right-node_7086.2615067766055left",
+          "animated": true
+      },
+      {
+          "type": "defaultEdge",
+          "source": "node_9558.667455167173",
+          "sourceHandle": "Right",
+          "target": "node_9881.884932493069",
+          "targetHandle": "left",
+          "id": "reactflow__edge-node_9558.667455167173Right-node_9881.884932493069left",
+          "animated": true
+      },
+      {
+          "type": "defaultEdge",
+          "source": "node_8464.664660244538",
+          "sourceHandle": "Right",
+          "target": "node_3979.904462384174",
+          "targetHandle": "left",
+          "id": "reactflow__edge-node_8464.664660244538Right-node_3979.904462384174left",
+          "animated": true
+      },
+      {
+          "type": "defaultEdge",
+          "source": "node_7086.2615067766055",
+          "sourceHandle": "Right",
+          "target": "node_7346.358147308927",
+          "targetHandle": "left",
+          "id": "reactflow__edge-node_7086.2615067766055Right-node_7346.358147308927left",
+          "animated": true
+      },
+      {
+          "type": "defaultEdge",
+          "source": "node_7346.358147308927",
+          "sourceHandle": "Right",
+          "target": "node_3039.1414713877584",
+          "targetHandle": "left",
+          "id": "reactflow__edge-node_7346.358147308927Right-node_3039.1414713877584left",
+          "animated": true
+      }
+  ],
+  "variables": [
+      {
+          "id": "a749700e-6cc3-4316-8068-763a83f7867d",
+          "name": "Nome",
+          "value": ""
+      },
+      {
+          "id": "d9963cd5-dff4-479a-b7c6-d3ac43ce3c6d",
+          "name": "Email",
+          "value": ""
+      },
+      {
+          "id": "3c40f165-b435-429e-9a40-cea705aca92c",
+          "name": "Telefone",
+          "value": ""
+      },
+      {
+          "id": "74abc7bd-de6d-4c09-94f2-44ac8643868a",
+          "name": "buttonvalue",
+          "value": ""
+      }
+  ]
+}
