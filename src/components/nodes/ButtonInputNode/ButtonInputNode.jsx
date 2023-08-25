@@ -13,7 +13,7 @@ export function ButtonInputNode({ data, id, selected }) {
   const { deleteElements } = useReactFlow();
   const onDelete = () => deleteElements({ nodes: [{ id }] });
   const [newVariable, setNewVariable] = useState("")
-  const [buttonLabel, setButtonLabel] = useState(data.buttonLabel || "Click to edit...")
+  const [buttonLabel, setButtonLabel] = useState(data.buttonLabel || "Click para editar...")
   const [assignedVariable, setAssignedVariable] = useState(data.variable || "")
   const [multipleChoice, setMultipleChoice] = useState(data.multipleChoice || false)
 
@@ -88,24 +88,24 @@ export function ButtonInputNode({ data, id, selected }) {
 
       <InputConfig isvisible={selected}>
         <MultipleChoiceInput>
-          <span>Multiple choice?</span>
+          <span>Multipla escolha?</span>
           <input
             type="checkbox"
             checked={multipleChoice}
             onChange={() => setMultipleChoice(!multipleChoice)}
           />
         </MultipleChoiceInput>
-        <span>Create new variable:</span>
+        <span>Criar nova variável:</span>
         <input
           type="text"
-          placeholder="set name of new variable"
+          placeholder="Defina o nome da nova variável"
           onChange={(e) => setNewVariable(e.target.value)}
         />
-        <button onClick={sendNewVariable}>Create</button>
+        <button onClick={sendNewVariable}>Criar</button>
 
-        <span>Assign variable to this input</span>
+        <span>Atribuir variável a esse input</span>
         <select value={assignedVariable} onChange={(e) => setAssignedVariable(e.target.value)}>
-          <option value="">Select variable</option>
+          <option value="">Selecionar variável</option>
           {variables &&
             variables.map((variable, index) => (
               <option key={index} value={variable.id}>{variable.name}</option>

@@ -108,7 +108,7 @@ export function NumberInputNode({ data, id, selected }) {
         <span>Criar nova variável:</span>
         <input
           type="text"
-          placeholder="set name of new variable"
+          placeholder="Defina o nome da nova variável"
           onChange={(e) => setNewVariable(e.target.value)}
         />
         <button onClick={sendNewVariable}>Criar</button>

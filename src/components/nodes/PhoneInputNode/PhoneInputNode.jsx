@@ -14,10 +14,10 @@ export function PhoneInputNode({ data, id, selected }) {
   const { deleteElements } = useReactFlow();
   const onDelete = () => deleteElements({ nodes: [{ id }] });
   const [newVariable, setNewVariable] = useState("")
-  const [placeholder, setPlaceholder] = useState(data.placeholder || "Type your phone number...")
-  const [buttonLabel, setButtonLabel] = useState(data.buttonLabel || "Send")
+  const [placeholder, setPlaceholder] = useState(data.placeholder || "Digite um número de telefone...")
+  const [buttonLabel, setButtonLabel] = useState(data.buttonLabel || "Enviar")
   const [assignedVariable, setAssignedVariable] = useState(data.variable || "")
-  const [retryMessage, setRetryMessage] = useState(data.retryMessage || "This phone number doesn't seem to be valid. Can you type it again?")
+  const [retryMessage, setRetryMessage] = useState(data.retryMessage || "Esse não é um número de telefone válido. Pode digitar novamente?")
   const [phoneCode, setPhoneCode] = useState(data.phoneCode || "International")
 
   const sendNewVariable = async () => {
@@ -92,40 +92,40 @@ export function PhoneInputNode({ data, id, selected }) {
           value={placeholder}
           onChange={(e) => setPlaceholder(e.target.value)}
         />
-        <span>Button Label:</span>
+        <span>Nome do botão:</span>
         <input
           type="text"
           placeholder={buttonLabel}
           value={buttonLabel}
           onChange={(e) => setButtonLabel(e.target.value)}
         />
-        <span>Default country</span>
+        <span>País padrão:</span>
         <select value={phoneCode} onChange={(e) => setPhoneCode(e.target.value)}>
-          <option value="">Select phone code</option>
+          <option value="">Selecione o código do país</option>
           {countryCodes &&
             countryCodes.map((country, index) => (
               <option key={index} value={country.code}>{country.label}</option>
             ))
           }
         </select>
-        <span>Retry message:</span>
+        <span>Mensagem de nova tentativa:</span>
         <input
           type="text"
           placeholder={retryMessage}
           value={retryMessage}
           onChange={(e) => setRetryMessage(e.target.value)}
         />
-        <span>Create new variable:</span>
+        <span>Criar nova variável:</span>
         <input
           type="text"
-          placeholder="set name of new variable"
+          placeholder="Defina o nome da nova variável"
           onChange={(e) => setNewVariable(e.target.value)}
         />
-        <button onClick={sendNewVariable}>Create</button>
+        <button onClick={sendNewVariable}>Criar</button>
 
-        <span>Assign variable to this input</span>
+        <span>Atribuir variável a esse input</span>
         <select value={assignedVariable} onChange={(e) => setAssignedVariable(e.target.value)}>
-          <option value="">Select variable</option>
+          <option value="">Selecionar variável</option>
           {variables &&
             variables.map((variable, index) => (
               <option key={index} value={variable.id}>{variable.name}</option>
