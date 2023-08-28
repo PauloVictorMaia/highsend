@@ -42,10 +42,6 @@ function ScheduleEvent() {
   }, []);
 
   useEffect(() => {
-    let dateItem = document.querySelectorAll(".active");
-  }, [calendarData]);
-
-  useEffect(() => {
     if (Object.keys(calendarData).length > 1) {
       renderCalendar();
       selectDate();
@@ -138,6 +134,22 @@ function ScheduleEvent() {
 
   const selectDate = () => {
     let dateItem = document.querySelectorAll(".active");
+    const daysChecked = [];
+    dateItem.forEach((li) => daysChecked.push(li.dataset.value));
+    daysChecked.forEach((selectedDate) => {
+      const dayNames = ["domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado"];
+      const dayOfWeek = dayNames[new Date(selectedDate).getDay()];
+      const intervalsForDay = calendarData.calendar.eventsIntervals.find(interval => interval.day === dayOfWeek);
+      const maxPossibleEvents = intervalsForDay ? intervalsForDay.eventCount : 0;
+      const eventsScheduled = calendarData.events.filter(event => event.day === selectedDate).length;
+      if (eventsScheduled === maxPossibleEvents) {
+        const liElement = Array.from(dateItem).find(li => li.dataset.value === selectedDate);
+        if (liElement) {
+          liElement.classList.remove("active");
+          liElement.classList.add("inactive");
+        }
+      }
+    });
     for (let i = 0; i < dateItem.length; i++) {
       dateItem[i].addEventListener("click", async function () {
         const selectedDate = dateItem[i].getAttribute('data-value')

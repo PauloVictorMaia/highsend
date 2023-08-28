@@ -50,12 +50,15 @@ function AddSchedule() {
 
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [events, setEvents] = useState([]);
 
   async function getCalendarData() {
     try {
       const response = await api.get(`/calendars/get-calendar/${user.id}/${params.id}`, { headers: { authorization: token } });
       if (response.status === 201) {
         const calendar = response.data.filteredTargetCalendar;
+        const calendarEvents = response.data.events
+        setEvents(calendarEvents)
         setEventConfigurations(calendar.calendar.daysOfTheWeek);
         setEventIntervals(calendar.calendar.eventsIntervals);
         setEventDuration(calendar.room.eventDuration);
@@ -109,7 +112,7 @@ function AddSchedule() {
         daysOfTheWeek: eventConfigurations,
         daysAhead: daysAhead,
       },
-      events: []
+      events: events
     }
 
     try {
