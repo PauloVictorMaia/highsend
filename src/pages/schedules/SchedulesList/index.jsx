@@ -143,9 +143,14 @@ function SchedulesList() {
             <CardDetails>{calendar.room.eventDuration} min, Individual</CardDetails>
             <CardDetails marginTop={15}>
               Tempo de agendamento:
-              {calendar.calendar.type === 'daysAhead' && ` ${calendar.calendar.daysAhead}
-              ${calendar.calendar.daysAhead === "1" ? 'dia' : 'dias'} a frente`}
-
+              {calendar.calendar.type === 'daysAhead' &&
+                <div>
+                  {
+                    `${calendar.calendar.daysAhead}
+                    ${calendar.calendar.daysAhead === "1" ? 'dia' : 'dias'} a frente`
+                  }
+                </div>
+              }
               {calendar.calendar.type === 'specificDate' &&
                 <>
                   <br />

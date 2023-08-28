@@ -40,7 +40,7 @@ export const CardTitle = styled.span`
   color: #333;
   display: -webkit-box;
   cursor: pointer;
-  -webkit-line-clamp: 2; /* Número máximo de linhas */
+  -webkit-line-clamp: 2; 
   -webkit-box-orient: vertical;
   overflow: hidden;
    &:hover {
