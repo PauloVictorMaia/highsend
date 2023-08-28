@@ -144,7 +144,7 @@ function SchedulesList() {
             <CardDetails marginTop={15}>
               Tempo de agendamento:
               {calendar.calendar.type === 'daysAhead' && ` ${calendar.calendar.daysAhead}
-              ${calendar.calendar.daysAhead > 1 ? 'dias' : 'dia'} a frente`}
+              ${calendar.calendar.daysAhead === "1" ? 'dia' : 'dias'} a frente`}
 
               {calendar.calendar.type === 'specificDate' &&
                 <>
@@ -160,7 +160,12 @@ function SchedulesList() {
                     de {months[new Date(calendar.calendar.endDate).getMonth()]}{' '}
                     de {new Date(calendar.calendar.endDate).getFullYear()}
                   </span>
-                </>}
+                </>
+              }
+
+              {
+                calendar.calendar.type === 'indefinitely' && " Indefinidamente no futuro."
+              }
 
             </CardDetails>
           </div>
