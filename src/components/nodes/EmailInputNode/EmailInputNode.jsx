@@ -6,10 +6,11 @@ import { useState, useEffect } from "react";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { toast } from "react-toastify";
 
 export function EmailInputNode({ data, id, selected }) {
   const { createNewVariable, variables } = useStateContext();
-  const { setNodes } = useReactFlow();
+  const { setNodes, getNodes } = useReactFlow();
   const { deleteElements } = useReactFlow();
   const onDelete = () => deleteElements({ nodes: [{ id }] });
   const [newVariable, setNewVariable] = useState("")
@@ -53,6 +54,17 @@ export function EmailInputNode({ data, id, selected }) {
       })
     );
   }, [placeholder, buttonLabel, assignedVariable, retryMessage]);
+
+  const handleAssignedVariable = (variableValue) => {
+    const nodes = getNodes();
+    const inputNodes = nodes.filter((node) => /input/i.test(node.type));
+    const hasVariableAssigned = inputNodes.some(node => node.data.variable === variableValue);
+    if (!hasVariableAssigned) {
+      setAssignedVariable(variableValue);
+    } else {
+      toast.warning('Essa variável já está atribuída a um input. Escolha outra variável ou crie uma nova.')
+    }
+  }
 
   return (
     <NodeContainer>
@@ -107,7 +119,7 @@ export function EmailInputNode({ data, id, selected }) {
         <button onClick={sendNewVariable}>Criar</button>
 
         <span>Atribuir variável a esse input</span>
-        <select value={assignedVariable} onChange={(e) => setAssignedVariable(e.target.value)}>
+        <select value={assignedVariable} onChange={(e) => handleAssignedVariable(e.target.value)}>
           <option value="">Selecionar variável</option>
           {variables &&
             variables.map((variable, index) => (
