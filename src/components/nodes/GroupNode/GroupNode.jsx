@@ -13,10 +13,21 @@ export default function GroupNode({ data, id, selected }) {
   const [nodeLabel, setNodeLabel] = useState(data.label)
   const { deleteElements } = useReactFlow();
   const { setNodes } = useReactFlow();
-
+  const blocks = [...data.blocks]
   const onDelete = () => {
     deleteElements({ nodes: [{ id }] });
   };
+  const [hasButton, setHasButton] = useState(false);
+
+  useEffect(() => {
+    const parentNodes = blocks.filter((node) => node.parentNode === id);
+    const hasButtonNode = parentNodes.some(node => node.type === "buttonInputNode");
+    if (hasButtonNode && !hasButton) {
+      setHasButton(true);
+    } else if (!hasButtonNode && hasButton) {
+      setHasButton(false);
+    }
+  }, [blocks]);
 
   const cloneGroup = () => {
     setNodes((nodes) => {
@@ -86,11 +97,14 @@ export default function GroupNode({ data, id, selected }) {
         position={Position.Left}
       />
 
-      <RightHandle
-        id="Right"
-        type="source"
-        position={Position.Right}
-      />
+      {
+        hasButton === false &&
+        <RightHandle
+          id="Right"
+          type="source"
+          position={Position.Right}
+        />
+      }
 
       <Label defaultValue={data.label} onChange={(e) => setNodeLabel(e.target.value)} />
     </NodeContainer>

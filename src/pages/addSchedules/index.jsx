@@ -200,6 +200,11 @@ function AddSchedule() {
     setSelectedOption('indefinitely');
   };
 
+  const daysAHead = () => {
+    setDaysAhead("3");
+    setSelectedOption('daysAhead');
+  };
+
   return (
     <ContentPageContainer
       header={
@@ -228,13 +233,13 @@ function AddSchedule() {
                 type="radio"
                 value="daysAhead"
                 checked={selectedOption === 'daysAhead'}
-                onChange={() => setSelectedOption('daysAhead')}
+                onChange={() => daysAHead()}
               />
               Dias corridos no futuro
             </OptionLabel>
             {selectedOption === 'daysAhead' &&
               <div>
-                <input type="number" value={daysAhead} onChange={(e) => setDaysAhead(e.target.value)} />
+                <input type="number" defaultValue={daysAhead} onChange={(e) => setDaysAhead(e.target.value)} />
                 <span>dias a frente no futuro</span>
               </div>
             }

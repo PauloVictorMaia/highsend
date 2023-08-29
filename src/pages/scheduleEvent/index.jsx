@@ -5,6 +5,9 @@ import { toast } from "react-toastify";
 import api from '../../api';
 import { useParams } from "react-router-dom";
 import { v4 as uuidv4 } from 'uuid';
+import { parseISO } from "date-fns";
+import EventAvailableIcon from '@mui/icons-material/EventAvailable';
+import InputMask from 'react-input-mask'
 
 const daysValue = {
   0: 'domingo',
@@ -31,6 +34,8 @@ function ScheduleEvent() {
   const [unavailableHours, setUnavailableHours] = useState([]);
   const [calendarActiveDays, setCalendarActiveDays] = useState("");
   const [availableEventTimes, setAvailableEventTimes] = useState([]);
+  const [events, setEvents] = useState([]);
+  const [scheduledEvent, setScheduledEvent] = useState(false);
   const params = useParams();
 
   const [name, setName] = useState('');
@@ -74,6 +79,7 @@ function ScheduleEvent() {
         setDataLoaded(true);
         const calendarData = response.data.calendar;
         setCalendarData(calendarData);
+        setEvents(calendarData.events);
         setCalendarActiveDays(calendarData.calendar.daysAhead);
         if (calendarData.calendar.type === "specificDate") {
           setDate(new Date(calendarData.calendar.startDate));
@@ -141,7 +147,7 @@ function ScheduleEvent() {
       const dayOfWeek = dayNames[new Date(selectedDate).getDay()];
       const intervalsForDay = calendarData.calendar.eventsIntervals.find(interval => interval.day === dayOfWeek);
       const maxPossibleEvents = intervalsForDay ? intervalsForDay.eventCount : 0;
-      const eventsScheduled = calendarData.events.filter(event => event.day === selectedDate).length;
+      const eventsScheduled = events.filter(event => event.day === selectedDate).length;
       if (eventsScheduled === maxPossibleEvents) {
         const liElement = Array.from(dateItem).find(li => li.dataset.value === selectedDate);
         if (liElement) {
@@ -175,6 +181,27 @@ function ScheduleEvent() {
   };
 
   const saveEvent = async () => {
+
+    if (name.trim() === '') {
+      toast.warning('O campo "Nome" é obrigatório.');
+      return;
+    }
+    if (email.trim() === '') {
+      toast.warning('O campo "Email" é obrigatório.');
+      return;
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      toast.warning('O email digitado não possui um formato válido.');
+      return;
+    }
+
+    if (phone.trim() === '') {
+      toast.warning('O campo "Telefone" é obrigatório.');
+      return;
+    } else if (phone.includes('_')) {
+      toast.warning('Digite um número de telefone válido.');
+      return;
+    }
+
     const newSaveEvent = {
       id: uuidv4(),
       day: selectedDate,
@@ -187,10 +214,32 @@ function ScheduleEvent() {
     try {
       const response = await api.post(`/calendars/add-event/${params.userId}/${params.calendarId}`, { newSaveEvent });
       if (response.status === 201) {
+        setEvents(response.data.events);
         toast.success('Seu evento foi agendado com sucesso!');
+        setScheduledEvent(true);
       }
-    } catch {
-      toast.error('Erro ao agendar evento.');
+    } catch (error) {
+      if (error.response.status === 400) {
+        toast.warning('Enquanto você preenchia seus dados um evento foi agendado na mesma data e horário escolhidos. Por gentileza, escolha outro horário.');
+        const dayEvents = error.response.data.dayEvents;
+        const dayNames = ["domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado"];
+        const selectedDateObj = parseISO(selectedDate);
+        const dayOfWeekNumeric = selectedDateObj.getDay();
+        const dayOfWeekName = dayNames[dayOfWeekNumeric];
+        const eventInterval = calendarData.calendar.eventsIntervals.filter((event) => event.day === dayOfWeekName);
+        const availableTimes = eventInterval[0].eventTimes.filter(time => {
+          const isOverlapping = dayEvents.some(usedTime => {
+            return isTimeOverlapping(time, usedTime.time);
+          });
+          return !isOverlapping;
+        });
+        setAvailableEventTimes(availableTimes);
+        setTimeout(() => {
+          handleStep(1);
+        }, 2000);
+      } else {
+        toast.error('Erro ao agendar evento.')
+      }
     }
   }
 
@@ -216,12 +265,24 @@ function ScheduleEvent() {
     }
   }
 
+  const handleStep = (step) => {
+    if (step === 0) {
+      setStep(step);
+      setTimeout(() => {
+        renderCalendar();
+        selectDate();
+      }, 100);
+    } else if (step === 1) {
+      setStep(step);
+    }
+  }
+
   return (
     <div>
       {step === 0 &&
         <div className="wrapper">
           <header>
-            <p className="current-date">{currentDate}</p>
+            <p style={{ marginLeft: '30px' }} className="current-date">{currentDate}</p>
             <div className="icons">
               <span onClick={() => previousMonth()} id="prev" className="material-symbols-rounded">◄</span>
               <span onClick={() => nextMonth()} id="next" className="material-symbols-rounded">►</span>
@@ -243,10 +304,11 @@ function ScheduleEvent() {
       }
       {step === 1 &&
         <div className="wrapper">
+
           <header>
             <p className="current-date">{new Date(selectedDate).getDate()} de {currentDate}</p>
           </header>
-          <div>
+          <div className="available-events-times">
             <h2>Horários disponíveis</h2>
             <ul>
               {availableEventTimes.map((time, index) => (
@@ -264,21 +326,42 @@ function ScheduleEvent() {
               ))}
             </ul>
             <h3>Horário selecionado: {selectedTime.start ? `${selectedTime.start} - ${selectedTime.end}` : 'Nenhum horário selecionado'}</h3>
-            <button onClick={() => setStep(2)}>Avançar</button>
+            <div className="buttons-container">
+              <button style={{ backgroundColor: '#ff99cc' }} onClick={() => handleStep(0)}>Voltar</button>
+              <button onClick={() => setStep(2)}>Avançar</button>
+            </div>
           </div>
         </div>
       }
 
       {step === 2 &&
         <div className="wrapper">
-          <label>Nome</label>
-          <input value={name} onChange={(e) => setName(e.target.value)} />
-          <label>email</label>
-          <input value={email} onChange={(e) => setEmail(e.target.value)} />
-          <label>Telefone</label>
-          <input value={phone} onChange={(e) => setPhone(e.target.value)} />
-
-          <button onClick={() => saveEvent()}>Salvar Evento</button>
+          <div className="inputs-container">
+            <span>Preencha seus dados:</span>
+            <label>Nome:</label>
+            <input required value={name} onChange={(e) => setName(e.target.value)} />
+            <label>Email:</label>
+            <input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <label>Telefone:</label>
+            <InputMask
+              required
+              mask="(99) 99999-9999"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+            />
+            <div className="buttons-container">
+              <button style={{ backgroundColor: '#ff99cc' }} onClick={() => handleStep(1)}>Voltar</button>
+              <button onClick={() => saveEvent()}>Salvar Evento</button>
+            </div>
+          </div>
+          {scheduledEvent &&
+            <div className="scheduled-event">
+              <EventAvailableIcon />
+              <span>Confira os dados do seu agendamento:</span>
+              <span>Dia: {new Date(selectedDate).getDate()} de {currentDate}</span>
+              <span>Horário: {selectedTime.start} às {selectedTime.end}</span>
+            </div>
+          }
         </div>
       }
     </div >

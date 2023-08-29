@@ -20,6 +20,7 @@ import clipboardCopy from "clipboard-copy";
 function SchedulesList() {
   const [indexDrop, setIndexDrop] = useState(null);
   const [calendarsData, setCalendarsData] = useState([]);
+  const [dataLoaded, setDataLoaded] = useState(false);
   const navigate = useNavigate();
   const { user } = useStateContext();
   const token = localStorage.getItem('token');
@@ -46,6 +47,10 @@ function SchedulesList() {
       const response = await api.get(`/calendars/get-calendars/${user.id}`, { headers: { authorization: token } });
       if (response.status === 201) {
         setCalendarsData(response.data.filteredCalendars);
+        setDataLoaded(true);
+      }
+      if (response.status === 404) {
+        toast.warning("Não há calendários para esse usuário.");
       }
     } catch {
       toast.error('Erro ao buscar agendas.');
@@ -125,7 +130,7 @@ function SchedulesList() {
 
   return (
     <Container>
-      {calendarsData && calendarsData.map((calendar, index) => (
+      {calendarsData.length >= 1 ? calendarsData.map((calendar, index) => (
         <ScheduleCard key={index} active={calendar.room.active}>
           <TitleContainer>
             <CardTitle onClick={() => navigate(`/dashboard/add-schedule/${calendar.room.id}`)}>{calendar.room.title}</CardTitle>
@@ -225,7 +230,10 @@ function SchedulesList() {
             </ModalContent>
           </Modal>
         </ScheduleCard>
-      ))}
+      ))
+        :
+        dataLoaded && <span>Não há agendas. Crie sua primeira agenda!</span>
+      }
     </Container>
   )
 }

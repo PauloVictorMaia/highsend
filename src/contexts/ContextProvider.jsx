@@ -27,7 +27,7 @@ export const ContextProvider = ({ children }) => {
         if (newVariable) {
             const nameExists = variables.some(variable => variable.name === newVariable);
             if (!nameExists) {
-                const variable = { id: uuidv4(), name: newVariable };
+                const variable = { id: uuidv4(), name: newVariable, value: "" };
                 setVariables((variables) => [...variables, variable]);
                 toast.success('Variável criada com sucesso.');
             } else {

@@ -6,10 +6,11 @@ import { useState, useEffect } from "react";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import TextFieldsIcon from '@mui/icons-material/TextFields';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { toast } from "react-toastify";
 
 
 export function TextInputNode({ data, id, selected }) {
-  const { setNodes } = useReactFlow();
+  const { setNodes, getNodes } = useReactFlow();
   const { createNewVariable, variables } = useStateContext();
   const { deleteElements } = useReactFlow();
   const onDelete = () => deleteElements({ nodes: [{ id }] });
@@ -50,6 +51,17 @@ export function TextInputNode({ data, id, selected }) {
       await createNewVariable(newVariable)
     } catch (error) {
       console.log(error)
+    }
+  }
+
+  const handleAssignedVariable = (variableValue) => {
+    const nodes = getNodes();
+    const inputNodes = nodes.filter((node) => /input/i.test(node.type));
+    const hasVariableAssigned = inputNodes.some(node => node.data.variable === variableValue);
+    if (!hasVariableAssigned) {
+      setAssignedVariable(variableValue);
+    } else {
+      toast.warning('Essa variável já está atribuída a um input. Escolha outra variável ou crie uma nova.')
     }
   }
 
@@ -99,7 +111,7 @@ export function TextInputNode({ data, id, selected }) {
         <button onClick={sendNewVariable}>Criar</button>
 
         <span>Atribuir variável a esse input</span>
-        <select value={assignedVariable} onChange={(e) => setAssignedVariable(e.target.value)}>
+        <select value={assignedVariable} onChange={(e) => handleAssignedVariable(e.target.value)}>
           <option value="">Selecionar variável</option>
           {variables &&
             variables.map((variable, index) => (
