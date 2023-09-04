@@ -27,6 +27,7 @@ import { toast } from "react-toastify";
 import api from "../../api";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { useNavigate, useParams } from "react-router-dom";
+import ScheduleEvents from "./ScheduleEvents";
 
 function AddSchedule() {
   const { user } = useStateContext();
@@ -218,172 +219,178 @@ function AddSchedule() {
         />
       }
     >
-      <Container>
-        <ContentContainer>
-          <h2>Título do evento</h2>
-          <TitleInput value={eventTitle} onChange={(e) => setEventTitle(e.target.value)} />
-        </ContentContainer>
+      {menuComponent == 0 &&
+        <Container>
+          <ContentContainer>
+            <h2>Título do evento</h2>
+            <TitleInput value={eventTitle} onChange={(e) => setEventTitle(e.target.value)} />
+          </ContentContainer>
 
-        <ContentContainer>
-          <h2>Intervalo de datas do evento</h2>
+          <ContentContainer>
+            <h2>Intervalo de datas do evento</h2>
 
-          <ToggleContainer>
-            <OptionLabel>
-              <input
-                type="radio"
-                value="daysAhead"
-                checked={selectedOption === 'daysAhead'}
-                onChange={() => daysAHead()}
-              />
-              Dias corridos no futuro
-            </OptionLabel>
-            {selectedOption === 'daysAhead' &&
-              <div>
-                <input type="number" defaultValue={daysAhead} onChange={(e) => setDaysAhead(e.target.value)} />
-                <span>dias a frente no futuro</span>
-              </div>
-            }
-            <OptionLabel>
-              <input
-                type="radio"
-                value="specificDate"
-                checked={selectedOption === 'specificDate'}
-                onChange={() => setSelectedOption('specificDate')}
-              />
-              Intervalo de data específico
-            </OptionLabel>
-            {selectedOption === 'specificDate' &&
-              <div style={{ marginBottom: 10 }}>
-                <h3>Escolha a data de início e fim:</h3>
-                <div style={{ display: 'flex', columnGap: 10 }}>
-                  <Calendar
-                    date={startDate}
-                    onChange={(date) => setStartDate(date)}
-                    minDate={new Date()}
-                    locale={ptBR}
-                    style={{ minHeight: 200 }}
-                  />
-                  <Calendar
-                    date={endDate}
-                    onChange={(date) => setEndDate(date)}
-                    minDate={new Date()}
-                    locale={ptBR}
-                    style={{ minHeight: 200 }}
-                  />
+            <ToggleContainer>
+              <OptionLabel>
+                <input
+                  type="radio"
+                  value="daysAhead"
+                  checked={selectedOption === 'daysAhead'}
+                  onChange={() => daysAHead()}
+                />
+                Dias corridos no futuro
+              </OptionLabel>
+              {selectedOption === 'daysAhead' &&
+                <div>
+                  <input type="number" defaultValue={daysAhead} onChange={(e) => setDaysAhead(e.target.value)} />
+                  <span>dias a frente no futuro</span>
                 </div>
-                <div style={{ marginTop: '10px', paddingLeft: '20px' }}>
-                  <span>{formatDates(startDate, endDate)}</span>
+              }
+              <OptionLabel>
+                <input
+                  type="radio"
+                  value="specificDate"
+                  checked={selectedOption === 'specificDate'}
+                  onChange={() => setSelectedOption('specificDate')}
+                />
+                Intervalo de data específico
+              </OptionLabel>
+              {selectedOption === 'specificDate' &&
+                <div style={{ marginBottom: 10 }}>
+                  <h3>Escolha a data de início e fim:</h3>
+                  <div style={{ display: 'flex', columnGap: 10 }}>
+                    <Calendar
+                      date={startDate}
+                      onChange={(date) => setStartDate(date)}
+                      minDate={new Date()}
+                      locale={ptBR}
+                      style={{ minHeight: 200 }}
+                    />
+                    <Calendar
+                      date={endDate}
+                      onChange={(date) => setEndDate(date)}
+                      minDate={new Date()}
+                      locale={ptBR}
+                      style={{ minHeight: 200 }}
+                    />
+                  </div>
+                  <div style={{ marginTop: '10px', paddingLeft: '20px' }}>
+                    <span>{formatDates(startDate, endDate)}</span>
+                  </div>
                 </div>
-              </div>
-            }
-            <OptionLabel>
-              <input
-                type="radio"
-                value="indefinitely"
-                checked={selectedOption === 'indefinitely'}
-                onChange={() => handleDaysAhead()}
-              />
-              Indefinidamente no futuro
-            </OptionLabel>
-          </ToggleContainer>
-        </ContentContainer>
+              }
+              <OptionLabel>
+                <input
+                  type="radio"
+                  value="indefinitely"
+                  checked={selectedOption === 'indefinitely'}
+                  onChange={() => handleDaysAhead()}
+                />
+                Indefinidamente no futuro
+              </OptionLabel>
+            </ToggleContainer>
+          </ContentContainer>
 
-        <ContentContainer>
-          <label>Horário de Início do Almoço:</label>
-          <input
-            type="time"
-            value={lunchStartTime}
-            onChange={(e) => setLunchStartTime(e.target.value)}
-          />
-          <label>Horário de Término do Almoço:</label>
-          <input
-            type="time"
-            value={lunchEndTime}
-            onChange={(e) => setLunchEndTime(e.target.value)}
-          />
-        </ContentContainer>
+          <ContentContainer>
+            <label>Horário de Início do Almoço:</label>
+            <input
+              type="time"
+              value={lunchStartTime}
+              onChange={(e) => setLunchStartTime(e.target.value)}
+            />
+            <label>Horário de Término do Almoço:</label>
+            <input
+              type="time"
+              value={lunchEndTime}
+              onChange={(e) => setLunchEndTime(e.target.value)}
+            />
+          </ContentContainer>
 
-        <ContentContainer>
+          <ContentContainer>
 
-          <h2>Disponibilidade para os dias da semana</h2>
-          {eventConfigurations.map((day, index) => (
-            <DaysContainer key={index}>
-              <CheckboxContainer
-                onClick={() => handleAvailabilityChange(index, !day.available)}
-                checked={day.available}
-              >
-                <StyledCheckbox
+            <h2>Disponibilidade para os dias da semana</h2>
+            {eventConfigurations.map((day, index) => (
+              <DaysContainer key={index}>
+                <CheckboxContainer
+                  onClick={() => handleAvailabilityChange(index, !day.available)}
                   checked={day.available}
                 >
-                  {day.available &&
-                    <img
-                      alt="tick icon"
-                      style={{ width: '15px' }}
-                      src={CheckIcon}
+                  <StyledCheckbox
+                    checked={day.available}
+                  >
+                    {day.available &&
+                      <img
+                        alt="tick icon"
+                        style={{ width: '15px' }}
+                        src={CheckIcon}
+                      />
+                    }
+                  </StyledCheckbox>
+                  <Text checked={day.available}>{day.day}</Text>
+                </CheckboxContainer>
+                {day.available && (
+                  <>
+                    <label>Início:</label>
+                    <input
+                      type="time"
+                      value={day.startTime}
+                      onChange={(e) => handleStartTimeChange(index, e.target.value)}
                     />
-                  }
-                </StyledCheckbox>
-                <Text checked={day.available}>{day.day}</Text>
-              </CheckboxContainer>
-              {day.available && (
-                <>
-                  <label>Início:</label>
-                  <input
-                    type="time"
-                    value={day.startTime}
-                    onChange={(e) => handleStartTimeChange(index, e.target.value)}
-                  />
-                  <label>Término:</label>
-                  <input
-                    type="time"
-                    value={day.endTime}
-                    onChange={(e) => handleEndTimeChange(index, e.target.value)}
-                  />
-                </>
-              )}
-            </DaysContainer>
-          ))}
-        </ContentContainer>
+                    <label>Término:</label>
+                    <input
+                      type="time"
+                      value={day.endTime}
+                      onChange={(e) => handleEndTimeChange(index, e.target.value)}
+                    />
+                  </>
+                )}
+              </DaysContainer>
+            ))}
+          </ContentContainer>
 
-        <ContentContainer>
-          <h2>Configurar Horário e Duração do Evento</h2>
-          <label>Duração do Evento (em minutos):</label>
-          <input
-            type="number"
-            min="1"
-            value={eventDuration}
-            onChange={(e) => setEventDuration(parseInt(e.target.value))}
-          />
-          <label>Intervalo entre os Eventos (em minutos):</label>
-          <input
-            type="number"
-            min="1"
-            value={eventInterval}
-            onChange={(e) => setEventInterval(parseInt(e.target.value))}
-          />
-        </ContentContainer>
+          <ContentContainer>
+            <h2>Configurar Horário e Duração do Evento</h2>
+            <label>Duração do Evento (em minutos):</label>
+            <input
+              type="number"
+              min="1"
+              value={eventDuration}
+              onChange={(e) => setEventDuration(parseInt(e.target.value))}
+            />
+            <label>Intervalo entre os Eventos (em minutos):</label>
+            <input
+              type="number"
+              min="1"
+              value={eventInterval}
+              onChange={(e) => setEventInterval(parseInt(e.target.value))}
+            />
+          </ContentContainer>
 
-        <ContentContainer>
+          <ContentContainer>
 
-          <h2>Intervalos de Evento:</h2>
-          <IntervalsContainer>
-            <EnventsContainer columns={eventIntervals.length}>
-              {eventIntervals?.map((day, index) => (
-                <EventsContent key={index}>
-                  <h3>{day.day}</h3>
-                  <p>Eventos: {day.eventCount}</p>
-                  {day.eventTimes?.map((interval, index) => (
-                    <EventItem key={index}>
-                      <div>Início: {interval.start}, </div>
-                      <div>Término: {interval.end}</div>
-                    </EventItem>
-                  ))}
-                </EventsContent>
-              ))}
-            </EnventsContainer>
-          </IntervalsContainer>
-        </ContentContainer>
-      </Container>
+            <h2>Intervalos de Evento:</h2>
+            <IntervalsContainer>
+              <EnventsContainer columns={eventIntervals.length}>
+                {eventIntervals?.map((day, index) => (
+                  <EventsContent key={index}>
+                    <h3>{day.day}</h3>
+                    <p>Eventos: {day.eventCount}</p>
+                    {day.eventTimes?.map((interval, index) => (
+                      <EventItem key={index}>
+                        <div>Início: {interval.start}, </div>
+                        <div>Término: {interval.end}</div>
+                      </EventItem>
+                    ))}
+                  </EventsContent>
+                ))}
+              </EnventsContainer>
+            </IntervalsContainer>
+          </ContentContainer>
+        </Container>
+      }
+
+      {menuComponent == 1 &&
+        <ScheduleEvents calendarID={params.id} />
+      }
     </ContentPageContainer>
   )
 }

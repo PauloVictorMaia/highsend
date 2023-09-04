@@ -106,3 +106,9 @@ export const EventItem = styled.div`
  border-radius: 8px;
  width: 100%;
 `;
+
+export const  MenuContainer = styled.div`
+  width: 100%;
+  background-color: #f6f6f6;
+  border: 0.5px solid rgba(0,0,0,0.15);
+`;

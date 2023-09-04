@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 import { useCallback, useEffect, useState } from "react";
 import "./styles.css";
-// import { events } from "../../data/calendar";
 import { toast } from "react-toastify";
 import api from '../../api';
 import { useParams } from "react-router-dom";
@@ -204,6 +205,9 @@ function ScheduleEvent() {
 
     const newSaveEvent = {
       id: uuidv4(),
+      calendarID: calendarData.room.id,
+      color: calendarData.room.color,
+      eventDuration: calendarData.room.eventDuration,
       day: selectedDate,
       name: name,
       email: email,
