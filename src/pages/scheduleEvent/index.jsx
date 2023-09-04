@@ -208,6 +208,7 @@ function ScheduleEvent() {
       calendarID: calendarData.room.id,
       color: calendarData.room.color,
       eventDuration: calendarData.room.eventDuration,
+      calendarTitle: calendarData.room.title,
       day: selectedDate,
       name: name,
       email: email,

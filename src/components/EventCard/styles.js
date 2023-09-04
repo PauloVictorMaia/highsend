@@ -24,9 +24,12 @@ export const Content = styled.div`
   cursor: pointer;
 `;
 
+export const ScheduleTimeContainer = styled.div`
+  width: 350px;
+`;
+
 export const ScheduledTime = styled.div`
   width: 140px;
-  height: 100%;
   display: flex;
   column-gap: 10px;
 `;
@@ -78,6 +81,10 @@ export const DetailsContainer = styled.div`
   justify-content: space-between;
 `;
 
+export const PhoneContainer = styled.div`
+  width: 350px;
+`;
+
 export const InviteeEmail = styled.div`
   width: 400px;
 `;
@@ -85,11 +92,11 @@ export const InviteeEmail = styled.div`
 export const DeleteButton = styled.div`
   display: flex;
   column-gap: 5px;
-  margin-left: 25px;
   cursor: pointer;
   border-radius: 5px;
   padding: 0 10px;
   box-sizing: border-box;
+  margin-left: 10px;
 `;
 
 export const Modal = styled.div`
