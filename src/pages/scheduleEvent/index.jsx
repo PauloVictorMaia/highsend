@@ -207,6 +207,7 @@ function ScheduleEvent() {
       id: uuidv4(),
       calendarID: calendarData.room.id,
       color: calendarData.room.color,
+      local: calendarData.room.local,
       eventDuration: calendarData.room.eventDuration,
       calendarTitle: calendarData.room.title,
       day: selectedDate,
@@ -365,6 +366,7 @@ function ScheduleEvent() {
               <span>Confira os dados do seu agendamento:</span>
               <span>Dia: {new Date(selectedDate).getDate()} de {currentDate}</span>
               <span>Horário: {selectedTime.start} às {selectedTime.end}</span>
+              <span>Reunião: {calendarData.room.local.type}, no local: {calendarData.room.local.local}</span>
             </div>
           }
         </div>

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import CustomPageHeader from "../../components/CustomPageHeader";
 import ContentPageContainer from "../../containers/ContentPageContainer";
 import { useEffect, useState } from 'react';
@@ -28,6 +29,7 @@ import api from "../../api";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { useNavigate, useParams } from "react-router-dom";
 import ScheduleEvents from "./ScheduleEvents";
+import { SketchPicker } from "react-color";
 
 function AddSchedule() {
   const { user } = useStateContext();
@@ -40,7 +42,8 @@ function AddSchedule() {
   const [eventColor, setEventColor] = useState('');
   const [eventActive, setEventActive] = useState(null);
   const [daysAhead, setDaysAhead] = useState(null);
-
+  const [address, setAddress] = useState(null);
+  const [selectedLocal, setSelectedLocal] = useState(null);
   const [eventDuration, setEventDuration] = useState(30);
   const [eventInterval, setEventInterval] = useState(15);
   const [lunchStartTime, setLunchStartTime] = useState('12:00');
@@ -66,7 +69,8 @@ function AddSchedule() {
         setEventInterval(calendar.room.eventInterval);
         setLunchStartTime(calendar.calendar.lunchStartTime);
         setLunchEndTime(calendar.calendar.lunchEndTime);
-
+        setAddress(calendar.room.local.local);
+        setSelectedLocal(calendar.room.local.type);
         setStartDate(new Date(calendar.calendar.startDate));
         setEndDate(new Date(calendar.calendar.endDate));
         setDaysAhead(calendar.calendar.daysAhead);
@@ -100,6 +104,7 @@ function AddSchedule() {
         active: eventActive,
         color: eventColor,
         title: eventTitle,
+        local: { type: selectedLocal, local: selectedLocal === "Online" ? "Google Meet" : address },
         eventDuration: eventDuration,
         eventInterval: eventInterval
       },
@@ -303,6 +308,50 @@ function AddSchedule() {
               value={lunchEndTime}
               onChange={(e) => setLunchEndTime(e.target.value)}
             />
+          </ContentContainer>
+
+          <ContentContainer style={{ margin: "10px 0" }}>
+            <h2 style={{ marginBottom: "10px" }}>Detalhes do evento</h2>
+            <label>Escolha uma cor para a sua agenda:</label>
+            <SketchPicker
+              color={eventColor}
+              onChange={(color) => setEventColor(color.hex)}
+            />
+
+            <ToggleContainer style={{ marginTop: '10px' }}>
+              <span>Local do evento:</span>
+              <OptionLabel style={{ marginTop: '10px' }}>
+                <input
+                  type="radio"
+                  value="Presencial"
+                  checked={selectedLocal === 'Presencial'}
+                  onChange={() => setSelectedLocal('Presencial')}
+                />
+                Presencial
+              </OptionLabel>
+              {selectedLocal === 'Presencial' &&
+                <div>
+                  <span>No endereço:</span>
+                  <input
+                    style={{ width: "400px" }}
+                    type="text"
+                    defaultValue={address === "Google Meet" ? "" : address}
+                    placeholder="R. Exemplo, 222 - cidade - estado - cep: 00000-000"
+                    onChange={(e) => setAddress(e.target.value)}
+                  />
+                </div>
+              }
+
+              <OptionLabel>
+                <input
+                  type="radio"
+                  value="Online"
+                  checked={selectedLocal === 'Online'}
+                  onChange={() => setSelectedLocal("Online")}
+                />
+                Online pelo Google Meet
+              </OptionLabel>
+            </ToggleContainer>
           </ContentContainer>
 
           <ContentContainer>

@@ -7,7 +7,7 @@ import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import ClearIcon from '@mui/icons-material/Clear';
 import { useState } from "react";
 
-function EventCard({ color, start, end, eventDuration, inviteeName, inviteeEmail, inviteePhone, cancelEvent, calendarID, eventID, calendarTitle }) {
+function EventCard({ color, start, end, eventDuration, inviteeName, inviteeEmail, inviteePhone, cancelEvent, calendarID, eventID, calendarTitle, local }) {
 
   const [openDetails, setOpenDetails] = useState(false);
   const [modalIsVisible, setModalIsVisible] = useState(false);
@@ -64,6 +64,7 @@ function EventCard({ color, start, end, eventDuration, inviteeName, inviteeEmail
         <DetailsContainer>
           <PhoneContainer>
             <span>{`Telefone: ${inviteePhone}`}</span>
+            <span>{`Reunião: ${local.type}, no local: ${local.local}`}</span>
           </PhoneContainer>
           <InviteeEmail>
             <span>{`Email: ${inviteeEmail}`}</span>

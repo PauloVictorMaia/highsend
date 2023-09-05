@@ -73,7 +73,7 @@ export const ButtonContent = styled.div`
 
 export const DetailsContainer = styled.div`
   width: 100%;
-  height: 80px;
+  min-height: 80px;
   background-color: #fff;
   padding: 20px 60px 20px 50px;
   box-sizing: border-box;
@@ -83,6 +83,8 @@ export const DetailsContainer = styled.div`
 
 export const PhoneContainer = styled.div`
   width: 350px;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const InviteeEmail = styled.div`

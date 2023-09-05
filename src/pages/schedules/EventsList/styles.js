@@ -20,3 +20,27 @@ export const EndList = styled.div`
   justify-content: center;
   color: rgba(26, 26, 26, 0.61);
 `;
+
+export const Calendars = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  row-gap: 20px;
+  background-color: #fff;
+  position: relative;
+
+  >button {
+    width: 70px;
+    height: 30px;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    background-color: blue;
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+    line-height: 30px;
+    cursor: pointer;
+    margin: 10px 0;
+  }
+`;

@@ -39,6 +39,7 @@ function Schedules() {
         active: true,
         color: "#ff6699",
         title: "Meu calendario de eventos",
+        local: { type: "Online", local: "Google Meet" },
         eventDuration: 40,
         eventInterval: 10
       },
