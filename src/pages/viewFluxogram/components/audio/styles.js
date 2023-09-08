@@ -2,21 +2,21 @@ import styled, { keyframes } from 'styled-components';
 
 const appear = keyframes`  
   0% {
-    opacity: 0;
+    display: none;
     width: 0;
     height: 0;
     overflow: hidden;
   }
 
   99% {
-    opacity: 0;
+    display: none;
     width: 0;
     height: 0;
     overflow: hidden;
   }
 
   100% {
-    opacity: 1;
+    display: flex;
     width: auto;
     height: auto;
   }
@@ -28,15 +28,15 @@ const blink = keyframes`
 
 const disappear = keyframes`
   0% {
-    opacity: 1;
+    display: block;
   }
 
   99% {
-    opacity: 1;
+    display: block;
   }
 
   100% {
-    opacity: 0;
+    display: none;
     width: 0;
     height: 0;
     overflow: hidden;
@@ -61,15 +61,6 @@ export const BubleText = styled.div`
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
     animation-delay: 0s;
-  }
-
-  p {
-    margin: 0;
-    animation: 1.5s ${appear} forwards;
-    text-align: left;
-    max-width: 100%;
-    height: auto;
-    word-wrap: break-word;
   }
 
   .typing-indicator {
@@ -104,7 +95,6 @@ export const BubleText = styled.div`
   background: #F7F8FF;
   border-radius: 10px;
   color: #333;
-  max-width: 100%;
 }
 
 .chat-actions {
@@ -126,4 +116,39 @@ export const BubleText = styled.div`
     width: 100%;;
   }
 }
+`;
+
+export const AudioControl = styled.div`
+  display: flex;
+  align-items: center;
+  background-color: #E5E5E5;
+  border-radius: 20px;
+  padding: 5px 10px;
+  min-width: 250px;
+  animation: 1.5 ${appear} forwards;
+`;
+
+export const AudioButton = styled.button`
+  font-size: 20px;
+  width: 30px;
+  text-align: center;
+  cursor: pointer;
+  background: none;
+  border: none;
+`;
+
+export const AudioBarComponent = styled.div`
+  flex-grow: 1;
+  height: 5px;
+  background-color: #D4D4D4;
+  margin: 0 10px;
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+`;
+
+export const AudioProgress = styled.div`
+  height: 100%;
+  background-color: #34B7F1;
+  width: ${props => props.percentage}%; 
 `;

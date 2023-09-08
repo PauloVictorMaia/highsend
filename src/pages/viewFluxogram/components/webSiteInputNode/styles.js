@@ -14,8 +14,6 @@ export const Text = styled.div`
  width: auto;
  padding: 10px;
  border-radius: 4px;
- max-width: 100%;
- word-wrap: break-word;
 `;
 
 export const InputContainer = styled.div`
