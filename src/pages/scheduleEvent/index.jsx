@@ -38,7 +38,7 @@ function ScheduleEvent() {
   const [events, setEvents] = useState([]);
   const [scheduledEvent, setScheduledEvent] = useState(false);
   const params = useParams();
-
+  const code = localStorage.getItem('code');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -218,7 +218,7 @@ function ScheduleEvent() {
     }
 
     try {
-      const response = await api.post(`/calendars/add-event/${params.userId}/${params.calendarId}`, { newSaveEvent });
+      const response = await api.post(`/calendars/add-event/${params.userId}/${params.calendarId}`, { newSaveEvent, code });
       if (response.status === 201) {
         setEvents(response.data.events);
         toast.success('Seu evento foi agendado com sucesso!');

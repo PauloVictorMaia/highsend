@@ -163,14 +163,12 @@ function ScheduleEvents({ calendarID }) {
                     <Calendar
                       date={startDate}
                       onChange={(date) => setStartDate(new Date(date))}
-                      minDate={new Date()}
                       locale={ptBR}
                       style={{ minHeight: 200, boxShadow: "5px 8px 10px 4px rgba(0,0,0,0.35)" }}
                     />
                     <Calendar
                       date={endDate}
                       onChange={(date) => setEndDate(new Date(date))}
-                      minDate={new Date()}
                       locale={ptBR}
                       style={{ minHeight: 200, boxShadow: "5px 8px 10px 4px rgba(0,0,0,0.35)" }}
                     />

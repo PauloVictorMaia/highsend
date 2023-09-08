@@ -2,7 +2,9 @@ import { Container } from "./styles";
 
 function CustomSchedule() {
   return (
-    <Container>CustomSchedule</Container>
+    <Container>
+      Schedule Component
+    </Container>
   )
 }
 
