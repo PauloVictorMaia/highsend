@@ -1,11 +1,28 @@
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
+export const Container = styled.div`
+ width: 100%;
+ height: 100vh;
+ position: fixed;
+`;
+
 export const DashBoardContainer = styled.div`
   display: flex;
-  height: 100vh;
-  width: 100vw;
-  color: #fff;
+  width: 100%;
+  height: calc(100% - 56px);
+  color: #159A9C;
+`;
+
+export const DashContent = styled.div`
+  background: #fff;
+  width: ${({openmenu}) => openmenu ? '220px' : '80px'};
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
 `;
 
 export const IconContainer = styled.div`
@@ -21,16 +38,6 @@ export const IconContainer = styled.div`
  top: 10;
  z-index: 100000000;
  cursor: pointer;
-`;
-
-export const DashContent = styled.div`
-  background: #333;
-  width: ${({openmenu}) => openmenu ? '220px' : '80px'};
-  padding: 20px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
 `;
 
 export const MenuContainer = styled.div`
