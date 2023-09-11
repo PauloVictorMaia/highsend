@@ -13,7 +13,7 @@ export const Container = styled.div`
 export const NewFluxogramCard = styled.div`
   width: 225px;
   height: 270px;
-  background-color: blue;
+  background-color: #14140F;
   color: white;
   font-size: 1.5rem;
   font-weight: bold;

@@ -27,6 +27,7 @@ import { toast } from "react-toastify";
 import api from "../../api";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { useNavigate, useParams } from "react-router-dom";
+import Accordion from "../../components/Accordion";
 
 function AddSchedule() {
   const { user } = useStateContext();
@@ -51,6 +52,8 @@ function AddSchedule() {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [events, setEvents] = useState([]);
+
+  const [accordion, setAccordion] = useState(1);
 
   async function getCalendarData() {
     try {
@@ -205,6 +208,11 @@ function AddSchedule() {
     setSelectedOption('daysAhead');
   };
 
+  const changeAccordionValue = (index) => {
+    if (index === accordion) return setAccordion(0);
+    return setAccordion(index);
+  }
+
   return (
     <ContentPageContainer
       header={
@@ -219,74 +227,80 @@ function AddSchedule() {
       }
     >
       <Container>
-        <ContentContainer>
-          <h2>Título do evento</h2>
-          <TitleInput value={eventTitle} onChange={(e) => setEventTitle(e.target.value)} />
-        </ContentContainer>
+        <Accordion 
+         open={accordion === 1} 
+         onClick={() => changeAccordionValue(1)}
+         title={"teste"}
+        >
+          <ContentContainer>
+            <h2>Título do evento</h2>
+            <TitleInput value={eventTitle} onChange={(e) => setEventTitle(e.target.value)} />
+          </ContentContainer>
 
-        <ContentContainer>
-          <h2>Intervalo de datas do evento</h2>
+          <ContentContainer>
+            <h2>Intervalo de datas do evento</h2>
 
-          <ToggleContainer>
-            <OptionLabel>
-              <input
-                type="radio"
-                value="daysAhead"
-                checked={selectedOption === 'daysAhead'}
-                onChange={() => daysAHead()}
-              />
-              Dias corridos no futuro
-            </OptionLabel>
-            {selectedOption === 'daysAhead' &&
-              <div>
-                <input type="number" defaultValue={daysAhead} onChange={(e) => setDaysAhead(e.target.value)} />
-                <span>dias a frente no futuro</span>
-              </div>
-            }
-            <OptionLabel>
-              <input
-                type="radio"
-                value="specificDate"
-                checked={selectedOption === 'specificDate'}
-                onChange={() => setSelectedOption('specificDate')}
-              />
-              Intervalo de data específico
-            </OptionLabel>
-            {selectedOption === 'specificDate' &&
-              <div style={{ marginBottom: 10 }}>
-                <h3>Escolha a data de início e fim:</h3>
-                <div style={{ display: 'flex', columnGap: 10 }}>
-                  <Calendar
-                    date={startDate}
-                    onChange={(date) => setStartDate(date)}
-                    minDate={new Date()}
-                    locale={ptBR}
-                    style={{ minHeight: 200 }}
-                  />
-                  <Calendar
-                    date={endDate}
-                    onChange={(date) => setEndDate(date)}
-                    minDate={new Date()}
-                    locale={ptBR}
-                    style={{ minHeight: 200 }}
-                  />
+            <ToggleContainer>
+              <OptionLabel>
+                <input
+                  type="radio"
+                  value="daysAhead"
+                  checked={selectedOption === 'daysAhead'}
+                  onChange={() => daysAHead()}
+                />
+                Dias corridos no futuro
+              </OptionLabel>
+              {selectedOption === 'daysAhead' &&
+                <div>
+                  <input type="number" defaultValue={daysAhead} onChange={(e) => setDaysAhead(e.target.value)} />
+                  <span>dias a frente no futuro</span>
                 </div>
-                <div style={{ marginTop: '10px', paddingLeft: '20px' }}>
-                  <span>{formatDates(startDate, endDate)}</span>
+              }
+              <OptionLabel>
+                <input
+                  type="radio"
+                  value="specificDate"
+                  checked={selectedOption === 'specificDate'}
+                  onChange={() => setSelectedOption('specificDate')}
+                />
+                Intervalo de data específico
+              </OptionLabel>
+              {selectedOption === 'specificDate' &&
+                <div style={{ marginBottom: 10 }}>
+                  <h3>Escolha a data de início e fim:</h3>
+                  <div style={{ display: 'flex', columnGap: 10 }}>
+                    <Calendar
+                      date={startDate}
+                      onChange={(date) => setStartDate(date)}
+                      minDate={new Date()}
+                      locale={ptBR}
+                      style={{ minHeight: 200 }}
+                    />
+                    <Calendar
+                      date={endDate}
+                      onChange={(date) => setEndDate(date)}
+                      minDate={new Date()}
+                      locale={ptBR}
+                      style={{ minHeight: 200 }}
+                    />
+                  </div>
+                  <div style={{ marginTop: '10px', paddingLeft: '20px' }}>
+                    <span>{formatDates(startDate, endDate)}</span>
+                  </div>
                 </div>
-              </div>
-            }
-            <OptionLabel>
-              <input
-                type="radio"
-                value="indefinitely"
-                checked={selectedOption === 'indefinitely'}
-                onChange={() => handleDaysAhead()}
-              />
-              Indefinidamente no futuro
-            </OptionLabel>
-          </ToggleContainer>
-        </ContentContainer>
+              }
+              <OptionLabel>
+                <input
+                  type="radio"
+                  value="indefinitely"
+                  checked={selectedOption === 'indefinitely'}
+                  onChange={() => handleDaysAhead()}
+                />
+                Indefinidamente no futuro
+              </OptionLabel>
+            </ToggleContainer>
+          </ContentContainer>
+        </Accordion>
 
         <ContentContainer>
           <label>Horário de Início do Almoço:</label>

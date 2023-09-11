@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import styled from 'styled-components';
 import AvatarImage from '../../assets/avatar.jpg'
 import { useStateContext } from '../../contexts/ContextProvider';
-import CloseIcon from '@mui/icons-material/Close';
+import MenuIcon from '@mui/icons-material/Menu';
 
 const TopBarWrapper = styled.div`
   background-color: #fff;
@@ -11,8 +11,9 @@ const TopBarWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 16px;
+  padding: 0 20px;
   box-sizing: border-box;
+  border-bottom: 1px solid #f2f2f2;
 `;
 
 const UserMenu = styled.div`
@@ -67,6 +68,11 @@ const IconContainer = styled.div`
  align-items: center;
  border-radius: 50%;
  cursor: pointer;
+ margin-right: 30px;
+
+ &:hover{
+  background-color: #f2f2f2;
+ }
 `;
 
 const TopBar = () => {
@@ -78,7 +84,7 @@ const TopBar = () => {
     <TopBarWrapper>
       <LogoContainer>
         <IconContainer onClick={() => setOpenMenu(!openMenu)} >
-          <CloseIcon />
+          <MenuIcon />
         </IconContainer>
         <span>Hiflow</span>
       </LogoContainer>

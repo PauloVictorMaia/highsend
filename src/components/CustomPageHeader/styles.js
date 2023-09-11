@@ -25,7 +25,7 @@ export const ItemElement = styled.div`
 export const Item = styled.span`
   color: rgba(26, 26, 26, 0.61);
   padding: 15px 20px;
-  border-bottom: ${({ active }) => active? '4px solid blue' : ''};
+  border-bottom: ${({ active }) => active? '4px solid #F26800' : ''};
 
   &:hover {
     cursor: pointer;
@@ -43,4 +43,8 @@ export const Button = styled.button`
  margin-bottom: 5px;
  border-radius: 15px;
  cursor: pointer;
+ padding: 10px 15px;
+ border: none;
+ background-color: #F26800;
+ color: #fff;
 `;
