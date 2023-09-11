@@ -23,10 +23,15 @@ const UserMenu = styled.div`
   cursor: pointer;
 `;
 
-const Avatar = styled.img`
-  height: 32px;
+const Avatar = styled.div`
+  height: 40px;
+  width: 40px;
+  text-align: center;
+  font-size: 28px;
   border-radius: 50%;
   margin-right: 8px;
+  background-color: #F26800;
+  color: #fff;
 `;
 
 const UserName = styled.div`
@@ -61,8 +66,8 @@ const LogoContainer = styled.div`
 `;
 
 const IconContainer = styled.div`
- width: 40px;
- height: 40px;
+ width: 30px;
+ height: 30px;
  display: flex;
  justify-content: center;
  align-items: center;
@@ -73,6 +78,16 @@ const IconContainer = styled.div`
  &:hover{
   background-color: #f2f2f2;
  }
+`;
+
+export const UserIconContainer = styled.div`
+ background-color: #f2f2f2;
+ display: flex;
+ height: 50px;
+ width: 180px;
+ border-radius: 8px;
+ justify-content: center;
+ align-items: center;
 `;
 
 const TopBar = () => {
@@ -89,8 +104,10 @@ const TopBar = () => {
         <span>Hiflow</span>
       </LogoContainer>
       <UserMenu onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
-        <Avatar src={AvatarImage} alt="User Avatar" />
-        <UserName>Nome do Usuário</UserName>
+        <UserIconContainer>
+          <Avatar alt="User Avatar">P</Avatar>
+          <UserName>Nome do Usuário</UserName>
+        </UserIconContainer>
         {isDropdownOpen && (
           <Dropdown ref={dropdownRef} isOpen={isDropdownOpen}>
             <MenuItem>Meu Canal</MenuItem>
