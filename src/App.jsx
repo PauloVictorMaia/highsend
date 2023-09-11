@@ -30,7 +30,7 @@ const App = () => {
             <Route path="leads" element={<Leads />} />
             <Route path="analytics" element={<Analytics />} />
             <Route path="add-schedule/:id" element={<AddSchedule />} />
-            <Route path="schedules/integration/:code?/:token?" element={<RedirectPage />} />
+            <Route path="schedules/integration" element={<RedirectPage />} />
           </Route>
         </Routes>
       </ContextProvider>
