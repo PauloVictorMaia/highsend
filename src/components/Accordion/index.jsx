@@ -1,27 +1,23 @@
 import styled from 'styled-components';
 
 const AccordionContainer = styled.div`
-  border: 1px solid #e0e0e0;
-  border-radius: 5px;
-  overflow: hidden;
+  border: 1px solid #14140F;
+  border-radius: 6px;
   width: 100%;
   margin: 15px 0;
+  background-color: #fff;
 `;
 
 const AccordionHeader = styled.div`
   cursor: pointer;
   padding: 10px 15px;
-  background-color: #f5f5f5;
-  transition: background-color 0.2s;
-
-  &:hover {
-    background-color: #e0e0e0;
-  }
+  height: 60px;
+  display: flex;
+  align-items: center;
 `;
 
 const AccordionContent = styled.div`
-  max-height: ${(props) => (props.isOpen ? '300px' : '0')};
-  overflow: hidden;
+  max-height: ${(props) => (props.isOpen ? 'auto' : '0')};
   padding: ${(props) => (props.isOpen ? '10px 15px' : '0 15px')};
 `;
 
@@ -31,9 +27,11 @@ const Accordion = ({ title, open, children, onClick }) => {
       <AccordionHeader onClick={onClick}>
         {title}
       </AccordionHeader>
-      <AccordionContent isOpen={open}>
-        {children}
-      </AccordionContent>
+      {open &&
+        <AccordionContent isOpen={open}>
+          {children}
+        </AccordionContent>
+      }
     </AccordionContainer>
   );
 };

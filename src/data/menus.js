@@ -10,6 +10,13 @@ export const flowMenu = [
 
 export const CalendarMenu = [
   {name: 'Edição de agenda'}, 
+  {name: 'Eventos'}, 
+]
+
+export const eventsListMenu = [
+  {name: 'Próximos'},
+  {name: 'Anteriores'},
+  {name: 'Período'},
   {name: 'Eventos da agenda'}, 
 ]
 

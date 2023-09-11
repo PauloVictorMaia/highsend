@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 import { useCallback, useEffect, useState } from "react";
 import "./styles.css";
-// import { events } from "../../data/calendar";
 import { toast } from "react-toastify";
 import api from '../../api';
 import { useParams } from "react-router-dom";
@@ -37,7 +38,7 @@ function ScheduleEvent(props) {
   const [events, setEvents] = useState([]);
   const [scheduledEvent, setScheduledEvent] = useState(false);
   const params = useParams();
-
+  const code = localStorage.getItem('code');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -46,7 +47,7 @@ function ScheduleEvent(props) {
   const [calendarId, setCalendarId] = useState(params.calendarId);
 
   useEffect(() => {
-    if(props.userId){
+    if (props.userId) {
       getCalendarData(props.userId, props.calendarId);
       setUserId(props.userId);
       setCalendarId(props.calendarId);
@@ -215,6 +216,11 @@ function ScheduleEvent(props) {
 
     const newSaveEvent = {
       id: uuidv4(),
+      calendarID: calendarData.room.id,
+      color: calendarData.room.color,
+      local: calendarData.room.local,
+      eventDuration: calendarData.room.eventDuration,
+      calendarTitle: calendarData.room.title,
       day: selectedDate,
       name: name,
       email: email,
@@ -372,6 +378,7 @@ function ScheduleEvent(props) {
               <span>Confira os dados do seu agendamento:</span>
               <span>Dia: {new Date(selectedDate).getDate()} de {currentDate}</span>
               <span>Horário: {selectedTime.start} às {selectedTime.end}</span>
+              <span>Reunião: {calendarData.room.local.type}, no local: {calendarData.room.local.local}</span>
             </div>
           }
         </div>

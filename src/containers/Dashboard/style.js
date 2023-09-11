@@ -10,7 +10,7 @@ export const Container = styled.div`
 export const DashBoardContainer = styled.div`
   display: flex;
   width: 100%;
-  height: calc(100% - 56px);
+  height: calc(100% - 66px);
 `;
 
 export const DashContent = styled.div`

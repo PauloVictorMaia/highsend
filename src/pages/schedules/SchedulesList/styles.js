@@ -5,7 +5,7 @@ export const Container = styled.div`
   padding: 20px 0;
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   column-gap: 30px;
   row-gap: 30px;
 `;

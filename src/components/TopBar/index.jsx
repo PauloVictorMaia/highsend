@@ -7,7 +7,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 const TopBarWrapper = styled.div`
   background-color: #fff;
   width: 100%;
-  height: 56px;
+  height: 66px;
   display: flex;
   align-items: center;
   justify-content: space-between;
