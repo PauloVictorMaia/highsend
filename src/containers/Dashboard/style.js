@@ -11,7 +11,7 @@ export const DashBoardContainer = styled.div`
   display: flex;
   width: 100%;
   height: calc(100% - 56px);
-  color: #159A9C;
+  color: #D0D2DA;
 `;
 
 export const DashContent = styled.div`

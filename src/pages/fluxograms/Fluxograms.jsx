@@ -95,8 +95,6 @@ function Fluxograms() {
     }
   }, [user]);
 
-  const te = [1,1,1,1,1,1,11,1,1,1,11,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
-
   return (
     <ContentPageContainer
       header={
@@ -110,13 +108,10 @@ function Fluxograms() {
     >
 
       <Container>
-      {te.map(() => (
-
         <NewFluxogramCard onClick={createFlow}>
           <AddIcon style={{ fontSize: "2.2rem" }} />
           <span>Create fluxogram</span>
         </NewFluxogramCard>
-      ))}
 
         {
           flows &&
