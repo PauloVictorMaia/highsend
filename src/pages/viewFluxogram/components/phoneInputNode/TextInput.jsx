@@ -1,6 +1,6 @@
 import { Container, Text, InputContainer } from './styles';
 
-function TextInput({ data, onSend, onChange, variables }) {
+function PhoneInputNode({ data, onSend, onChange, variables }) {
   const filteredVariable = variables.filter((variable) => variable.id === data.variable);
 
   return (
@@ -24,4 +24,4 @@ function TextInput({ data, onSend, onChange, variables }) {
   );
 }
 
-export default TextInput;
+export default PhoneInputNode;

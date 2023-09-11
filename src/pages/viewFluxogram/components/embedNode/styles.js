@@ -2,21 +2,21 @@ import styled, { keyframes } from 'styled-components';
 
 const appear = keyframes`  
   0% {
-    opacity: 0;
+    display: none;
     width: 0;
     height: 0;
     overflow: hidden;
   }
 
   99% {
-    opacity: 0;
+    display: none;
     width: 0;
     height: 0;
     overflow: hidden;
   }
 
   100% {
-    opacity: 1;
+    display: block;
     width: auto;
     height: auto;
   }
@@ -28,15 +28,15 @@ const blink = keyframes`
 
 const disappear = keyframes`
   0% {
-    opacity: 1;
+    display: block;
   }
 
   99% {
-    opacity: 1;
+    display: block;
   }
 
   100% {
-    opacity: 0;
+    display: none;
     width: 0;
     height: 0;
     overflow: hidden;
@@ -63,13 +63,10 @@ export const BubleText = styled.div`
     animation-delay: 0s;
   }
 
-  p {
-    margin: 0;
+  .video {
     animation: 1.5s ${appear} forwards;
-    text-align: left;
     max-width: 100%;
-    height: auto;
-    word-wrap: break-word;
+    min-height: 200px;
   }
 
   .typing-indicator {
@@ -104,7 +101,6 @@ export const BubleText = styled.div`
   background: #F7F8FF;
   border-radius: 10px;
   color: #333;
-  max-width: 100%;
 }
 
 .chat-actions {

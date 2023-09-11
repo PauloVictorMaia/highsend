@@ -3,78 +3,74 @@ import {
   DashContent,
   MenuContainer,
   MenuItem,
-  IconsContainer,
   Link,
-  IconContainer
+  Container
 } from "./style";
 import { TiFlowSwitch } from "react-icons/Ti";
 import { TfiAgenda } from "react-icons/Tfi";
-import { FiSettings } from "react-icons/Fi";
 import { BsFillPeopleFill } from "react-icons/Bs";
 import { BiChat } from "react-icons/Bi";
 import { TbDeviceAnalytics } from "react-icons/Tb";
+import { MdOutlineIntegrationInstructions } from "react-icons/md";
 import { useStateContext } from "../../contexts/ContextProvider";
-import CloseIcon from '@mui/icons-material/Close';
 import { Outlet } from "react-router";
+import TopBar from "../../components/TopBar";
 
 // eslint-disable-next-line react/prop-types
 const DashBoard = () => {
   const { openMenu, setOpenMenu, login } = useStateContext();
   return (
     <>
-    
       {login?
-      
-        <DashBoardContainer>
-          {openMenu &&
-            <IconContainer onClick={() => setOpenMenu(!openMenu)} >
-              <CloseIcon />
-            </IconContainer>
-          }
-          <DashContent onMouseMove={() => setOpenMenu(true)} openmenu={openMenu}>
-            <div>
-              <h2>High Send</h2>
-              <MenuContainer>
+        <Container>
+          <TopBar />
+          <DashBoardContainer>
+            <DashContent openmenu={openMenu}>
+              <div>
+                <MenuContainer>
+                  <Link to='fluxograms'>
+                    <MenuItem openmenu={openMenu}>
+                      <TiFlowSwitch size={20} />
+                      <span>Fluxos de Bot</span>
+                    </MenuItem>
+                  </Link>
 
-                <Link to='fluxograms'>
-                  <MenuItem openmenu={openMenu}>
-                    <TiFlowSwitch size={20} />
-                    <span>Fluxos de Bot</span>
-                  </MenuItem>
-                </Link>
+                  <Link to='schedules'>
+                    <MenuItem openmenu={openMenu}>
+                      <TfiAgenda size={20} />
+                      <span>Agendas</span>
+                    </MenuItem>
+                  </Link>
 
-                <Link to='schedules'>
-                  <MenuItem openmenu={openMenu}>
-                    <TfiAgenda size={20} />
-                    <span>Agendas</span>
-                  </MenuItem>
-                </Link>
+                  <Link to='leads'>
+                    <MenuItem openmenu={openMenu}>
+                      <BsFillPeopleFill size={20} />
+                      <span>Meus leads</span>
+                    </MenuItem>
+                  </Link>
 
-                <Link to='leads'>
-                  <MenuItem openmenu={openMenu}>
-                    <BsFillPeopleFill size={20} />
-                    <span>Meus leads</span>
-                  </MenuItem>
-                </Link>
+                  <Link to='analytics'>
+                    <MenuItem openmenu={openMenu}>
+                      <TbDeviceAnalytics size={20} />
+                      <span>Analytics</span>
+                    </MenuItem>
+                  </Link>
 
-                <Link to='analytics'>
-                  <MenuItem openmenu={openMenu}>
-                    <TbDeviceAnalytics size={20} />
-                    <span>Analytics</span>
-                  </MenuItem>
-                </Link>
+                  <Link to='analytics'>
+                    <MenuItem openmenu={openMenu}>
+                      <MdOutlineIntegrationInstructions size={20} />
+                      <span>Integrações</span>
+                    </MenuItem>
+                  </Link>
 
-              </MenuContainer>
+                </MenuContainer>
+              </div>
+            </DashContent>
+            <div style={{ flex: 1, background: '#EAEAEA' }}>
+              <Outlet />
             </div>
-            <IconsContainer>
-              <FiSettings size={30} />
-              <BiChat size={30} />
-            </IconsContainer>
-          </DashContent>
-          <div style={{ flex: 1, background: '#e6e6e6' }}>
-            <Outlet />
-          </div>
-        </DashBoardContainer>
+          </DashBoardContainer>
+        </Container>
         :
         <div>Carregando...</div>
       }

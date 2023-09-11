@@ -20,7 +20,7 @@ const daysValue = {
   6: 'sábado',
 }
 
-function ScheduleEvent() {
+function ScheduleEvent(props) {
   const [step, setStep] = useState(0);
   const [date, setDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
@@ -43,9 +43,20 @@ function ScheduleEvent() {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
 
+  const [userId, setUserId] = useState(params.userId);
+  const [calendarId, setCalendarId] = useState(params.calendarId);
+
   useEffect(() => {
-    getCalendarData();
-  }, []);
+    if (props.userId) {
+      getCalendarData(props.userId, props.calendarId);
+      setUserId(props.userId);
+      setCalendarId(props.calendarId);
+    } else {
+      getCalendarData(params.userId, params.calendarId);
+      setUserId(params.userId);
+      setCalendarId(params.calendarId);
+    }
+  }, [userId, calendarId]);
 
   useEffect(() => {
     if (Object.keys(calendarData).length > 1) {
@@ -73,9 +84,9 @@ function ScheduleEvent() {
     }
   }, [dayEvents, unavailableHours]);
 
-  async function getCalendarData() {
+  async function getCalendarData(userId, calendarId) {
     try {
-      const response = await api.get(`/calendars/get-full-calendar/${params.userId}/${params.calendarId}`);
+      const response = await api.get(`/calendars/get-full-calendar/${userId}/${calendarId}`);
       if (response.status === 201) {
         setDataLoaded(true);
         const calendarData = response.data.calendar;
@@ -161,7 +172,7 @@ function ScheduleEvent() {
       dateItem[i].addEventListener("click", async function () {
         const selectedDate = dateItem[i].getAttribute('data-value')
         try {
-          const response = await api.get(`/calendars/get-events-in-selected-date/${params.userId}/${params.calendarId}/${selectedDate}`);
+          const response = await api.get(`/calendars/get-events-in-selected-date/${userId}/${calendarId}/${selectedDate}`);
           if (response.status === 200) {
             setUnavailableHours(response.data.events);
             setStep(1);
@@ -218,11 +229,12 @@ function ScheduleEvent() {
     }
 
     try {
-      const response = await api.post(`/calendars/add-event/${params.userId}/${params.calendarId}`, { newSaveEvent, code });
+      const response = await api.post(`/calendars/add-event/${userId}/${calendarId}`, { newSaveEvent });
       if (response.status === 201) {
         setEvents(response.data.events);
         toast.success('Seu evento foi agendado com sucesso!');
         setScheduledEvent(true);
+        props?.onSend();
       }
     } catch (error) {
       if (error.response.status === 400) {

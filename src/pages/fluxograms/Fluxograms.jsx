@@ -108,7 +108,6 @@ function Fluxograms() {
     >
 
       <Container>
-
         <NewFluxogramCard onClick={createFlow}>
           <AddIcon style={{ fontSize: "2.2rem" }} />
           <span>Create fluxogram</span>

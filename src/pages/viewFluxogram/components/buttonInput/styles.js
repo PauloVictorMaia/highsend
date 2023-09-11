@@ -54,6 +54,27 @@ const fadeIn = keyframes`
   }
 `
 
+export const Container = styled.div`
+ width: 100%;
+ display: flex;
+ justify-content: flex-end;
+`;
+
+export const Button = styled.button`
+ margin-top: 10px;
+ cursor: pointer;
+ width: auto;
+ padding: 10px;
+ border-radius: 4px;
+ outline: none;
+ border: none;
+ animation: 1.5s ${appear} forwards;
+ text-align: left;
+ font-size: 16px;
+ max-width: 100%;
+ word-wrap: break-word;
+`;
+
 export const BubleText = styled.div`
 .chat-thread {
   .message {
@@ -61,15 +82,6 @@ export const BubleText = styled.div`
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
     animation-delay: 0s;
-  }
-
-  p {
-    margin: 0;
-    animation: 1.5s ${appear} forwards;
-    text-align: left;
-    max-width: 100%;
-    height: auto;
-    word-wrap: break-word;
   }
 
   .typing-indicator {
@@ -104,7 +116,6 @@ export const BubleText = styled.div`
   background: #F7F8FF;
   border-radius: 10px;
   color: #333;
-  max-width: 100%;
 }
 
 .chat-actions {
@@ -126,4 +137,17 @@ export const BubleText = styled.div`
     width: 100%;;
   }
 }
+`;
+
+export const Text = styled.div`
+ margin-top: 10px;
+ cursor: pointer;
+ background-color: blueviolet;
+ color: #fff;
+ width: auto;
+ padding: 10px;
+ border-radius: 4px;
+ font-size: 16px;
+ max-width: 100%;
+ word-wrap: break-word;
 `;

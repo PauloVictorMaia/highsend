@@ -26,7 +26,7 @@ export default () => {
 
   return (
     <SidebarContainer>
-      <NodesType>Bubbles</NodesType>
+      <NodesType>Mensagens</NodesType>
       <NodesContainer>
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'textNode', '80')} draggable>
           <TextFieldsIcon style={{ fontSize: "large" }} />

@@ -1,22 +1,23 @@
 /* Import Google font - Poppins */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
-body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  background: #9B59B6;
-}
-
 .wrapper {
   width: 450px;
+  max-width: 100%;
   min-height: 500px;
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
   padding: 10px;
   box-sizing: border-box;
+}
+
+@media(max-width: 768px){
+  .wrapper {
+    width: 330px;
+    max-width: 100%;
+    min-height: 500px;
+  }
 }
 
 .wrapper header {
@@ -43,12 +44,15 @@ header .icons span {
   border-radius: 50%;
 }
 
-.icons span:last-child {
+/* .icons span:last-child {
   margin-right: -10px;
-}
+} */
 
 header .icons span:hover {
   background: #f2f2f2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 header .current-date {

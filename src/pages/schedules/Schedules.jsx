@@ -279,7 +279,6 @@ function Schedules() {
 
     try {
       const response = await api.post(`calendars/create-calendar/${user.id}`, { calendar }, { headers: { authorization: token } })
-      console.log(response)
       if (response.status === 201) {
         navigate(`/dashboard/add-schedule/${response.data.id}`)
       }

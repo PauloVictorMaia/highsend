@@ -19,7 +19,8 @@ export const CalendarMenu = [
 export const eventsListMenu = [
   {name: 'Próximos'},
   {name: 'Anteriores'},
-  {name: 'Período'}
+  {name: 'Período'},
+  {name: 'Eventos da agenda'}, 
 ]
 
 export const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']

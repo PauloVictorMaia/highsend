@@ -1,20 +1,6 @@
-import { useEffect, useState } from "react";
 import { BubleText } from "./styles";
 
-function Text({ data, variables }) {
-  const [textValue, setTextValue] = useState('');
-
-  useEffect(() => {
-    let newStr = data.value;
-  
-    variables.forEach(variable => {
-      const regex = new RegExp(`{{${variable.name}}}`, 'g');
-      newStr = newStr.replace(regex, variable.value);
-    });
-
-    setTextValue(newStr)
-  },[])
-
+function ImageNode({ data }) {
   return (
     <BubleText>
       <div className="container">
@@ -28,7 +14,10 @@ function Text({ data, variables }) {
                     <span></span>
                     <span></span>
                   </div>
-                  <p>{textValue}</p>
+                  <img
+                    className="image"
+                    src={data.value}
+                  ></img>
                 </div>
               </div>
             </div>
@@ -36,7 +25,8 @@ function Text({ data, variables }) {
         </div>
       </div>
     </BubleText>
-  )
+
+  );
 }
 
-export default Text;
+export default ImageNode;
