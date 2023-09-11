@@ -12,7 +12,9 @@ import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.min.css';
 import ScheduleEvent from "./pages/scheduleEvent";
 import Chatbot from "./pages/viewFluxogram";
-import RedirectPage from "./pages/schedules/IntegrationRedirectPage";
+import IntegrationsList from "./pages/integrations/integrationsList";
+import EditGoogleIntegration from "./pages/integrations/editGoogleIntegration";
+
 
 const App = () => {
 
@@ -29,8 +31,9 @@ const App = () => {
             <Route path="schedules" element={<Schedules />} />
             <Route path="leads" element={<Leads />} />
             <Route path="analytics" element={<Analytics />} />
+            <Route path="integrations" element={<IntegrationsList />} />
             <Route path="add-schedule/:id" element={<AddSchedule />} />
-            <Route path="schedules/integration" element={<RedirectPage />} />
+            <Route path="integrations/google-integration/edit/:id" element={<EditGoogleIntegration />} />
           </Route>
         </Routes>
       </ContextProvider>

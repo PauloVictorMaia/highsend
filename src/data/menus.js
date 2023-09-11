@@ -2,7 +2,6 @@ export const scheduleMenu = [
   {name: 'Minhas agendas'}, 
   {name: 'Eventos'},
   {name: 'Agenda'},
-  {name: 'Integrações'},
 ]
 
 export const flowMenu = [

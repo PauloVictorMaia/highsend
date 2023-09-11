@@ -21,7 +21,7 @@ const DashBoard = () => {
   const { openMenu, setOpenMenu, login } = useStateContext();
   return (
     <>
-      {login?
+      {login ?
         <Container>
           <TopBar />
           <DashBoardContainer>
@@ -56,7 +56,7 @@ const DashBoard = () => {
                     </MenuItem>
                   </Link>
 
-                  <Link to='analytics'>
+                  <Link to='integrations'>
                     <MenuItem openmenu={openMenu}>
                       <MdOutlineIntegrationInstructions size={20} />
                       <span>Integrações</span>

@@ -3,7 +3,7 @@ import api from '../../../api';
 import { useStateContext } from '../../../contexts/ContextProvider';
 import { useState, useEffect } from "react";
 
-function IntegrationCalendar() {
+function IntegrationsList() {
 
   const token = localStorage.getItem('token');
   const { user } = useStateContext();
@@ -17,10 +17,10 @@ function IntegrationCalendar() {
 
   const googleLogin = async () => {
     try {
-      const response = await api.get(`/calendars/google-consentpage/${userID}`, { headers: { authorization: token } });
+      const response = await api.get(`/integrations/google-consentpage/${userID}`, { headers: { authorization: token } });
       if (response.status === 200) {
         const url = response.data.URL;
-        window.open(url, '_blank');
+        window.location.href = url;
       }
     } catch {
       return;
@@ -34,4 +34,5 @@ function IntegrationCalendar() {
   )
 }
 
-export default IntegrationCalendar;
+export default IntegrationsList;
+

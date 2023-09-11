@@ -10,7 +10,6 @@ import api from "../../api";
 import { useStateContext } from "../../contexts/ContextProvider";
 import EventsList from "./EventsList";
 import CustomSchedule from "./CustomSchedule";
-import IntegrationCalendar from "./IntegrationCalendar";
 
 function Schedules() {
   const [menuComponent, setMenuComponent] = useState(0);
@@ -39,7 +38,8 @@ function Schedules() {
         active: true,
         color: "#ff6699",
         title: "Meu calendario de eventos",
-        local: { type: "Online", local: "Google Meet" },
+        local: { type: "Online", platform: "Google Meet", local: "Google Meet" },
+        integration: { hasIntegration: false, integrationID: null },
         eventDuration: 40,
         eventInterval: 10
       },
@@ -308,9 +308,6 @@ function Schedules() {
       }
       {menuComponent == 2 &&
         <CustomSchedule />
-      }
-      {menuComponent == 3 &&
-        <IntegrationCalendar />
       }
     </ContentPageContainer>
   )

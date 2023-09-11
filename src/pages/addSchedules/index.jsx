@@ -43,7 +43,12 @@ function AddSchedule() {
   const [eventActive, setEventActive] = useState(null);
   const [daysAhead, setDaysAhead] = useState(null);
   const [address, setAddress] = useState(null);
+  const [platform, setPlatform] = useState(null);
+  const [otherPlataformName, setOtherPlataformName] = useState(null);
+  const [meetingPlace, setMeetingPlace] = useState(null);
   const [selectedLocal, setSelectedLocal] = useState(null);
+  const [hasIntegration, setHasIntegration] = useState(null);
+  const [integrationID, setIntegrationID] = useState(null);
   const [eventDuration, setEventDuration] = useState(30);
   const [eventInterval, setEventInterval] = useState(15);
   const [lunchStartTime, setLunchStartTime] = useState('12:00');
@@ -69,7 +74,11 @@ function AddSchedule() {
         setEventInterval(calendar.room.eventInterval);
         setLunchStartTime(calendar.calendar.lunchStartTime);
         setLunchEndTime(calendar.calendar.lunchEndTime);
+        setMeetingPlace(calendar.room.local);
         setAddress(calendar.room.local.local);
+        setPlatform(calendar.room.local.platform);
+        setHasIntegration(calendar.room.integration.hasIntegration);
+        setIntegrationID(calendar.room.integration.integrationID);
         setSelectedLocal(calendar.room.local.type);
         setStartDate(new Date(calendar.calendar.startDate));
         setEndDate(new Date(calendar.calendar.endDate));
@@ -104,8 +113,8 @@ function AddSchedule() {
         active: eventActive,
         color: eventColor,
         title: eventTitle,
-        local: { type: selectedLocal, local: selectedLocal === "Online" ? "Google Meet" : address },
-        eventDuration: eventDuration,
+        local: { type: selectedLocal, platform: selectedLocal === "Presencial" ? "" : platform, local: selectedLocal === "Online" ? platform === "Google Meet" ? platform : otherPlataformName : address },
+        integration: { hasIntegration: hasIntegration, integrationID: integrationID },
         eventInterval: eventInterval
       },
       calendar: {
@@ -335,7 +344,7 @@ function AddSchedule() {
                   <input
                     style={{ width: "400px" }}
                     type="text"
-                    defaultValue={address === "Google Meet" ? "" : address}
+                    defaultValue={meetingPlace.type === "Presencial" ? address : ""}
                     placeholder="R. Exemplo, 222 - cidade - estado - cep: 00000-000"
                     onChange={(e) => setAddress(e.target.value)}
                   />
@@ -349,8 +358,44 @@ function AddSchedule() {
                   checked={selectedLocal === 'Online'}
                   onChange={() => setSelectedLocal("Online")}
                 />
-                Online pelo Google Meet
+                Online
               </OptionLabel>
+
+              {selectedLocal === 'Online' &&
+                <div>
+                  <OptionLabel>
+                    <input
+                      type="radio"
+                      value="Google Meet"
+                      checked={platform === "Google Meet"}
+                      onChange={() => setPlatform("Google Meet")}
+                    />
+                    Pelo Google Meet
+                  </OptionLabel>
+
+                  <OptionLabel>
+                    <input
+                      type="radio"
+                      value="Outra"
+                      checked={platform === "Outra"}
+                      onChange={() => setPlatform("Outra")}
+                    />
+                    Por outra plataforma
+                  </OptionLabel>
+                </div>
+              }
+              {platform === 'Outra' &&
+                <div>
+                  <span>Nome da plataforma online:</span>
+                  <input
+                    style={{ width: "400px" }}
+                    type="text"
+                    defaultValue={meetingPlace.type === "Online" && meetingPlace.platform !== "Google Meet" ? address : ""}
+                    placeholder="Nome da plataforma online"
+                    onChange={(e) => setOtherPlataformName(e.target.value)}
+                  />
+                </div>
+              }
             </ToggleContainer>
           </ContentContainer>
 
