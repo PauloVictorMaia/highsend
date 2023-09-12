@@ -133,7 +133,7 @@ function SchedulesList() {
       {calendarsData.length >= 1 ? calendarsData.map((calendar, index) => (
         <ScheduleCard key={index} active={calendar.room.active}>
           <TitleContainer>
-            <CardTitle onClick={() => navigate(`/dashboard/add-schedule/${calendar.room.id}`)}>{calendar.room.title}</CardTitle>
+            <CardTitle onClick={() => navigate(`/dashboard/schedules/edit/${calendar.room.id}`)}>{calendar.room.title}</CardTitle>
             <ButtonText
               onClick={(event) =>
                 handleMenuClick(event, index)}
@@ -188,7 +188,7 @@ function SchedulesList() {
           </ButtonCard>
           {indexDrop === index &&
             <DropMenuCard ref={menuRef}>
-              <MenuCardButtons onClick={() => navigate(`/dashboard/add-schedule/${calendar.room.id}`)}>
+              <MenuCardButtons onClick={() => navigate(`/dashboard/schedules/edit/${calendar.room.id}`)}>
                 <EditOutlinedIcon />
                 <span>Edit</span>
               </MenuCardButtons>

@@ -1,8 +1,9 @@
 import { useState, useRef } from 'react';
 import styled from 'styled-components';
-import AvatarImage from '../../assets/avatar.jpg'
 import { useStateContext } from '../../contexts/ContextProvider';
 import MenuIcon from '@mui/icons-material/Menu';
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 
 const TopBarWrapper = styled.div`
   background-color: #fff;
@@ -11,7 +12,7 @@ const TopBarWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 0 25px;
   box-sizing: border-box;
   border-bottom: 1px solid #f2f2f2;
 `;
@@ -24,23 +25,18 @@ const UserMenu = styled.div`
 `;
 
 const Avatar = styled.div`
-  height: 40px;
-  width: 40px;
+  height: 35px;
+  width: 35px;
   text-align: center;
-  font-size: 28px;
+  font-size: 23px;
   border-radius: 50%;
-  margin-right: 8px;
   background-color: #F26800;
   color: #fff;
 `;
 
-const UserName = styled.div`
-  font-size: 14px;
-  font-weight: 500;
-`;
-
 const Dropdown = styled.div`
   position: absolute;
+  width: 200px;
   top: 48px;
   right: 16px;
   background-color: #fff;
@@ -48,6 +44,7 @@ const Dropdown = styled.div`
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
+  z-index: 100;
 `;
 
 const MenuItem = styled.div`
@@ -81,13 +78,17 @@ const IconContainer = styled.div`
 `;
 
 export const UserIconContainer = styled.div`
- background-color: #f2f2f2;
  display: flex;
  height: 50px;
- width: 180px;
+ padding: 0 10px;
  border-radius: 8px;
  justify-content: center;
  align-items: center;
+ margin-right: 15px;
+
+ &:hover{
+  background-color: #f2f2f2;
+ }
 `;
 
 const TopBar = () => {
@@ -105,8 +106,13 @@ const TopBar = () => {
       </LogoContainer>
       <UserMenu onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
         <UserIconContainer>
+          <NotificationsNoneIcon />
+        </UserIconContainer>
+        <UserIconContainer>
+          <ChatBubbleOutlineIcon />
+        </UserIconContainer>
+        <UserIconContainer>
           <Avatar alt="User Avatar">P</Avatar>
-          <UserName>Nome do Usuário</UserName>
         </UserIconContainer>
         {isDropdownOpen && (
           <Dropdown ref={dropdownRef} isOpen={isDropdownOpen}>
