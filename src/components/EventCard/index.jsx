@@ -64,7 +64,7 @@ function EventCard({ color, start, end, eventDuration, inviteeName, inviteeEmail
         <DetailsContainer>
           <PhoneContainer>
             <span>{`Telefone: ${inviteePhone}`}</span>
-            <span>{`Reunião: ${local.type}, no local: ${local.local}`}</span>
+            <span>{`Reunião: ${local.type !== "Presencial" ? "Online" : local.type}, no local: ${local.local}`}</span>
           </PhoneContainer>
           <InviteeEmail>
             <span>{`Email: ${inviteeEmail}`}</span>

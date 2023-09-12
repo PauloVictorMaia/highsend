@@ -21,7 +21,8 @@ import {
   TitleInput,
   EventItem,
   EnventsContainer,
-  EventsContent
+  EventsContent,
+  IntegrationsOptions
 } from './styles.js';
 import { CalendarMenu } from "../../data/menus";
 import { toast } from "react-toastify";
@@ -30,6 +31,8 @@ import { useStateContext } from "../../contexts/ContextProvider";
 import { useNavigate, useParams } from "react-router-dom";
 import ScheduleEvents from "./ScheduleEvents";
 import { SketchPicker } from "react-color";
+import Accordion from "../../components/Accordion";
+import { NavLink } from "react-router-dom";
 
 function AddSchedule() {
   const { user } = useStateContext();
@@ -43,12 +46,11 @@ function AddSchedule() {
   const [eventActive, setEventActive] = useState(null);
   const [daysAhead, setDaysAhead] = useState(null);
   const [address, setAddress] = useState(null);
-  const [platform, setPlatform] = useState(null);
   const [otherPlataformName, setOtherPlataformName] = useState(null);
   const [meetingPlace, setMeetingPlace] = useState(null);
   const [selectedLocal, setSelectedLocal] = useState(null);
   const [hasIntegration, setHasIntegration] = useState(null);
-  const [integrationID, setIntegrationID] = useState(null);
+  const [integrations, setIntegrations] = useState(null);
   const [eventDuration, setEventDuration] = useState(30);
   const [eventInterval, setEventInterval] = useState(15);
   const [lunchStartTime, setLunchStartTime] = useState('12:00');
@@ -60,6 +62,15 @@ function AddSchedule() {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [events, setEvents] = useState([]);
+
+  const [accordion, setAccordion] = useState(1);
+
+  const [googleChecked, setGoogleChecked] = useState(false);
+  const [whatsappChecked, setWhatsappChecked] = useState(false);
+  const [googleIntegrations, setGoogleIntegrations] = useState([]);
+  const [whatsappIntegrations, setWhatsappIntegrations] = useState([]);
+  const [googleIntegrationSelected, setGoogleIntegrationSelected] = useState("");
+  const [whatsappIntegrationSelected, setWhatsappIntegrationSelected] = useState("");
 
   async function getCalendarData() {
     try {
@@ -76,15 +87,13 @@ function AddSchedule() {
         setLunchEndTime(calendar.calendar.lunchEndTime);
         setMeetingPlace(calendar.room.local);
         setAddress(calendar.room.local.local);
-        setPlatform(calendar.room.local.platform);
         setHasIntegration(calendar.room.integration.hasIntegration);
-        setIntegrationID(calendar.room.integration.integrationID);
+        setIntegrations(calendar.room.integration.integrations);
         setSelectedLocal(calendar.room.local.type);
         setStartDate(new Date(calendar.calendar.startDate));
         setEndDate(new Date(calendar.calendar.endDate));
         setDaysAhead(calendar.calendar.daysAhead);
         setSelectedOption(calendar.calendar.type)
-
         setEventTitle(calendar.room.title);
         setEventColor(calendar.room.color);
         setEventActive(calendar.room.active);
@@ -94,9 +103,22 @@ function AddSchedule() {
     }
   }
 
+  async function getIntegrations() {
+    try {
+      const response = await api.get(`/integrations/get-integrations-filtered/${user.id}`, { headers: { authorization: token } });
+      if (response.status === 200) {
+        setGoogleIntegrations(response.data.googleIntegrations);
+        setWhatsappIntegrations(response.data.whatsappIntegrations);
+      }
+    } catch {
+      return;
+    }
+  }
+
   useEffect(() => {
     if (Object.keys(user).length > 0) {
       getCalendarData();
+      getIntegrations();
     }
   }, [user]);
 
@@ -105,6 +127,35 @@ function AddSchedule() {
   }, [eventConfigurations, eventDuration, eventInterval, lunchStartTime, lunchEndTime]);
 
   const saveCalendar = async () => {
+
+    let selectedsIntegrations = [];
+
+    if (hasIntegration && !googleChecked && !whatsappChecked) {
+      toast.warning('Marque um serviço para integração ou escolha a opção "Não atribuir integração."');
+      return;
+    }
+
+    if (googleChecked) {
+      if (googleIntegrationSelected !== "") {
+        selectedsIntegrations.push({ id: googleIntegrationSelected, type: "google" });
+      } else {
+        toast.warning("Escolha uma integração para Google ou desmarque a opção.");
+        return;
+      }
+    }
+    if (whatsappChecked) {
+      if (whatsappIntegrationSelected !== "") {
+        selectedsIntegrations.push({ id: whatsappIntegrationSelected, type: "whatsapp" });
+      } else {
+        toast.warning("Escolha uma integração para Whatsapp ou desmarque a opção.");
+        return;
+      }
+    }
+
+    if (!hasIntegration) {
+      selectedsIntegrations = [];
+    }
+
     const calendar = {
       room: {
         id: params.id,
@@ -113,8 +164,9 @@ function AddSchedule() {
         active: eventActive,
         color: eventColor,
         title: eventTitle,
-        local: { type: selectedLocal, platform: selectedLocal === "Presencial" ? "" : platform, local: selectedLocal === "Online" ? platform === "Google Meet" ? platform : otherPlataformName : address },
-        integration: { hasIntegration: hasIntegration, integrationID: integrationID },
+        local: { type: selectedLocal, local: selectedLocal === "Presencial" ? address : selectedLocal === "Online Google Meet" ? "Google Meet" : otherPlataformName },
+        integration: { hasIntegration: hasIntegration, integrations: selectedsIntegrations },
+        eventDuration: eventDuration,
         eventInterval: eventInterval
       },
       calendar: {
@@ -220,6 +272,46 @@ function AddSchedule() {
     setSelectedOption('daysAhead');
   };
 
+  const changeAccordionValue = (index) => {
+    if (index === accordion) return setAccordion(0);
+    return setAccordion(index);
+  }
+
+  const handleGoogleChecked = () => {
+    return setGoogleChecked(integrations.some(integration => integration.type === "google"));
+  }
+
+  const handleWhatsappChecked = () => {
+    return setWhatsappChecked(integrations.some(integration => integration.type === "whatsapp"));
+  }
+
+  const updateGoogleIntegrationSelected = () => {
+    const googleIntegration = integrations.find(integration => integration.type === "google");
+    if (googleIntegration) {
+      setGoogleIntegrationSelected(googleIntegration.id);
+    } else {
+      setGoogleIntegrationSelected("");
+    }
+  };
+
+  const updateWhatsappIntegrationSelected = () => {
+    const whatsappIntegration = integrations.find(integration => integration.type === "whatsapp");
+    if (whatsappIntegration) {
+      setWhatsappIntegrationSelected(whatsappIntegration.id);
+    } else {
+      setWhatsappIntegrationSelected("");
+    }
+  };
+
+  useEffect(() => {
+    if (integrations && integrations.length > 0) {
+      handleGoogleChecked();
+      handleWhatsappChecked();
+      updateGoogleIntegrationSelected();
+      updateWhatsappIntegrationSelected();
+    }
+  }, [integrations]);
+
   return (
     <ContentPageContainer
       header={
@@ -235,89 +327,95 @@ function AddSchedule() {
     >
       {menuComponent == 0 &&
         <Container>
-          <ContentContainer>
-            <h2>Título do evento</h2>
-            <TitleInput value={eventTitle} onChange={(e) => setEventTitle(e.target.value)} />
-          </ContentContainer>
+          <Accordion
+            open={accordion === 1}
+            onClick={() => changeAccordionValue(1)}
+            title={"teste"}
+          >
+            <ContentContainer>
+              <h2>Título do evento</h2>
+              <TitleInput value={eventTitle} onChange={(e) => setEventTitle(e.target.value)} />
+            </ContentContainer>
 
-          <ContentContainer>
-            <h2>Intervalo de datas do evento</h2>
+            <ContentContainer>
+              <h2>Intervalo de datas do evento</h2>
 
-            <ToggleContainer>
-              <OptionLabel>
-                <input
-                  type="radio"
-                  value="daysAhead"
-                  checked={selectedOption === 'daysAhead'}
-                  onChange={() => daysAHead()}
-                />
-                Dias corridos no futuro
-              </OptionLabel>
-              {selectedOption === 'daysAhead' &&
-                <div>
-                  <input type="number" defaultValue={daysAhead} onChange={(e) => setDaysAhead(e.target.value)} />
-                  <span>dias a frente no futuro</span>
-                </div>
-              }
-              <OptionLabel>
-                <input
-                  type="radio"
-                  value="specificDate"
-                  checked={selectedOption === 'specificDate'}
-                  onChange={() => setSelectedOption('specificDate')}
-                />
-                Intervalo de data específico
-              </OptionLabel>
-              {selectedOption === 'specificDate' &&
-                <div style={{ marginBottom: 10 }}>
-                  <h3>Escolha a data de início e fim:</h3>
-                  <div style={{ display: 'flex', columnGap: 10 }}>
-                    <Calendar
-                      date={startDate}
-                      onChange={(date) => setStartDate(date)}
-                      minDate={new Date()}
-                      locale={ptBR}
-                      style={{ minHeight: 200 }}
-                    />
-                    <Calendar
-                      date={endDate}
-                      onChange={(date) => setEndDate(date)}
-                      minDate={new Date()}
-                      locale={ptBR}
-                      style={{ minHeight: 200 }}
-                    />
+              <ToggleContainer>
+                <OptionLabel>
+                  <input
+                    type="radio"
+                    value="daysAhead"
+                    checked={selectedOption === 'daysAhead'}
+                    onChange={() => daysAHead()}
+                  />
+                  Dias corridos no futuro
+                </OptionLabel>
+                {selectedOption === 'daysAhead' &&
+                  <div>
+                    <input type="number" defaultValue={daysAhead} onChange={(e) => setDaysAhead(e.target.value)} />
+                    <span>dias a frente no futuro</span>
                   </div>
-                  <div style={{ marginTop: '10px', paddingLeft: '20px' }}>
-                    <span>{formatDates(startDate, endDate)}</span>
+                }
+                <OptionLabel>
+                  <input
+                    type="radio"
+                    value="specificDate"
+                    checked={selectedOption === 'specificDate'}
+                    onChange={() => setSelectedOption('specificDate')}
+                  />
+                  Intervalo de data específico
+                </OptionLabel>
+                {selectedOption === 'specificDate' &&
+                  <div style={{ marginBottom: 10 }}>
+                    <h3>Escolha a data de início e fim:</h3>
+                    <div style={{ display: 'flex', columnGap: 10 }}>
+                      <Calendar
+                        date={startDate}
+                        onChange={(date) => setStartDate(date)}
+                        minDate={new Date()}
+                        locale={ptBR}
+                        style={{ minHeight: 200 }}
+                      />
+                      <Calendar
+                        date={endDate}
+                        onChange={(date) => setEndDate(date)}
+                        minDate={new Date()}
+                        locale={ptBR}
+                        style={{ minHeight: 200 }}
+                      />
+                    </div>
+                    <div style={{ marginTop: '10px', paddingLeft: '20px' }}>
+                      <span>{formatDates(startDate, endDate)}</span>
+                    </div>
                   </div>
-                </div>
-              }
-              <OptionLabel>
-                <input
-                  type="radio"
-                  value="indefinitely"
-                  checked={selectedOption === 'indefinitely'}
-                  onChange={() => handleDaysAhead()}
-                />
-                Indefinidamente no futuro
-              </OptionLabel>
-            </ToggleContainer>
-          </ContentContainer>
+                }
+                <OptionLabel>
+                  <input
+                    type="radio"
+                    value="indefinitely"
+                    checked={selectedOption === 'indefinitely'}
+                    onChange={() => handleDaysAhead()}
+                  />
+                  Indefinidamente no futuro
+                </OptionLabel>
+              </ToggleContainer>
+            </ContentContainer>
 
-          <ContentContainer>
-            <label>Horário de Início do Almoço:</label>
-            <input
-              type="time"
-              value={lunchStartTime}
-              onChange={(e) => setLunchStartTime(e.target.value)}
-            />
-            <label>Horário de Término do Almoço:</label>
-            <input
-              type="time"
-              value={lunchEndTime}
-              onChange={(e) => setLunchEndTime(e.target.value)}
-            />
-          </ContentContainer>
+            <ContentContainer>
+              <label>Horário de Início do Almoço:</label>
+              <input
+                type="time"
+                value={lunchStartTime}
+                onChange={(e) => setLunchStartTime(e.target.value)}
+              />
+              <label>Horário de Término do Almoço:</label>
+              <input
+                type="time"
+                value={lunchEndTime}
+                onChange={(e) => setLunchEndTime(e.target.value)}
+              />
+            </ContentContainer>
+          </Accordion>
 
           <ContentContainer style={{ margin: "10px 0" }}>
             <h2 style={{ marginBottom: "10px" }}>Detalhes do evento</h2>
@@ -354,48 +452,118 @@ function AddSchedule() {
               <OptionLabel>
                 <input
                   type="radio"
-                  value="Online"
-                  checked={selectedLocal === 'Online'}
-                  onChange={() => setSelectedLocal("Online")}
+                  value="Online Google Meet"
+                  checked={selectedLocal === 'Online Google Meet'}
+                  onChange={() => setSelectedLocal("Online Google Meet")}
                 />
-                Online
+                Online pelo Google Meet
               </OptionLabel>
 
-              {selectedLocal === 'Online' &&
-                <div>
-                  <OptionLabel>
-                    <input
-                      type="radio"
-                      value="Google Meet"
-                      checked={platform === "Google Meet"}
-                      onChange={() => setPlatform("Google Meet")}
-                    />
-                    Pelo Google Meet
-                  </OptionLabel>
+              <OptionLabel>
+                <input
+                  type="radio"
+                  value="Online outra plataforma"
+                  checked={selectedLocal === 'Online outra plataforma'}
+                  onChange={() => setSelectedLocal("Online outra plataforma")}
+                />
+                Online por outra plataforma
+              </OptionLabel>
 
-                  <OptionLabel>
-                    <input
-                      type="radio"
-                      value="Outra"
-                      checked={platform === "Outra"}
-                      onChange={() => setPlatform("Outra")}
-                    />
-                    Por outra plataforma
-                  </OptionLabel>
-                </div>
-              }
-              {platform === 'Outra' &&
+              {selectedLocal === 'Online outra plataforma' &&
                 <div>
                   <span>Nome da plataforma online:</span>
                   <input
                     style={{ width: "400px" }}
                     type="text"
-                    defaultValue={meetingPlace.type === "Online" && meetingPlace.platform !== "Google Meet" ? address : ""}
+                    defaultValue={meetingPlace.type === "Online outra plataforma" ? address : ""}
                     placeholder="Nome da plataforma online"
                     onChange={(e) => setOtherPlataformName(e.target.value)}
                   />
                 </div>
               }
+            </ToggleContainer>
+
+            <ToggleContainer style={{ marginTop: '10px' }}>
+              <span>Integrações:</span>
+              <OptionLabel style={{ marginTop: '10px' }}>
+                <input
+                  type="radio"
+                  checked={hasIntegration}
+                  onChange={() => setHasIntegration(!hasIntegration)}
+                />
+                Atribuir integração a essa agenda
+              </OptionLabel>
+
+              {hasIntegration &&
+                <IntegrationsOptions>
+                  <span>Escolha quais integrações deseja adicionar:</span>
+                  <div style={{ margin: "10px 0" }}>
+                    <input
+                      type="checkbox"
+                      name="integration option"
+                      checked={googleChecked}
+                      onChange={() => setGoogleChecked(!googleChecked)}
+                    />
+                    <label style={{ marginLeft: "5px" }}>Google</label>
+                    {
+                      googleChecked &&
+                        googleIntegrations.length > 0 ?
+                        <select
+                          value={googleIntegrationSelected}
+                          onChange={(e) => setGoogleIntegrationSelected(e.target.value)}
+                          style={{ marginLeft: "5px" }}
+                        >
+                          <option value="">Selecionar integração</option>
+                          {googleIntegrations &&
+                            googleIntegrations.map((integration, index) => (
+                              <option key={index} value={integration.id}>{integration.name}</option>
+                            ))
+                          }
+                        </select>
+                        :
+                        googleChecked && <span style={{ marginLeft: "15px" }}>Você não possui integração com esse serviço. Para integrar <NavLink to={"/dashboard/integrations"}>Clique aqui.</NavLink></span>
+                    }
+                  </div>
+
+                  <div>
+                    <input
+                      type="checkbox"
+                      name="integration option"
+                      checked={whatsappChecked}
+                      onChange={() => setWhatsappChecked(!whatsappChecked)}
+                    />
+                    <label style={{ marginLeft: "5px" }}>Whatsapp</label>
+                    {
+                      whatsappChecked &&
+                        whatsappIntegrations.length > 0 ?
+                        <select
+                          value={whatsappIntegrationSelected}
+                          onChange={(e) => setWhatsappIntegrationSelected(e.target.value)}
+                          style={{ marginLeft: "5px" }}
+                        >
+                          <option value="">Selecionar integração</option>
+                          {whatsappIntegrations &&
+                            whatsappIntegrations.map((integration, index) => (
+                              <option key={index} value={integration.id}>{integration.name}</option>
+                            ))
+                          }
+                        </select>
+                        :
+                        whatsappChecked && <span style={{ marginLeft: "15px" }}>Você não possui integração com esse serviço. Para integrar <NavLink to={"/dashboard/integrations"}>Clique aqui.</NavLink></span>
+                    }
+                  </div>
+                </IntegrationsOptions>
+              }
+
+              <OptionLabel>
+                <input
+                  type="radio"
+                  checked={!hasIntegration}
+                  onChange={() => setHasIntegration(!hasIntegration)}
+                />
+                Não atribuir integração
+              </OptionLabel>
+
             </ToggleContainer>
           </ContentContainer>
 
@@ -479,13 +647,14 @@ function AddSchedule() {
               </EnventsContainer>
             </IntervalsContainer>
           </ContentContainer>
-        </Container>
+        </Container >
       }
 
-      {menuComponent == 1 &&
+      {
+        menuComponent == 1 &&
         <ScheduleEvents calendarID={params.id} />
       }
-    </ContentPageContainer>
+    </ContentPageContainer >
   )
 }
 

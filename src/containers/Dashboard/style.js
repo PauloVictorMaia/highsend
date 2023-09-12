@@ -10,8 +10,7 @@ export const Container = styled.div`
 export const DashBoardContainer = styled.div`
   display: flex;
   width: 100%;
-  height: calc(100% - 56px);
-  color: #D0D2DA;
+  height: calc(100% - 66px);
 `;
 
 export const DashContent = styled.div`
@@ -23,6 +22,7 @@ export const DashContent = styled.div`
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
+  border-right: 1px solid #f2f2f2;
 `;
 
 export const IconContainer = styled.div`
@@ -56,21 +56,23 @@ export const HamburguerMenu = styled.div`
 
 export const MenuItem = styled.div`
   cursor: pointer;
+  height: 60px;
   display: flex;
   align-items: center;
   margin-top: 15px;
-  padding: 4px 0 4px 10px;
-  border-radius: 4px;
-  transition: .5s;
+  padding: 10px;
+  border-radius: 14px;
+  border: ${({ active }) => active? "1px solid #F26800" : "none"};
+  color: ${({ active }) => active? "#F26800" : "#14140f"};
 
   &:hover {
-    background-color: rgba(255,255,255, 0.1);
+    background-color: #f2f2f2;
   }
 
   span {
     margin: 0 0 0 5px;
-    font-size: 17px;
-    margin-left: 15px;
+    font-size: 18px;
+    margin-left: 25px;
     display: ${({openmenu}) => openmenu ? 'block' : 'none'};
   }
 `;
@@ -81,4 +83,10 @@ export const Link = styled(NavLink)`
   &:hover {
     color: inherit;
   }
+`;
+
+export const Divider = styled.div`
+ width: 100%;
+ border-bottom: 1px solid #bfbfbf;
+ margin: 40px 0;
 `;

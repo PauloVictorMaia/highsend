@@ -6,6 +6,7 @@ export const Container = styled.div`
  flex-direction: column;
  align-items: center;
  color: #333;
+ padding: 0 15px;
 `;
 
 export const CheckboxContainer = styled.div`
@@ -111,4 +112,8 @@ export const  MenuContainer = styled.div`
   width: 100%;
   background-color: #f6f6f6;
   border: 0.5px solid rgba(0,0,0,0.15);
+`;
+
+export const IntegrationsOptions = styled.div`
+  padding: 15px 0;
 `;

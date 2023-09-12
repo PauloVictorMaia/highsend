@@ -38,8 +38,8 @@ function Schedules() {
         active: true,
         color: "#ff6699",
         title: "Meu calendario de eventos",
-        local: { type: "Online", platform: "Google Meet", local: "Google Meet" },
-        integration: { hasIntegration: false, integrationID: null },
+        local: { type: "Online Google Meet", local: "Google Meet" },
+        integration: { hasIntegration: false, integrations: [] },
         eventDuration: 40,
         eventInterval: 10
       },

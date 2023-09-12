@@ -6,8 +6,6 @@ export const scheduleMenu = [
 
 export const flowMenu = [
   {name: 'Meus Flows'}, 
-  {name: 'Eventos'},
-  {name: 'Configuração'},
 ]
 
 export const CalendarMenu = [
