@@ -45,6 +45,25 @@ function ScheduleEvent(props) {
 
   const [userId, setUserId] = useState(params.userId);
   const [calendarId, setCalendarId] = useState(params.calendarId);
+  const [scheduleIntegration, setScheduleIntegration] = useState({});
+  const [googleIntegration, setGoogleIntegration] = useState({});
+  const [whatsappIntegration, setWhatsappIntegration] = useState({});
+
+  useEffect(() => {
+    if (Object.keys(scheduleIntegration).length === 0 || !scheduleIntegration.hasIntegration) {
+      return;
+    }
+
+    const googleIntegrationObject = scheduleIntegration.integrations.find(integration => integration.type === "google");
+    if (googleIntegrationObject) {
+      getGoogleIntegrationData(googleIntegrationObject.id);
+    }
+
+    const whatsappIntegrationObject = scheduleIntegration.integrations.find(integration => integration.type === "whatsapp");
+    if (whatsappIntegrationObject) {
+      getWhatsappIntegrationData(whatsappIntegrationObject.id);
+    }
+  }, [scheduleIntegration]);
 
   useEffect(() => {
     if (props.userId) {
@@ -93,6 +112,7 @@ function ScheduleEvent(props) {
         setCalendarData(calendarData);
         setEvents(calendarData.events);
         setCalendarActiveDays(calendarData.calendar.daysAhead);
+        setScheduleIntegration(calendarData.room.integration);
         if (calendarData.calendar.type === "specificDate") {
           setDate(new Date(calendarData.calendar.startDate));
           setEndDate(new Date(calendarData.calendar.endDate));
@@ -106,6 +126,28 @@ function ScheduleEvent(props) {
       }
     } catch {
       toast.error('Erro ao buscar agenda.');
+    }
+  }
+
+  async function getGoogleIntegrationData(integrationID) {
+    try {
+      const response = await api.get(`/integrations/get-integration/${userId}/${integrationID}`);
+      if (response.status === 200) {
+        setGoogleIntegration(response.data.integration);
+      }
+    } catch {
+      return;
+    }
+  }
+
+  async function getWhatsappIntegrationData(integrationID) {
+    try {
+      const response = await api.get(`/integrations/get-integration/${userId}/${integrationID}`);
+      if (response.status === 200) {
+        setWhatsappIntegration(response.data.integration);
+      }
+    } catch {
+      return;
     }
   }
 
@@ -234,10 +276,13 @@ function ScheduleEvent(props) {
         setEvents(response.data.events);
         toast.success('Seu evento foi agendado com sucesso!');
         setScheduledEvent(true);
-        props?.onSend();
+        // props?.onSend();
+        if (Object.keys(googleIntegration).length > 0) {
+          await insertEventInGoogleCalendar(newSaveEvent, googleIntegration.token)
+        }
       }
     } catch (error) {
-      if (error.response.status === 400) {
+      if (error.response && error.response.status === 400) {
         toast.warning('Enquanto você preenchia seus dados um evento foi agendado na mesma data e horário escolhidos. Por gentileza, escolha outro horário.');
         const dayEvents = error.response.data.dayEvents;
         const dayNames = ["domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado"];
@@ -257,7 +302,19 @@ function ScheduleEvent(props) {
         }, 2000);
       } else {
         toast.error('Erro ao agendar evento.')
+        console.log(error);
       }
+    }
+  };
+
+  async function insertEventInGoogleCalendar(newSaveEvent, tokens) {
+    const response = await api.post(`/integrations/insert-google-event`, { newSaveEvent, tokens });
+    if (response.status === 200) {
+      toast.success("Evento adicionado ao Google Agenda.");
+    }
+    if (response.status === 500) {
+      toast.success(response.data.message);
+      console.log(response.data.error)
     }
   }
 
