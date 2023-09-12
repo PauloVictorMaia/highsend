@@ -33,21 +33,21 @@ const DashBoard = () => {
               <div>
                 <MenuContainer>
                   <Link to='fluxograms'>
-                    <MenuItem onClick={() => setPath("/dashboard/fluxograms")} active={path === "/dashboard/fluxograms"} openmenu={openMenu}>
+                    <MenuItem onClick={() => setPath("/dashboard/fluxograms/")} active={path.includes("/dashboard/fluxograms")} openmenu={openMenu}>
                       <TiFlowSwitch size={20} />
                       <span>Fluxos de Bot</span>
                     </MenuItem>
                   </Link>
 
                   <Link to='schedules'>
-                    <MenuItem onClick={() => setPath("/dashboard/schedules")} active={path === "/dashboard/schedules"} openmenu={openMenu}>
+                    <MenuItem onClick={() => setPath("/dashboard/schedules")} active={path.includes("/dashboard/schedules")} openmenu={openMenu}>
                       <TfiAgenda size={20} />
                       <span>Agendas</span>
                     </MenuItem>
                   </Link>
 
                   <Link to='leads'>
-                    <MenuItem onClick={() => setPath("/dashboard/leads")} active={path === "/dashboard/leads"} openmenu={openMenu}>
+                    <MenuItem onClick={() => setPath("/dashboard/leads/*")} active={path.includes("/dashboard/leads")} openmenu={openMenu}>
                       <BsFillPeopleFill size={20} />
                       <span>Meus leads</span>
                     </MenuItem>
@@ -63,7 +63,7 @@ const DashBoard = () => {
                   </Link>
 
                   <Link to='analytics'>
-                    <MenuItem onClick={() => setPath("/dashboard/analytics")} active={path === "/dashboard/analytics"} openmenu={openMenu}>
+                    <MenuItem onClick={() => setPath("/dashboard/analytics")} active={path.includes("/dashboard/analytics")} openmenu={openMenu}>
                       <TbDeviceAnalytics size={20} />
                       <span>Analytics</span>
                     </MenuItem>

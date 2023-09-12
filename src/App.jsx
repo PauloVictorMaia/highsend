@@ -29,10 +29,10 @@ const App = () => {
             <Route path="fluxograms" element={<Fluxograms />} />
             <Route path="fluxograms/edit/:flowid" element={<CreateFluxogram />} />
             <Route path="schedules" element={<Schedules />} />
+            <Route path="schedules/edit/:id" element={<AddSchedule />} />
             <Route path="leads" element={<Leads />} />
             <Route path="analytics" element={<Analytics />} />
             <Route path="integrations" element={<IntegrationsList />} />
-            <Route path="add-schedule/:id" element={<AddSchedule />} />
             <Route path="integrations/google-integration/edit/:id" element={<EditGoogleIntegration />} />
           </Route>
         </Routes>

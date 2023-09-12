@@ -280,7 +280,7 @@ function Schedules() {
     try {
       const response = await api.post(`calendars/create-calendar/${user.id}`, { calendar }, { headers: { authorization: token } })
       if (response.status === 201) {
-        navigate(`/dashboard/add-schedule/${response.data.id}`)
+        navigate(`/dashboard/schedules/edit/${response.data.id}`)
       }
     } catch {
       toast.error('Erro ao criar nova agenda.')
