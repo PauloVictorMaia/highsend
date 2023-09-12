@@ -3,15 +3,15 @@ import styled from "styled-components";
 export const Container = styled.div`
   width: 100%;
   color: #000;
-  background-color: #c6c6c6;
 `;
 
 export const EditInputsContent = styled.div`
   width: 100%;
   padding: 10px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  column-gap: 10px;
+  row-gap: 10px;
 
   >input { 
     width: 350px;
