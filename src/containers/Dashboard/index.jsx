@@ -56,7 +56,7 @@ const DashBoard = () => {
                   <Divider></Divider>
 
                   <Link to='integrations'>
-                    <MenuItem openmenu={openMenu}>
+                    <MenuItem openmenu={openMenu} onClick={() => setPath("/dashboard/integrations")} active={path.includes("/dashboard/integrations")}>
                       <MdOutlineIntegrationInstructions size={20} />
                       <span>Integrações</span>
                     </MenuItem>

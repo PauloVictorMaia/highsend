@@ -156,6 +156,11 @@ function AddSchedule() {
       selectedsIntegrations = [];
     }
 
+    if (selectedLocal === "Online outra plataforma" && !otherPlataformName) {
+      toast.warning("Digite o nome da plataforma online ou desmarque a opção.");
+      return;
+    }
+
     const calendar = {
       room: {
         id: params.id,

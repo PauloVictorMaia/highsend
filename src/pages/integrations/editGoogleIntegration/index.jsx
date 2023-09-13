@@ -14,7 +14,6 @@ function EditGoogleIntegration() {
   const { user } = useStateContext();
   const token = localStorage.getItem('token');
   const [integrationName, setIntegrationName] = useState("");
-  const [integrationEmail, setIntegrationEmail] = useState("");
 
   useEffect(() => {
     if (Object.keys(user).length > 0) {
@@ -58,11 +57,6 @@ function EditGoogleIntegration() {
           type="text"
           defaultValue={integrationName}
           onChange={(e) => setIntegrationName(e.target.value)}
-        />
-        <input
-          type="text"
-          defaultValue={integrationEmail}
-          onChange={(e) => setIntegrationEmail(e.target.value)}
         />
         <button onClick={() => editIntegrationName()}>Salvar</button>
       </EditInputsContent>
