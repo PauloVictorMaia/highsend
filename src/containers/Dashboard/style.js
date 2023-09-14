@@ -70,7 +70,6 @@ export const MenuItem = styled.div`
   }
 
   span {
-    margin: 0 0 0 5px;
     font-size: 18px;
     margin-left: 25px;
     display: ${({openmenu}) => openmenu ? 'block' : 'none'};

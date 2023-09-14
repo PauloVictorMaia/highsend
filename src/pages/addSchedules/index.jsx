@@ -33,6 +33,10 @@ import ScheduleEvents from "./ScheduleEvents";
 import { SketchPicker } from "react-color";
 import Accordion from "../../components/Accordion";
 import { NavLink } from "react-router-dom";
+import FeedIcon from '@mui/icons-material/Feed';
+import MapIcon from '@mui/icons-material/Map';
+import EventAvailableIcon from '@mui/icons-material/EventAvailable';
+import AvTimerIcon from '@mui/icons-material/AvTimer';
 
 function AddSchedule() {
   const { user } = useStateContext();
@@ -335,7 +339,8 @@ function AddSchedule() {
           <Accordion
             open={accordion === 1}
             onClick={() => changeAccordionValue(1)}
-            title={"teste"}
+            title={"Informações básicas do evento"}
+            icon={<FeedIcon />}
           >
             <ContentContainer>
               <h2>Título do evento</h2>
@@ -407,6 +412,233 @@ function AddSchedule() {
             </ContentContainer>
 
             <ContentContainer>
+              <label>Escolha uma cor para a sua agenda:</label>
+              <SketchPicker
+                color={eventColor}
+                onChange={(color) => setEventColor(color.hex)}
+              />
+            </ContentContainer>
+          </Accordion>
+
+          <Accordion
+            open={accordion === 2}
+            onClick={() => changeAccordionValue(2)}
+            title={"Local do evento e integrações"}
+            icon={<MapIcon />}
+          >
+            <ContentContainer style={{ margin: "10px 0" }}>
+              <ToggleContainer style={{ marginTop: '10px' }}>
+                <span>Local do evento:</span>
+                <OptionLabel style={{ marginTop: '10px' }}>
+                  <input
+                    type="radio"
+                    value="Presencial"
+                    checked={selectedLocal === 'Presencial'}
+                    onChange={() => setSelectedLocal('Presencial')}
+                  />
+                  Presencial
+                </OptionLabel>
+                {selectedLocal === 'Presencial' &&
+                  <div>
+                    <span>No endereço:</span>
+                    <input
+                      style={{ width: "400px" }}
+                      type="text"
+                      defaultValue={meetingPlace.type === "Presencial" ? address : ""}
+                      placeholder="R. Exemplo, 222 - cidade - estado - cep: 00000-000"
+                      onChange={(e) => setAddress(e.target.value)}
+                    />
+                  </div>
+                }
+
+                <OptionLabel>
+                  <input
+                    type="radio"
+                    value="Online Google Meet"
+                    checked={selectedLocal === 'Online Google Meet'}
+                    onChange={() => setSelectedLocal("Online Google Meet")}
+                  />
+                  Online pelo Google Meet
+                </OptionLabel>
+
+                <OptionLabel>
+                  <input
+                    type="radio"
+                    value="Online outra plataforma"
+                    checked={selectedLocal === 'Online outra plataforma'}
+                    onChange={() => setSelectedLocal("Online outra plataforma")}
+                  />
+                  Online por outra plataforma
+                </OptionLabel>
+
+                {selectedLocal === 'Online outra plataforma' &&
+                  <div>
+                    <span>Nome da plataforma online:</span>
+                    <input
+                      style={{ width: "400px" }}
+                      type="text"
+                      defaultValue={meetingPlace.type === "Online outra plataforma" ? address : ""}
+                      placeholder="Nome da plataforma online"
+                      onChange={(e) => setOtherPlataformName(e.target.value)}
+                    />
+                  </div>
+                }
+              </ToggleContainer>
+
+              <ToggleContainer style={{ marginTop: '10px' }}>
+                <span>Integrações:</span>
+                <OptionLabel style={{ marginTop: '10px' }}>
+                  <input
+                    type="radio"
+                    checked={hasIntegration}
+                    onChange={() => setHasIntegration(!hasIntegration)}
+                  />
+                  Atribuir integração a essa agenda
+                </OptionLabel>
+
+                {hasIntegration &&
+                  <IntegrationsOptions>
+                    <span>Escolha quais integrações deseja adicionar:</span>
+                    <div style={{ margin: "10px 0" }}>
+                      <input
+                        type="checkbox"
+                        name="integration option"
+                        checked={googleChecked}
+                        onChange={() => setGoogleChecked(!googleChecked)}
+                      />
+                      <label style={{ marginLeft: "5px" }}>Google</label>
+                      {
+                        googleChecked &&
+                          googleIntegrations.length > 0 ?
+                          <select
+                            value={googleIntegrationSelected}
+                            onChange={(e) => setGoogleIntegrationSelected(e.target.value)}
+                            style={{ marginLeft: "5px" }}
+                          >
+                            <option value="">Selecionar integração</option>
+                            {googleIntegrations &&
+                              googleIntegrations.map((integration, index) => (
+                                <option key={index} value={integration.id}>{integration.name}</option>
+                              ))
+                            }
+                          </select>
+                          :
+                          googleChecked && <span style={{ marginLeft: "15px" }}>Você não possui integração com esse serviço. Para integrar <NavLink to={"/dashboard/integrations"}>Clique aqui.</NavLink></span>
+                      }
+                    </div>
+
+                    <div>
+                      <input
+                        type="checkbox"
+                        name="integration option"
+                        checked={whatsappChecked}
+                        onChange={() => setWhatsappChecked(!whatsappChecked)}
+                      />
+                      <label style={{ marginLeft: "5px" }}>Whatsapp</label>
+                      {
+                        whatsappChecked &&
+                          whatsappIntegrations.length > 0 ?
+                          <select
+                            value={whatsappIntegrationSelected}
+                            onChange={(e) => setWhatsappIntegrationSelected(e.target.value)}
+                            style={{ marginLeft: "5px" }}
+                          >
+                            <option value="">Selecionar integração</option>
+                            {whatsappIntegrations &&
+                              whatsappIntegrations.map((integration, index) => (
+                                <option key={index} value={integration.id}>{integration.name}</option>
+                              ))
+                            }
+                          </select>
+                          :
+                          whatsappChecked && <span style={{ marginLeft: "15px" }}>Você não possui integração com esse serviço. Para integrar <NavLink to={"/dashboard/integrations"}>Clique aqui.</NavLink></span>
+                      }
+                    </div>
+                  </IntegrationsOptions>
+                }
+
+                <OptionLabel>
+                  <input
+                    type="radio"
+                    checked={!hasIntegration}
+                    onChange={() => setHasIntegration(!hasIntegration)}
+                  />
+                  Não atribuir integração
+                </OptionLabel>
+
+              </ToggleContainer>
+            </ContentContainer>
+          </Accordion>
+
+          <Accordion
+            open={accordion === 3}
+            onClick={() => changeAccordionValue(3)}
+            title={"Disponibilidade para os dias da semana"}
+            icon={<EventAvailableIcon />}
+          >
+            <ContentContainer>
+              {eventConfigurations.map((day, index) => (
+                <DaysContainer key={index}>
+                  <CheckboxContainer
+                    onClick={() => handleAvailabilityChange(index, !day.available)}
+                    checked={day.available}
+                  >
+                    <StyledCheckbox
+                      checked={day.available}
+                    >
+                      {day.available &&
+                        <img
+                          alt="tick icon"
+                          style={{ width: '15px' }}
+                          src={CheckIcon}
+                        />
+                      }
+                    </StyledCheckbox>
+                    <Text checked={day.available}>{day.day}</Text>
+                  </CheckboxContainer>
+                  {day.available && (
+                    <>
+                      <label>Início:</label>
+                      <input
+                        type="time"
+                        value={day.startTime}
+                        onChange={(e) => handleStartTimeChange(index, e.target.value)}
+                      />
+                      <label>Término:</label>
+                      <input
+                        type="time"
+                        value={day.endTime}
+                        onChange={(e) => handleEndTimeChange(index, e.target.value)}
+                      />
+                    </>
+                  )}
+                </DaysContainer>
+              ))}
+            </ContentContainer>
+          </Accordion>
+
+          <Accordion
+            open={accordion === 4}
+            onClick={() => changeAccordionValue(4)}
+            title={"Duração e intervalo do evento"}
+            icon={<AvTimerIcon />}
+          >
+            <ContentContainer>
+              <h2>Configurar Horário e Duração do Evento</h2>
+              <label>Duração do Evento (em minutos):</label>
+              <input
+                type="number"
+                min="1"
+                value={eventDuration}
+                onChange={(e) => setEventDuration(parseInt(e.target.value))}
+              />
+              <label>Intervalo entre os Eventos (em minutos):</label>
+              <input
+                type="number"
+                min="1"
+                value={eventInterval}
+                onChange={(e) => setEventInterval(parseInt(e.target.value))}
+              />
               <label>Horário de Início do Almoço:</label>
               <input
                 type="time"
@@ -422,219 +654,8 @@ function AddSchedule() {
             </ContentContainer>
           </Accordion>
 
-          <ContentContainer style={{ margin: "10px 0" }}>
-            <h2 style={{ marginBottom: "10px" }}>Detalhes do evento</h2>
-            <label>Escolha uma cor para a sua agenda:</label>
-            <SketchPicker
-              color={eventColor}
-              onChange={(color) => setEventColor(color.hex)}
-            />
-
-            <ToggleContainer style={{ marginTop: '10px' }}>
-              <span>Local do evento:</span>
-              <OptionLabel style={{ marginTop: '10px' }}>
-                <input
-                  type="radio"
-                  value="Presencial"
-                  checked={selectedLocal === 'Presencial'}
-                  onChange={() => setSelectedLocal('Presencial')}
-                />
-                Presencial
-              </OptionLabel>
-              {selectedLocal === 'Presencial' &&
-                <div>
-                  <span>No endereço:</span>
-                  <input
-                    style={{ width: "400px" }}
-                    type="text"
-                    defaultValue={meetingPlace.type === "Presencial" ? address : ""}
-                    placeholder="R. Exemplo, 222 - cidade - estado - cep: 00000-000"
-                    onChange={(e) => setAddress(e.target.value)}
-                  />
-                </div>
-              }
-
-              <OptionLabel>
-                <input
-                  type="radio"
-                  value="Online Google Meet"
-                  checked={selectedLocal === 'Online Google Meet'}
-                  onChange={() => setSelectedLocal("Online Google Meet")}
-                />
-                Online pelo Google Meet
-              </OptionLabel>
-
-              <OptionLabel>
-                <input
-                  type="radio"
-                  value="Online outra plataforma"
-                  checked={selectedLocal === 'Online outra plataforma'}
-                  onChange={() => setSelectedLocal("Online outra plataforma")}
-                />
-                Online por outra plataforma
-              </OptionLabel>
-
-              {selectedLocal === 'Online outra plataforma' &&
-                <div>
-                  <span>Nome da plataforma online:</span>
-                  <input
-                    style={{ width: "400px" }}
-                    type="text"
-                    defaultValue={meetingPlace.type === "Online outra plataforma" ? address : ""}
-                    placeholder="Nome da plataforma online"
-                    onChange={(e) => setOtherPlataformName(e.target.value)}
-                  />
-                </div>
-              }
-            </ToggleContainer>
-
-            <ToggleContainer style={{ marginTop: '10px' }}>
-              <span>Integrações:</span>
-              <OptionLabel style={{ marginTop: '10px' }}>
-                <input
-                  type="radio"
-                  checked={hasIntegration}
-                  onChange={() => setHasIntegration(!hasIntegration)}
-                />
-                Atribuir integração a essa agenda
-              </OptionLabel>
-
-              {hasIntegration &&
-                <IntegrationsOptions>
-                  <span>Escolha quais integrações deseja adicionar:</span>
-                  <div style={{ margin: "10px 0" }}>
-                    <input
-                      type="checkbox"
-                      name="integration option"
-                      checked={googleChecked}
-                      onChange={() => setGoogleChecked(!googleChecked)}
-                    />
-                    <label style={{ marginLeft: "5px" }}>Google</label>
-                    {
-                      googleChecked &&
-                        googleIntegrations.length > 0 ?
-                        <select
-                          value={googleIntegrationSelected}
-                          onChange={(e) => setGoogleIntegrationSelected(e.target.value)}
-                          style={{ marginLeft: "5px" }}
-                        >
-                          <option value="">Selecionar integração</option>
-                          {googleIntegrations &&
-                            googleIntegrations.map((integration, index) => (
-                              <option key={index} value={integration.id}>{integration.name}</option>
-                            ))
-                          }
-                        </select>
-                        :
-                        googleChecked && <span style={{ marginLeft: "15px" }}>Você não possui integração com esse serviço. Para integrar <NavLink to={"/dashboard/integrations"}>Clique aqui.</NavLink></span>
-                    }
-                  </div>
-
-                  <div>
-                    <input
-                      type="checkbox"
-                      name="integration option"
-                      checked={whatsappChecked}
-                      onChange={() => setWhatsappChecked(!whatsappChecked)}
-                    />
-                    <label style={{ marginLeft: "5px" }}>Whatsapp</label>
-                    {
-                      whatsappChecked &&
-                        whatsappIntegrations.length > 0 ?
-                        <select
-                          value={whatsappIntegrationSelected}
-                          onChange={(e) => setWhatsappIntegrationSelected(e.target.value)}
-                          style={{ marginLeft: "5px" }}
-                        >
-                          <option value="">Selecionar integração</option>
-                          {whatsappIntegrations &&
-                            whatsappIntegrations.map((integration, index) => (
-                              <option key={index} value={integration.id}>{integration.name}</option>
-                            ))
-                          }
-                        </select>
-                        :
-                        whatsappChecked && <span style={{ marginLeft: "15px" }}>Você não possui integração com esse serviço. Para integrar <NavLink to={"/dashboard/integrations"}>Clique aqui.</NavLink></span>
-                    }
-                  </div>
-                </IntegrationsOptions>
-              }
-
-              <OptionLabel>
-                <input
-                  type="radio"
-                  checked={!hasIntegration}
-                  onChange={() => setHasIntegration(!hasIntegration)}
-                />
-                Não atribuir integração
-              </OptionLabel>
-
-            </ToggleContainer>
-          </ContentContainer>
-
-          <ContentContainer>
-
-            <h2>Disponibilidade para os dias da semana</h2>
-            {eventConfigurations.map((day, index) => (
-              <DaysContainer key={index}>
-                <CheckboxContainer
-                  onClick={() => handleAvailabilityChange(index, !day.available)}
-                  checked={day.available}
-                >
-                  <StyledCheckbox
-                    checked={day.available}
-                  >
-                    {day.available &&
-                      <img
-                        alt="tick icon"
-                        style={{ width: '15px' }}
-                        src={CheckIcon}
-                      />
-                    }
-                  </StyledCheckbox>
-                  <Text checked={day.available}>{day.day}</Text>
-                </CheckboxContainer>
-                {day.available && (
-                  <>
-                    <label>Início:</label>
-                    <input
-                      type="time"
-                      value={day.startTime}
-                      onChange={(e) => handleStartTimeChange(index, e.target.value)}
-                    />
-                    <label>Término:</label>
-                    <input
-                      type="time"
-                      value={day.endTime}
-                      onChange={(e) => handleEndTimeChange(index, e.target.value)}
-                    />
-                  </>
-                )}
-              </DaysContainer>
-            ))}
-          </ContentContainer>
-
-          <ContentContainer>
-            <h2>Configurar Horário e Duração do Evento</h2>
-            <label>Duração do Evento (em minutos):</label>
-            <input
-              type="number"
-              min="1"
-              value={eventDuration}
-              onChange={(e) => setEventDuration(parseInt(e.target.value))}
-            />
-            <label>Intervalo entre os Eventos (em minutos):</label>
-            <input
-              type="number"
-              min="1"
-              value={eventInterval}
-              onChange={(e) => setEventInterval(parseInt(e.target.value))}
-            />
-          </ContentContainer>
-
-          <ContentContainer>
-
-            <h2>Intervalos de Evento:</h2>
+          <ContentContainer style={{ marginTop: 40 }}>
+            <h2 style={{ marginBottom: 10 }}>Intervalos de Evento:</h2>
             <IntervalsContainer>
               <EnventsContainer columns={eventIntervals.length}>
                 {eventIntervals?.map((day, index) => (

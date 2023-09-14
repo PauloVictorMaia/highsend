@@ -16,6 +16,7 @@ import { useStateContext } from "../../contexts/ContextProvider";
 import { Outlet, useLocation } from "react-router";
 import TopBar from "../../components/TopBar";
 import { useState } from "react";
+import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
 
 // eslint-disable-next-line react/prop-types
 const DashBoard = () => {
@@ -48,7 +49,7 @@ const DashBoard = () => {
 
                   <Link to='leads'>
                     <MenuItem onClick={() => setPath("/dashboard/leads/*")} active={path.includes("/dashboard/leads")} openmenu={openMenu}>
-                      <BsFillPeopleFill size={20} />
+                      <PeopleOutlineIcon />
                       <span>Meus leads</span>
                     </MenuItem>
                   </Link>

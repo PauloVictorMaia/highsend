@@ -39,6 +39,7 @@ export const StyledCheckbox = styled.label`
 export const Text = styled.label`
   color: ${props => props.checked ? '#FFF' : '#555'};
   cursor: pointer;
+  margin-left: 10px;
 `;
 
 export const DaysContainer = styled.div`
@@ -75,7 +76,7 @@ export const ContentContainer = styled.div`
  display: flex;
  flex-direction: column;
  width: 100%;
- max-width: 900px;
+ max-width: 100%;
 `;
 
 export const TitleInput = styled.input`
@@ -93,11 +94,13 @@ export const EnventsContainer = styled.div`
 
 export const EventsContent = styled.div`
  width: 100%;
+
 `;
 
 export const EventItem = styled.div`
  height: 60px;
- background: #bfbfbf;
+ background: #053D38;
+ color: #fff;
  margin: 5px 0;
  display: flex;
  flex-direction: column;

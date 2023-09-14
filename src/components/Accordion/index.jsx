@@ -4,7 +4,7 @@ const AccordionContainer = styled.div`
   border: 1px solid #14140F;
   border-radius: 6px;
   width: 100%;
-  margin: 15px 0;
+  margin-top: 15px;
   background-color: #fff;
 `;
 
@@ -14,6 +14,11 @@ const AccordionHeader = styled.div`
   height: 60px;
   display: flex;
   align-items: center;
+
+  span {
+    margin-left: 20px;
+    font-size: 18px;
+  }
 `;
 
 const AccordionContent = styled.div`
@@ -21,11 +26,12 @@ const AccordionContent = styled.div`
   padding: ${(props) => (props.isOpen ? '10px 15px' : '0 15px')};
 `;
 
-const Accordion = ({ title, open, children, onClick }) => {
+const Accordion = ({ title, open, children, onClick, icon }) => {
   return (
     <AccordionContainer>
       <AccordionHeader onClick={onClick}>
-        {title}
+        {icon}
+        <span>{title}</span>
       </AccordionHeader>
       {open &&
         <AccordionContent isOpen={open}>
