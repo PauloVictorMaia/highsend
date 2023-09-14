@@ -220,29 +220,46 @@ function AddSchedule() {
     setEventConfigurations(newWeekDays);
   };
 
-  const calculateEventCounts = (day, startTime, endTime, duration, interval) => {
-    let startTimeDate = setHours(day, parseInt(startTime.split(':')[0]));
-    startTimeDate = setMinutes(startTimeDate, parseInt(startTime.split(':')[1]));
-
-    let endTimeDate = setHours(day, parseInt(endTime.split(':')[0]));
-    endTimeDate = setMinutes(endTimeDate, parseInt(endTime.split(':')[1]));
-
-    const eventTimes = [];
-
-    while (endTimeDate >= addMinutes(startTimeDate, duration)) {
-      const start = format(startTimeDate, 'HH:mm', { locale: ptBR });
-      const end = format(addMinutes(startTimeDate, duration), 'HH:mm', { locale: ptBR });
-
-      if (
-        (end < lunchStartTime || end === lunchStartTime || end > lunchEndTime) &&
-        (start < lunchStartTime || start > lunchEndTime || start === lunchEndTime)
-      ) {
-        eventTimes.push({ start, end });
+  const calculateEventCounts = (
+    day,
+    startTime,
+    endTime,
+    duration,
+    interval,
+  ) => {
+      let startTimeDate = setHours(day, parseInt(startTime.split(':')[0]));
+      startTimeDate = setMinutes(startTimeDate, parseInt(startTime.split(':')[1]));
+  
+      let endTimeDate = setHours(day, parseInt(endTime.split(':')[0]));
+      endTimeDate = setMinutes(endTimeDate, parseInt(endTime.split(':')[1]));
+  
+      let lunchStartDate = setHours(day, parseInt(lunchStartTime.split(':')[0]));
+      lunchStartDate = setMinutes(lunchStartDate, parseInt(lunchStartTime.split(':')[1]));
+  
+      let lunchEndDate = setHours(day, parseInt(lunchEndTime.split(':')[0]));
+      lunchEndDate = setMinutes(lunchEndDate, parseInt(lunchEndTime.split(':')[1]));
+  
+      const eventTimes = [];
+  
+      while (endTimeDate >= addMinutes(startTimeDate, duration)) {
+        if (startTimeDate >= lunchStartDate && startTimeDate < lunchEndDate) {
+          startTimeDate = lunchEndDate;
+        }
+  
+        const start = format(startTimeDate, 'HH:mm', { locale: ptBR });
+        const end = format(addMinutes(startTimeDate, duration), 'HH:mm', { locale: ptBR });
+  
+        if (
+          (end <= lunchStartTime || end > lunchEndTime) &&
+          (start < lunchStartTime || start >= lunchEndTime)
+        ) {
+          eventTimes.push({ start, end });
+        }
+  
+        startTimeDate = addMinutes(startTimeDate, duration + interval);
       }
-      startTimeDate = addMinutes(startTimeDate, duration + interval);
-    }
-
-    return { eventCount: eventTimes.length, eventTimes };
+  
+      return { eventCount: eventTimes.length, eventTimes };
   };
 
   const calculateAllEventIntervals = () => {
