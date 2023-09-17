@@ -14,6 +14,8 @@ import ScheduleEvent from "./pages/scheduleEvent";
 import Chatbot from "./pages/viewFluxogram";
 import IntegrationsList from "./pages/integrations/integrationsList";
 import EditGoogleIntegration from "./pages/integrations/editGoogleIntegration";
+import LoginPage from "./pages/Login";
+import LandingPage from "./pages/LandingPage";
 
 
 const App = () => {
@@ -22,9 +24,10 @@ const App = () => {
     <BrowserRouter>
       <ContextProvider>
         <Routes>
-          <Route path="/" element={<SignIn />} />
+          <Route path="/" element={<LandingPage />} />
           <Route path="/agendar-evento/:userId/:calendarId" element={<ScheduleEvent />} />
           <Route path="/fluxo-de-bot/:id" element={<Chatbot />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/dashboard/*" element={<DashBoard />}>
             <Route path="fluxograms" element={<Fluxograms />} />
             <Route path="fluxograms/edit/:flowid" element={<CreateFluxogram />} />

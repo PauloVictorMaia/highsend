@@ -17,6 +17,7 @@ import { Outlet, useLocation } from "react-router";
 import TopBar from "../../components/TopBar";
 import { useState } from "react";
 import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
+import Loader from "../../components/LoadingScreen";
 
 // eslint-disable-next-line react/prop-types
 const DashBoard = () => {
@@ -79,7 +80,7 @@ const DashBoard = () => {
           </DashBoardContainer>
         </Container>
         :
-        <div>Carregando...</div>
+        <Loader />
       }
     </>
   )

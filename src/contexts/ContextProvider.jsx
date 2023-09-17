@@ -51,7 +51,7 @@ export const ContextProvider = ({ children }) => {
             }
         } catch {
             toast.error('Usuário não autenticado. Faça login novamente.');
-            navigate('/');
+            navigate('/login');
         }
     };
 
