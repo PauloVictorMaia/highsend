@@ -20,4 +20,12 @@ export const eventsListMenu = [
   {name: 'Eventos da agenda'}, 
 ]
 
+export const leadsMenu = [
+  {name: 'Meus Leads'}, 
+]
+
+export const leadsResultsMenu = [
+  {name: 'Submissões'}, 
+]
+
 export const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']

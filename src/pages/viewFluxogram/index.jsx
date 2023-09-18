@@ -14,6 +14,8 @@ import PhoneInputNode from './components/phoneInputNode/TextInput';
 import DateInputNode from './components/dateInputNode/TextInput';
 import ImageNode from './components/imageNode/Video';
 import EmbedNode from './components/embedNode/Video';
+import { useParams } from 'react-router-dom';
+import api from '../../api';
 
 function Chatbot() {
   const [nodes, setNodes] = useState();
@@ -24,9 +26,11 @@ function Chatbot() {
   const [actualNodeDisplay, setActualNodeDisplay] = useState("start node");
   const [elementsHeight, setElementsHeight] = useState(0);
   const [avatarsStatic, setAvatarsStatic] = useState([]);
+  const [leadID, setLeadID] = useState(null);
   const divRef = useRef(null);
   const notDisplayedAvatarNode = ['dateInputNode', 'buttonInputNode', 'textInputNode', 'numberInputNode', 'emailInputNode', 'websiteInputNode', 'phoneInputNode'];
   const notPlusIndexNode = ['dateInputNode', 'textInputNode', 'numberInputNode', 'emailInputNode', 'websiteInputNode', 'phoneInputNode'];
+  const params = useParams();
 
   const smoothScrollToBottom = (element) => {
     const start = element.scrollTop;
@@ -49,15 +53,26 @@ function Chatbot() {
     window.requestAnimationFrame(animateScroll);
   };
 
+  async function getFlowData() {
+    try {
+      const response = await api.get(`/flows/get-flow/${params.userId}/${params.flowId}`);
+      if (response.status === 200) {
+        setNodes(response.data.nodes);
+        setEdges(response.data.edges);
+        setVariables(response.data.variables);
+      }
+    } catch {
+      return;
+    }
+  }
+
   useEffect(() => {
     const currentDiv = divRef.current;
     smoothScrollToBottom(currentDiv);
   });
 
   useEffect(() => {
-    setNodes(jsonData.nodes);
-    setEdges(jsonData.edges);
-    setVariables(jsonData.variables);
+    getFlowData();
   }, []);
 
   useEffect(() => {
@@ -126,6 +141,7 @@ function Chatbot() {
       return variable;
     })
     setVariables(customVariable);
+    saveLeadVariables();
   }
 
   const atualizationInputDisplayed = (data, value) => {
@@ -141,7 +157,7 @@ function Chatbot() {
 
   const sendVariableValue = (data) => {
     setIndexNodesExibition(indexNodesExibition + 1);
-    if(data){
+    if (data) {
       let customVariable = [...variables];
       customVariable.map((variable) => {
         if (variable.id === data.variable) {
@@ -150,6 +166,22 @@ function Chatbot() {
         return variable;
       })
       setVariables(customVariable);
+    }
+    saveLeadVariables();
+  }
+
+  const saveLeadVariables = async () => {
+    if (leadID) {
+      try {
+        await api.post(`/leads/edit-lead/${params.flowId}/${leadID}`, { variables });
+      } catch {
+        return;
+      }
+    } else {
+      const response = await api.post(`/leads/save-lead/${params.flowId}`, { variables });
+      if (response.status === 200) {
+        setLeadID(response.data.id);
+      }
     }
   }
 

@@ -13,7 +13,9 @@ import { toast } from "react-toastify";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ClearIcon from '@mui/icons-material/Clear';
-import FileCopyIcon from '@mui/icons-material/FileCopy';
+import ControlPointDuplicateIcon from '@mui/icons-material/ControlPointDuplicate';
+import CopyAllIcon from '@mui/icons-material/CopyAll';
+import clipboardCopy from 'clipboard-copy';
 
 function Fluxograms() {
   const [menuComponent, setMenuComponent] = useState(0);
@@ -24,6 +26,7 @@ function Fluxograms() {
   const [modalEditIsVisible, setModalEditIsVisible] = useState(false);
   const [modalDeleteIsVisible, setModalDeleteIsVisible] = useState(false);
   const [flowName, setFlowName] = useState("");
+  const BASE_URL = "http://localhost:5173/fluxo-de-bot/";
 
   const createFlow = async () => {
     try {
@@ -89,6 +92,15 @@ function Fluxograms() {
     setModalEditIsVisible(false);
   }
 
+  const copyFlowURL = (url) => {
+    try {
+      clipboardCopy(url);
+      toast.success('Link copiado.');
+    } catch {
+      toast.error('Erro ao copiar link.');
+    }
+  }
+
   useEffect(() => {
     if (Object.keys(user).length > 0) {
       getFlows();
@@ -118,8 +130,9 @@ function Fluxograms() {
           flows.map((flow, index) => (
             <FluxogramCard key={index}>
               <Buttons>
+                <CopyAllIcon style={{ fontSize: "1.6rem" }} onClick={() => copyFlowURL(`${BASE_URL}${user.id}/${flow.id}`)} />
                 <EditIcon onClick={() => setModalEditIsVisible(true)} />
-                <FileCopyIcon onClick={() => cloneFlow(flow.id)} />
+                <ControlPointDuplicateIcon onClick={() => cloneFlow(flow.id)} />
                 <DeleteIcon onClick={() => setModalDeleteIsVisible(true)} />
               </Buttons>
               <Content onClick={() => navigate(`/dashboard/fluxograms/edit/${flow.id}`)}>

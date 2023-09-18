@@ -1,11 +1,11 @@
 import { styled } from "styled-components";
 
 export const Container = styled.div`
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
   color: #000;
-  padding: 20px;
+  padding: 20px 0;
   box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 30px;
+  row-gap: 30px;
 `;

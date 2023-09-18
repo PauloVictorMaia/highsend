@@ -16,6 +16,7 @@ import IntegrationsList from "./pages/integrations/integrationsList";
 import EditGoogleIntegration from "./pages/integrations/editGoogleIntegration";
 import LoginPage from "./pages/Login";
 import LandingPage from "./pages/LandingPage";
+import LeadsResults from "./pages/leads/leadsResults";
 
 
 const App = () => {
@@ -26,7 +27,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/agendar-evento/:userId/:calendarId" element={<ScheduleEvent />} />
-          <Route path="/fluxo-de-bot/:id" element={<Chatbot />} />
+          <Route path="/fluxo-de-bot/:userId/:flowId" element={<Chatbot />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/dashboard/*" element={<DashBoard />}>
             <Route path="fluxograms" element={<Fluxograms />} />
@@ -34,6 +35,7 @@ const App = () => {
             <Route path="schedules" element={<Schedules />} />
             <Route path="schedules/edit/:id" element={<AddSchedule />} />
             <Route path="leads" element={<Leads />} />
+            <Route path="leads/:flowId" element={<LeadsResults />} />
             <Route path="analytics" element={<Analytics />} />
             <Route path="integrations" element={<IntegrationsList />} />
             <Route path="integrations/google-integration/edit/:id" element={<EditGoogleIntegration />} />
