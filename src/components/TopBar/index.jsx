@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { useStateContext } from '../../contexts/ContextProvider';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -96,6 +96,32 @@ const TopBar = () => {
   const dropdownRef = useRef(null);
   const { openMenu, setOpenMenu } = useStateContext();
 
+  const handleIconContainerClick = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleCloseDropdown = () => {
+    setIsDropdownOpen(false);
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const handleClickOutside = event => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target)
+    ) {
+      setTimeout(() => {
+        handleCloseDropdown();
+      }, 100);
+    }
+  };
+
   return (
     <TopBarWrapper>
       <LogoContainer>
@@ -104,14 +130,16 @@ const TopBar = () => {
         </IconContainer>
         <span>Hiflow</span>
       </LogoContainer>
-      <UserMenu onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+      <UserMenu>
         <UserIconContainer>
           <NotificationsNoneIcon />
         </UserIconContainer>
         <UserIconContainer>
           <ChatBubbleOutlineIcon />
         </UserIconContainer>
-        <UserIconContainer>
+        <UserIconContainer
+          onClick={() => handleIconContainerClick()}
+        >
           <Avatar alt="User Avatar">P</Avatar>
         </UserIconContainer>
         {isDropdownOpen && (
