@@ -82,6 +82,9 @@ function AddSchedule() {
       if (response.status === 201) {
         const calendar = response.data.filteredTargetCalendar;
         const calendarEvents = response.data.events
+        if (calendar.room.local.type === 'Online outra plataforma') {
+          setOtherPlataformName(calendar.room.local.local);
+        }
         setEvents(calendarEvents)
         setEventConfigurations(calendar.calendar.daysOfTheWeek);
         setEventIntervals(calendar.calendar.eventsIntervals);
@@ -227,39 +230,39 @@ function AddSchedule() {
     duration,
     interval,
   ) => {
-      let startTimeDate = setHours(day, parseInt(startTime.split(':')[0]));
-      startTimeDate = setMinutes(startTimeDate, parseInt(startTime.split(':')[1]));
-  
-      let endTimeDate = setHours(day, parseInt(endTime.split(':')[0]));
-      endTimeDate = setMinutes(endTimeDate, parseInt(endTime.split(':')[1]));
-  
-      let lunchStartDate = setHours(day, parseInt(lunchStartTime.split(':')[0]));
-      lunchStartDate = setMinutes(lunchStartDate, parseInt(lunchStartTime.split(':')[1]));
-  
-      let lunchEndDate = setHours(day, parseInt(lunchEndTime.split(':')[0]));
-      lunchEndDate = setMinutes(lunchEndDate, parseInt(lunchEndTime.split(':')[1]));
-  
-      const eventTimes = [];
-  
-      while (endTimeDate >= addMinutes(startTimeDate, duration)) {
-        if (startTimeDate >= lunchStartDate && startTimeDate < lunchEndDate) {
-          startTimeDate = lunchEndDate;
-        }
-  
-        const start = format(startTimeDate, 'HH:mm', { locale: ptBR });
-        const end = format(addMinutes(startTimeDate, duration), 'HH:mm', { locale: ptBR });
-  
-        if (
-          (end <= lunchStartTime || end > lunchEndTime) &&
-          (start < lunchStartTime || start >= lunchEndTime)
-        ) {
-          eventTimes.push({ start, end });
-        }
-  
-        startTimeDate = addMinutes(startTimeDate, duration + interval);
+    let startTimeDate = setHours(day, parseInt(startTime.split(':')[0]));
+    startTimeDate = setMinutes(startTimeDate, parseInt(startTime.split(':')[1]));
+
+    let endTimeDate = setHours(day, parseInt(endTime.split(':')[0]));
+    endTimeDate = setMinutes(endTimeDate, parseInt(endTime.split(':')[1]));
+
+    let lunchStartDate = setHours(day, parseInt(lunchStartTime.split(':')[0]));
+    lunchStartDate = setMinutes(lunchStartDate, parseInt(lunchStartTime.split(':')[1]));
+
+    let lunchEndDate = setHours(day, parseInt(lunchEndTime.split(':')[0]));
+    lunchEndDate = setMinutes(lunchEndDate, parseInt(lunchEndTime.split(':')[1]));
+
+    const eventTimes = [];
+
+    while (endTimeDate >= addMinutes(startTimeDate, duration)) {
+      if (startTimeDate >= lunchStartDate && startTimeDate < lunchEndDate) {
+        startTimeDate = lunchEndDate;
       }
-  
-      return { eventCount: eventTimes.length, eventTimes };
+
+      const start = format(startTimeDate, 'HH:mm', { locale: ptBR });
+      const end = format(addMinutes(startTimeDate, duration), 'HH:mm', { locale: ptBR });
+
+      if (
+        (end <= lunchStartTime || end > lunchEndTime) &&
+        (start < lunchStartTime || start >= lunchEndTime)
+      ) {
+        eventTimes.push({ start, end });
+      }
+
+      startTimeDate = addMinutes(startTimeDate, duration + interval);
+    }
+
+    return { eventCount: eventTimes.length, eventTimes };
   };
 
   const calculateAllEventIntervals = () => {
@@ -494,7 +497,7 @@ function AddSchedule() {
                     <input
                       style={{ width: "400px" }}
                       type="text"
-                      defaultValue={meetingPlace.type === "Online outra plataforma" ? address : ""}
+                      defaultValue={otherPlataformName}
                       placeholder="Nome da plataforma online"
                       onChange={(e) => setOtherPlataformName(e.target.value)}
                     />

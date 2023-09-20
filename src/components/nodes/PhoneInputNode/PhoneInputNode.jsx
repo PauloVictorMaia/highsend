@@ -7,11 +7,10 @@ import { useStateContext } from "../../../contexts/ContextProvider";
 import PhoneIphoneOutlinedIcon from '@mui/icons-material/PhoneIphoneOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import countries from 'countries-list';
-import { toast } from "react-toastify";
 
 export function PhoneInputNode({ data, id, selected }) {
   const { createNewVariable, variables } = useStateContext();
-  const { setNodes, getNodes } = useReactFlow();
+  const { setNodes } = useReactFlow();
   const { deleteElements } = useReactFlow();
   const onDelete = () => deleteElements({ nodes: [{ id }] });
   const [newVariable, setNewVariable] = useState("")
@@ -64,14 +63,7 @@ export function PhoneInputNode({ data, id, selected }) {
   }, [placeholder, buttonLabel, assignedVariable, retryMessage, phoneCode]);
 
   const handleAssignedVariable = (variableValue) => {
-    const nodes = getNodes();
-    const inputNodes = nodes.filter((node) => /input/i.test(node.type));
-    const hasVariableAssigned = inputNodes.some(node => node.data.variable === variableValue);
-    if (!hasVariableAssigned) {
-      setAssignedVariable(variableValue);
-    } else {
-      toast.warning('Essa variável já está atribuída a um input. Escolha outra variável ou crie uma nova.')
-    }
+    setAssignedVariable(variableValue);
   }
 
   return (

@@ -1,7 +1,6 @@
 import DashBoard from "./containers/Dashboard";
 import CreateFluxogram from "./pages/createFluxogram/CreateFluxogram";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import SignIn from "./pages/sign-in/sign-in";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Fluxograms from "./pages/fluxograms/Fluxograms";
 import Schedules from "./pages/schedules/Schedules";
 import Leads from "./pages/leads/Leads";
@@ -30,6 +29,7 @@ const App = () => {
           <Route path="/fluxo-de-bot/:userId/:flowId" element={<Chatbot />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/dashboard/*" element={<DashBoard />}>
+            <Route index element={<Navigate to="fluxograms" />} />
             <Route path="fluxograms" element={<Fluxograms />} />
             <Route path="fluxograms/edit/:flowid" element={<CreateFluxogram />} />
             <Route path="schedules" element={<Schedules />} />

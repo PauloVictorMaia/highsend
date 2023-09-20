@@ -6,11 +6,10 @@ import { useState, useEffect } from "react";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import TaskAltOutlinedIcon from '@mui/icons-material/TaskAltOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { toast } from "react-toastify";
 
 export function ButtonInputNode({ data, id, selected }) {
   const { createNewVariable, variables } = useStateContext();
-  const { setNodes, getNodes } = useReactFlow();
+  const { setNodes } = useReactFlow();
   const { deleteElements } = useReactFlow();
   const onDelete = () => deleteElements({ nodes: [{ id }] });
   const [newVariable, setNewVariable] = useState("")
@@ -54,14 +53,7 @@ export function ButtonInputNode({ data, id, selected }) {
   }, [buttonLabel, assignedVariable, multipleChoice]);
 
   const handleAssignedVariable = (variableValue) => {
-    const nodes = getNodes();
-    const inputNodes = nodes.filter((node) => /input/i.test(node.type));
-    const hasVariableAssigned = inputNodes.some(node => node.data.variable === variableValue);
-    if (!hasVariableAssigned) {
-      setAssignedVariable(variableValue);
-    } else {
-      toast.warning('Essa variável já está atribuída a um input. Escolha outra variável ou crie uma nova.')
-    }
+    setAssignedVariable(variableValue);
   }
 
   return (

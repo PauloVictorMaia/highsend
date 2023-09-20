@@ -97,6 +97,15 @@ const Flow = () => {
   }
 
   async function saveFlowData() {
+    const inputNodes = nodes.filter((node) => /input/i.test(node.type));
+    if (inputNodes.length > 0) {
+      const hasEmptyVariables = inputNodes.some((node) => node.data.variable === "");
+      if (hasEmptyVariables) {
+        toast.warning("Existem inputs ou botões sem variáveis atribuídas. Atribua uma varíavel à todos os inputs e botões do seu flow.");
+        return;
+      }
+    }
+
     try {
       const response = await api.patch(`/flows/update-flow/${user.id}/${params.flowid}`,
         { nodes, edges, variables },
@@ -104,14 +113,14 @@ const Flow = () => {
       if (response.status === 200) {
         toast.success('Dados salvos!');
         setHasChanges(false);
-        getFlowData;
+        getFlowData();
       }
     } catch (error) {
       toast.error('Erro ao salvar.');
     }
   }
 
-  window.addEventListener("beforeunload", function (event) {
+  document.addEventListener("beforeunload", function (event) {
     event.preventDefault();
     event.returnValue = "";
     return "";
@@ -129,6 +138,7 @@ const Flow = () => {
       nodes.map(node => lodash.omit(node, 'selected')),
       originalNodes.map(node => lodash.omit(node, 'selected'))
     );
+
     const edgesChanged = !lodash.isEqual(
       edges.map(edge => lodash.omit(edge, 'selected')),
       originalEdges.map(edge => lodash.omit(edge, 'selected'))
@@ -140,6 +150,7 @@ const Flow = () => {
     } else {
       setHasChanges(false);
     }
+
   }, [nodes, edges, variables]);
 
   const onConnect = useCallback((connection) => {

@@ -17,7 +17,6 @@ export const eventsListMenu = [
   {name: 'Próximos'},
   {name: 'Anteriores'},
   {name: 'Período'},
-  {name: 'Eventos da agenda'}, 
 ]
 
 export const leadsMenu = [

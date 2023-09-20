@@ -21,8 +21,6 @@ function ScheduleEvents({ calendarID }) {
   const [allNextDates, setAllNextDates] = useState([]);
   const [allPreviousEvents, setAllPreviousEvents] = useState([]);
   const [allPreviousDates, setAllPreviousDates] = useState([]);
-  const allEvents = [...allPreviousEvents, ...allNextEvents];
-  const allDates = [...allPreviousDates, ...allNextDates];
   const [dataLoaded, setDataLoaded] = useState(false);
   const currentDate = new Date();
   const endDateNumber = new Date(currentDate);
@@ -34,6 +32,9 @@ function ScheduleEvents({ calendarID }) {
   const [startDate, setStartDate] = useState(new Date(formattedStartDate));
   const [endDate, setEndDate] = useState(new Date(formattedEndDate));
   const [openCalendars, setOpenCalendars] = useState(true);
+  const [datesInRange, setDatesInRange] = useState([]);
+  const [eventsInRange, setEventsInRange] = useState([]);
+  const [eventsInRangeLoaded, setEventsInRangeLoaded] = useState(false);
 
   useEffect(() => {
     if (Object.keys(user).length > 0) {
@@ -53,6 +54,38 @@ function ScheduleEvents({ calendarID }) {
         setAllPreviousEvents(response.data.filteredAndSortedEventsPrevious);
         setAllPreviousDates(response.data.uniqueDatesPrevious);
         setDataLoaded(true);
+      }
+    } catch {
+      toast.error('Erro ao buscar eventos.');
+    }
+  }
+
+  async function getEventsInRange() {
+
+    const formattedStartDate = startDate.toISOString();
+    const formattedEndDate = endDate.toISOString();
+    const startDateObj = new Date(startDate);
+    const endDateObj = new Date(endDate);
+    const differenceInMilliseconds = endDateObj - startDateObj;
+    const differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
+
+    if (startDateObj > endDateObj) {
+      toast.warning("A data de início não pode ser posterior à data de término da busca. Verifique os dados e tente novamente.");
+      return;
+    }
+
+    if (differenceInDays > 90) {
+      toast.warning("O intervalo de busca não pode ser superior a 90 dias");
+      return;
+    }
+
+    try {
+      const response = await api.get(`/calendars/get-events-in-range/${user.id}/${calendarID}/${formattedStartDate}/${formattedEndDate}`, { headers: { authorization: token } });
+      if (response.status === 200) {
+        setEventsInRange(response.data.eventsInRange);
+        setDatesInRange(response.data.datesInRange);
+        setEventsInRangeLoaded(true);
+        setOpenCalendars(false);
       }
     } catch {
       toast.error('Erro ao buscar eventos.');
@@ -154,72 +187,69 @@ function ScheduleEvents({ calendarID }) {
       }
 
       {
-        menuComponent === 2 && allEvents.length > 0 ? (
-          <>
-            <Calendars isvisible={openCalendars}>
-              {openCalendars ?
-                <>
-                  <div style={{ display: "flex", columnGap: "20px" }}>
-                    <Calendar
-                      date={startDate}
-                      onChange={(date) => setStartDate(new Date(date))}
-                      locale={ptBR}
-                      style={{ minHeight: 200, boxShadow: "5px 8px 10px 4px rgba(0,0,0,0.35)" }}
-                    />
-                    <Calendar
-                      date={endDate}
-                      onChange={(date) => setEndDate(new Date(date))}
-                      locale={ptBR}
-                      style={{ minHeight: 200, boxShadow: "5px 8px 10px 4px rgba(0,0,0,0.35)" }}
-                    />
-                  </div>
-                  <button onClick={() => setOpenCalendars(false)}>Aplicar</button>
-                </>
-                :
-                <button onClick={() => setOpenCalendars(true)}>filtrar</button>
-              }
-            </Calendars>
-            <div>
-              {allDates.map((date, index) => {
-                const currentDate = new Date(date);
-                if (currentDate >= startDate && currentDate <= endDate) {
-                  return (
-                    <div key={index}>
-                      <EventDate date={date} />
-                      {allEvents
-                        .filter(event => event.day === date)
-                        .map((event, eventIndex) => (
-                          <EventCard
-                            key={eventIndex}
-                            color={event.color}
-                            start={event.time.start}
-                            end={event.time.end}
-                            eventDuration={event.eventDuration}
-                            inviteeName={event.name}
-                            inviteePhone={event.phone}
-                            inviteeEmail={event.email}
-                            cancelEvent={cancelEvent}
-                            calendarID={event.calendarID}
-                            eventID={event.id}
-                            calendarTitle={event.calendarTitle}
-                            local={event.local}
-                          />
-                        ))
-                      }
-                    </div>
-                  );
-                }
+        menuComponent === 2 &&
+        <>
+          <Calendars isvisible={openCalendars}>
+            {openCalendars ?
+              <>
+                <div style={{ display: "flex", columnGap: "20px" }}>
+                  <Calendar
+                    date={startDate}
+                    onChange={(date) => setStartDate(new Date(date))}
+                    locale={ptBR}
+                    style={{ minHeight: 200, boxShadow: "5px 8px 10px 4px rgba(0,0,0,0.35)" }}
+                  />
+                  <Calendar
+                    date={endDate}
+                    onChange={(date) => setEndDate(new Date(date))}
+                    locale={ptBR}
+                    style={{ minHeight: 200, boxShadow: "5px 8px 10px 4px rgba(0,0,0,0.35)" }}
+                  />
+                </div>
+                <button onClick={() => getEventsInRange()}>Aplicar</button>
+              </>
+              :
+              <button onClick={() => setOpenCalendars(true)}>filtrar</button>
+            }
+          </Calendars>
+        </>
+      }
 
-                return null;
-              })}
-              <EndList>
-                <span>Você chegou ao fim da lista.</span>
-              </EndList>
-            </div>
-          </>
+      {
+        menuComponent === 2 && eventsInRangeLoaded && eventsInRange.length > 0 ? (
+          <div>
+            {datesInRange.map((date, index) => (
+              <div key={index}>
+                <EventDate date={date} />
+                {eventsInRange
+                  .filter(event => event.day === date)
+                  .map((event, eventIndex) => (
+                    <EventCard
+                      key={eventIndex}
+                      color={event.color}
+                      start={event.time.start}
+                      end={event.time.end}
+                      eventDuration={event.eventDuration}
+                      inviteeName={event.name}
+                      inviteePhone={event.phone}
+                      inviteeEmail={event.email}
+                      cancelEvent={cancelEvent}
+                      calendarID={event.calendarID}
+                      eventID={event.id}
+                      calendarTitle={event.calendarTitle}
+                      local={event.local}
+                    />
+                  ))
+                }
+              </div>
+            ))}
+            <EndList>
+              <span>Você chegou ao fim da lista.</span>
+            </EndList>
+          </div>
         )
           :
-          menuComponent === 2 && dataLoaded && <span>Você não possui eventos agendados.</span>
+          eventsInRangeLoaded && <span>Não há eventos agendados nesse período.</span>
       }
     </Container>
   )
