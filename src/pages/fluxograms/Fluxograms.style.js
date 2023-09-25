@@ -34,11 +34,34 @@ export const FluxogramCard = styled.div`
   border-radius: 8px;
   padding: 5px;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px;
+  cursor: pointer;
+`;
+
+export const ActiveComponent = styled.div`
+ background-color: #99e699;
+ padding: 5px 8px;
+ border-radius: 10px;
+ font-size: 12px;
+ color: #fff;
+`;
+
+export const IconContainer = styled.div`
+ display: flex;
+ width: 100%;
+ justify-content: flex-end;
+ >svg {
+    cursor: pointer;
+    color: #333;
+  }
 `;
 
 export const Buttons = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   column-gap: 10px;
   >svg {
     cursor: pointer;
@@ -48,7 +71,6 @@ export const Buttons = styled.div`
 
 export const Content = styled.div`
   width: 100%;
-  height: 90%;
   color: #333;
   font-size: 1.5rem;
   font-weight: bold;

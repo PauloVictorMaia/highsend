@@ -4,6 +4,8 @@ import { useStateContext } from '../../contexts/ContextProvider';
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import { Tooltip } from '@mui/material';
+import LogoImage from '../../assets/logohiflow.png';
 
 const TopBarWrapper = styled.div`
   background-color: #fff;
@@ -14,7 +16,7 @@ const TopBarWrapper = styled.div`
   justify-content: space-between;
   padding: 0 25px;
   box-sizing: border-box;
-  border-bottom: 1px solid #f2f2f2;
+  border-bottom: .5px solid #e6e6e6;
 `;
 
 const UserMenu = styled.div`
@@ -91,6 +93,11 @@ export const UserIconContainer = styled.div`
  }
 `;
 
+const LogoComponent = styled.img`
+ width: 100px;
+ height: auto;
+`;
+
 const TopBar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -128,15 +135,19 @@ const TopBar = () => {
         <IconContainer onClick={() => setOpenMenu(!openMenu)} >
           <MenuIcon />
         </IconContainer>
-        <span>Hiflow</span>
+        <LogoComponent src={LogoImage} />
       </LogoContainer>
       <UserMenu>
-        <UserIconContainer>
-          <NotificationsNoneIcon />
-        </UserIconContainer>
-        <UserIconContainer>
-          <ChatBubbleOutlineIcon />
-        </UserIconContainer>
+        <Tooltip title="Notificações">
+          <UserIconContainer>
+            <NotificationsNoneIcon />
+          </UserIconContainer>
+        </Tooltip>
+        <Tooltip title="Suporte">
+          <UserIconContainer>
+            <ChatBubbleOutlineIcon />
+          </UserIconContainer>
+        </Tooltip>
         <UserIconContainer
           onClick={() => handleIconContainerClick()}
         >

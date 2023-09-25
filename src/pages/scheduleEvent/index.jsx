@@ -276,7 +276,7 @@ function ScheduleEvent(props) {
         setEvents(response.data.events);
         toast.success('Seu evento foi agendado com sucesso!');
         setScheduledEvent(true);
-        // props?.onSend();
+        props?.onSend();
         if (Object.keys(googleIntegration).length > 0) {
           await insertEventInGoogleCalendar(newSaveEvent, googleIntegration.token)
         }

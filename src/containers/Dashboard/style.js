@@ -22,7 +22,7 @@ export const DashContent = styled.div`
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
-  border-right: 1px solid #f2f2f2;
+  border-right: .5px solid #e6e6e6;
 `;
 
 export const IconContainer = styled.div`

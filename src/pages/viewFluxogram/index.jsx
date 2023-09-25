@@ -107,7 +107,7 @@ function Chatbot() {
 
     const interval = setInterval(() => {
       if (
-        indexNodesExibition < nodesExibition.length && !notPlusIndexNode.includes(actualNodeInScreen.type)) {
+        indexNodesExibition < nodesExibition.length && !notPlusIndexNode.includes(actualNodeInScreen?.type)) {
         setIndexNodesExibition(indexNodesExibition + 1);
       }
     }, intervalValue);
@@ -117,10 +117,12 @@ function Chatbot() {
 
   const exibitionNode = () => {
     const timeOut = setTimeout(() => {
-      const actualEdge = edges.filter((edge) => edge.source === actualNodeDisplay);
-      const nextNode = nodes.filter((node) => node.id === actualEdge[0].target);
-      setActualNodeDisplay(nextNode[0].id);
-      setNodesExibition([...nodesExibition, ...nextNode[0].data.blocks]);
+      const actualEdge = edges?.filter((edge) => edge.source === actualNodeDisplay);
+      const nextNode = nodes?.filter((node) => node.id === actualEdge[0]?.target);
+      if(nextNode?.length){
+        setActualNodeDisplay(nextNode[0].id);
+        setNodesExibition([...nodesExibition, ...nextNode[0]?.data.blocks]);
+      }
     }, 10);
     return () => clearTimeout(timeOut);
   }
@@ -210,7 +212,7 @@ function Chatbot() {
       case 'buttonInputNode':
         return <ButtonInput data={node.data} onSend={() => atualizationNodeDisplayed(node.id, node.data)} variables={variables} />;
       case 'dateInputNode':
-        return <DateInputNode data={node.data} onSend={() => sendVariableValue()} variables={variables} />;
+        return <DateInputNode data={node.data} onSend={() => sendVariableValue()} />;
       default:
         return null;
     }

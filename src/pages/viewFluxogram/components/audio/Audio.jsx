@@ -9,7 +9,7 @@ function Audio({ data }) {
 
   useEffect(() => {
     const updateProgress = () => {
-      if(audioRef){
+      if (audioRef) {
         const playedSeconds = audioRef.current.currentTime;
         const totalSeconds = audioRef.current.duration;
         const percentagePlayed = (playedSeconds / totalSeconds) * 100;
@@ -70,6 +70,7 @@ function Audio({ data }) {
                       {isPlaying ? '⏸️' : '▶️'}
                     </AudioButton>
                     <audio hidden ref={audioRef} src={data.value} />
+                    <audio  ref={audioRef} src={data.value} />
                     <AudioBarComponent>
                       <AudioProgress percentage={progress} />
                     </AudioBarComponent>
@@ -82,7 +83,6 @@ function Audio({ data }) {
         </div>
       </div>
     </BubleText>
-
   );
 }
 export default Audio;

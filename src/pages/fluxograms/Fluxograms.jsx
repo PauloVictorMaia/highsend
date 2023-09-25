@@ -1,6 +1,17 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Buttons, Container, Content, FluxogramCard, Modal, ModalContent, NewFluxogramCard, CloseButton, EditFlowName, DeleteFlow } from "./Fluxograms.style";
+import { Buttons,
+  Container,
+  Content,
+  FluxogramCard,
+  Modal,
+  ModalContent,
+  NewFluxogramCard,
+  CloseButton,
+  EditFlowName,
+  DeleteFlow,
+  IconContainer,
+  ActiveComponent } from "./Fluxograms.style";
 import AddIcon from '@mui/icons-material/Add';
 import { useState, useEffect } from "react";
 import api from '../../api';
@@ -16,6 +27,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import ControlPointDuplicateIcon from '@mui/icons-material/ControlPointDuplicate';
 import CopyAllIcon from '@mui/icons-material/CopyAll';
 import clipboardCopy from 'clipboard-copy';
+import Tooltip from '@mui/material/Tooltip';
 
 function Fluxograms() {
   const [menuComponent, setMenuComponent] = useState(0);
@@ -128,20 +140,46 @@ function Fluxograms() {
         {
           flows &&
           flows.map((flow, index) => (
-            <FluxogramCard key={index}>
+            <FluxogramCard key={index} onClick={() => navigate(`/dashboard/fluxograms/edit/${flow.id}`)}>
               <Buttons>
-                <CopyAllIcon style={{ fontSize: "1.6rem" }} onClick={() => copyFlowURL(`${BASE_URL}${user.id}/${flow.id}`)} />
-                <EditIcon onClick={() => setModalEditIsVisible(true)} />
-                <ControlPointDuplicateIcon onClick={() => cloneFlow(flow.id)} />
-                <DeleteIcon onClick={() => setModalDeleteIsVisible(true)} />
+                <Tooltip title="Copiar link">
+                  <CopyAllIcon style={{ fontSize: "1.6rem" }} onClick={(e) => {
+                    e.stopPropagation();
+                    copyFlowURL(`${BASE_URL}${user.id}/${flow.id}`)}
+                  } />
+                </Tooltip>
+                <ActiveComponent>Ativo</ActiveComponent>
+                <Tooltip title="Duplicar">
+                  <ControlPointDuplicateIcon onClick={(e) => {
+                    e.stopPropagation();
+                    cloneFlow(flow.id)}
+                  } />
+                </Tooltip>
               </Buttons>
-              <Content onClick={() => navigate(`/dashboard/fluxograms/edit/${flow.id}`)}>
+              <Content>
                 <span>{flow.name}</span>
               </Content>
+              <IconContainer>
+              <Tooltip title="Editar nome">
+                <EditIcon style={{ marginRight: 10 }} onClick={(e) => {
+                  e.stopPropagation();
+                  setModalEditIsVisible(true)}
+                } />
+              </Tooltip>
+              <Tooltip title="Deletar fluxo">
+                <DeleteIcon onClick={(e) => {
+                  e.stopPropagation();
+                  setModalDeleteIsVisible(true)}
+                } />
+              </Tooltip>
+              </IconContainer>
 
               <Modal isvisible={modalEditIsVisible}>
                 <ModalContent>
-                  <CloseButton onClick={() => closeEditModal()}>
+                  <CloseButton onClick={(e) => {
+                    e.stopPropagation()
+                    closeEditModal()}
+                  }>
                     <ClearIcon />
                   </CloseButton>
 
@@ -159,7 +197,10 @@ function Fluxograms() {
 
               <Modal isvisible={modalDeleteIsVisible}>
                 <ModalContent>
-                  <CloseButton onClick={() => setModalDeleteIsVisible(false)}>
+                  <CloseButton onClick={(e) => {
+                    e.stopPropagation();
+                    setModalDeleteIsVisible(false)}
+                  }>
                     <ClearIcon />
                   </CloseButton>
 
