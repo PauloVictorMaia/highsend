@@ -119,13 +119,12 @@ export const BubleText = styled.div`
 `;
 
 export const AudioControl = styled.div`
-  display: flex;
+  animation: 1.5s ${appear} forwards;
   align-items: center;
   background-color: #E5E5E5;
   border-radius: 20px;
   padding: 5px 10px;
   min-width: 250px;
-  animation: 1.5 ${appear} forwards;
 `;
 
 export const AudioButton = styled.button`

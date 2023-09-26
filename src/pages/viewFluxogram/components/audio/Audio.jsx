@@ -69,8 +69,7 @@ function Audio({ data }) {
                     <AudioButton onClick={handlePlayPause}>
                       {isPlaying ? '⏸️' : '▶️'}
                     </AudioButton>
-                    <audio hidden ref={audioRef} src={data.value} />
-                    <audio  ref={audioRef} src={data.value} />
+                    <audio hidden ref={audioRef} controls src={data.value} type="audio/mpeg" />
                     <AudioBarComponent>
                       <AudioProgress percentage={progress} />
                     </AudioBarComponent>
