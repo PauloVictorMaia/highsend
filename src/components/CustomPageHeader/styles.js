@@ -40,6 +40,7 @@ export const ContentHeader = styled.div`
 `;
 
 export const Button = styled.button`
+width: 150px;
  margin-bottom: 5px;
  border-radius: 15px;
  cursor: pointer;

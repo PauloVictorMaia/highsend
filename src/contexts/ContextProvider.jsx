@@ -20,7 +20,9 @@ export const ContextProvider = ({ children }) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        getUser(token);
+        if (login) {
+            getUser(token);
+        }
     }, [token]);
 
     const createNewVariable = (newVariable) => {
@@ -56,7 +58,7 @@ export const ContextProvider = ({ children }) => {
     };
 
     const signIn = async (email, password) => {
-        if (!email || !password) return alert('Faltam dados!');
+        if (!email || !password) return toast.warning('Faltam dados!');
 
         try {
             const response = await api.post('/users/sign-in', { email, password });

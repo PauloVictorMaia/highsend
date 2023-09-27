@@ -16,6 +16,7 @@ import EditGoogleIntegration from "./pages/integrations/editGoogleIntegration";
 import LoginPage from "./pages/Login";
 import LandingPage from "./pages/LandingPage";
 import LeadsResults from "./pages/leads/leadsResults";
+import SubscriptionPage from "./pages/subscription/SubscriptionPage";
 
 
 const App = () => {
@@ -28,6 +29,7 @@ const App = () => {
           <Route path="/agendar-evento/:userId/:calendarId" element={<ScheduleEvent />} />
           <Route path="/fluxo-de-bot/:userId/:flowId" element={<Chatbot />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/subscription/:type/:subscriptionId" element={<SubscriptionPage />} />
           <Route path="/dashboard/*" element={<DashBoard />}>
             <Route index element={<Navigate to="fluxograms" />} />
             <Route path="fluxograms" element={<Fluxograms />} />

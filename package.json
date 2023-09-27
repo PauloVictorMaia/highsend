@@ -15,6 +15,8 @@
     "@mui/icons-material": "^5.14.1",
     "@mui/material": "^5.14.1",
     "@reactflow/node-resizer": "^2.1.1",
+    "@stripe/react-stripe-js": "^2.3.0",
+    "@stripe/stripe-js": "^2.1.6",
     "axios": "^1.4.0",
     "clipboard-copy": "^4.0.1",
     "countries-list": "^2.6.1",

@@ -1,5 +1,6 @@
-import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import { plans } from '../../data/plans';
 
 const Container = styled.div`
   font-family: Arial, sans-serif;
@@ -43,6 +44,28 @@ const PlanCard = styled.div`
   }
 `;
 
+const ButtonContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+
+  > button {
+    background: #F26800;
+    font-family: Arial, sans-serif;
+    color: #ffffff;
+    border-radius: 4px;
+    border: 0;
+    padding: 12px 16px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: block;
+    box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07);
+    width: 150px;
+  }
+`;
+
 const CTASection = styled.section`
   background-color: #F26800;
   color: white;
@@ -56,6 +79,9 @@ const Footer = styled.footer`
 `;
 
 const LandingPage = () => {
+
+  const navigate = useNavigate();
+
   return (
     <Container>
       <Header>
@@ -74,38 +100,25 @@ const LandingPage = () => {
       </FeaturesSection>
 
       <PlanSection>
-        <PlanCard>
-          <h3>Básico</h3>
-          <p>Para startups e profissionais individuais</p>
-          <ul>
-            <li>Chatbot básico</li>
-            <li>Agendamento simples</li>
-            <li>Até 500 interações/mês</li>
-          </ul>
-          <h4>R$29/mês</h4>
-        </PlanCard>
-
-        <PlanCard>
-          <h3>Empresarial</h3>
-          <p>Para empresas em crescimento</p>
-          <ul>
-            <li>Chatbot avançado</li>
-            <li>Agendamento com integrações</li>
-            <li>Até 10.000 interações/mês</li>
-          </ul>
-          <h4>R$99/mês</h4>
-        </PlanCard>
-
-        <PlanCard>
-          <h3>Premium</h3>
-          <p>Para grandes empresas</p>
-          <ul>
-            <li>Chatbot AI-driven</li>
-            <li>Agendamento ilimitado</li>
-            <li>Suporte prioritário 24/7</li>
-          </ul>
-          <h4>R$199/mês</h4>
-        </PlanCard>
+        {
+          plans.map((plan) => (
+            <PlanCard key={plan.id}>
+              <h3>{plan.type}</h3>
+              <p>{plan.description}</p>
+              <ul>
+                {
+                  plan.resources.map((resource, index) => (
+                    <li key={index}>{resource}</li>
+                  ))
+                }
+              </ul>
+              <h4>{`R$${plan.price}/mês`}</h4>
+              <ButtonContainer>
+                <button onClick={() => navigate(`/subscription/${plan.type}/${plan.id}`)}>Vamos lá</button>
+              </ButtonContainer>
+            </PlanCard>
+          ))
+        }
       </PlanSection>
 
       <CTASection>
