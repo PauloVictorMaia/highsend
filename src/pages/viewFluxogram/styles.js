@@ -48,7 +48,7 @@ export const AvatarContainer = styled.div`
 
 export const Avatar = styled.div`
   position: absolute;
-  top: ${({ height }) => `${height - 35}px`};
+  top: ${({ height }) => `${height - 40}px`};
   min-width: 35px;
   height: 35px;
   background-image: url(${props => props.img});

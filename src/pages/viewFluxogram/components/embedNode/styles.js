@@ -1,46 +1,17 @@
 import styled, { keyframes } from 'styled-components';
 
 const appear = keyframes`  
-  0% {
-    display: none;
-    width: 0;
-    height: 0;
-    overflow: hidden;
-  }
-
-  99% {
-    display: none;
-    width: 0;
-    height: 0;
-    overflow: hidden;
+  0%, 99%{
+    opacity: 0;
   }
 
   100% {
-    display: block;
-    width: auto;
-    height: auto;
+    opacity: 1;
   }
 `
 
 const blink = keyframes`
   50% {opacity: 0}
-`
-
-const disappear = keyframes`
-  0% {
-    display: block;
-  }
-
-  99% {
-    display: block;
-  }
-
-  100% {
-    display: none;
-    width: 0;
-    height: 0;
-    overflow: hidden;
-  }
 `
 
 const fadeIn = keyframes`
@@ -55,28 +26,22 @@ const fadeIn = keyframes`
 `
 
 export const BubleText = styled.div`
-.chat-thread {
   .message {
-    animation: ${fadeIn} 1s ease-in-out;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
     animation-delay: 0s;
-  }
-
-  .video {
-    animation: 1.5s ${appear} forwards;
-    max-width: 100%;
-    min-height: 200px;
+    background: transparent;
+    display: flex;
+    margin: 5px 0;
+    width: 100%;
   }
 
   .typing-indicator {
     display: flex;
-    animation: 0s ${disappear} 1.5s forwards;
     
     span {
       height: 10px;
       width: 10px;
-      float: left;
       margin: 0 2px;
       background-color: #9E9EA1;
       display: block;
@@ -85,41 +50,32 @@ export const BubleText = styled.div`
       animation: ${blink} 1s infinite;
     }
   }
-}
+`;
 
-.message {
-  background: transparent;
-  display: flex;
-  margin: 5px 0;
-  width: 100%;
-}
+export const MessageContainer = styled.div`
+ 
+`;
 
-.message-content {
-  display: flex;
-  align-items: center;
-  padding: 0.75em 1.5em;
-  background: #F7F8FF;
-  border-radius: 10px;
-  color: #333;
-}
-
-.chat-actions {
-  text-align: center;
-  align-items: center;
-
-  button {
-    margin-top: 1rem;
-  }
-}
-
-.container {
+export const MessageContent = styled.div`
+  animation: ${fadeIn} 1s ease-in-out;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  
-  .card {
-    width: 100%;;
+  padding: 0.75em 1.5em;
+  box-sizing: border-box;
+  background: #F7F8FF;
+  border-radius: 10px;
+  color: #333;
+  width: ${({ typing }) => typing ? '70px' : '100%' };
+  height: ${({ typing }) => typing ? '40px' : '100%'};
+  transition: width .4s ease-out,height .4s ease-out;
+  min-height: 40px;
+  position: relative;
+
+  .video {
+    animation: .5s ${appear} forwards;
+    height: 500px;
+    object-fit: cover;
+    max-width: 100%;
   }
-}
 `;

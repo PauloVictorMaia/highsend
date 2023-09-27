@@ -3,12 +3,10 @@ import styled, { keyframes } from 'styled-components';
 const appear = keyframes`  
   0%, 99%{
     opacity: 0;
-    max-height: 24px;
   }
 
   100% {
     opacity: 1;
-    max-height: 100%;
   }
 `
 
@@ -52,14 +50,6 @@ export const BubleText = styled.div`
       animation: ${blink} 1s infinite;
     }
   }
-
-  p {
-    text-align: left;
-    max-width: 100%;
-    word-wrap: break-word;
-    animation: .5s ${appear} forwards;
-    transition: opacity .4s ease-in .2s;
-  }
 `;
 
 export const MessageContainer = styled.div`
@@ -76,8 +66,24 @@ export const MessageContent = styled.div`
   background: #F7F8FF;
   border-radius: 10px;
   color: #333;
-  width: ${({ typing }) => typing ? '70px' : '100%' };
-  height: ${({ typing }) => typing ? '40px' : '100%'};
+  width: ${({ typing }) => typing ? '70px' : '100%'};
+  max-height: ${({ typing, height }) => typing ? '40px' : `${height - (height * 0.65)}px`};
   transition: width .4s ease-out,height .4s ease-out;
   min-height: 40px;
+
+  .offscreen {
+    position: absolute;
+    left: -10000px;
+    top: -10000px;
+    overflow: visible;
+  }
+
+  p {
+    text-align: left;
+    max-width: 100%;
+    word-wrap: break-word;
+    animation: .5s ${appear} forwards;
+    transition: opacity .4s ease-in .2s;
+    overflow-y: hidden;
+  }
 `;

@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { BubleText, MessageContent, MessageContainer } from "./styles";
+import { useRef } from "react";
 
 function Text({ data, variables }) {
+  const elementRef = useRef(null);
   const [textValue, setTextValue] = useState('');
   const [showTyping, setShowTyping] = useState(true);
+  const [elementHeight, setElementHeight] = useState(0);
 
   useEffect(() => {
     let newStr = data.value;
@@ -24,11 +27,22 @@ function Text({ data, variables }) {
     return () => clearTimeout(timer);
   }, []);
 
+  useEffect(() => {
+    const calculateAndSetHeight = () => {
+      if (elementRef.current) {
+        setElementHeight(elementRef.current.offsetHeight);
+      }
+    };
+
+    setTimeout(calculateAndSetHeight, 50);
+    return () => clearTimeout(calculateAndSetHeight);
+  }, []);
+
   return (
     <BubleText>
       <div className="message">
         <MessageContainer>
-          <MessageContent typing={showTyping} className="message-content">
+          <MessageContent height={elementHeight} typing={showTyping} className="message-content">
             {showTyping ?
               <div className="typing-indicator">
                 <span></span>
@@ -38,6 +52,7 @@ function Text({ data, variables }) {
               :
               <p>{textValue}</p>
             }
+          <p className="offscreen" ref={elementRef}>{textValue}</p>
           </MessageContent>
         </MessageContainer>
       </div>
