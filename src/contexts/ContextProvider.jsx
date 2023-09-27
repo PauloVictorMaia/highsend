@@ -20,9 +20,7 @@ export const ContextProvider = ({ children }) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (login) {
-            getUser(token);
-        }
+        getUser(token);
     }, [token]);
 
     const createNewVariable = (newVariable) => {
