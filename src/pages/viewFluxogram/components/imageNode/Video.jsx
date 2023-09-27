@@ -1,31 +1,38 @@
-import { BubleText } from "./styles";
+import { useEffect, useState } from "react";
+import { BubleText, MessageContent, MessageContainer } from "./styles";
 
 function ImageNode({ data }) {
+  const [showTyping, setShowTyping] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowTyping(false);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <BubleText>
-      <div className="container">
-        <div className="card">
-          <div className="card-body">
-            <div className="chat-thread">
-              <div className="message">
-                <div className="message-content">
-                  <div className="typing-indicator">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                  </div>
-                  <img
-                    className="image"
-                    src={data.value}
-                  ></img>
-                </div>
+      <div className="message">
+        <MessageContainer>
+          <MessageContent typing={showTyping} className="message-content">
+            {showTyping ?
+              <div className="typing-indicator">
+                <span></span>
+                <span></span>
+                <span></span>
               </div>
-            </div>
-          </div>
-        </div>
+              :
+              <img
+                className="image"
+                src={data.value}
+              ></img>
+            }
+          </MessageContent>
+        </MessageContainer>
       </div>
     </BubleText>
-
   );
 }
 
