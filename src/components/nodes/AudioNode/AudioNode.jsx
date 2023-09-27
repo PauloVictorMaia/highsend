@@ -31,7 +31,7 @@ function AudioNode({ data, id, selected }) {
       formData.append('nodeAudio', file);
       const response = await api.post('/flows/upload-audio', formData,
         {
-          headers: { 'Content-Type': 'multipart/form-data' }
+          headers: { 'Content-Type': 'audio/mpeg' }
         });
       if (response.status === 201) {
         setNodeValue(response.data.audioUrl)
