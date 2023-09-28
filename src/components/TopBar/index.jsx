@@ -101,7 +101,7 @@ const LogoComponent = styled.img`
 const TopBar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const { openMenu, setOpenMenu, signOut } = useStateContext();
+  const { openMenu, setOpenMenu, signOut, user } = useStateContext();
 
   const handleIconContainerClick = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -151,7 +151,14 @@ const TopBar = () => {
         <UserIconContainer
           onClick={() => handleIconContainerClick()}
         >
-          <Avatar alt="User Avatar">P</Avatar>
+          <Avatar alt="User Avatar">
+            {
+              user && Object.keys(user).length > 0 ?
+                user.name.charAt(0).toUpperCase()
+                :
+                ""
+            }
+          </Avatar>
         </UserIconContainer>
         {isDropdownOpen && (
           <Dropdown ref={dropdownRef} isOpen={isDropdownOpen}>

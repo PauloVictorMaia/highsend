@@ -5,6 +5,15 @@
   border-radius: 50%;
 }
 
+#next-button:hover {
+  filter: contrast(115%);
+}
+
+#next-button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
 .spinner {
   color: #ffffff;
   font-size: 22px;

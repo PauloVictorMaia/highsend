@@ -9,7 +9,7 @@ import { useStateContext } from "../../contexts/ContextProvider";
 function Leads() {
 
   const [menuComponent, setMenuComponent] = useState(0);
-  const { flows } = useStateContext();
+  const { flows, leadsDataLoaded } = useStateContext();
 
   return (
     <ContentPageContainer
@@ -35,7 +35,7 @@ function Leads() {
           )
             :
             (
-              <span>Você ainda não possui leads.</span>
+              leadsDataLoaded && <span>Você ainda não possui leads.</span>
             )
         }
       </Container>

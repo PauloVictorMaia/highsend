@@ -9,7 +9,7 @@ import UserIntegrationCard from "../../../components/UserIntegrationCards";
 function IntegrationsList() {
 
   const token = localStorage.getItem('token');
-  const { user, integrations } = useStateContext();
+  const { user, integrations, integrationsDataLoaded } = useStateContext();
 
   const googleLogin = async () => {
     try {
@@ -63,7 +63,7 @@ function IntegrationsList() {
           )
             :
             (
-              <span>Você ainda não possui integrações.</span>
+              integrationsDataLoaded && <span>Você ainda não possui integrações.</span>
             )
         }
       </UserIntegrations>

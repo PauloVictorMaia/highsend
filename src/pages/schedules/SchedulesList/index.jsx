@@ -20,7 +20,7 @@ import clipboardCopy from "clipboard-copy";
 function SchedulesList() {
   const [indexDrop, setIndexDrop] = useState(null);
   const navigate = useNavigate();
-  const { user, calendarsData, getCalendars } = useStateContext();
+  const { user, calendarsData, getCalendars, schedulesDataLoaded } = useStateContext();
   const token = localStorage.getItem('token');
   const [modalIsVisible, setModalIsVisible] = useState(false);
   const menuRef = useRef(null);
@@ -209,7 +209,7 @@ function SchedulesList() {
         </ScheduleCard>
       ))
         :
-        <span>Não há agendas. Crie sua primeira agenda!</span>
+        schedulesDataLoaded && <span>Não há agendas. Crie sua primeira agenda!</span>
       }
     </Container>
   )

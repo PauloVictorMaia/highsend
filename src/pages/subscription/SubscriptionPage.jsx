@@ -176,7 +176,7 @@ const SubscriptionPage = () => {
             <label htmlFor="show-password">Mostrar senha</label>
           </CheckBoxContainer>
 
-          <button disabled={isLoading} onClick={() => handleStep()}>
+          <button id="next-button" disabled={isLoading} onClick={() => handleStep()}>
             <span>
               {isLoading ? <div className="spinner" id="spinner"></div> : "Ir para pagamento"}
             </span>

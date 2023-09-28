@@ -18,6 +18,9 @@ export const ContextProvider = ({ children }) => {
     const [flows, setFlows] = useState([]);
     const [calendarsData, setCalendarsData] = useState([]);
     const [integrations, setIntegrations] = useState([]);
+    const [schedulesDataLoaded, setSchedulesDataLoaded] = useState(false);
+    const [integrationsDataLoaded, setIntegrationsDataLoaded] = useState(false);
+    const [leadsDataLoaded, setLeadsDataLoaded] = useState(false);
     // eslint-disable-next-line no-unused-vars
     const [token, setToken] = useState(localStorage.getItem('token'));
     const navigate = useNavigate();
@@ -56,6 +59,7 @@ export const ContextProvider = ({ children }) => {
         try {
             const response = await api.get(`/flows/get-flows/${user.id}`, { headers: { authorization: token } });
             setFlows(response.data);
+            setLeadsDataLoaded(true);
         } catch {
             toast.error('Erro ao carregar flows.');
         }
@@ -66,9 +70,7 @@ export const ContextProvider = ({ children }) => {
             const response = await api.get(`/calendars/get-calendars/${user.id}`, { headers: { authorization: token } });
             if (response.status === 201) {
                 setCalendarsData(response.data.filteredCalendars);
-            }
-            if (response.status === 404) {
-                toast.warning("Não há calendários para esse usuário.");
+                setSchedulesDataLoaded(true);
             }
         } catch {
             toast.error('Erro ao buscar agendas.');
@@ -80,6 +82,7 @@ export const ContextProvider = ({ children }) => {
             const response = await api.get(`/integrations/get-integrations-filtered/${user.id}`, { headers: { authorization: token } });
             if (response.status === 200) {
                 setIntegrations(response.data.googleIntegrations);
+                setIntegrationsDataLoaded(true);
             }
         } catch {
             return;
@@ -145,7 +148,10 @@ export const ContextProvider = ({ children }) => {
                 calendarsData,
                 getCalendars,
                 integrations,
-                getIntegrations
+                getIntegrations,
+                schedulesDataLoaded,
+                leadsDataLoaded,
+                integrationsDataLoaded
             }}
         >
             {children}

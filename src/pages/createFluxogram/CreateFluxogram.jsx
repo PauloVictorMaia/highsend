@@ -97,7 +97,8 @@ const Flow = () => {
   }
 
   async function saveFlowData() {
-    const inputNodes = nodes.filter((node) => /input/i.test(node.type));
+    const filteredNodes = nodes.filter((node) => node.type !== "dateInputNode");
+    const inputNodes = filteredNodes.filter((node) => /input/i.test(node.type));
     if (inputNodes.length > 0) {
       const hasEmptyVariables = inputNodes.some((node) => node.data.variable === "");
       if (hasEmptyVariables) {
