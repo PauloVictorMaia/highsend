@@ -23,6 +23,8 @@ export const ScheduleCard = styled.div`
  flex-direction: column;
  justify-content: space-between;
  opacity: ${({active}) => active ? "1" : "0.5"};
+ cursor: pointer;
+ box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.1);
 
  &:hover {
   box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
@@ -39,13 +41,9 @@ export const CardTitle = styled.span`
   font-size: 20px;
   color: #333;
   display: -webkit-box;
-  cursor: pointer;
   -webkit-line-clamp: 2; 
   -webkit-box-orient: vertical;
   overflow: hidden;
-   &:hover {
-    text-decoration: underline;
-   }
 `;
 
 export const CardColor = styled.div`

@@ -160,7 +160,7 @@ function ScheduleEvent(props) {
 
     const calendarArrayDays = [];
 
-    for (let i = 1; i <= calendarActiveDays; i++) {
+    for (let i = 0; i <= calendarActiveDays; i++) {
       let previousDays = new Date();
       previousDays.setDate(previousDays.getDate() + i);
       calendarArrayDays.push(JSON.stringify(new Date(`${previousDays.getMonth() + 1} ${previousDays.getDate()} ${previousDays.getFullYear()}`)));

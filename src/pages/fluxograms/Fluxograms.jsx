@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Buttons,
+import {
+  Buttons,
   Container,
   Content,
   FluxogramCard,
@@ -11,7 +12,8 @@ import { Buttons,
   EditFlowName,
   DeleteFlow,
   IconContainer,
-  ActiveComponent } from "./Fluxograms.style";
+  ActiveComponent
+} from "./Fluxograms.style";
 import AddIcon from '@mui/icons-material/Add';
 import { useState, useEffect } from "react";
 import api from '../../api';
@@ -21,13 +23,15 @@ import ContentPageContainer from "../../containers/ContentPageContainer";
 import { flowMenu } from "../../data/menus";
 import CustomPageHeader from "../../components/CustomPageHeader";
 import { toast } from "react-toastify";
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ClearIcon from '@mui/icons-material/Clear';
 import ControlPointDuplicateIcon from '@mui/icons-material/ControlPointDuplicate';
 import CopyAllIcon from '@mui/icons-material/CopyAll';
 import clipboardCopy from 'clipboard-copy';
 import Tooltip from '@mui/material/Tooltip';
+import CodeIcon from '@mui/icons-material/Code';
+import CopyEmbed from "../../components/CopyEmbedCode";
 
 function Fluxograms() {
   const [menuComponent, setMenuComponent] = useState(0);
@@ -37,6 +41,7 @@ function Fluxograms() {
   const [flows, setFlows] = useState([]);
   const [modalEditIsVisible, setModalEditIsVisible] = useState(false);
   const [modalDeleteIsVisible, setModalDeleteIsVisible] = useState(false);
+  const [modalEmbedIsVisible, setModalEmbedIsVisible] = useState(false);
   const [flowName, setFlowName] = useState("");
   const BASE_URL = "http://localhost:5173/fluxo-de-bot/";
 
@@ -145,14 +150,16 @@ function Fluxograms() {
                 <Tooltip title="Copiar link">
                   <CopyAllIcon style={{ fontSize: "1.6rem" }} onClick={(e) => {
                     e.stopPropagation();
-                    copyFlowURL(`${BASE_URL}${user.id}/${flow.id}`)}
+                    copyFlowURL(`${BASE_URL}${user.id}/${flow.id}`)
+                  }
                   } />
                 </Tooltip>
                 <ActiveComponent>Ativo</ActiveComponent>
                 <Tooltip title="Duplicar">
                   <ControlPointDuplicateIcon onClick={(e) => {
                     e.stopPropagation();
-                    cloneFlow(flow.id)}
+                    cloneFlow(flow.id)
+                  }
                   } />
                 </Tooltip>
               </Buttons>
@@ -160,25 +167,36 @@ function Fluxograms() {
                 <span>{flow.name}</span>
               </Content>
               <IconContainer>
-              <Tooltip title="Editar nome">
-                <EditIcon style={{ marginRight: 10 }} onClick={(e) => {
-                  e.stopPropagation();
-                  setModalEditIsVisible(true)}
-                } />
-              </Tooltip>
-              <Tooltip title="Deletar fluxo">
-                <DeleteIcon onClick={(e) => {
-                  e.stopPropagation();
-                  setModalDeleteIsVisible(true)}
-                } />
-              </Tooltip>
+                <Tooltip title="Inserir em site">
+                  <CodeIcon style={{ marginRight: 10 }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setModalEmbedIsVisible(true)
+                    }
+                    } />
+                </Tooltip>
+                <Tooltip title="Editar nome">
+                  <DriveFileRenameOutlineIcon style={{ marginRight: 10 }} onClick={(e) => {
+                    e.stopPropagation();
+                    setModalEditIsVisible(true)
+                  }
+                  } />
+                </Tooltip>
+                <Tooltip title="Deletar fluxo">
+                  <DeleteOutlineIcon onClick={(e) => {
+                    e.stopPropagation();
+                    setModalDeleteIsVisible(true)
+                  }
+                  } />
+                </Tooltip>
               </IconContainer>
 
-              <Modal isvisible={modalEditIsVisible}>
+              <Modal onClick={(e) => e.stopPropagation()} isvisible={modalEditIsVisible}>
                 <ModalContent>
                   <CloseButton onClick={(e) => {
                     e.stopPropagation()
-                    closeEditModal()}
+                    closeEditModal()
+                  }
                   }>
                     <ClearIcon />
                   </CloseButton>
@@ -195,11 +213,12 @@ function Fluxograms() {
                 </ModalContent>
               </Modal>
 
-              <Modal isvisible={modalDeleteIsVisible}>
+              <Modal onClick={(e) => e.stopPropagation()} isvisible={modalDeleteIsVisible}>
                 <ModalContent>
                   <CloseButton onClick={(e) => {
                     e.stopPropagation();
-                    setModalDeleteIsVisible(false)}
+                    setModalDeleteIsVisible(false)
+                  }
                   }>
                     <ClearIcon />
                   </CloseButton>
@@ -208,6 +227,21 @@ function Fluxograms() {
                     <span>Tem certeza que deseja deletar o flow "{flow.name}" ?</span>
                     <button onClick={() => deleteFlow(flow.id)}>Deletar</button>
                   </DeleteFlow>
+                </ModalContent>
+              </Modal>
+
+              <Modal onClick={(e) => e.stopPropagation()} isvisible={modalEmbedIsVisible}>
+                <ModalContent width={600} height={400}>
+                  <h2>Copie o códido do flow e insira no seu site</h2>
+                  <CloseButton onClick={(e) => {
+                    e.stopPropagation();
+                    setModalEmbedIsVisible(false)
+                  }
+                  }>
+                    <ClearIcon />
+                  </CloseButton>
+
+                  <CopyEmbed flowId={flow.id} userId={user.id} />
                 </ModalContent>
               </Modal>
             </FluxogramCard>

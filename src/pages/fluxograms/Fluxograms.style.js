@@ -30,6 +30,7 @@ export const NewFluxogramCard = styled.div`
 export const FluxogramCard = styled.div`
   width: 225px;
   max-height: 270px;
+  min-height: 270px;
   background-color: #d9d9d9;
   border-radius: 8px;
   padding: 5px;
@@ -94,26 +95,28 @@ export const Modal = styled.div`
 `;
 
 export const ModalContent = styled.div`
-  width: 300px;
-  height: 150px;
+  width: ${({ width }) => width? `${width}px` : '300px'};
+  height:${({ height }) => height? `${height}px` : '150px'}; ;
   background-color: #fff;
   border-radius: 8px;
+  padding: 10px;
+  position: relative;
 `;
 
 export const CloseButton = styled.button`
-  width: 25px;
-  height: 25px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   border: none;
   outline: none;
-  background-color: red;
+  background-color: #ff4d4d;
   padding: 2px;
-  position: relative;
+  position: absolute;
   top: -10px;
-  right: -285px;
+  right: -10px;
   cursor: pointer;
 
   >svg {
