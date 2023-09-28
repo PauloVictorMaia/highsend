@@ -19,10 +19,8 @@ import clipboardCopy from "clipboard-copy";
 
 function SchedulesList() {
   const [indexDrop, setIndexDrop] = useState(null);
-  const [calendarsData, setCalendarsData] = useState([]);
-  const [dataLoaded, setDataLoaded] = useState(false);
   const navigate = useNavigate();
-  const { user } = useStateContext();
+  const { user, calendarsData, getCalendars } = useStateContext();
   const token = localStorage.getItem('token');
   const [modalIsVisible, setModalIsVisible] = useState(false);
   const menuRef = useRef(null);
@@ -30,32 +28,11 @@ function SchedulesList() {
   const BASE_URL = "http://localhost:5173/agendar-evento/"
 
   useEffect(() => {
-    if (Object.keys(user).length > 0) {
-      getCalendars();
-    }
-  }, [user]);
-
-  useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-
-  async function getCalendars() {
-    try {
-      const response = await api.get(`/calendars/get-calendars/${user.id}`, { headers: { authorization: token } });
-      if (response.status === 201) {
-        setCalendarsData(response.data.filteredCalendars);
-        setDataLoaded(true);
-      }
-      if (response.status === 404) {
-        toast.warning("Não há calendários para esse usuário.");
-      }
-    } catch {
-      toast.error('Erro ao buscar agendas.');
-    }
-  }
 
   async function cloneCalendar(calendarID) {
     try {
@@ -232,7 +209,7 @@ function SchedulesList() {
         </ScheduleCard>
       ))
         :
-        dataLoaded && <span>Não há agendas. Crie sua primeira agenda!</span>
+        <span>Não há agendas. Crie sua primeira agenda!</span>
       }
     </Container>
   )

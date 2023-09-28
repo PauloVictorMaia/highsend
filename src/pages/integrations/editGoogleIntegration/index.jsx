@@ -11,7 +11,7 @@ function EditGoogleIntegration() {
   const params = useParams();
   const integrationID = params.id;
   const navigate = useNavigate();
-  const { user } = useStateContext();
+  const { user, getIntegrations } = useStateContext();
   const token = localStorage.getItem('token');
   const [integrationName, setIntegrationName] = useState("");
 
@@ -19,8 +19,9 @@ function EditGoogleIntegration() {
     if (Object.keys(user).length > 0) {
       getIntegrationName();
     }
-  }, [user]);
+  }, []);
 
+  //pode ser melhorado colocando o nome da própria rota ao invés de fazer requisição.
   async function getIntegrationName() {
     try {
       const response = await api.get(`/integrations/get-integration-data/${user.id}/${integrationID}`, { headers: { authorization: token } });
@@ -41,6 +42,7 @@ function EditGoogleIntegration() {
     try {
       const response = await api.patch(`/integrations/edit-integration-name/${user.id}/${integrationID}`, { integrationName }, { headers: { authorization: token } });
       if (response.status === 200) {
+        getIntegrations();
         toast.success('Dados da integração salvos com sucesso.');
         navigate('/dashboard/integrations/');
       }

@@ -130,7 +130,7 @@ const Flow = () => {
     if (Object.keys(user).length > 0) {
       getFlowData();
     }
-  }, [user]);
+  }, []);
 
   useEffect(() => {
 

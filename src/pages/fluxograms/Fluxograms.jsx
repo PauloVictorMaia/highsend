@@ -15,7 +15,7 @@ import {
   ActiveComponent
 } from "./Fluxograms.style";
 import AddIcon from '@mui/icons-material/Add';
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import api from '../../api';
 import { useStateContext } from "../../contexts/ContextProvider";
 import { useNavigate } from "react-router-dom";
@@ -34,9 +34,8 @@ import Tooltip from '@mui/material/Tooltip';
 function Fluxograms() {
   const [menuComponent, setMenuComponent] = useState(0);
   const navigate = useNavigate();
-  const { user } = useStateContext();
+  const { user, getFlows, flows } = useStateContext();
   const token = localStorage.getItem('token');
-  const [flows, setFlows] = useState([]);
   const [modalEditIsVisible, setModalEditIsVisible] = useState(false);
   const [modalDeleteIsVisible, setModalDeleteIsVisible] = useState(false);
   const [flowName, setFlowName] = useState("");
@@ -52,15 +51,6 @@ function Fluxograms() {
       toast.error('Erro ao criar novo flow.');
     }
   }
-
-  const getFlows = async () => {
-    try {
-      const response = await api.get(`/flows/get-flows/${user.id}`, { headers: { authorization: token } });
-      setFlows(response.data);
-    } catch {
-      toast.error('Erro ao carregar flows.');
-    }
-  };
 
   const editFlowName = async (flowID) => {
     if (!flowName) return;
@@ -114,12 +104,6 @@ function Fluxograms() {
       toast.error('Erro ao copiar link.');
     }
   }
-
-  useEffect(() => {
-    if (Object.keys(user).length > 0) {
-      getFlows();
-    }
-  }, [user]);
 
   return (
     <ContentPageContainer

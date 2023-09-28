@@ -1,7 +1,6 @@
 import { Container, Integrations, Title, UserIntegrations } from "./styles";
 import api from '../../../api';
 import { useStateContext } from '../../../contexts/ContextProvider';
-import { useState, useEffect } from "react";
 import GoogleCalendarImg from '../../../assets/google-calendar.png';
 import WhatsappImg from '../../../assets/whatsapp-logo.png';
 import IntegrationCard from "../../../components/IntegrationCard";
@@ -10,15 +9,7 @@ import UserIntegrationCard from "../../../components/UserIntegrationCards";
 function IntegrationsList() {
 
   const token = localStorage.getItem('token');
-  const { user } = useStateContext();
-  const [integrations, setIntegrations] = useState([]);
-  const [dataLoaded, setDataLoaded] = useState(false);
-
-  useEffect(() => {
-    if (Object.keys(user).length > 0) {
-      getIntegrations()
-    }
-  }, [user]);
+  const { user, integrations } = useStateContext();
 
   const googleLogin = async () => {
     try {
@@ -31,18 +22,6 @@ function IntegrationsList() {
       return;
     }
   };
-
-  async function getIntegrations() {
-    try {
-      const response = await api.get(`/integrations/get-integrations-filtered/${user.id}`, { headers: { authorization: token } });
-      if (response.status === 200) {
-        setIntegrations(response.data.googleIntegrations);
-        setDataLoaded(true);
-      }
-    } catch {
-      return;
-    }
-  }
 
   const syncWhatsapp = async () => {
     return;
@@ -84,7 +63,7 @@ function IntegrationsList() {
           )
             :
             (
-              dataLoaded && <span>Você ainda não possui integrações.</span>
+              <span>Você ainda não possui integrações.</span>
             )
         }
       </UserIntegrations>

@@ -68,7 +68,7 @@ function LeadsResults() {
       getLeads();
       getVariables();
     }
-  }, [user]);
+  }, []);
 
   const getLeads = async () => {
     try {
