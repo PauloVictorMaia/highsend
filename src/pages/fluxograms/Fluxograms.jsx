@@ -41,6 +41,7 @@ function Fluxograms() {
   const [modalEditIsVisible, setModalEditIsVisible] = useState(false);
   const [modalDeleteIsVisible, setModalDeleteIsVisible] = useState(false);
   const [modalEmbedIsVisible, setModalEmbedIsVisible] = useState(false);
+  const [indexModal, setIndexModal] = useState(null);
   const [flowName, setFlowName] = useState("");
   const BASE_URL = "http://localhost:5173/fluxo-de-bot/";
 
@@ -156,27 +157,30 @@ function Fluxograms() {
                   <CodeIcon style={{ marginRight: 10 }}
                     onClick={(e) => {
                       e.stopPropagation();
-                      setModalEmbedIsVisible(true)
+                      setModalEmbedIsVisible(true);
+                      setIndexModal(index);
                     }
                     } />
                 </Tooltip>
                 <Tooltip title="Editar nome">
                   <DriveFileRenameOutlineIcon style={{ marginRight: 10 }} onClick={(e) => {
                     e.stopPropagation();
-                    setModalEditIsVisible(true)
+                    setModalEditIsVisible(true);
+                    setIndexModal(index);
                   }
                   } />
                 </Tooltip>
                 <Tooltip title="Deletar fluxo">
                   <DeleteOutlineIcon onClick={(e) => {
                     e.stopPropagation();
-                    setModalDeleteIsVisible(true)
+                    setModalDeleteIsVisible(true);
+                    setIndexModal(index);
                   }
                   } />
                 </Tooltip>
               </IconContainer>
 
-              <Modal onClick={(e) => e.stopPropagation()} isvisible={modalEditIsVisible}>
+              <Modal onClick={(e) => e.stopPropagation()} isvisible={modalEditIsVisible && index == indexModal}>
                 <ModalContent>
                   <CloseButton onClick={(e) => {
                     e.stopPropagation()
@@ -198,7 +202,7 @@ function Fluxograms() {
                 </ModalContent>
               </Modal>
 
-              <Modal onClick={(e) => e.stopPropagation()} isvisible={modalDeleteIsVisible}>
+              <Modal onClick={(e) => e.stopPropagation()} isvisible={modalDeleteIsVisible && index == indexModal}>
                 <ModalContent>
                   <CloseButton onClick={(e) => {
                     e.stopPropagation();
@@ -215,7 +219,7 @@ function Fluxograms() {
                 </ModalContent>
               </Modal>
 
-              <Modal onClick={(e) => e.stopPropagation()} isvisible={modalEmbedIsVisible}>
+              <Modal onClick={(e) => e.stopPropagation()} isvisible={modalEmbedIsVisible && index == indexModal}>
                 <ModalContent width={600} height={400}>
                   <h2>Copie o códido do flow e insira no seu site</h2>
                   <CloseButton onClick={(e) => {
