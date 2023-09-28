@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Buttons,
+import {
+  Buttons,
   Container,
   Content,
   FluxogramCard,
@@ -11,7 +12,8 @@ import { Buttons,
   EditFlowName,
   DeleteFlow,
   IconContainer,
-  ActiveComponent } from "./Fluxograms.style";
+  ActiveComponent
+} from "./Fluxograms.style";
 import AddIcon from '@mui/icons-material/Add';
 import { useState, useEffect } from "react";
 import api from '../../api';
@@ -145,14 +147,16 @@ function Fluxograms() {
                 <Tooltip title="Copiar link">
                   <CopyAllIcon style={{ fontSize: "1.6rem" }} onClick={(e) => {
                     e.stopPropagation();
-                    copyFlowURL(`${BASE_URL}${user.id}/${flow.id}`)}
+                    copyFlowURL(`${BASE_URL}${user.id}/${flow.id}`)
+                  }
                   } />
                 </Tooltip>
                 <ActiveComponent>Ativo</ActiveComponent>
                 <Tooltip title="Duplicar">
                   <ControlPointDuplicateIcon onClick={(e) => {
                     e.stopPropagation();
-                    cloneFlow(flow.id)}
+                    cloneFlow(flow.id)
+                  }
                   } />
                 </Tooltip>
               </Buttons>
@@ -160,25 +164,28 @@ function Fluxograms() {
                 <span>{flow.name}</span>
               </Content>
               <IconContainer>
-              <Tooltip title="Editar nome">
-                <EditIcon style={{ marginRight: 10 }} onClick={(e) => {
-                  e.stopPropagation();
-                  setModalEditIsVisible(true)}
-                } />
-              </Tooltip>
-              <Tooltip title="Deletar fluxo">
-                <DeleteIcon onClick={(e) => {
-                  e.stopPropagation();
-                  setModalDeleteIsVisible(true)}
-                } />
-              </Tooltip>
+                <Tooltip title="Editar nome">
+                  <EditIcon style={{ marginRight: 10 }} onClick={(e) => {
+                    e.stopPropagation();
+                    setModalEditIsVisible(true)
+                  }
+                  } />
+                </Tooltip>
+                <Tooltip title="Deletar fluxo">
+                  <DeleteIcon onClick={(e) => {
+                    e.stopPropagation();
+                    setModalDeleteIsVisible(true)
+                  }
+                  } />
+                </Tooltip>
               </IconContainer>
 
               <Modal isvisible={modalEditIsVisible}>
                 <ModalContent>
                   <CloseButton onClick={(e) => {
                     e.stopPropagation()
-                    closeEditModal()}
+                    closeEditModal()
+                  }
                   }>
                     <ClearIcon />
                   </CloseButton>
@@ -199,7 +206,8 @@ function Fluxograms() {
                 <ModalContent>
                   <CloseButton onClick={(e) => {
                     e.stopPropagation();
-                    setModalDeleteIsVisible(false)}
+                    setModalDeleteIsVisible(false)
+                  }
                   }>
                     <ClearIcon />
                   </CloseButton>

@@ -75,6 +75,7 @@ function AddSchedule() {
   const [whatsappIntegrations, setWhatsappIntegrations] = useState([]);
   const [googleIntegrationSelected, setGoogleIntegrationSelected] = useState("");
   const [whatsappIntegrationSelected, setWhatsappIntegrationSelected] = useState("");
+  const [createdAt, setCreatedAt] = useState(null);
 
   async function getCalendarData() {
     try {
@@ -104,6 +105,7 @@ function AddSchedule() {
         setEventTitle(calendar.room.title);
         setEventColor(calendar.room.color);
         setEventActive(calendar.room.active);
+        setCreatedAt(calendar.room.createdAt);
       }
     } catch {
       toast.error('Erro ao buscar agenda.');
@@ -171,6 +173,7 @@ function AddSchedule() {
     const calendar = {
       room: {
         id: params.id,
+        createdAt,
         type: 'oneaone',
         vacancies: 1,
         active: eventActive,

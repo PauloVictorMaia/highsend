@@ -38,7 +38,6 @@ function ScheduleEvent(props) {
   const [events, setEvents] = useState([]);
   const [scheduledEvent, setScheduledEvent] = useState(false);
   const params = useParams();
-  const code = localStorage.getItem('code');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -256,8 +255,11 @@ function ScheduleEvent(props) {
       return;
     }
 
+    const createdAt = new Date();
+
     const newSaveEvent = {
       id: uuidv4(),
+      createdAt,
       calendarID: calendarData.room.id,
       color: calendarData.room.color,
       local: calendarData.room.local,

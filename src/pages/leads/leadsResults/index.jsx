@@ -201,7 +201,7 @@ function LeadsResults() {
                       }
                     </td>
                     <td>
-                      {format(new Date(lead.createDate), "dd 'de' MMMM 'de' yyyy, 'às' HH:mm", { locale: ptBR })}
+                      {format(new Date(lead.createdAt), "dd 'de' MMMM 'de' yyyy, 'às' HH:mm", { locale: ptBR })}
                     </td>
                     {variables.map((variable) => (
                       <td key={variable.id}>

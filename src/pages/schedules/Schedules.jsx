@@ -33,6 +33,7 @@ function Schedules() {
     const calendar = {
       room: {
         id: uuidv4(),
+        createdAt: new Date(),
         type: "oneaone",
         vacancies: 1,
         active: true,
