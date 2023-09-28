@@ -115,6 +115,7 @@ const Flow = () => {
         toast.success('Dados salvos!');
         setHasChanges(false);
         getFlowData();
+
       }
     } catch (error) {
       toast.error('Erro ao salvar.');

@@ -49,6 +49,7 @@ function Fluxograms() {
       const response = await api.post(`/flows/create-flow/${user.id}`, {}, { headers: { authorization: token } });
       if (response.status === 201) {
         navigate(`/dashboard/fluxograms/edit/${response.data.id}`);
+        getFlows();
       }
     } catch {
       toast.error('Erro ao criar novo flow.');
