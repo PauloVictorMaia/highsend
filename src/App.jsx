@@ -9,7 +9,6 @@ import { ContextProvider } from "./contexts/ContextProvider";
 import AddSchedule from "./pages/addSchedules";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.min.css';
-import ScheduleEvent from "./pages/scheduleEvent";
 import Chatbot from "./pages/viewFluxogram";
 import IntegrationsList from "./pages/integrations/integrationsList";
 import EditGoogleIntegration from "./pages/integrations/editGoogleIntegration";
@@ -17,16 +16,15 @@ import LoginPage from "./pages/Login";
 import LandingPage from "./pages/LandingPage";
 import LeadsResults from "./pages/leads/leadsResults";
 import SubscriptionPage from "./pages/subscription/SubscriptionPage";
-
+import ExternalPageShedule from "./pages/externalPageSchedule";
 
 const App = () => {
-
   return (
     <BrowserRouter>
       <ContextProvider>
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/agendar-evento/:userId/:calendarId" element={<ScheduleEvent />} />
+          <Route path="/agendar-evento/:userId/:calendarId" element={<ExternalPageShedule />} />
           <Route path="/fluxo-de-bot/:userId/:flowId" element={<Chatbot />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/subscription/:type/:subscriptionId" element={<SubscriptionPage />} />

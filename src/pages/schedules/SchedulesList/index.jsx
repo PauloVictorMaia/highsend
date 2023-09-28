@@ -108,9 +108,9 @@ function SchedulesList() {
   return (
     <Container>
       {calendarsData.length >= 1 ? calendarsData.map((calendar, index) => (
-        <ScheduleCard key={index} active={calendar.room.active}>
+        <ScheduleCard onClick={() => navigate(`/dashboard/schedules/edit/${calendar.room.id}`)} key={index} active={calendar.room.active}>
           <TitleContainer>
-            <CardTitle onClick={() => navigate(`/dashboard/schedules/edit/${calendar.room.id}`)}>{calendar.room.title}</CardTitle>
+            <CardTitle>{calendar.room.title}</CardTitle>
             <ButtonText
               onClick={(event) =>
                 handleMenuClick(event, index)}
@@ -157,14 +157,21 @@ function SchedulesList() {
             </CardDetails>
           </div>
           <ButtonCard margin={calendar.calendar.type === 'specificDate' ? '10px' : '35px'}>
-            <ButtonText>
+            <ButtonText onClick={(e) => {
+              e.stopPropagation();
+              copyCalendarURL(`${BASE_URL}${user.id}/${calendar.room.id}`)
+            }}>
               <CopyAllIcon style={{ color: "#6666ff" }} />
-              <span onClick={() => copyCalendarURL(`${BASE_URL}${user.id}/${calendar.room.id}`)}>Copiar Link</span>
+              <span>Copiar Link</span>
             </ButtonText>
             <CardColor color={calendar.room.color}></CardColor>
           </ButtonCard>
           {indexDrop === index &&
-            <DropMenuCard ref={menuRef}>
+            <DropMenuCard
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              ref={menuRef}>
               <MenuCardButtons onClick={() => navigate(`/dashboard/schedules/edit/${calendar.room.id}`)}>
                 <EditOutlinedIcon />
                 <span>Edit</span>
