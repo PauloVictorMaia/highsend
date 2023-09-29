@@ -7,7 +7,6 @@ export const Container = styled.div`
   padding: 20px 20px 10px 20px;
   box-sizing: border-box;
   overflow-y: auto;
-  /* background-color: #c8c8c8; */
 `;
 
 export const Integrations = styled.div`
@@ -20,7 +19,6 @@ export const Integrations = styled.div`
   row-gap: 20px;
   padding-left: 60px;
   margin-bottom: 10px;
-  /* background-color: violet; */
 `;
 
 export const Title = styled.h2`
@@ -36,5 +34,4 @@ export const UserIntegrations = styled.div`
   flex-wrap: wrap;
   column-gap: 30px;
   row-gap: 20px;
-  /* background-color: aquamarine; */
 `;

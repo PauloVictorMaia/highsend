@@ -1,5 +1,4 @@
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable react/prop-types */
+
 import { Container, ScheduleCard, CardTitle, CardDetails, ButtonCard, ButtonText, TitleContainer, CardColor, DropMenuCard, MenuCardButtons, SwitchContainer, Modal, ModalContent, DeleteCalendar, CloseButton, Buttons, Button } from "./styles";
 import CopyAllIcon from '@mui/icons-material/CopyAll';
 import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
@@ -182,7 +181,12 @@ function SchedulesList() {
                 <span>Clonar</span>
               </MenuCardButtons>
 
-              <MenuCardButtons onClick={() => openDeleteModal()}>
+              <MenuCardButtons
+                onClick={(e) => {
+                  e.stopPropagation();
+                  openDeleteModal();
+                }}
+              >
                 <DeleteOutlineOutlinedIcon />
                 <span>Excluir</span>
               </MenuCardButtons>
@@ -198,7 +202,7 @@ function SchedulesList() {
 
             </DropMenuCard>
           }
-          <Modal isvisible={modalIsVisible}>
+          <Modal onClick={(e) => e.stopPropagation()} isvisible={modalIsVisible}>
             <ModalContent>
               <CloseButton onClick={() => setModalIsVisible(false)}>
                 <ClearIcon />

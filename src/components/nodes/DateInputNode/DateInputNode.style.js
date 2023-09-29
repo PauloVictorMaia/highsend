@@ -26,9 +26,10 @@ export const InputConfig = styled.div`
   position: absolute;
   display: flex;
   flex-direction: column;
+  row-gap: 10px;
   box-sizing: border-box;
   left: -325px;
-  top: -150px;
+  top: -10px;
   border-radius: 5px;
   background-color: #fff;
   padding: 10px;
@@ -42,10 +43,10 @@ export const InputConfig = styled.div`
     margin-bottom: 10px;
   }
   >button {
-    width: 70px;
+    width: 170px;
     height: 25px;
     border-radius: 5px;
-    background-color: blue;
+    background-color: #E67200;
     outline: none;
     border: none;
     cursor: pointer;
@@ -55,17 +56,4 @@ export const InputConfig = styled.div`
     align-items: center;
     justify-content: center;
   }
-`;
-
-export const IsRangeInputContainer = styled.div`
-  width: 100%;
-  height: 30px;
-  display: flex;
-  justify-content: space-between;
-`;
-
-export const LabelsInputContainer = styled.div`
-  width: 100%;
-  display: ${({isvisible}) => isvisible ? 'flex' : 'none'};
-  flex-direction: column;
 `;

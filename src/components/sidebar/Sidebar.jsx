@@ -11,6 +11,8 @@ import MouseOutlinedIcon from '@mui/icons-material/MouseOutlined';
 import EditCalendarOutlinedIcon from '@mui/icons-material/EditCalendarOutlined';
 import PhoneIphoneOutlinedIcon from '@mui/icons-material/PhoneIphoneOutlined';
 import TaskAltOutlinedIcon from '@mui/icons-material/TaskAltOutlined';
+import LaunchIcon from '@mui/icons-material/Launch';
+import TimelapseIcon from '@mui/icons-material/Timelapse';
 // import PaymentIcon from '@mui/icons-material/Payment';
 // import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 // import BackupOutlinedIcon from '@mui/icons-material/BackupOutlined';
@@ -53,6 +55,11 @@ export default () => {
           Audio
         </NodeDraggable>
 
+        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'redirectNode', '40')} draggable>
+          <LaunchIcon style={{ fontSize: "large" }} />
+          Redirecionar
+        </NodeDraggable>
+
 
       </NodesContainer>
 
@@ -93,25 +100,15 @@ export default () => {
           Botão
         </NodeDraggable>
 
-        {/* <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'picChoiceInputNode', '80')} draggable>
-          <ImageOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
-          Pic choice
-        </NodeDraggable> */}
+      </NodesContainer>
 
-        {/* <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'paymentInputNode')} draggable>
-          <PaymentIcon style={{ fontSize: "large", color: "#E67200" }} />
-          Payment
-        </NodeDraggable> */}
+      <NodesType>Lógica</NodesType>
+      <NodesContainer>
 
-        {/* <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'ratingInputNode')} draggable>
-          <StarBorderOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
-          Rating
-        </NodeDraggable> */}
-
-        {/* <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'fileInputNode', '40')} draggable>
-          <BackupOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
-          File
-        </NodeDraggable> */}
+        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'delayLogicNode', '40')} draggable>
+          <TimelapseIcon style={{ fontSize: "large", color: "#9999FF" }} />
+          Delay
+        </NodeDraggable>
 
       </NodesContainer>
     </SidebarContainer>

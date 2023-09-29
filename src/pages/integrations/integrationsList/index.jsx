@@ -5,11 +5,12 @@ import GoogleCalendarImg from '../../../assets/google-calendar.png';
 import WhatsappImg from '../../../assets/whatsapp-logo.png';
 import IntegrationCard from "../../../components/IntegrationCard";
 import UserIntegrationCard from "../../../components/UserIntegrationCards";
+import { toast } from "react-toastify";
 
 function IntegrationsList() {
 
   const token = localStorage.getItem('token');
-  const { user, integrations, integrationsDataLoaded } = useStateContext();
+  const { user, integrations, integrationsDataLoaded, getIntegrations } = useStateContext();
 
   const googleLogin = async () => {
     try {
@@ -26,6 +27,18 @@ function IntegrationsList() {
   const syncWhatsapp = async () => {
     return;
   };
+
+  const deleteIntegration = async (integrationID) => {
+    try {
+      const response = await api.delete(`/integrations/delete-integration/${user.id}/${integrationID}`, { headers: { authorization: token } });
+      if (response.status === 200) {
+        toast.success("Dados da integração excluídos com sucesso!");
+        getIntegrations();
+      }
+    } catch {
+      return;
+    }
+  }
 
   return (
     <Container>
@@ -58,6 +71,7 @@ function IntegrationsList() {
                 img={integration.logo}
                 description={integration.name}
                 id={integration.id}
+                deleteIntegration={deleteIntegration}
               />
             ))
           )
@@ -67,7 +81,6 @@ function IntegrationsList() {
             )
         }
       </UserIntegrations>
-
     </Container>
   )
 }

@@ -47,13 +47,23 @@ export default function GroupNode({ data, id, selected }) {
           y: originalNode.positionAbsolute.y + 30,
         },
         selected: false,
+        data: {
+          ...originalNode.data,
+          blocks: [],
+        },
       };
 
-      const clonedChildren = parentNodes.map((child) => ({
-        ...child,
-        id: getId(),
-        parentNode: clonedNode.id,
-      }));
+      const clonedChildren = parentNodes.map((child) => {
+        const clonedChild = {
+          ...child,
+          id: getId(),
+          parentNode: clonedNode.id,
+        };
+
+        clonedNode.data.blocks.push(clonedChild.id);
+
+        return clonedChild;
+      });
 
       return [...nodes, clonedNode, ...clonedChildren];
     });

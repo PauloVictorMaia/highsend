@@ -39,7 +39,7 @@ import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import AvTimerIcon from '@mui/icons-material/AvTimer';
 
 function AddSchedule() {
-  const { user } = useStateContext();
+  const { user, getCalendars } = useStateContext();
   const token = localStorage.getItem('token');
   const navigate = useNavigate();
   const params = useParams();
@@ -202,6 +202,7 @@ function AddSchedule() {
       if (response.status === 201) {
         toast.success('Dados salvos!');
         navigate('/dashboard/schedules');
+        getCalendars();
       }
     } catch {
       toast.error('Erro ao salvar agenda.');

@@ -19,6 +19,7 @@ import { ImageNode } from "../../components/nodes/ImageNode/ImageNode";
 import { TextInputNode } from "../../components/nodes/TextInputNode/TextInputNode";
 import EmbedNode from "../../components/nodes/EmbedNode/EmbedNode";
 import AudioNode from "../../components/nodes/AudioNode/AudioNode";
+import RedirectNode from "../../components/nodes/RedirectNode/RedirectNode";
 import GroupNode from "../../components/nodes/GroupNode/GroupNode";
 import { NumberInputNode } from "../../components/nodes/NumberInputNode/NumberInputNode";
 import { EmailInputNode } from "../../components/nodes/EmailInputNode/EmailInputNode";
@@ -33,6 +34,7 @@ import api from '../../api';
 import PanelButtons from "../../components/PanelButtons/PanelButtons";
 import lodash from 'lodash';
 import { toast } from "react-toastify";
+import DelayLogicNode from "../../components/nodes/DelayLogicNode/DelayLogicNode";
 
 const proOptions = {
   hideAttribution: true,
@@ -45,6 +47,7 @@ const NODE_TYPES = {
   imageNode: ImageNode,
   embedNode: EmbedNode,
   audioNode: AudioNode,
+  redirectNode: RedirectNode,
   textInputNode: TextInputNode,
   group: GroupNode,
   numberInputNode: NumberInputNode,
@@ -53,6 +56,7 @@ const NODE_TYPES = {
   phoneInputNode: PhoneInputNode,
   dateInputNode: DateInputNode,
   buttonInputNode: ButtonInputNode,
+  delayLogicNode: DelayLogicNode
 };
 
 const EDGE_TYPES = {
@@ -79,6 +83,8 @@ const Flow = () => {
   const [originalEdges, setOriginalEdges] = useState([]);
   const [originalVariables, setOriginalVariables] = useState([]);
 
+  console.log(nodes)
+
   async function getFlowData() {
     try {
       const response = await api.get(`/flows/get-flow/${user.id}/${params.flowid}`,
@@ -97,6 +103,16 @@ const Flow = () => {
   }
 
   async function saveFlowData() {
+
+    const dateNodes = nodes.filter((node) => node.type === "dateInputNode");
+    if (dateNodes.length > 0) {
+      const hasEmptyValue = dateNodes.some((node) => node.data.value === "");
+      if (hasEmptyValue) {
+        toast.warning('Existem inputs do tipo "Data" sem uma agenda atribuída. Atribua uma agenda para cada um desses inputs.');
+        return;
+      }
+    }
+
     const filteredNodes = nodes.filter((node) => node.type !== "dateInputNode");
     const inputNodes = filteredNodes.filter((node) => /input/i.test(node.type));
     if (inputNodes.length > 0) {
@@ -106,6 +122,7 @@ const Flow = () => {
         return;
       }
     }
+
 
     try {
       const response = await api.patch(`/flows/update-flow/${user.id}/${params.flowid}`,

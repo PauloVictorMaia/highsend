@@ -1,14 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { NodeContainer, AddLink, LinkInput, LinkInputContainer } from "./EmbedNode.style"
+import { NodeContainer, AddLink, LinkInput, LinkInputContainer } from "./RedirectNode.style"
 import { useState, useEffect } from "react";
 import { useReactFlow, NodeToolbar } from "reactflow";
-import LinkOutlinedIcon from '@mui/icons-material/LinkOutlined';
+import LaunchIcon from '@mui/icons-material/Launch';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
-function EmbedNode({ data, id, selected }) {
+function RedirectNode({ data, id, selected }) {
 
   const [nodeValue, setNodeValue] = useState(data.value || "")
+  const [buttonName, setButtonName] = useState(data.buttonName || "Ir para link");
   const { setNodes } = useReactFlow();
   const { deleteElements } = useReactFlow();
 
@@ -21,6 +22,7 @@ function EmbedNode({ data, id, selected }) {
           const groupID = node.parentNode
           const parentNodes = nds.filter((node) => node.parentNode === groupID)
           node.data.value = nodeValue
+          node.data.buttonName = buttonName
           setNodes((nds) =>
             nds.map((node) => {
               if (node.id === groupID) {
@@ -34,7 +36,7 @@ function EmbedNode({ data, id, selected }) {
         return node;
       })
     );
-  }, [nodeValue]);
+  }, [nodeValue, buttonName]);
 
   return (
     <NodeContainer>
@@ -54,12 +56,8 @@ function EmbedNode({ data, id, selected }) {
       </NodeToolbar>
 
       <AddLink>
-        <LinkOutlinedIcon />
-        {nodeValue === "" ?
-          <span>Click para editar...</span>
-          :
-          <span>Ver link</span>
-        }
+        <LaunchIcon />
+        {buttonName}
       </AddLink>
 
       <LinkInputContainer isvisible={selected}>
@@ -67,8 +65,15 @@ function EmbedNode({ data, id, selected }) {
         <LinkInput
           type="text"
           value={nodeValue}
-          placeholder="Cole o link aqui"
+          placeholder="Cole aqui o link de redirecionamento."
           onChange={(e) => setNodeValue(e.target.value)}
+        />
+        <span>Nome do botão</span>
+        <LinkInput
+          type="text"
+          value={buttonName}
+          placeholder="Ex: Ir para link"
+          onChange={(e) => setButtonName(e.target.value)}
         />
       </LinkInputContainer>
 
@@ -76,4 +81,4 @@ function EmbedNode({ data, id, selected }) {
   )
 }
 
-export default EmbedNode
+export default RedirectNode;

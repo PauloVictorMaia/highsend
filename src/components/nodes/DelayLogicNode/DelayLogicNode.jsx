@@ -1,30 +1,37 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { NodeContainer, AddLink, LinkInput, LinkInputContainer } from "./EmbedNode.style"
+import { NodeContainer, Delay, Input, InputContainer } from "./DelayLogicNode.style"
 import { useState, useEffect } from "react";
 import { useReactFlow, NodeToolbar } from "reactflow";
-import LinkOutlinedIcon from '@mui/icons-material/LinkOutlined';
+import TimelapseIcon from '@mui/icons-material/Timelapse';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
-function EmbedNode({ data, id, selected }) {
+function DelayLogicNode({ data, id, selected }) {
 
-  const [nodeValue, setNodeValue] = useState(data.value || "")
+  const [nodeValue, setNodeValue] = useState(data.value || null)
   const { setNodes } = useReactFlow();
   const { deleteElements } = useReactFlow();
 
   const onDelete = () => deleteElements({ nodes: [{ id }] });
 
+  const handleInputChange = (e) => {
+    // Remove qualquer caractere não numérico usando uma expressão regular
+    const sanitizedValue = e.target.value.replace(/[^0-9]/g, '');
+    setNodeValue(sanitizedValue);
+  };
+
   useEffect(() => {
     setNodes((nds) =>
       nds.map((node) => {
         if (node.id === id) {
-          const groupID = node.parentNode
-          const parentNodes = nds.filter((node) => node.parentNode === groupID)
-          node.data.value = nodeValue
+          const groupID = node.parentNode;
+          const parentNodes = nds.filter((node) => node.parentNode === groupID);
+          const valueToNumber = parseInt(nodeValue);
+          node.data.value = valueToNumber;
           setNodes((nds) =>
             nds.map((node) => {
               if (node.id === groupID) {
-                node.data.blocks = [...parentNodes]
+                node.data.blocks = [...parentNodes];
               }
               return node;
             })
@@ -53,27 +60,26 @@ function EmbedNode({ data, id, selected }) {
         <DeleteOutlineIcon style={{ cursor: 'pointer', fontSize: 'large' }} onClick={onDelete} />
       </NodeToolbar>
 
-      <AddLink>
-        <LinkOutlinedIcon />
-        {nodeValue === "" ?
+      <Delay>
+        <TimelapseIcon />
+        {nodeValue === null ?
           <span>Click para editar...</span>
           :
-          <span>Ver link</span>
+          <span>{`${nodeValue}s`}</span>
         }
-      </AddLink>
+      </Delay>
 
-      <LinkInputContainer isvisible={selected}>
-        <span>Link</span>
-        <LinkInput
+      <InputContainer isvisible={selected}>
+        <span>Segundos de delay</span>
+        <Input
           type="text"
           value={nodeValue}
-          placeholder="Cole o link aqui"
-          onChange={(e) => setNodeValue(e.target.value)}
+          onChange={(e) => handleInputChange(e)}
         />
-      </LinkInputContainer>
+      </InputContainer>
 
     </NodeContainer>
   )
 }
 
-export default EmbedNode
+export default DelayLogicNode;

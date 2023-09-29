@@ -1,11 +1,14 @@
-import { Container, DescriptionContainer, IconContainer, ImgContainer, IntegrationImg } from "./styles";
+import { Container, DescriptionContainer, IconContainer, ImgContainer, IntegrationImg, Modal, ModalContent, CloseButton, DeleteIntegration } from "./styles";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import ClearIcon from '@mui/icons-material/Clear';
 
-function UserIntegrationCard({ img, description, id }) {
+function UserIntegrationCard({ img, description, id, deleteIntegration }) {
 
   const navigate = useNavigate();
+  const [modalIsVisible, setModalIsVisible] = useState();
 
   return (
     <Container>
@@ -15,8 +18,27 @@ function UserIntegrationCard({ img, description, id }) {
       <DescriptionContainer>{description}</DescriptionContainer>
       <IconContainer>
         <EditIcon onClick={() => navigate(`/dashboard/integrations/google-integration/edit/${id}`)} />
-        <DeleteIcon />
+        <DeleteIcon onClick={() => setModalIsVisible(true)} />
       </IconContainer>
+
+      <Modal isvisible={modalIsVisible} onClick={(e) => e.stopPropagation()}>
+        <ModalContent>
+          <CloseButton
+            onClick={(e) => {
+              e.stopPropagation();
+              setModalIsVisible(false)
+            }}
+          >
+            <ClearIcon />
+          </CloseButton>
+
+          <DeleteIntegration>
+            <span>Tem certeza que deseja deletar essa integração?</span>
+            <button onClick={() => deleteIntegration(id)}>Deletar</button>
+          </DeleteIntegration>
+        </ModalContent>
+      </Modal>
+
     </Container>
   )
 }
