@@ -71,6 +71,10 @@ export const MessageContent = styled.div`
   transition: width .4s ease-out,height .4s ease-out;
   min-height: 40px;
 
+  @media(min-width: 768px){
+    max-height: ${({ typing, height }) => typing ? '40px' : `${height - (height * 0.80)}px`};
+  }
+
   .offscreen {
     position: absolute;
     left: -10000px;
