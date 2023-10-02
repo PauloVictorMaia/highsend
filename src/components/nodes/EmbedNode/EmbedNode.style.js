@@ -19,6 +19,10 @@ export const AddLink = styled.div`
   display: flex;
   align-items: center;
   column-gap: 5px;
+
+  > svg {
+    color: #595959;
+  }
 `;
 
 export const LinkInputContainer = styled.div`

@@ -18,6 +18,10 @@ export const ImagePreview = styled.div`
   display: flex;
   align-items: center;
   column-gap: 5px;
+
+  > svg {
+    color: #595959;
+  }
 `;
 
 export const Image = styled.img`

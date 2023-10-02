@@ -66,10 +66,11 @@ export function EmailInputNode({ data, id, selected }) {
         align='end'
         style={{
           backgroundColor: '#fff',
-          color: '#000',
+          color: '#595959',
           border: '0.5px solid rgba(0,0,0,0.15)',
-          borderRadius: '8px',
-
+          borderRadius: '3px',
+          padding: "5px",
+          boxSizing: "border-box",
         }}
       >
         <DeleteOutlineIcon style={{ cursor: 'pointer', fontSize: 'large' }} onClick={onDelete} />

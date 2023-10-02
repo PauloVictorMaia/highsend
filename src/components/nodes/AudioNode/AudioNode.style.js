@@ -23,6 +23,10 @@ export const AudioPreview = styled.div`
   > audio {
     height: 100%;
   }
+
+  > svg {
+    color: #595959;
+  }
 `;
 
 export const AudioNodeMenu = styled.div`

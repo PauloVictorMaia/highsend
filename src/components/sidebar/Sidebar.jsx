@@ -32,27 +32,27 @@ export default () => {
       <NodesType>Mensagens</NodesType>
       <NodesContainer>
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'textNode', '80')} draggable>
-          <TextFieldsIcon style={{ fontSize: "large" }} />
+          <TextFieldsIcon style={{ fontSize: "large", color: "#595959" }} />
           Texto
         </NodeDraggable>
 
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'imageNode', '150')} draggable>
-          <PhotoCameraOutlinedIcon style={{ fontSize: "large" }} />
+          <PhotoCameraOutlinedIcon style={{ fontSize: "large", color: "#595959" }} />
           Imagem
         </NodeDraggable>
 
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'videoNode', '150')} draggable>
-          <MovieCreationOutlinedIcon style={{ fontSize: "large" }} />
+          <MovieCreationOutlinedIcon style={{ fontSize: "large", color: "#595959" }} />
           Video
         </NodeDraggable>
 
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'embedNode', '40')} draggable>
-          <LanguageIcon style={{ fontSize: "large" }} />
+          <LanguageIcon style={{ fontSize: "large", color: "#595959" }} />
           Embed site
         </NodeDraggable>
 
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'audioNode', '40')} draggable>
-          <AudioFileOutlinedIcon style={{ fontSize: "large" }} />
+          <AudioFileOutlinedIcon style={{ fontSize: "large", color: "#595959" }} />
           Audio
         </NodeDraggable>
 

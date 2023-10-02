@@ -87,13 +87,15 @@ export default function GroupNode({ data, id, selected }) {
         align='end'
         style={{
           backgroundColor: '#fff',
-          color: '#000',
+          color: '#595959',
           border: '0.5px solid rgba(0,0,0,0.15)',
-          borderRadius: '8px',
+          borderRadius: '3px',
+          padding: "5px",
+          boxSizing: "border-box",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          width: "45px",
+          width: "60px",
           height: "30px"
         }}
       >
