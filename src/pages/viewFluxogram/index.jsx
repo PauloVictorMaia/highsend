@@ -17,6 +17,8 @@ import EmbedNode from './components/embedNode/Video';
 import { useParams } from 'react-router-dom';
 import api from '../../api';
 import DelayNode from './components/delay';
+import Redirect from './components/redirect';
+import LinkButton from './components/linkButton/ButtonInput';
 
 function Chatbot() {
   const [nodes, setNodes] = useState();
@@ -29,7 +31,7 @@ function Chatbot() {
   const [avatarsStatic, setAvatarsStatic] = useState([]);
   const [leadID, setLeadID] = useState(null);
   const divRef = useRef(null);
-  const notDisplayedAvatarNode = ['dateInputNode', 'buttonInputNode', 'textInputNode', 'numberInputNode', 'emailInputNode', 'websiteInputNode', 'phoneInputNode', 'delayLogicNode'];
+  const notDisplayedAvatarNode = ['dateInputNode', 'buttonInputNode', 'textInputNode', 'numberInputNode', 'emailInputNode', 'websiteInputNode', 'phoneInputNode', 'delayLogicNode', 'redirectLogicNode', 'linkButtonInputNode'];
   const notPlusIndexNode = ['dateInputNode', 'textInputNode', 'numberInputNode', 'emailInputNode', 'websiteInputNode', 'phoneInputNode', 'delayLogicNode'];
   const params = useParams();
 
@@ -216,6 +218,10 @@ function Chatbot() {
         return <DateInputNode data={node.data} onSend={() => sendVariableValue()} />;
       case 'delayLogicNode':
         return <DelayNode data={node.data} onSend={() => sendVariableValue()} />;
+      case 'redirectLogicNode':
+        return <Redirect data={node.data} />;
+      case 'linkButtonInputNode':
+        return <LinkButton data={node.data} />;
       default:
         return null;
     }
