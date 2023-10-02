@@ -16,6 +16,7 @@ import ImageNode from './components/imageNode/Video';
 import EmbedNode from './components/embedNode/Video';
 import { useParams } from 'react-router-dom';
 import api from '../../api';
+import DelayNode from './components/delay';
 
 function Chatbot() {
   const [nodes, setNodes] = useState();
@@ -28,15 +29,15 @@ function Chatbot() {
   const [avatarsStatic, setAvatarsStatic] = useState([]);
   const [leadID, setLeadID] = useState(null);
   const divRef = useRef(null);
-  const notDisplayedAvatarNode = ['dateInputNode', 'buttonInputNode', 'textInputNode', 'numberInputNode', 'emailInputNode', 'websiteInputNode', 'phoneInputNode'];
-  const notPlusIndexNode = ['dateInputNode', 'textInputNode', 'numberInputNode', 'emailInputNode', 'websiteInputNode', 'phoneInputNode'];
+  const notDisplayedAvatarNode = ['dateInputNode', 'buttonInputNode', 'textInputNode', 'numberInputNode', 'emailInputNode', 'websiteInputNode', 'phoneInputNode', 'delayLogicNode'];
+  const notPlusIndexNode = ['dateInputNode', 'textInputNode', 'numberInputNode', 'emailInputNode', 'websiteInputNode', 'phoneInputNode', 'delayLogicNode'];
   const params = useParams();
 
   const smoothScrollToBottom = (element) => {
     const start = element.scrollTop;
     const end = element.scrollHeight - element.clientHeight;
     const change = end - start;
-    const duration = 200; // duração da animação em milissegundos
+    const duration = 200;
     let startTime = null;
 
     const animateScroll = (timestamp) => {
@@ -119,7 +120,7 @@ function Chatbot() {
     const timeOut = setTimeout(() => {
       const actualEdge = edges?.filter((edge) => edge.source === actualNodeDisplay);
       const nextNode = nodes?.filter((node) => node.id === actualEdge[0]?.target);
-      if(nextNode?.length){
+      if (nextNode?.length) {
         setActualNodeDisplay(nextNode[0].id);
         setNodesExibition([...nodesExibition, ...nextNode[0]?.data.blocks]);
       }
@@ -213,6 +214,8 @@ function Chatbot() {
         return <ButtonInput data={node.data} onSend={() => atualizationNodeDisplayed(node.id, node.data)} variables={variables} />;
       case 'dateInputNode':
         return <DateInputNode data={node.data} onSend={() => sendVariableValue()} />;
+      case 'delayLogicNode':
+        return <DelayNode data={node.data} onSend={() => sendVariableValue()} />;
       default:
         return null;
     }
