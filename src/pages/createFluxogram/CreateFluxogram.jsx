@@ -19,7 +19,6 @@ import { ImageNode } from "../../components/nodes/ImageNode/ImageNode";
 import { TextInputNode } from "../../components/nodes/TextInputNode/TextInputNode";
 import EmbedNode from "../../components/nodes/EmbedNode/EmbedNode";
 import AudioNode from "../../components/nodes/AudioNode/AudioNode";
-import RedirectNode from "../../components/nodes/RedirectNode/RedirectNode";
 import GroupNode from "../../components/nodes/GroupNode/GroupNode";
 import { NumberInputNode } from "../../components/nodes/NumberInputNode/NumberInputNode";
 import { EmailInputNode } from "../../components/nodes/EmailInputNode/EmailInputNode";
@@ -35,6 +34,8 @@ import PanelButtons from "../../components/PanelButtons/PanelButtons";
 import lodash from 'lodash';
 import { toast } from "react-toastify";
 import DelayLogicNode from "../../components/nodes/DelayLogicNode/DelayLogicNode";
+import LinkButtonInputNode from "../../components/nodes/LInkButtonInputNode/LinkButtonInputNode";
+import RedirectLogicNode from "../../components/nodes/RedirectLogicNode/RedirectLogicNode";
 
 const proOptions = {
   hideAttribution: true,
@@ -47,7 +48,6 @@ const NODE_TYPES = {
   imageNode: ImageNode,
   embedNode: EmbedNode,
   audioNode: AudioNode,
-  redirectNode: RedirectNode,
   textInputNode: TextInputNode,
   group: GroupNode,
   numberInputNode: NumberInputNode,
@@ -56,7 +56,9 @@ const NODE_TYPES = {
   phoneInputNode: PhoneInputNode,
   dateInputNode: DateInputNode,
   buttonInputNode: ButtonInputNode,
-  delayLogicNode: DelayLogicNode
+  linkButtonInputNode: LinkButtonInputNode,
+  delayLogicNode: DelayLogicNode,
+  redirectLogicNode: RedirectLogicNode
 };
 
 const EDGE_TYPES = {
@@ -463,7 +465,7 @@ const Flow = () => {
         />
         <Controls position="bottom-right" />
       </ReactFlow>
-      <Panel position="top-left" style={openMenu ? { left: 230 } : { left: 90 }}>
+      <Panel position="top-left" style={openMenu ? { left: 230, top: -15 } : { left: 90 }}>
         <Sidebar />
       </Panel>
       <Panel position="top-right">

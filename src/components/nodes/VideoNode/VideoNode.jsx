@@ -1,29 +1,49 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { LinkInput, LinkInputContainer, NodeContainer, PreviewImage, VideoPreview } from "./VideoNode.style";
+import { LinkInput, InputContainer, NodeContainer, PreviewImage, VideoPreview, Inputs, Navigation, ListTabs, Tabs } from "./VideoNode.style";
 import { useReactFlow, NodeToolbar } from "reactflow";
 import MovieCreationOutlinedIcon from '@mui/icons-material/MovieCreationOutlined';
 import { useState, useEffect } from "react";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
-
 export function VideoNode({ data, id, selected }) {
-  const [nodeValue, setNodeValue] = useState(data.value || "")
-  const [videoLink, setVideoLink] = useState("")
+  const [videoLink, setVideoLink] = useState(data.type === 'link' && data.value ? data.value : "");
+  const [script, setScript] = useState(data.type === 'script' && data.value ? data.value : "");
+  const [thumbnail, setThumbnail] = useState("")
+  const [type, setType] = useState(data.type || "link");
   const { setNodes } = useReactFlow();
 
   const { deleteElements } = useReactFlow();
 
   const onDelete = () => deleteElements({ nodes: [{ id }] });
 
-  const getYoutubeThumbnail = (url) => {
-    if (url === "") {
-      return
+  const getThumbnail = (url) => {
+
+    if (url.includes("youtube")) {
+      setVideoLink(url)
+      const videoId = url.split("v=")[1];
+      setThumbnail(`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`)
     }
-    setNodeValue(url)
-    const videoId = url.split("v=")[1];
-    setVideoLink(`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`)
+
+    if (url.includes("vimeo")) {
+      setVideoLink(url);
+      setThumbnail(url);
+    }
+
+    else {
+      setVideoLink(url);
+      setThumbnail(url);
+    }
+
+    setScript("");
   };
+
+  const handleScript = (script) => {
+    const scriptToJSON = JSON.stringify(script);
+    setScript(scriptToJSON);
+    setThumbnail("");
+    setVideoLink("");
+  }
 
   useEffect(() => {
     setNodes((nds) =>
@@ -31,7 +51,8 @@ export function VideoNode({ data, id, selected }) {
         if (node.id === id) {
           const groupID = node.parentNode
           const parentNodes = nds.filter((node) => node.parentNode === groupID)
-          node.data.value = nodeValue
+          node.data.value = type === "link" ? videoLink : script
+          node.data.type = type
           setNodes((nds) =>
             nds.map((node) => {
               if (node.id === groupID) {
@@ -45,8 +66,7 @@ export function VideoNode({ data, id, selected }) {
         return node;
       })
     );
-    getYoutubeThumbnail(nodeValue)
-  }, [nodeValue]);
+  }, [videoLink, script, type]);
 
   return (
     <NodeContainer>
@@ -65,27 +85,71 @@ export function VideoNode({ data, id, selected }) {
         <DeleteOutlineIcon style={{ cursor: 'pointer', fontSize: 'large' }} onClick={onDelete} />
       </NodeToolbar>
 
-      <VideoPreview>
-        <MovieCreationOutlinedIcon />
-        {videoLink === "" ?
-          <span>Click para editar...</span>
-          :
-          <PreviewImage
-            src={videoLink}
-            alt="Video thumbnail"
-          />
-        }
-      </VideoPreview>
+      {
+        type === "link" &&
+        <VideoPreview>
+          <MovieCreationOutlinedIcon />
+          {
+            thumbnail === "" ?
+              "Adicione o link do video"
+              :
+              <PreviewImage
+                src={thumbnail}
+                alt="Video thumbnail"
+              />
+          }
+        </VideoPreview>
+      }
 
-      <LinkInputContainer isvisible={selected}>
-        <span>Link</span>
-        <LinkInput
-          type="text"
-          value={nodeValue}
-          placeholder="link youtube / vimeo"
-          onChange={(e) => getYoutubeThumbnail(e.target.value)}
-        />
-      </LinkInputContainer>
+      {
+        type === "script" &&
+        <VideoPreview>
+          <MovieCreationOutlinedIcon />
+          {
+            script === "" ?
+              "Adicione o script"
+              :
+              "Ver script"
+          }
+        </VideoPreview>
+      }
+
+      <InputContainer isvisible={selected}>
+        <Navigation>
+          <ListTabs>
+            <Tabs
+              onClick={() => setType("link")}
+              activetab={type === "link" ? "true" : "false"}
+            >
+              Link
+            </Tabs>
+            <Tabs
+              onClick={() => setType("script")}
+              activetab={type === "script" ? "true" : "false"}
+            >
+              Script
+            </Tabs>
+          </ListTabs>
+        </Navigation>
+        <Inputs>
+          {type === "link" && (
+            <LinkInput
+              type="text"
+              placeholder="Cole aqui o link do video (youtube ou vimeo)"
+              value={videoLink}
+              onChange={(e) => getThumbnail(e.target.value)}
+            />
+          )}
+          {type === "script" && (
+            <LinkInput
+              type="text"
+              placeholder="Cole aqui o script HTML"
+              value={script}
+              onChange={(e) => handleScript(e.target.value)}
+            />
+          )}
+        </Inputs>
+      </InputContainer>
 
     </NodeContainer>
   )

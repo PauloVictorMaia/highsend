@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { NodeContainer, AddLink, LinkInput, LinkInputContainer } from "./RedirectNode.style"
+import { NodeContainer, AddLink, LinkInput, LinkInputContainer } from "./LinkButtonInputNode.style"
 import { useState, useEffect } from "react";
 import { useReactFlow, NodeToolbar } from "reactflow";
-import LaunchIcon from '@mui/icons-material/Launch';
+import LinkOutlinedIcon from '@mui/icons-material/LinkOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
-function RedirectNode({ data, id, selected }) {
+function LinkButtonInputNode({ data, id, selected }) {
 
   const [nodeValue, setNodeValue] = useState(data.value || "")
   const [buttonName, setButtonName] = useState(data.buttonName || "Ir para link");
@@ -56,7 +56,7 @@ function RedirectNode({ data, id, selected }) {
       </NodeToolbar>
 
       <AddLink>
-        <LaunchIcon />
+        <LinkOutlinedIcon />
         {buttonName}
       </AddLink>
 
@@ -65,7 +65,7 @@ function RedirectNode({ data, id, selected }) {
         <LinkInput
           type="text"
           value={nodeValue}
-          placeholder="Cole aqui o link de redirecionamento."
+          placeholder="Cole o link aqui."
           onChange={(e) => setNodeValue(e.target.value)}
         />
         <span>Nome do botão</span>
@@ -81,4 +81,4 @@ function RedirectNode({ data, id, selected }) {
   )
 }
 
-export default RedirectNode;
+export default LinkButtonInputNode;
