@@ -4,13 +4,13 @@ import { Handle } from "reactflow";
 export const NodeContainer = styled.div`
   width: 100%;
   height: 100%;
-  color: #000;
+  color: #333;
   display: Flex;
   align-items: center;
   border: 0.5px solid rgba(0,0,0,0.15);
   background-color: #fff;
   border-radius: 8px;
-  padding: 0;
+  padding: 0 0 0 10px;
   box-sizing: border-box;
 `;
 

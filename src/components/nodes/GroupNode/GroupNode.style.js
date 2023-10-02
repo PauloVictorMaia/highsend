@@ -8,7 +8,7 @@ export const NodeContainer = styled.div`
   border: ${({selected}) => selected ? '2px solid rgba(153, 153, 255,0.5)' : '0.5px solid rgba(0,0,0,0.15)'};
   box-shadow: 0 5px 7px 0 rgba(0,0,0,0.15);
   border-radius: 8px;
-  color: #000;
+  color: #333;
   font-size: 12px;
   box-sizing: border-box;
   padding: 10px;
@@ -19,7 +19,11 @@ export const Label = styled.input`
   border: none;
   width: 80%;
   outline: none;
-  border-radius: 5px;
+  border-radius: 3px;
+  padding: 5px;
+  box-sizing: border-box;
+  font-weight: 600;
+  color: #444;
 
   &:focus {
     border: 1px solid rgba(153, 153, 255,1);

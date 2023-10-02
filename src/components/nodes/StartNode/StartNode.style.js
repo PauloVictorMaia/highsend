@@ -14,7 +14,7 @@ export const NodeContainer = styled.div`
   border: ${({selected}) => selected ? '2px solid rgba(153, 153, 255,0.5)' : '0.5px solid rgba(0,0,0,0.15)'};
   box-shadow: 0 5px 7px rgba(0,0,0,0.15);
   border-radius: 8px;
-  color: #000;
+  color: #333;
 `;
 
 export const RightHandle = styled(Handle)`
@@ -36,6 +36,12 @@ export const StartDiv = styled.div`
   display: flex;
   align-items: center;
   column-gap: 20px;
+  padding: 10px;
+  box-sizing: border-box;
+
+  >svg {
+    color: #9999FF;
+  }
 `;
 
 export const FlagIcon = styled(FlagTwoToneIcon)`

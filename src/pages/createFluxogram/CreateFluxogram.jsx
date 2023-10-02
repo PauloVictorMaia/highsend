@@ -458,9 +458,9 @@ const Flow = () => {
       >
 
         <Background
-          gap={12}
+          gap={34}
           size={2}
-          color="#ddd"
+          color="#C6D0E1"
           style={{ backgroundColor: "#f4f5f8" }}
         />
         <Controls position="bottom-right" />

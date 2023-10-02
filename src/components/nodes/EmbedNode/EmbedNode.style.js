@@ -5,12 +5,12 @@ export const NodeContainer = styled.div`
   height: 100%;
   display: Flex;
   align-items: center;
-  padding: 0;
+  padding: 0 0 0 10px;
   box-sizing: border-box;
   background-color: #fff;
   border: 0.5px solid rgba(0,0,0,0.15);
   border-radius: 8px;
-  color: #000;
+  color: #333;
   
 `;
 
@@ -21,7 +21,7 @@ export const AddLink = styled.div`
   column-gap: 5px;
 
   > svg {
-    color: #595959;
+    color: #0042DA;
   }
 `;
 
