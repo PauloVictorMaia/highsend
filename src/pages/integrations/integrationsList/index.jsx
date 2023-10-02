@@ -71,6 +71,7 @@ function IntegrationsList() {
                 img={integration.logo}
                 description={integration.name}
                 id={integration.id}
+                name={integration.name}
                 deleteIntegration={deleteIntegration}
               />
             ))

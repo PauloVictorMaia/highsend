@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import ClearIcon from '@mui/icons-material/Clear';
 
-function UserIntegrationCard({ img, description, id, deleteIntegration }) {
+function UserIntegrationCard({ img, description, id, name, deleteIntegration }) {
 
   const navigate = useNavigate();
   const [modalIsVisible, setModalIsVisible] = useState();
@@ -17,7 +17,7 @@ function UserIntegrationCard({ img, description, id, deleteIntegration }) {
       </ImgContainer>
       <DescriptionContainer>{description}</DescriptionContainer>
       <IconContainer>
-        <EditIcon onClick={() => navigate(`/dashboard/integrations/google-integration/edit/${id}`)} />
+        <EditIcon onClick={() => navigate(`/dashboard/integrations/edit-integration/${name}/${id}`)} />
         <DeleteIcon onClick={() => setModalIsVisible(true)} />
       </IconContainer>
 

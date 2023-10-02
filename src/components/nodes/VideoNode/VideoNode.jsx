@@ -18,19 +18,18 @@ export function VideoNode({ data, id, selected }) {
   const onDelete = () => deleteElements({ nodes: [{ id }] });
 
   const getThumbnail = (url) => {
-
     if (url.includes("youtube")) {
-      setVideoLink(url)
       const videoId = url.split("v=")[1];
-      setThumbnail(`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`)
-    }
-
-    if (url.includes("vimeo")) {
+      const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
       setVideoLink(url);
-      setThumbnail(url);
-    }
-
-    else {
+      setThumbnail(thumbnailUrl);
+    } else if (url.includes("vimeo")) {
+      const videoId = url.split("vimeo.com/")[1];
+      const thumbnailUrl = `https://i.vimeocdn.com/video/${videoId}-640.jpg`;
+      setVideoLink(url);
+      setThumbnail(thumbnailUrl);
+      setVideoLink(url);
+    } else {
       setVideoLink(url);
       setThumbnail(url);
     }

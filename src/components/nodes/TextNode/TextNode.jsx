@@ -37,7 +37,7 @@ export function TextNode({ data, id }) {
 
   return (
     <>
-      <NodeContainer type="textarea" value={nodeValue} onChange={(e) => setNodeValue(e.target.value)} />
+      <NodeContainer value={nodeValue} onChange={(e) => setNodeValue(e.target.value)} />
 
       <NodeToolbar
         offset={5}

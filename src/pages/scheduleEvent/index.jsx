@@ -273,15 +273,12 @@ function ScheduleEvent(props) {
     }
 
     try {
-      const response = await api.post(`/calendars/add-event/${userId}/${calendarId}`, { newSaveEvent });
+      const response = await api.post(`/calendars/add-event/${userId}/${calendarId}`, { newSaveEvent, googleIntegration });
       if (response.status === 201) {
         setEvents(response.data.events);
         toast.success('Seu evento foi agendado com sucesso!');
         setScheduledEvent(true);
         props?.onSend();
-        if (Object.keys(googleIntegration).length > 0) {
-          await insertEventInGoogleCalendar(newSaveEvent, googleIntegration.token)
-        }
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
@@ -303,22 +300,10 @@ function ScheduleEvent(props) {
           handleStep(1);
         }, 2000);
       } else {
-        toast.error('Erro ao agendar evento.')
-        console.log(error);
+        return;
       }
     }
   };
-
-  async function insertEventInGoogleCalendar(newSaveEvent, tokens) {
-    const response = await api.post(`/integrations/insert-google-event`, { newSaveEvent, tokens });
-    if (response.status === 200) {
-      toast.success("Evento adicionado ao Google Agenda.");
-    }
-    if (response.status === 500) {
-      toast.success(response.data.message);
-      console.log(response.data.error)
-    }
-  }
 
   const previousMonth = () => {
     if (currMonth <= 0) {

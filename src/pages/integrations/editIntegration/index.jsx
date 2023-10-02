@@ -1,37 +1,20 @@
 import { Container, EditInputsContent } from "./styles";
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useStateContext } from '../../../contexts/ContextProvider';
 import api from "../../../api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-function EditGoogleIntegration() {
+function EditIntegration() {
 
   const params = useParams();
   const integrationID = params.id;
   const navigate = useNavigate();
   const { user, getIntegrations } = useStateContext();
   const token = localStorage.getItem('token');
-  const [integrationName, setIntegrationName] = useState("");
+  const [integrationName, setIntegrationName] = useState(params.name);
 
-  useEffect(() => {
-    if (Object.keys(user).length > 0) {
-      getIntegrationName();
-    }
-  }, []);
-
-  //pode ser melhorado colocando o nome da própria rota ao invés de fazer requisição.
-  async function getIntegrationName() {
-    try {
-      const response = await api.get(`/integrations/get-integration-data/${user.id}/${integrationID}`, { headers: { authorization: token } });
-      if (response.status === 200) {
-        setIntegrationName(response.data.name);
-      }
-    } catch {
-      return;
-    }
-  }
 
   const editIntegrationName = async () => {
     if (!integrationName) {
@@ -67,4 +50,4 @@ function EditGoogleIntegration() {
   )
 }
 
-export default EditGoogleIntegration;
+export default EditIntegration;

@@ -11,7 +11,7 @@ import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.min.css';
 import Chatbot from "./pages/viewFluxogram";
 import IntegrationsList from "./pages/integrations/integrationsList";
-import EditGoogleIntegration from "./pages/integrations/editGoogleIntegration";
+import EditIntegration from "./pages/integrations/editIntegration";
 import LoginPage from "./pages/Login";
 import LandingPage from "./pages/LandingPage";
 import LeadsResults from "./pages/leads/leadsResults";
@@ -38,7 +38,7 @@ const App = () => {
             <Route path="leads/:flowId" element={<LeadsResults />} />
             <Route path="analytics" element={<Analytics />} />
             <Route path="integrations" element={<IntegrationsList />} />
-            <Route path="integrations/google-integration/edit/:id" element={<EditGoogleIntegration />} />
+            <Route path="integrations/edit-integration/:name/:id" element={<EditIntegration />} />
           </Route>
         </Routes>
       </ContextProvider>
