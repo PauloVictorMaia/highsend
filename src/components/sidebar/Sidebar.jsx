@@ -13,6 +13,7 @@ import PhoneIphoneOutlinedIcon from '@mui/icons-material/PhoneIphoneOutlined';
 import TaskAltOutlinedIcon from '@mui/icons-material/TaskAltOutlined';
 import LaunchIcon from '@mui/icons-material/Launch';
 import TimelapseIcon from '@mui/icons-material/Timelapse';
+import LanguageIcon from '@mui/icons-material/Language';
 // import PaymentIcon from '@mui/icons-material/Payment';
 // import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 // import BackupOutlinedIcon from '@mui/icons-material/BackupOutlined';
@@ -46,20 +47,14 @@ export default () => {
         </NodeDraggable>
 
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'embedNode', '40')} draggable>
-          <LinkOutlinedIcon style={{ fontSize: "large" }} />
-          Link
+          <LanguageIcon style={{ fontSize: "large" }} />
+          Embed site
         </NodeDraggable>
 
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'audioNode', '40')} draggable>
           <AudioFileOutlinedIcon style={{ fontSize: "large" }} />
           Audio
         </NodeDraggable>
-
-        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'redirectNode', '40')} draggable>
-          <LaunchIcon style={{ fontSize: "large" }} />
-          Redirecionar
-        </NodeDraggable>
-
 
       </NodesContainer>
 
@@ -100,6 +95,11 @@ export default () => {
           Botão
         </NodeDraggable>
 
+        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'linkButtonInputNode', '40')} draggable>
+          <LinkOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
+          Botão link
+        </NodeDraggable>
+
       </NodesContainer>
 
       <NodesType>Lógica</NodesType>
@@ -108,6 +108,11 @@ export default () => {
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'delayLogicNode', '40')} draggable>
           <TimelapseIcon style={{ fontSize: "large", color: "#9999FF" }} />
           Delay
+        </NodeDraggable>
+
+        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'redirectLogicNode', '40')} draggable>
+          <LaunchIcon style={{ fontSize: "large", color: "#9999FF" }} />
+          Redirect
         </NodeDraggable>
 
       </NodesContainer>

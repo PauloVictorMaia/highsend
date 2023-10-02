@@ -19,15 +19,19 @@ export const AddLink = styled.div`
   display: flex;
   align-items: center;
   column-gap: 5px;
+
+  > svg {
+    color: #9999FF;
+  }
 `;
 
 export const LinkInputContainer = styled.div`
   visibility: ${({isvisible}) => isvisible ? "visible" : "hidden"};
   position: absolute;
   width: 350px;
-  height: 130px;
+  height: 70px;
   left: -375px;
-  top: -35px;
+  top: -15px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

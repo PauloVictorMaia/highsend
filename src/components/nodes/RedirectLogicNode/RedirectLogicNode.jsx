@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { NodeContainer, AddLink, LinkInput, LinkInputContainer } from "./EmbedNode.style"
+import { NodeContainer, AddLink, LinkInput, LinkInputContainer } from "./RedirectLogicNode.style"
 import { useState, useEffect } from "react";
 import { useReactFlow, NodeToolbar } from "reactflow";
-import LanguageIcon from '@mui/icons-material/Language';
+import LaunchIcon from '@mui/icons-material/Launch';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
-function EmbedNode({ data, id, selected }) {
+function RedirectLogicNode({ data, id, selected }) {
 
   const [nodeValue, setNodeValue] = useState(data.value || "")
   const { setNodes } = useReactFlow();
@@ -54,12 +54,8 @@ function EmbedNode({ data, id, selected }) {
       </NodeToolbar>
 
       <AddLink>
-        <LanguageIcon />
-        {nodeValue === "" ?
-          <span>Click para editar...</span>
-          :
-          <span>Ver link</span>
-        }
+        <LaunchIcon />
+        Redirect
       </AddLink>
 
       <LinkInputContainer isvisible={selected}>
@@ -67,7 +63,7 @@ function EmbedNode({ data, id, selected }) {
         <LinkInput
           type="text"
           value={nodeValue}
-          placeholder="Cole o link aqui"
+          placeholder="Cole aqui o link de redirecionamento."
           onChange={(e) => setNodeValue(e.target.value)}
         />
       </LinkInputContainer>
@@ -76,4 +72,4 @@ function EmbedNode({ data, id, selected }) {
   )
 }
 
-export default EmbedNode
+export default RedirectLogicNode;
