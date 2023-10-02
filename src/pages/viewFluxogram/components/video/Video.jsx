@@ -2,9 +2,13 @@ import { useEffect, useState } from "react";
 import { BubleText, MessageContent, MessageContainer } from "./styles";
 import DOMPurify from 'dompurify';
 
-function Video({ data }) {
+function Video({ data, onSend }) {
   const [showTyping, setShowTyping] = useState(true);
   const [hasReachedTargetTime, setHasReachedTargetTime] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+
+  const targetTime = 10;
+  const awaitTargetTime = true;
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -14,7 +18,18 @@ function Video({ data }) {
     return () => clearTimeout(timer);
   }, []);
 
+  useEffect(() => {
+    if (currentTime >= targetTime && !hasReachedTargetTime) {
+      onSend();
+      setHasReachedTargetTime(true);
+    }
+  }, [currentTime, hasReachedTargetTime, onSend]);
+
   const getEmbedUrl = (url) => {
+    if (!hasReachedTargetTime){
+      onSend();
+      setHasReachedTargetTime(true);
+    }
     if (url.includes("youtube.com/watch?v=")) {
       return url.replace("youtube.com/watch?v=", "youtube.com/embed/") + "?autoplay=1";
     } else if (url.includes("vimeo.com/")) {
@@ -37,21 +52,23 @@ function Video({ data }) {
         script.async = true;
         document.body.appendChild(script);
 
-        script.onload = () => {
-          const video = document.querySelector('video'); // Altere o seletor conforme necessário
-          if (video) {
-            video.addEventListener('timeupdate', () => {
-              const currentTime = video.currentTime;
-              const targetTime = 10; // Defina o tempo desejado em segundos
-              if (currentTime >= targetTime && !hasReachedTargetTime) {
-                // Chame a função ou execute a ação desejada aqui
-                console.log('Vídeo atingiu o tempo desejado:', currentTime);
-                setHasReachedTargetTime(true);
-                video.removeEventListener('timeupdate', checkTime); // Remova o ouvinte de eventos
-              }
-            });
+        if(awaitTargetTime){
+          script.onload = () => {
+            const video = document.querySelector('video');
+            if (video) {
+              video.addEventListener('timeupdate', () => {
+                if(video.currentTime >= targetTime && video.currentTime < targetTime + 1){
+                  setCurrentTime(video.currentTime);
+                }
+              });
+            }
+          };
+        } else {
+          if (!hasReachedTargetTime){
+            onSend();
+            setHasReachedTargetTime(true);
           }
-        };
+        }
       }
     }
 

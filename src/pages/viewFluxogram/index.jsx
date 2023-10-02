@@ -32,7 +32,7 @@ function Chatbot() {
   const [leadID, setLeadID] = useState(null);
   const divRef = useRef(null);
   const notDisplayedAvatarNode = ['dateInputNode', 'buttonInputNode', 'textInputNode', 'numberInputNode', 'emailInputNode', 'websiteInputNode', 'phoneInputNode', 'delayLogicNode', 'redirectLogicNode', 'linkButtonInputNode'];
-  const notPlusIndexNode = ['dateInputNode', 'textInputNode', 'numberInputNode', 'emailInputNode', 'websiteInputNode', 'phoneInputNode', 'delayLogicNode'];
+  const notPlusIndexNode = ['dateInputNode', 'textInputNode', 'numberInputNode', 'emailInputNode', 'websiteInputNode', 'phoneInputNode', 'delayLogicNode', 'videoNode'];
   const params = useParams();
 
   const smoothScrollToBottom = (element) => {
@@ -197,7 +197,7 @@ function Chatbot() {
       case 'audioNode':
         return <Audio data={node.data} />;
       case 'videoNode':
-        return <Video data={node.data} />;
+        return <Video data={node.data} onSend={() => sendVariableValue()} />;
       case 'imageNode':
         return <ImageNode data={node.data} />;
       case 'embedNode':
