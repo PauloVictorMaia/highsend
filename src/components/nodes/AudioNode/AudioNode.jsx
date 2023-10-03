@@ -115,6 +115,7 @@ function AudioNode({ data, id, selected }) {
           {activeTab === "tab1" && (
             <LinkInput
               type="text"
+              placeholder="Cole aqui o link do áudio"
               onChange={(e) => setNodeValue(e.target.value)}
               value={nodeValue}
             />

@@ -48,7 +48,11 @@ export function VideoNode({ data, id, selected }) {
 
   const handleTargetTime = (targetTime) => {
     const targetTimeToNumber = parseInt(targetTime);
-    setTargetTime(targetTimeToNumber);
+    if (isNaN(targetTimeToNumber)) {
+      setTargetTime(0);
+    } else {
+      setTargetTime(targetTimeToNumber);
+    }
   }
 
   useEffect(() => {

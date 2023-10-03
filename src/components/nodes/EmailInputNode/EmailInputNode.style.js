@@ -28,7 +28,7 @@ export const InputConfig = styled.div`
   flex-direction: column;
   box-sizing: border-box;
   left: -325px;
-  top: -140px;
+  top: -200px;
   border-radius: 5px;
   background-color: #fff;
   padding: 10px;
@@ -38,21 +38,60 @@ export const InputConfig = styled.div`
   >span {
     font-size: 1rem;
   }
-  >input {
-    margin-bottom: 10px;
-  }
-  >button {
-    width: 70px;
-    height: 25px;
-    border-radius: 5px;
-    background-color: blue;
+
+  >select {
+    margin-top: 5px;
+    height: 30px;
+    border: 0.5px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
     outline: none;
-    border: none;
-    cursor: pointer;
-    color: #fff;
-    font-size: 0.9rem;
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    color: #333;
+
+    &:focus {
+      outline: 2px solid #9999FF;
+    }
+  }
+
+  >div {
+    width: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    column-gap: 10px
   }
+`;
+
+export const MenuInput = styled.input`
+  width: ${({width}) => width};
+  height: 40px;
+  border-radius: 3px;
+  color: #333;
+  border: 0.5px solid rgba(0,0,0,0.15);
+  outline: none;
+  padding-left: 10px;
+  box-sizing: border-box;
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  margin: 5px 0 10px 0;
+
+  &:focus {
+    outline: 2px solid #9999FF;
+  }
+`;
+
+export const MenuButton = styled.button`
+  display: flex;
+  height: 30px;
+  width: 60px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  background-color: #E67200;
+  color: #fff;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  margin: 5px 0 10px 0;
+  cursor: pointer;
 `;

@@ -8,16 +8,19 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 function DelayLogicNode({ data, id, selected }) {
 
-  const [nodeValue, setNodeValue] = useState(data.value || null)
+  const [nodeValue, setNodeValue] = useState(data.value || 2)
   const { setNodes } = useReactFlow();
   const { deleteElements } = useReactFlow();
 
   const onDelete = () => deleteElements({ nodes: [{ id }] });
 
   const handleInputChange = (e) => {
-    // Remove qualquer caractere não numérico usando uma expressão regular
-    const sanitizedValue = e.target.value.replace(/[^0-9]/g, '');
-    setNodeValue(sanitizedValue);
+    const number = parseInt(e.target.value);
+    if (isNaN(number)) {
+      setNodeValue(null);
+    } else {
+      setNodeValue(number);
+    }
   };
 
   useEffect(() => {
@@ -26,8 +29,7 @@ function DelayLogicNode({ data, id, selected }) {
         if (node.id === id) {
           const groupID = node.parentNode;
           const parentNodes = nds.filter((node) => node.parentNode === groupID);
-          const valueToNumber = parseInt(nodeValue);
-          node.data.value = valueToNumber;
+          node.data.value = nodeValue;
           setNodes((nds) =>
             nds.map((node) => {
               if (node.id === groupID) {
@@ -63,7 +65,7 @@ function DelayLogicNode({ data, id, selected }) {
 
       <Delay>
         <TimelapseIcon />
-        {nodeValue === null ?
+        {nodeValue === null || nodeValue === 0 ?
           <span>Click para editar...</span>
           :
           <span>{`${nodeValue}s`}</span>
@@ -74,7 +76,7 @@ function DelayLogicNode({ data, id, selected }) {
         <span>Segundos de delay</span>
         <Input
           type="text"
-          value={nodeValue}
+          value={nodeValue === null || nodeValue === 0 ? "" : nodeValue}
           onChange={(e) => handleInputChange(e)}
         />
       </InputContainer>

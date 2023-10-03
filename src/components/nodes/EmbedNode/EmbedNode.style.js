@@ -29,13 +29,13 @@ export const LinkInputContainer = styled.div`
   visibility: ${({isvisible}) => isvisible ? "visible" : "hidden"};
   position: absolute;
   width: 350px;
-  height: 70px;
+  height: 90px;
   left: -375px;
   top: -35px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 5px 15px 5px 5px;
+  padding: 5px 15px 10px 15px;
   box-sizing: border-box;
   background-color: #fff;
   border-radius: 8px;
@@ -44,6 +44,17 @@ export const LinkInputContainer = styled.div`
 
 export const LinkInput = styled.input`
   width: 100%;
-  height: 30px;
-  border-radius: 5px;
+  height: 40px;
+  border-radius: 3px;
+  border: 0.5px solid rgba(0,0,0,0.15);
+  outline: none;
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  color: #333;
+  padding-left: 10px;
+  box-sizing: border-box;
+
+  &:focus {
+    outline: 2px solid #9999FF;
+  }
 `;

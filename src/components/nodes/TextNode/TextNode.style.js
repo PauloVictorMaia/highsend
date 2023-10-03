@@ -8,14 +8,19 @@ export const NodeContainer = styled.textarea`
   border: 0.5px solid rgba(0,0,0,0.15);
   outline: none;
   border-radius: 8px;
-  color: #000;
+  color: #333;
   font-size: 14px;
+  font-family: 'Oswald', sans-serif;
   display: block;
   padding: 5px;
   box-sizing: border-box;
   resize: none;
   scrollbar-width: thin; 
   scrollbar-color: #888 #f0f0f0; 
+
+  &:focus {
+    outline: 2px solid #9999FF;
+  }
 
   &::-webkit-scrollbar {
     width: 5px;

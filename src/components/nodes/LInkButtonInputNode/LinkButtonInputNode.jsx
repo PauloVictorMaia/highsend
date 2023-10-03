@@ -66,7 +66,7 @@ function LinkButtonInputNode({ data, id, selected }) {
         <LinkInput
           type="text"
           value={nodeValue}
-          placeholder="Cole o link aqui."
+          placeholder="Cole o link aqui"
           onChange={(e) => setNodeValue(e.target.value)}
         />
         <span>Nome do botão</span>
