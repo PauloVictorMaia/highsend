@@ -5,14 +5,16 @@ function ButtonInput({ data, onSend, variables }) {
 
   return (
     <Container>
-      {filteredVariable[0]?.done?
-        <>
-          {filteredVariable[0].value === data.buttonLabel &&
-            <Text>{data.buttonLabel}</Text>
-          }
-        </>
+      {filteredVariable[0]?.done ?
+        (filteredVariable[0].value === data.buttonLabel &&
+          <Text>{data.buttonLabel}</Text>)
         :
-        <Button value={data.buttonLabel} className='button' onClick={() => onSend()}>{data.buttonLabel}</Button>
+        <Button 
+          selected={filteredVariable[0]?.value === data.buttonLabel} 
+          className='button' 
+          onClick={() => onSend()}>
+          {data.buttonLabel}
+        </Button>
       }
     </Container>
   );

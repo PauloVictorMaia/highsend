@@ -16,6 +16,9 @@ import ImageNode from './components/imageNode/Video';
 import EmbedNode from './components/embedNode/Video';
 import { useParams } from 'react-router-dom';
 import api from '../../api';
+import DelayNode from './components/delay';
+import Redirect from './components/redirect';
+import LinkButton from './components/linkButton/ButtonInput';
 
 function Chatbot() {
   const [nodes, setNodes] = useState();
@@ -28,15 +31,15 @@ function Chatbot() {
   const [avatarsStatic, setAvatarsStatic] = useState([]);
   const [leadID, setLeadID] = useState(null);
   const divRef = useRef(null);
-  const notDisplayedAvatarNode = ['dateInputNode', 'buttonInputNode', 'textInputNode', 'numberInputNode', 'emailInputNode', 'websiteInputNode', 'phoneInputNode'];
-  const notPlusIndexNode = ['dateInputNode', 'textInputNode', 'numberInputNode', 'emailInputNode', 'websiteInputNode', 'phoneInputNode'];
+  const notDisplayedAvatarNode = ['dateInputNode', 'buttonInputNode', 'textInputNode', 'numberInputNode', 'emailInputNode', 'websiteInputNode', 'phoneInputNode', 'delayLogicNode', 'redirectLogicNode', 'linkButtonInputNode'];
+  const notPlusIndexNode = ['dateInputNode', 'textInputNode', 'numberInputNode', 'emailInputNode', 'websiteInputNode', 'phoneInputNode', 'delayLogicNode', 'videoNode'];
   const params = useParams();
 
   const smoothScrollToBottom = (element) => {
     const start = element.scrollTop;
     const end = element.scrollHeight - element.clientHeight;
     const change = end - start;
-    const duration = 200; // duração da animação em milissegundos
+    const duration = 200;
     let startTime = null;
 
     const animateScroll = (timestamp) => {
@@ -119,7 +122,7 @@ function Chatbot() {
     const timeOut = setTimeout(() => {
       const actualEdge = edges?.filter((edge) => edge.source === actualNodeDisplay);
       const nextNode = nodes?.filter((node) => node.id === actualEdge[0]?.target);
-      if(nextNode?.length){
+      if (nextNode?.length) {
         setActualNodeDisplay(nextNode[0].id);
         setNodesExibition([...nodesExibition, ...nextNode[0]?.data.blocks]);
       }
@@ -194,7 +197,7 @@ function Chatbot() {
       case 'audioNode':
         return <Audio data={node.data} />;
       case 'videoNode':
-        return <Video data={node.data} />;
+        return <Video data={node.data} onSend={() => sendVariableValue()} />;
       case 'imageNode':
         return <ImageNode data={node.data} />;
       case 'embedNode':
@@ -213,6 +216,12 @@ function Chatbot() {
         return <ButtonInput data={node.data} onSend={() => atualizationNodeDisplayed(node.id, node.data)} variables={variables} />;
       case 'dateInputNode':
         return <DateInputNode data={node.data} onSend={() => sendVariableValue()} />;
+      case 'delayLogicNode':
+        return <DelayNode data={node.data} onSend={() => sendVariableValue()} />;
+      case 'redirectLogicNode':
+        return <Redirect data={node.data} />;
+      case 'linkButtonInputNode':
+        return <LinkButton data={node.data} />;
       default:
         return null;
     }
