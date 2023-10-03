@@ -8,7 +8,7 @@ function Video({ data, onSend }) {
   const [currentTime, setCurrentTime] = useState(0);
 
   const targetTime = 10;
-  const awaitTargetTime = true;
+  const awaitTargetTime = false;
 
   useEffect(() => {
     const timer = setTimeout(() => {

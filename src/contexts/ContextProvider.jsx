@@ -21,14 +21,11 @@ export const ContextProvider = ({ children }) => {
     const [schedulesDataLoaded, setSchedulesDataLoaded] = useState(false);
     const [integrationsDataLoaded, setIntegrationsDataLoaded] = useState(false);
     const [leadsDataLoaded, setLeadsDataLoaded] = useState(false);
-    // eslint-disable-next-line no-unused-vars
     const [token, setToken] = useState(localStorage.getItem('token'));
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (token) {
-            getUser(token);
-        }
+        getUser(token);
     }, [token]);
 
     useEffect(() => {
