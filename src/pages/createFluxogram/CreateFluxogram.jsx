@@ -85,7 +85,7 @@ const Flow = () => {
   const [originalEdges, setOriginalEdges] = useState([]);
   const [originalVariables, setOriginalVariables] = useState([]);
 
-  console.log(nodes)
+  console.log(edges)
 
   async function getFlowData() {
     try {

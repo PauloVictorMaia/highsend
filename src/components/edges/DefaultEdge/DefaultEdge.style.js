@@ -1,5 +1,5 @@
 import { styled } from "styled-components";
 
 export const PathSVG = styled.path`
-  stroke-width: 3;
+  stroke-width: 6;
 `;
