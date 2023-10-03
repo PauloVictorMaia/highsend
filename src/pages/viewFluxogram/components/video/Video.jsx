@@ -7,8 +7,8 @@ function Video({ data, onSend }) {
   const [hasReachedTargetTime, setHasReachedTargetTime] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
 
-  const targetTime = 10;
-  const awaitTargetTime = false;
+  const targetTime = data.targetTime;
+  const awaitTargetTime = data.awaitTargetTime;
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -26,7 +26,7 @@ function Video({ data, onSend }) {
   }, [currentTime, hasReachedTargetTime, onSend]);
 
   const getEmbedUrl = (url) => {
-    if (!hasReachedTargetTime){
+    if (!hasReachedTargetTime) {
       onSend();
       setHasReachedTargetTime(true);
     }
@@ -40,11 +40,11 @@ function Video({ data, onSend }) {
   };
 
   const getVideoHtml = () => {
-    let htmlString = data.value.slice(1, -1).replace(/\\/g, '');
-    const cleanHTML = DOMPurify.sanitize(htmlString);
+
+    const cleanHTML = DOMPurify.sanitize(data.value);
 
     if (data.type === 'script') {
-      const scriptRegex = /s\.src=\\"([^\\]+)\\"/;
+      const scriptRegex = /s\.src="([^]+)"/;
       const match = scriptRegex.exec(data.value);
       if (match && match[1]) {
         const script = document.createElement("script");
@@ -52,19 +52,19 @@ function Video({ data, onSend }) {
         script.async = true;
         document.body.appendChild(script);
 
-        if(awaitTargetTime){
+        if (awaitTargetTime) {
           script.onload = () => {
             const video = document.querySelector('video');
             if (video) {
               video.addEventListener('timeupdate', () => {
-                if(video.currentTime >= targetTime && video.currentTime < targetTime + 1){
+                if (video.currentTime >= targetTime && video.currentTime < targetTime + 1) {
                   setCurrentTime(video.currentTime);
                 }
               });
             }
           };
         } else {
-          if (!hasReachedTargetTime){
+          if (!hasReachedTargetTime) {
             onSend();
             setHasReachedTargetTime(true);
           }

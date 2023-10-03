@@ -33,10 +33,10 @@ export const PreviewImage = styled.img`
 export const InputContainer = styled.div`
   visibility: ${({isvisible}) => isvisible ? "visible" : "hidden"};
   width: 330px;
-  height: 90px;
+  height: 300px;
   position: absolute;
   left: -355px;
-  top: 25px;
+  top: -65px;
   border-radius: 5px;
   background-color: #fff;
   padding: 0 10px;
@@ -77,16 +77,77 @@ export const Tabs = styled.li`
 
 export const Inputs = styled.div`
   width: 100%;
-  height: 60%;
+  height: 85%;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 0 10px;
+  padding: 10px 10px 5px 10px;
   box-sizing: border-box;
 `;
 
 export const LinkInput = styled.input`
   width: 100%;
+  height: 40px;
+  border-radius: 3px;
+  border: 0.5px solid rgba(0,0,0,0.15);
+  outline: none;
+  padding-left: 8px;
+  box-sizing: border-box;
+  margin-top: 40px;
+  margin-bottom: 40px;
+`;
+
+export const Textarea = styled.textarea`
+  display: block;
+  width: 100%;
+  height: 50%;
+  background-color: #fff;
+  border: 0.5px solid rgba(0,0,0,0.15);
+  outline: none;
+  border-radius: 8px;
+  color: #000;
+  font-size: 14px;
+  display: block;
+  padding: 5px;
+  box-sizing: border-box;
+  resize: none;
+  scrollbar-width: thin; 
+  scrollbar-color: #888 #f0f0f0; 
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #999;
+    border-radius: 15px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #f0f0f0;
+  }
+`;
+
+export const SwitchContainer = styled.div`
+  width: 100%;
   height: 30px;
-  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+
+  >span {
+    color: #333;
+    font-size: 0.9rem;
+  }
+`;
+
+export const TargetTimeInput = styled.input`
+  width: 100%;
+  height: 40px;
+  border-radius: 3px;
+  border: 0.5px solid rgba(0,0,0,0.15);
+  outline: none;
+  padding-left: 8px;
+  margin-top: 10px;
 `;

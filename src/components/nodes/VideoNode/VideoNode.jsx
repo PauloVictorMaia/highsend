@@ -1,10 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { LinkInput, InputContainer, NodeContainer, PreviewImage, VideoPreview, Inputs, Navigation, ListTabs, Tabs } from "./VideoNode.style";
+import { LinkInput, InputContainer, NodeContainer, PreviewImage, VideoPreview, Inputs, Navigation, ListTabs, Tabs, Textarea, SwitchContainer, TargetTimeInput } from "./VideoNode.style";
 import { useReactFlow, NodeToolbar } from "reactflow";
 import MovieCreationOutlinedIcon from '@mui/icons-material/MovieCreationOutlined';
 import { useState, useEffect } from "react";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { Switch } from "@mui/material";
 
 export function VideoNode({ data, id, selected }) {
   const [videoLink, setVideoLink] = useState(data.type === 'link' && data.value ? data.value : "");
@@ -12,6 +13,8 @@ export function VideoNode({ data, id, selected }) {
   const [thumbnail, setThumbnail] = useState("")
   const [type, setType] = useState(data.type || "link");
   const { setNodes } = useReactFlow();
+  const [awaitTargetTime, setAwaitTargetTime] = useState(data.awaitTargetTime || false);
+  const [targetTime, setTargetTime] = useState(data.targetTime || 10);
 
   const { deleteElements } = useReactFlow();
 
@@ -38,10 +41,14 @@ export function VideoNode({ data, id, selected }) {
   };
 
   const handleScript = (script) => {
-    const scriptToJSON = JSON.stringify(script);
-    setScript(scriptToJSON);
+    setScript(script);
     setThumbnail("");
     setVideoLink("");
+  }
+
+  const handleTargetTime = (targetTime) => {
+    const targetTimeToNumber = parseInt(targetTime);
+    setTargetTime(targetTimeToNumber);
   }
 
   useEffect(() => {
@@ -52,6 +59,12 @@ export function VideoNode({ data, id, selected }) {
           const parentNodes = nds.filter((node) => node.parentNode === groupID)
           node.data.value = type === "link" ? videoLink : script
           node.data.type = type
+          if (type === "script") {
+            node.data.awaitTargetTime = awaitTargetTime
+            if (awaitTargetTime) {
+              node.data.targetTime = targetTime
+            }
+          }
           setNodes((nds) =>
             nds.map((node) => {
               if (node.id === groupID) {
@@ -65,7 +78,7 @@ export function VideoNode({ data, id, selected }) {
         return node;
       })
     );
-  }, [videoLink, script, type]);
+  }, [videoLink, script, type, awaitTargetTime, targetTime]);
 
   return (
     <NodeContainer>
@@ -133,20 +146,45 @@ export function VideoNode({ data, id, selected }) {
         </Navigation>
         <Inputs>
           {type === "link" && (
-            <LinkInput
-              type="text"
-              placeholder="Cole aqui o link do video (youtube ou vimeo)"
-              value={videoLink}
-              onChange={(e) => getThumbnail(e.target.value)}
-            />
+            <>
+              <LinkInput
+                type="text"
+                placeholder="Cole aqui o link do video"
+                value={videoLink}
+                onChange={(e) => getThumbnail(e.target.value)}
+              />
+              <span>Trabalhamos com links do Youtube e Vimeo</span>
+            </>
           )}
           {type === "script" && (
-            <LinkInput
-              type="text"
-              placeholder="Cole aqui o script HTML"
-              value={script}
-              onChange={(e) => handleScript(e.target.value)}
-            />
+            <>
+              <Textarea
+                type="text"
+                placeholder="Cole aqui o script HTML"
+                value={script}
+                onChange={(e) => handleScript(e.target.value)}
+              />
+              <SwitchContainer>
+                <span>Tempo de espera?</span>
+                <Switch
+                  size="small"
+                  defaultChecked={awaitTargetTime}
+                  onChange={() => setAwaitTargetTime(!awaitTargetTime)}
+                />
+              </SwitchContainer>
+              {
+                awaitTargetTime &&
+                <>
+                  <span>Esperar quantos segundos antes de continuar o fluxo?</span>
+                  <TargetTimeInput
+                    type="text"
+                    placeholder="Segundos de espera"
+                    value={targetTime}
+                    onChange={(e) => handleTargetTime(e.target.value)}
+                  />
+                </>
+              }
+            </>
           )}
         </Inputs>
       </InputContainer>
