@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { InputConfig, InputPreview, NodeContainer } from "./NumberInputNode.style";
+import { InputConfig, InputPreview, NodeContainer, MenuInput, MenuButton } from "./NumberInputNode.style";
 import { useReactFlow, NodeToolbar } from "reactflow";
 import { useState, useEffect } from "react";
 import { useStateContext } from "../../../contexts/ContextProvider";
@@ -12,18 +12,36 @@ export function NumberInputNode({ data, id, selected }) {
   const { setNodes } = useReactFlow();
   const { deleteElements } = useReactFlow();
   const onDelete = () => deleteElements({ nodes: [{ id }] });
-  const [newVariable, setNewVariable] = useState("")
-  const [placeholder, setPlaceholder] = useState(data.placeholder || "Digite um número...")
-  const [buttonLabel, setButtonLabel] = useState(data.buttonLabel || "Enviar")
-  const [assignedVariable, setAssignedVariable] = useState(data.variable || "")
-  const [minNumber, setMinNumber] = useState(data.min || "")
-  const [maxNumber, setMaxNumber] = useState(data.max || "")
+  const [newVariable, setNewVariable] = useState("");
+  const [placeholder, setPlaceholder] = useState(data.placeholder || "Digite um número...");
+  const [buttonLabel, setButtonLabel] = useState(data.buttonLabel || "Enviar");
+  const [assignedVariable, setAssignedVariable] = useState(data.variable || "");
+  const [minNumber, setMinNumber] = useState(data.min || null);
+  const [maxNumber, setMaxNumber] = useState(data.max || null);
 
   const sendNewVariable = async () => {
     try {
       await createNewVariable(newVariable)
     } catch (error) {
       console.log(error)
+    }
+  }
+
+  const handleMinNumber = (e) => {
+    const number = parseInt(e.target.value);
+    if (isNaN(number)) {
+      setMinNumber(null);
+    } else {
+      setMinNumber(number);
+    }
+  }
+
+  const handleMaxNumber = (e) => {
+    const number = parseInt(e.target.value);
+    if (isNaN(number)) {
+      setMaxNumber(null);
+    } else {
+      setMaxNumber(number);
     }
   }
 
@@ -85,38 +103,41 @@ export function NumberInputNode({ data, id, selected }) {
 
       <InputConfig isvisible={selected}>
         <span>Placeholder:</span>
-        <input
+        <MenuInput
           type="text"
           placeholder={placeholder}
           value={placeholder}
           onChange={(e) => setPlaceholder(e.target.value)}
         />
         <span>Nome do botão:</span>
-        <input
+        <MenuInput
           type="text"
           placeholder={buttonLabel}
           defaultValue={buttonLabel}
           onChange={(e) => setButtonLabel(e.target.value)}
         />
         <span>Min:</span>
-        <input
+        <MenuInput
           type="text"
-          value={minNumber}
-          onChange={(e) => setMinNumber(e.target.value)}
+          value={minNumber === null ? "" : minNumber}
+          onChange={(e) => handleMinNumber(e)}
         />
         <span>Max:</span>
-        <input
+        <MenuInput
           type="text"
-          value={maxNumber}
-          onChange={(e) => setMaxNumber(e.target.value)}
+          value={maxNumber === null ? "" : maxNumber}
+          onChange={(e) => handleMaxNumber(e)}
         />
         <span>Criar nova variável:</span>
-        <input
-          type="text"
-          placeholder="Defina o nome da nova variável"
-          onChange={(e) => setNewVariable(e.target.value)}
-        />
-        <button onClick={sendNewVariable}>Criar</button>
+        <div>
+          <MenuInput
+            width="80%"
+            type="text"
+            placeholder="Defina o nome da nova variável"
+            onChange={(e) => setNewVariable(e.target.value)}
+          />
+          <MenuButton onClick={sendNewVariable}>Criar</MenuButton>
+        </div>
 
         <span>Atribuir variável a esse input</span>
         <select value={assignedVariable} onChange={(e) => handleAssignedVariable(e.target.value)}>

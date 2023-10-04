@@ -111,6 +111,7 @@ export function ImageNode({ id, data, selected }) {
           {activeTab === "tab1" && (
             <LinkInput
               type="text"
+              placeholder="Cole aqui o link da imagem"
               value={nodeValue}
               onChange={(e) => setNodeValue(e.target.value)}
             />

@@ -64,14 +64,14 @@ export const Tabs = styled.li`
 
   &:hover {
     text-decoration: none;
-    border-bottom: 2px solid  ${({ activetab }) => activetab === "true" ? "#000" : "transparent"};
+    border-bottom: 2px solid  ${({ activetab }) => activetab === "false" ? "#555" : "#E67200"};
   }
 
   ${({ activetab }) =>
     activetab === "true" &&
     `
     text-decoration: none;
-    border-bottom: 2px solid #000;
+    border-bottom: 2px solid #E67200;
   `}
 `;
 
@@ -87,22 +87,30 @@ export const SendImages = styled.div`
 
 export const LinkInput = styled.input`
   width: 100%;
-  height: 30px;
-  border: 1px solid black;
-  border-radius: 5px;
-  color: #000;
+  height: 40px;
+  border-radius: 3px;
+  color: #333;
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  border: 0.5px solid rgba(0,0,0,0.15);
+  outline: none;
+  padding-left: 10px;
+  box-sizing: border-box;
+
+  &:focus {
+    outline: 2px solid #9999FF;
+  }
 `;
 
 export const ChooseFileButton = styled.label`
-  display: inline-block;
-  width: 100px;
-  height: 30px;
+  display: flex;
+  height: 40px;
   border-radius: 5px;
-  background-color: blue;
+  background-color: #E67200;
   color: #fff;
-  font-weight: bold;
-  text-align: center;
-  line-height: 30px;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
   cursor: pointer;
 `;
 

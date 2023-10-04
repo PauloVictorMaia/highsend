@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { InputConfig, InputPreview, MultipleChoiceInput, NodeContainer, RightHandle } from "./ButtonInputNode.style";
+import { InputConfig, InputPreview, MultipleChoiceInput, NodeContainer, RightHandle, MenuInput, MenuButton } from "./ButtonInputNode.style";
 import { useReactFlow, NodeToolbar, Position } from "reactflow";
 import { useState, useEffect } from "react";
 import { useStateContext } from "../../../contexts/ContextProvider";
@@ -82,7 +82,7 @@ export function ButtonInputNode({ data, id, selected }) {
 
       <InputPreview>
         <TaskAltOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
-        <input
+        <MenuInput
           type="text"
           placeholder={buttonLabel}
           value={buttonLabel}
@@ -94,19 +94,22 @@ export function ButtonInputNode({ data, id, selected }) {
       <InputConfig isvisible={selected}>
         <MultipleChoiceInput>
           <span>Multipla escolha?</span>
-          <input
+          <MenuInput
             type="checkbox"
             checked={multipleChoice}
             onChange={() => setMultipleChoice(!multipleChoice)}
           />
         </MultipleChoiceInput>
         <span>Criar nova variável:</span>
-        <input
-          type="text"
-          placeholder="Defina o nome da nova variável"
-          onChange={(e) => setNewVariable(e.target.value)}
-        />
-        <button onClick={sendNewVariable}>Criar</button>
+        <div>
+          <MenuInput
+            width="80%"
+            type="text"
+            placeholder="Defina o nome da nova variável"
+            onChange={(e) => setNewVariable(e.target.value)}
+          />
+          <MenuButton onClick={sendNewVariable}>Criar</MenuButton>
+        </div>
 
         <span>Atribuir variável a esse input</span>
         <select value={assignedVariable} onChange={(e) => handleAssignedVariable(e.target.value)}>

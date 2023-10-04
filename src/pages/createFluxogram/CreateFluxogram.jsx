@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import ReactFlow, {
   Background, Controls,
-  addEdge, useEdgesState,
+  useEdgesState,
   useNodesState, getConnectedEdges,
   getOutgoers, getIncomers,
   updateEdge, useReactFlow,
@@ -84,8 +84,6 @@ const Flow = () => {
   const [originalNodes, setOriginalNodes] = useState([]);
   const [originalEdges, setOriginalEdges] = useState([]);
   const [originalVariables, setOriginalVariables] = useState([]);
-
-  console.log(nodes)
 
   async function getFlowData() {
     try {
@@ -175,8 +173,15 @@ const Flow = () => {
   }, [nodes, edges, variables]);
 
   const onConnect = useCallback((connection) => {
-    return setEdges(edges => addEdge(connection, edges));
-  }, []);
+
+    const isSourceNodeConnected = edges.some((edge) => edge.source === connection.source);
+
+    if (isSourceNodeConnected) {
+      return;
+    }
+
+    setEdges((prevEdges) => [...prevEdges, connection]);
+  }, [edges]);
 
   const onDragOver = useCallback((event) => {
     event.preventDefault();

@@ -4,8 +4,9 @@
 
 import { getBezierPath } from "reactflow"
 import { PathSVG } from "./DefaultEdge.style";
-import { useReactFlow } from "reactflow";
+import { useReactFlow, EdgeLabelRenderer } from "reactflow";
 import { useEffect } from "react";
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 export default function DefaultEdge({
   id,
@@ -13,14 +14,15 @@ export default function DefaultEdge({
   sourceY,
   targetX,
   targetY,
+  source,
   sourcePosition,
   targetPosition,
   style = {},
-  data,
   markerEnd,
+  selected
 }) {
 
-  const [edgePath] = getBezierPath({
+  const [edgePath, labelX, labelY] = getBezierPath({
     sourceX,
     sourceY,
     targetX,
@@ -30,6 +32,7 @@ export default function DefaultEdge({
   });
 
   const { setEdges } = useReactFlow()
+  const { deleteElements } = useReactFlow();
 
   useEffect(() => {
     setEdges((eds) =>
@@ -42,15 +45,38 @@ export default function DefaultEdge({
     );
   }, []);
 
-  return (
+  const onEdgeClick = (evt, id) => {
+    evt.stopPropagation();
+    deleteElements({ edges: [{ id }] });
+  };
 
-    <PathSVG
-      id={id}
-      style={style}
-      className="react-flow__edge-path"
-      d={edgePath}
-      markerEnd={markerEnd}
-    />
+  return (
+    <>
+      <PathSVG
+        id={id}
+        style={style}
+        className="react-flow__edge-path"
+        d={edgePath}
+        markerEnd={markerEnd}
+      />
+      <EdgeLabelRenderer>
+        <div
+          style={{
+            position: 'absolute',
+            top: "-15px",
+            transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
+            fontSize: 12,
+            // everything inside EdgeLabelRenderer has no pointer events by default
+            // if you have an interactive element, set pointer-events: all
+            pointerEvents: 'all',
+            display: selected ? "block" : "none"
+          }}
+          className="nodrag nopan"
+        >
+          <DeleteOutlineIcon className="edgebutton" style={{ fontSize: "1.5rem", color: "#555", cursor: "pointer" }} onClick={(event) => onEdgeClick(event, id)} />
+        </div>
+      </EdgeLabelRenderer>
+    </>
 
   )
 }

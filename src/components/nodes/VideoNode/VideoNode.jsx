@@ -1,16 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { LinkInput, InputContainer, NodeContainer, PreviewImage, VideoPreview, Inputs, Navigation, ListTabs, Tabs, Textarea, SwitchContainer, TargetTimeInput } from "./VideoNode.style";
+import { LinkInput, InputContainer, NodeContainer, VideoPreview, Inputs, Navigation, ListTabs, Tabs, Textarea, SwitchContainer, TargetTimeInput } from "./VideoNode.style";
 import { useReactFlow, NodeToolbar } from "reactflow";
 import MovieCreationOutlinedIcon from '@mui/icons-material/MovieCreationOutlined';
 import { useState, useEffect } from "react";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { Switch } from "@mui/material";
+import ReactPlayer from "react-player";
 
 export function VideoNode({ data, id, selected }) {
   const [videoLink, setVideoLink] = useState(data.type === 'link' && data.value ? data.value : "");
   const [script, setScript] = useState(data.type === 'script' && data.value ? data.value : "");
-  const [thumbnail, setThumbnail] = useState("")
   const [type, setType] = useState(data.type || "link");
   const { setNodes } = useReactFlow();
   const [awaitTargetTime, setAwaitTargetTime] = useState(data.awaitTargetTime || false);
@@ -20,35 +20,18 @@ export function VideoNode({ data, id, selected }) {
 
   const onDelete = () => deleteElements({ nodes: [{ id }] });
 
-  const getThumbnail = (url) => {
-    if (url.includes("youtube")) {
-      const videoId = url.split("v=")[1];
-      const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-      setVideoLink(url);
-      setThumbnail(thumbnailUrl);
-    } else if (url.includes("vimeo")) {
-      const videoId = url.split("vimeo.com/")[1];
-      const thumbnailUrl = `https://i.vimeocdn.com/video/${videoId}-640.jpg`;
-      setVideoLink(url);
-      setThumbnail(thumbnailUrl);
-      setVideoLink(url);
-    } else {
-      setVideoLink(url);
-      setThumbnail(url);
-    }
-
-    setScript("");
-  };
-
   const handleScript = (script) => {
     setScript(script);
-    setThumbnail("");
     setVideoLink("");
   }
 
   const handleTargetTime = (targetTime) => {
     const targetTimeToNumber = parseInt(targetTime);
-    setTargetTime(targetTimeToNumber);
+    if (isNaN(targetTimeToNumber)) {
+      setTargetTime(0);
+    } else {
+      setTargetTime(targetTimeToNumber);
+    }
   }
 
   useEffect(() => {
@@ -103,12 +86,17 @@ export function VideoNode({ data, id, selected }) {
         <VideoPreview>
           <MovieCreationOutlinedIcon />
           {
-            thumbnail === "" ?
+            videoLink === "" ?
               "Adicione o link do video"
               :
-              <PreviewImage
-                src={thumbnail}
+              <ReactPlayer
+                url={videoLink}
                 alt="Video thumbnail"
+                width="100%"
+                height="140px"
+                controls={false}
+                playing={false}
+                style={{ maxWidth: "165px" }}
               />
           }
         </VideoPreview>
@@ -151,7 +139,7 @@ export function VideoNode({ data, id, selected }) {
                 type="text"
                 placeholder="Cole aqui o link do video"
                 value={videoLink}
-                onChange={(e) => getThumbnail(e.target.value)}
+                onChange={(e) => setVideoLink(e.target.value)}
               />
               <span>Trabalhamos com links do Youtube e Vimeo</span>
             </>

@@ -64,14 +64,14 @@ export const Tabs = styled.li`
 
   &:hover {
     text-decoration: none;
-    border-bottom: 2px solid  ${({ activetab }) => activetab === "true" ? "#000" : "transparent"};
+    border-bottom: 2px solid  ${({ activetab }) => activetab === "false" ? "#555" : "#E67200"};
   }
 
   ${({ activetab }) =>
     activetab === "true" &&
     `
     text-decoration: none;
-    border-bottom: 2px solid #000;
+    border-bottom: 2px solid #E67200;
   `}
 `;
 
@@ -91,10 +91,17 @@ export const LinkInput = styled.input`
   border-radius: 3px;
   border: 0.5px solid rgba(0,0,0,0.15);
   outline: none;
+  color: #333;
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
   padding-left: 8px;
   box-sizing: border-box;
   margin-top: 40px;
   margin-bottom: 40px;
+
+  &:focus {
+    outline: 2px solid #9999FF;
+  }
 `;
 
 export const Textarea = styled.textarea`
@@ -105,7 +112,7 @@ export const Textarea = styled.textarea`
   border: 0.5px solid rgba(0,0,0,0.15);
   outline: none;
   border-radius: 8px;
-  color: #000;
+  color: #333;
   font-size: 14px;
   display: block;
   padding: 5px;
@@ -113,6 +120,10 @@ export const Textarea = styled.textarea`
   resize: none;
   scrollbar-width: thin; 
   scrollbar-color: #888 #f0f0f0; 
+
+  &:focus {
+    outline: 2px solid #9999FF;
+  }
 
   &::-webkit-scrollbar {
     width: 5px;
