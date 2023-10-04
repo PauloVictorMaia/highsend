@@ -14,6 +14,7 @@ import EditIntegration from "./pages/integrations/editIntegration";
 import LoginPage from "./pages/Login";
 import LeadsResults from "./pages/leads/leadsResults";
 import SubscriptionPage from "./pages/subscription/SubscriptionPage";
+import NotFoundPage from "./pages/notFoundPage";
 // import Chatbot from "./pages/viewFluxogram";
 // import LandingPage from "./pages/LandingPage";
 // import ExternalPageShedule from "./pages/externalPageSchedule";
@@ -26,8 +27,10 @@ const App = () => {
           {/* <Route path="/" element={<LandingPage />} />
           <Route path="/agendar-evento/:userId/:calendarId" element={<ExternalPageShedule />} />
           <Route path="/fluxo-de-bot/:userId/:flowId" element={<Chatbot />} /> */}
+          <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/subscription/:type/:subscriptionId" element={<SubscriptionPage />} />
+          <Route path="*" element={<NotFoundPage />} />
           <Route path="/dashboard/*" element={<DashBoard />}>
             <Route index element={<Navigate to="fluxograms" />} />
             <Route path="fluxograms" element={<Fluxograms />} />
