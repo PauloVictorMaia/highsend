@@ -463,7 +463,7 @@ const Flow = () => {
           color="#C6D0E1"
           style={{ backgroundColor: "#f4f5f8" }}
         />
-        <Controls position="bottom-right" />
+        <Controls position="bottom-right" style={{ bottom: '100px' }} />
       </ReactFlow>
       <Panel position="top-left" style={openMenu ? { left: 230, top: -15 } : { left: 90 }}>
         <Sidebar />

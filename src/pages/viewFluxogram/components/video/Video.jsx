@@ -22,6 +22,7 @@ function Video({ data, onSend }) {
     if (currentTime >= targetTime && !hasReachedTargetTime) {
       onSend();
       setHasReachedTargetTime(true);
+      localStorage.setItem('alreadyElsDisplayed', true)
     }
   }, [currentTime, hasReachedTargetTime, onSend]);
 
@@ -51,8 +52,9 @@ function Video({ data, onSend }) {
         script.src = match[1] + "?autoplay=true";
         script.async = true;
         document.body.appendChild(script);
+        const alreadyElsDisplayed = localStorage.getItem('alreadyElsDisplayed');
 
-        if (awaitTargetTime) {
+        if (awaitTargetTime && !alreadyElsDisplayed) {
           script.onload = () => {
             const video = document.querySelector('video');
             if (video) {

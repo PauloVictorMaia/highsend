@@ -14,7 +14,7 @@
 
 @media(max-width: 768px){
   .wrapper {
-    width: 330px;
+    width: 360px;
     max-width: 100%;
     min-height: 500px;
   }

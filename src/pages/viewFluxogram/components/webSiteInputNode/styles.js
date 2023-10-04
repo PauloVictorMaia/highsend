@@ -7,13 +7,18 @@ export const Container = styled.div`
 `;
 
 export const Text = styled.div`
- margin: 10px 0;
+  margin: 10px 0;
  cursor: pointer;
+ font-size: 17px;
  background-color: blueviolet;
  color: #fff;
  width: auto;
  padding: 10px;
  border-radius: 4px;
+ max-width: 100%;
+ word-wrap: break-word;
+ font-weight: 400;
+ padding: 10px 20px;
 `;
 
 export const InputContainer = styled.div`

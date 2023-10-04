@@ -61,7 +61,7 @@ export const MessageContent = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.75em 1.5em;
+  padding: 10px 12px;
   box-sizing: border-box;
   background: #F7F8FF;
   border-radius: 10px;
