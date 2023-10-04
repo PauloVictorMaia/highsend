@@ -92,14 +92,14 @@ export function ButtonInputNode({ data, id, selected }) {
       </InputPreview>
 
       <InputConfig isvisible={selected}>
-        <MultipleChoiceInput>
+        {/* <MultipleChoiceInput>
           <span>Multipla escolha?</span>
           <MenuInput
             type="checkbox"
             checked={multipleChoice}
             onChange={() => setMultipleChoice(!multipleChoice)}
           />
-        </MultipleChoiceInput>
+        </MultipleChoiceInput> */}
         <span>Criar nova variável:</span>
         <div>
           <MenuInput

@@ -85,7 +85,7 @@ export const MultipleChoiceInput = styled.div`
 
 export const MenuInput = styled.input`
   width: ${({width}) => width};
-  height: 40px;
+  height: 32px;
   border-radius: 3px;
   color: #333;
   border: 0.5px solid rgba(0,0,0,0.15);
