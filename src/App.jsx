@@ -18,17 +18,8 @@ import NotFoundPage from "./pages/notFoundPage";
 // import Chatbot from "./pages/viewFluxogram";
 // import LandingPage from "./pages/LandingPage";
 // import ExternalPageShedule from "./pages/externalPageSchedule";
-import { useEffect } from "react";
-import dotenv from 'dotenv';
-dotenv.config();
-
 
 const App = () => {
-  useEffect(() => {
-    window.process = {
-      ...window.process,
-    };
-  }, []);
   return (
     <BrowserRouter>
       <ContextProvider>

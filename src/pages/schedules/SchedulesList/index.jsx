@@ -15,6 +15,8 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import { Switch } from "@mui/material";
 import ClearIcon from '@mui/icons-material/Clear';
 import clipboardCopy from "clipboard-copy";
+import dotenv from 'dotenv';
+dotenv.config();
 
 function SchedulesList() {
   const [indexDrop, setIndexDrop] = useState(null);

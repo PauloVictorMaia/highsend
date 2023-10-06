@@ -32,6 +32,8 @@ import clipboardCopy from 'clipboard-copy';
 import Tooltip from '@mui/material/Tooltip';
 import CodeIcon from '@mui/icons-material/Code';
 import CopyEmbed from "../../components/CopyEmbedCode";
+import dotenv from 'dotenv';
+dotenv.config();
 
 function Fluxograms() {
   const [menuComponent, setMenuComponent] = useState(0);
