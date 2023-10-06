@@ -7,10 +7,10 @@ import {
   Container,
   Divider
 } from "./style";
-import { TiFlowSwitch } from "react-icons/ti";
-import { TfiAgenda } from "react-icons/tfi";
-import { TbDeviceAnalytics } from "react-icons/Tb";
-import { MdOutlineIntegrationInstructions } from "react-icons/md";
+// import { TiFlowSwitch } from "react-icons/ti";
+// import { TfiAgenda } from "react-icons/tfi";
+// import { TbDeviceAnalytics } from "react-icons/Tb";
+// import { MdOutlineIntegrationInstructions } from "react-icons/md";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { Outlet, useLocation } from "react-router";
 import TopBar from "../../components/TopBar";
@@ -35,14 +35,14 @@ const DashBoard = () => {
                 <MenuContainer>
                   <Link to='fluxograms'>
                     <MenuItem onClick={() => setPath("/dashboard/fluxograms/")} active={path.includes("/dashboard/fluxograms")} openmenu={openMenu}>
-                      <TiFlowSwitch size={20} />
+                      <PeopleOutlineIcon size={20} />
                       <span>Fluxos de Bot</span>
                     </MenuItem>
                   </Link>
 
                   <Link to='schedules'>
                     <MenuItem onClick={() => setPath("/dashboard/schedules")} active={path.includes("/dashboard/schedules")} openmenu={openMenu}>
-                      <TfiAgenda size={20} />
+                      <PeopleOutlineIcon size={20} />
                       <span>Agendas</span>
                     </MenuItem>
                   </Link>
@@ -58,14 +58,14 @@ const DashBoard = () => {
 
                   <Link to='integrations'>
                     <MenuItem openmenu={openMenu} onClick={() => setPath("/dashboard/integrations")} active={path.includes("/dashboard/integrations")}>
-                      <MdOutlineIntegrationInstructions size={20} />
+                      <PeopleOutlineIcon size={20} />
                       <span>Integrações</span>
                     </MenuItem>
                   </Link>
 
                   <Link to='analytics'>
                     <MenuItem onClick={() => setPath("/dashboard/analytics")} active={path.includes("/dashboard/analytics")} openmenu={openMenu}>
-                      <TbDeviceAnalytics size={20} />
+                      <PeopleOutlineIcon size={20} />
                       <span>Analytics</span>
                     </MenuItem>
                   </Link>
