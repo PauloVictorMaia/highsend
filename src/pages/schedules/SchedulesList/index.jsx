@@ -15,8 +15,6 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import { Switch } from "@mui/material";
 import ClearIcon from '@mui/icons-material/Clear';
 import clipboardCopy from "clipboard-copy";
-import dotenv from 'dotenv';
-dotenv.config();
 
 function SchedulesList() {
   const [indexDrop, setIndexDrop] = useState(null);
@@ -26,7 +24,7 @@ function SchedulesList() {
   const [modalIsVisible, setModalIsVisible] = useState(false);
   const menuRef = useRef(null);
   const buttonRefs = useRef([]);
-  const BASE_URL = `${process.env.OPEN_FRONT_URL}/agendar-evento/`
+  const BASE_URL = `${import.meta.env.OPEN_FRONT_URL}/agendar-evento/`
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);

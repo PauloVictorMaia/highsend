@@ -32,8 +32,6 @@ import clipboardCopy from 'clipboard-copy';
 import Tooltip from '@mui/material/Tooltip';
 import CodeIcon from '@mui/icons-material/Code';
 import CopyEmbed from "../../components/CopyEmbedCode";
-import dotenv from 'dotenv';
-dotenv.config();
 
 function Fluxograms() {
   const [menuComponent, setMenuComponent] = useState(0);
@@ -45,7 +43,7 @@ function Fluxograms() {
   const [modalEmbedIsVisible, setModalEmbedIsVisible] = useState(false);
   const [indexModal, setIndexModal] = useState(null);
   const [flowName, setFlowName] = useState("");
-  const BASE_URL = `${process.env.OPEN_FRONT_URL}/fluxo-de-bot/`;
+  const BASE_URL = `${import.meta.env.OPEN_FRONT_URL}/fluxo-de-bot/`;
 
   const createFlow = async () => {
     try {
