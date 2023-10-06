@@ -37,6 +37,9 @@ export const ContextProvider = ({ children }) => {
     }, [user]);
 
     const getUser = async (token) => {
+        if (!token) {
+            return;
+        }
         try {
             const response = await api.get('/users/get-user', { headers: { authorization: token } });
             if (response.status === 200) {

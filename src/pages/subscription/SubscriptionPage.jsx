@@ -11,7 +11,7 @@ import './SubscriptionPage.style.css';
 import { plans } from "../../data/plans";
 
 const stripePromise = loadStripe(
-  "pk_test_51Nt8l9HipgwafKBj75nxtxOnHPhRo10ppvcC4Mqk84DZzUfx8i78BRiABwRLgi1O5sJyJNrsTy0GYZRaRruDxLex00hV1gXKbG"
+  "pk_test_51NxZCIKd09418g8AtJLqbAaANxQEzIVlWLx8mj2LITTTPwAA2Cdhifjqh6qPHdAbCbgTaBAhddEZXPtdjqMCkmw3003NF51QP4"
 );
 
 const SubscriptionPage = () => {
@@ -126,7 +126,7 @@ const SubscriptionPage = () => {
         <StepContainer>
           <StepWrapper style={{ marginBottom: "40px" }}>
             <h2>Informações Pessoais</h2>
-            <span>{`Plano ${plan.type} - R$${plan.price}/mês`}</span>
+            {plan && <span>{`Plano ${plan.type} - R$${plan.price}/mês`}</span>}
           </StepWrapper>
 
           <input
