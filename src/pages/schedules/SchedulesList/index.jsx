@@ -24,7 +24,7 @@ function SchedulesList() {
   const [modalIsVisible, setModalIsVisible] = useState(false);
   const menuRef = useRef(null);
   const buttonRefs = useRef([]);
-  const BASE_URL = "http://localhost:5173/agendar-evento/"
+  const BASE_URL = `${process.env.OPEN_FRONT_URL}/agendar-evento/`
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);

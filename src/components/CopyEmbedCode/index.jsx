@@ -125,7 +125,7 @@ const CopyEmbed = ({ flowId, userId }) => {
       notificationBadge.style.display = 'none';
       if (!chatWindow.querySelector('iframe')) {
         var iframe = document.createElement('iframe');
-        iframe.src = 'http://localhost:5173/fluxo-de-bot/${userId}/${flowId}'; 
+        iframe.src = '${process.env.OPEN_FRONT_URL}/fluxo-de-bot/${userId}/${flowId}'; 
         chatWindow.appendChild(iframe);
       }
     } else {
