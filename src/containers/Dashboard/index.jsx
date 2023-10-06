@@ -7,7 +7,7 @@ import {
   Container,
   Divider
 } from "./style";
-import { TiFlowSwitch } from "react-icons/Ti";
+// import { TiFlowSwitch } from "react-icons/Ti";
 import { TfiAgenda } from "react-icons/Tfi";
 import { BsFillPeopleFill } from "react-icons/Bs";
 import { TbDeviceAnalytics } from "react-icons/Tb";
@@ -36,7 +36,7 @@ const DashBoard = () => {
                 <MenuContainer>
                   <Link to='fluxograms'>
                     <MenuItem onClick={() => setPath("/dashboard/fluxograms/")} active={path.includes("/dashboard/fluxograms")} openmenu={openMenu}>
-                      <TiFlowSwitch size={20} />
+                      <TfiAgenda size={20} />
                       <span>Fluxos de Bot</span>
                     </MenuItem>
                   </Link>
