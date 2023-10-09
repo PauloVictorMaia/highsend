@@ -43,7 +43,7 @@ function Fluxograms() {
   const [modalEmbedIsVisible, setModalEmbedIsVisible] = useState(false);
   const [indexModal, setIndexModal] = useState(null);
   const [flowName, setFlowName] = useState("");
-  const BASE_URL = `${import.meta.env.OPEN_FRONT_URL}/fluxo-de-bot/`;
+  const BASE_URL = `${import.meta.env.VITE_OPEN_FRONT_URL}/fluxo-de-bot/`;
 
   const createFlow = async () => {
     try {
