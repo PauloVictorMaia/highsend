@@ -15,6 +15,7 @@ import LoginPage from "./pages/Login";
 import LeadsResults from "./pages/leads/leadsResults";
 import SubscriptionPage from "./pages/subscription/SubscriptionPage";
 import NotFoundPage from "./pages/notFoundPage";
+import Plans from "./pages/Plans";
 // import Chatbot from "./pages/viewFluxogram";
 // import LandingPage from "./pages/LandingPage";
 // import ExternalPageShedule from "./pages/externalPageSchedule";
@@ -30,6 +31,7 @@ const App = () => {
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/subscription/:type/:subscriptionId" element={<SubscriptionPage />} />
+          <Route path="/plans" element={<Plans />} />
           <Route path="*" element={<NotFoundPage />} />
           <Route path="/dashboard/*" element={<DashBoard />}>
             <Route index element={<Navigate to="fluxograms" />} />

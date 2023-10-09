@@ -136,7 +136,7 @@ const LoginPage = () => {
               <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google Logo" />
               Login with Google
             </GoogleLoginButton>
-            <Link to={`${import.meta.env.VITE_OPEN_FRONT_URL}/register`}>Don't have an account? Sign Up</Link>
+            <Link to={`/plans`}>Don't have an account? Sign Up</Link>
           </FormContainer>
         </PageContainer>
       </Form>
