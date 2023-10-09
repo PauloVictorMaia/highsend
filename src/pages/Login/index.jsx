@@ -4,6 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useState } from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
+import { NavLink } from 'react-router-dom';
 
 const PageContainer = styled.div`
   display: flex;
@@ -57,7 +58,7 @@ const Button = styled.button`
   }
 `;
 
-const Link = styled.a`
+const Link = styled.NavLink`
   color: #F26800;
   cursor: pointer;
   display: block;
@@ -135,7 +136,7 @@ const LoginPage = () => {
               <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google Logo" />
               Login with Google
             </GoogleLoginButton>
-            <Link href={`${import.meta.env.VITE_OPEN_FRONT_URL}/register`}>Don't have an account? Sign Up</Link>
+            <Link to={`${import.meta.env.VITE_OPEN_FRONT_URL}/register`}>Don't have an account? Sign Up</Link>
           </FormContainer>
         </PageContainer>
       </Form>
