@@ -58,7 +58,7 @@ const Button = styled.button`
   }
 `;
 
-const Link = styled.NavLink`
+const Link = styled(NavLink)`
   color: #F26800;
   cursor: pointer;
   display: block;
