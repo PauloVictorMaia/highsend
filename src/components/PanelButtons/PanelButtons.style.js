@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 
 export const Container = styled.div`
-  width: 50px;
+  width: 60px;
   height: 150px;
   margin-top: 60px;
   border-radius: 8px;
@@ -14,6 +14,7 @@ export const Container = styled.div`
   align-items: center;
   padding: 5px 3px;
   box-sizing: border-box;
+  padding: 5px;
 `;
 
 export const Button = styled.button`
@@ -25,6 +26,7 @@ export const Button = styled.button`
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: none;
 
   &:disabled {
     opacity: 0.5;
@@ -39,6 +41,7 @@ export const Button = styled.button`
 `;
 
 export const Label = styled.span`
-  font-size: 9px;
+  font-size: 10px;
   color: #333;
+  color: ${({color}) => color ? "#ff8c1a" : "#333"};
 `;

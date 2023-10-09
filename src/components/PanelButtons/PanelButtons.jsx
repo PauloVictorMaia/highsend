@@ -9,7 +9,7 @@ function PanelButtons({ save, hasChanges }) {
     <Container>
       <Button disabled={!hasChanges} onClick={() => save()} color={hasChanges}>
         <SaveOutlinedIcon />
-        <Label>Salvar</Label>
+        <Label color={hasChanges}>Salvar</Label>
       </Button>
 
       <Button>

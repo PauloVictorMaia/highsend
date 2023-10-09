@@ -4,7 +4,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import api from '../api';
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const StateContext = createContext();
@@ -23,6 +23,7 @@ export const ContextProvider = ({ children }) => {
     const [leadsDataLoaded, setLeadsDataLoaded] = useState(false);
     const [token, setToken] = useState(localStorage.getItem('token'));
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         getUser(token);
@@ -37,8 +38,8 @@ export const ContextProvider = ({ children }) => {
     }, [user]);
 
     const getUser = async (token) => {
-        if (!token) {
-            return;
+        if (!token && (location.pathname.includes('plans') || location.pathname.includes('subscription'))) {
+            return
         }
         try {
             const response = await api.get('/users/get-user', { headers: { authorization: token } });
