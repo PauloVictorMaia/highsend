@@ -16,6 +16,10 @@ import { Outlet, useLocation } from "react-router";
 import TopBar from "../../components/TopBar";
 import { useState } from "react";
 import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import AccountTreeOutlinedIcon from '@mui/icons-material/AccountTreeOutlined';
+import IntegrationInstructionsOutlinedIcon from '@mui/icons-material/IntegrationInstructionsOutlined';
+import AnalyticsOutlinedIcon from '@mui/icons-material/AnalyticsOutlined';
 import Loader from "../../components/LoadingScreen";
 
 // eslint-disable-next-line react/prop-types
@@ -35,14 +39,14 @@ const DashBoard = () => {
                 <MenuContainer>
                   <Link to='fluxograms'>
                     <MenuItem onClick={() => setPath("/dashboard/fluxograms/")} active={path.includes("/dashboard/fluxograms")} openmenu={openMenu}>
-                      <PeopleOutlineIcon size={20} />
+                      <AccountTreeOutlinedIcon size={20} />
                       <span>Fluxos de Bot</span>
                     </MenuItem>
                   </Link>
 
                   <Link to='schedules'>
                     <MenuItem onClick={() => setPath("/dashboard/schedules")} active={path.includes("/dashboard/schedules")} openmenu={openMenu}>
-                      <PeopleOutlineIcon size={20} />
+                      <CalendarMonthIcon size={20} />
                       <span>Agendas</span>
                     </MenuItem>
                   </Link>
@@ -58,14 +62,14 @@ const DashBoard = () => {
 
                   <Link to='integrations'>
                     <MenuItem openmenu={openMenu} onClick={() => setPath("/dashboard/integrations")} active={path.includes("/dashboard/integrations")}>
-                      <PeopleOutlineIcon size={20} />
+                      <IntegrationInstructionsOutlinedIcon size={20} />
                       <span>Integrações</span>
                     </MenuItem>
                   </Link>
 
                   <Link to='analytics'>
                     <MenuItem onClick={() => setPath("/dashboard/analytics")} active={path.includes("/dashboard/analytics")} openmenu={openMenu}>
-                      <PeopleOutlineIcon size={20} />
+                      <AnalyticsOutlinedIcon size={20} />
                       <span>Analytics</span>
                     </MenuItem>
                   </Link>
