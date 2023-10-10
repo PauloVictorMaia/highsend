@@ -13,7 +13,7 @@ export const CheckboxContainer = styled.div`
   width: 120px;
   height: 35px;
   padding-left: 5px;
-  margin: 0px 4px;
+  margin: 0px 25px 0 0;
   border-radius: 5px;
   
   background-color: ${props => props.checked ? '#97C160' : '#E5E5E5'};
@@ -94,12 +94,20 @@ export const EnventsContainer = styled.div`
 
 export const EventsContent = styled.div`
  width: 100%;
+`;
 
+export const Input = styled.input`
+ height: 40px;
+ border-radius: 4px;
+ outline: none;
+ border: 1px solid #333;
+ padding: 5px 10px;
+ box-sizing: border-box;
 `;
 
 export const EventItem = styled.div`
  height: 60px;
- background: #053D38;
+ background: #14140F;
  color: #fff;
  margin: 5px 0;
  display: flex;

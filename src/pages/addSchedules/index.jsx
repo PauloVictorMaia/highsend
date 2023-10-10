@@ -22,7 +22,8 @@ import {
   EventItem,
   EnventsContainer,
   EventsContent,
-  IntegrationsOptions
+  IntegrationsOptions,
+  Input
 } from './styles.js';
 import { CalendarMenu } from "../../data/menus";
 import { toast } from "react-toastify";
@@ -368,7 +369,7 @@ function AddSchedule() {
           >
             <ContentContainer>
               <h2>Título do evento</h2>
-              <TitleInput value={eventTitle} onChange={(e) => setEventTitle(e.target.value)} />
+              <Input value={eventTitle} onChange={(e) => setEventTitle(e.target.value)} />
             </ContentContainer>
 
             <ContentContainer>
@@ -386,8 +387,8 @@ function AddSchedule() {
                 </OptionLabel>
                 {selectedOption === 'daysAhead' &&
                   <div>
-                    <input type="number" defaultValue={daysAhead} onChange={(e) => setDaysAhead(e.target.value)} />
-                    <span>dias a frente no futuro</span>
+                    <Input type="number" defaultValue={daysAhead} onChange={(e) => setDaysAhead(e.target.value)} />
+                    <span style={{ marginLeft: '10px' }}>dias a frente no futuro</span>
                   </div>
                 }
                 <OptionLabel>
@@ -436,7 +437,7 @@ function AddSchedule() {
             </ContentContainer>
 
             <ContentContainer>
-              <label>Escolha uma cor para a sua agenda:</label>
+              <h2>Escolha uma cor para a sua agenda:</h2>
               <SketchPicker
                 color={eventColor}
                 onChange={(color) => setEventColor(color.hex)}
@@ -464,8 +465,8 @@ function AddSchedule() {
                 </OptionLabel>
                 {selectedLocal === 'Presencial' &&
                   <div>
-                    <span>No endereço:</span>
-                    <input
+                    <span style={{ marginRight: '10px' }}>No endereço:</span>
+                    <Input
                       style={{ width: "400px" }}
                       type="text"
                       defaultValue={meetingPlace.type === "Presencial" ? address : ""}
@@ -497,8 +498,8 @@ function AddSchedule() {
 
                 {selectedLocal === 'Online outra plataforma' &&
                   <div>
-                    <span>Nome da plataforma online:</span>
-                    <input
+                    <span style={{ marginRight: '10px' }}>Nome da plataforma online:</span>
+                    <Input
                       style={{ width: "400px" }}
                       type="text"
                       defaultValue={otherPlataformName}
@@ -622,13 +623,14 @@ function AddSchedule() {
                   </CheckboxContainer>
                   {day.available && (
                     <>
-                      <label>Início:</label>
+                      <label style={{ marginRight: '10px' }}>Início:</label>
                       <input
+                        style={{ marginRight: '20px' }}
                         type="time"
                         value={day.startTime}
                         onChange={(e) => handleStartTimeChange(index, e.target.value)}
                       />
-                      <label>Término:</label>
+                      <label style={{ marginRight: '10px' }}>Término:</label>
                       <input
                         type="time"
                         value={day.endTime}
@@ -650,27 +652,27 @@ function AddSchedule() {
             <ContentContainer>
               <h2>Configurar Horário e Duração do Evento</h2>
               <label>Duração do Evento (em minutos):</label>
-              <input
+              <Input
                 type="number"
                 min="1"
                 value={eventDuration}
                 onChange={(e) => setEventDuration(parseInt(e.target.value))}
               />
               <label>Intervalo entre os Eventos (em minutos):</label>
-              <input
+              <Input
                 type="number"
                 min="1"
                 value={eventInterval}
                 onChange={(e) => setEventInterval(parseInt(e.target.value))}
               />
               <label>Horário de Início do Almoço:</label>
-              <input
+              <Input
                 type="time"
                 value={lunchStartTime}
                 onChange={(e) => setLunchStartTime(e.target.value)}
               />
               <label>Horário de Término do Almoço:</label>
-              <input
+              <Input
                 type="time"
                 value={lunchEndTime}
                 onChange={(e) => setLunchEndTime(e.target.value)}
