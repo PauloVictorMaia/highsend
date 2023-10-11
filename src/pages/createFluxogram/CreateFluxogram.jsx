@@ -5,7 +5,7 @@ import ReactFlow, {
   useNodesState, getConnectedEdges,
   getOutgoers, getIncomers,
   updateEdge, useReactFlow,
-  useStoreApi, ReactFlowProvider, Panel
+  useStoreApi, ReactFlowProvider, Panel, addEdge
 } from "reactflow";
 import 'reactflow/dist/style.css';
 import { FlowContainer } from "./CreateFluxogram.style";
@@ -180,7 +180,7 @@ const Flow = () => {
       return;
     }
 
-    setEdges((prevEdges) => [...prevEdges, connection]);
+    setEdges((eds) => addEdge(connection, eds))
   }, [edges]);
 
   const onDragOver = useCallback((event) => {
