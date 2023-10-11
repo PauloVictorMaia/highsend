@@ -84,6 +84,9 @@ const Flow = () => {
   const [originalNodes, setOriginalNodes] = useState([]);
   const [originalEdges, setOriginalEdges] = useState([]);
   const [originalVariables, setOriginalVariables] = useState([]);
+  const [dropDownMenuIsVisible, setDropDownMenuIsVisible] = useState(false);
+  const [profileImage, setProfileImage] = useState("");
+  const [template, setTemplate] = useState("");
 
   async function getFlowData() {
     try {
@@ -96,6 +99,8 @@ const Flow = () => {
         setOriginalNodes(response.data.nodes);
         setOriginalEdges(response.data.edges);
         setOriginalVariables(response.data.variables);
+        setProfileImage(response.data.config.profileImage);
+        setTemplate(response.data.config.template);
       }
     } catch {
       toast.error('Erro ao buscar dados do flow.');
@@ -122,7 +127,6 @@ const Flow = () => {
         return;
       }
     }
-
 
     try {
       const response = await api.patch(`/flows/update-flow/${user.id}/${params.flowid}`,
@@ -474,7 +478,16 @@ const Flow = () => {
         <Sidebar />
       </Panel>
       <Panel position="top-right">
-        <PanelButtons save={saveFlowData} hasChanges={hasChanges} />
+        <PanelButtons
+          save={saveFlowData}
+          hasChanges={hasChanges}
+          dropDownMenuIsVisible={dropDownMenuIsVisible}
+          setDropDownMenuIsVisible={setDropDownMenuIsVisible}
+          profileImage={profileImage}
+          setProfileImage={setProfileImage}
+          template={template}
+          setTemplate={setTemplate}
+        />
       </Panel>
     </FlowContainer>
   );
