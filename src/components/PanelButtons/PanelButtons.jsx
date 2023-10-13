@@ -50,7 +50,7 @@ function PanelButtons({
       </Button>
 
       <DropDownMenu isvisible={dropDownMenuIsVisible}>
-        <span>Personalize o seu flow</span>Alterar Status da Assinatura
+        <span>Personalize o seu flow</span>
 
         <ProfileImageContainer onClick={() => setModalIsVisible(true)}>
           <span>Avatar</span>
