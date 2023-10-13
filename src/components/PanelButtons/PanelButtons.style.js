@@ -50,7 +50,7 @@ export const Label = styled.span`
 export const DropDownMenu = styled.div`
   position: absolute;
   top: 0;
-  left: ${({ isvisible }) => isvisible ? "-220px" : "200px"};
+  left: ${({ isvisible }) => isvisible ? "-250px" : "200px"};
   border: 0.5px solid rgba(0,0,0,0.15);
   border-radius: 5px;
   background-color: #fff;
@@ -109,5 +109,55 @@ export const TemplateContainer = styled.div`
     &:focus {
       outline: 2px solid #9999FF;
     }
+  }
+`;
+
+export const Modal = styled.div`
+  visibility: ${({isvisible}) => isvisible ? "visible" : "hidden"};
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  z-index: 5000;
+`;
+
+export const ModalContent = styled.div`
+  width: ${({ width }) => width? `${width}px` : '300px'};
+  height:${({ height }) => height? `${height}px` : '150px'}; ;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 10px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+`;
+
+export const CloseButton = styled.button`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  outline: none;
+  background-color: #ff4d4d;
+  padding: 2px;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  cursor: pointer;
+
+  >svg {
+    width: 100%;
+    height: 100%;
+    color: #fff;
   }
 `;

@@ -87,6 +87,10 @@ const Flow = () => {
   const [dropDownMenuIsVisible, setDropDownMenuIsVisible] = useState(false);
   const [profileImage, setProfileImage] = useState("");
   const [template, setTemplate] = useState("");
+  const [originalProfileImage, setOriginalProfileImage] = useState("");
+  const [originalTemplate, setOriginalTemplate] = useState("");
+
+  console.log(profileImage)
 
   async function getFlowData() {
     try {
@@ -101,6 +105,8 @@ const Flow = () => {
         setOriginalVariables(response.data.variables);
         setProfileImage(response.data.config.profileImage);
         setTemplate(response.data.config.template);
+        setOriginalProfileImage(response.data.config.profileImage);
+        setOriginalTemplate(response.data.config.template);
       }
     } catch {
       toast.error('Erro ao buscar dados do flow.');
@@ -130,7 +136,7 @@ const Flow = () => {
 
     try {
       const response = await api.patch(`/flows/update-flow/${user.id}/${params.flowid}`,
-        { nodes, edges, variables },
+        { nodes, edges, variables, profileImage, template },
         { headers: { authorization: token } });
       if (response.status === 200) {
         toast.success('Dados salvos!');
@@ -166,15 +172,20 @@ const Flow = () => {
       edges.map(edge => lodash.omit(edge, 'selected')),
       originalEdges.map(edge => lodash.omit(edge, 'selected'))
     );
+
     const variablesChanged = !lodash.isEqual(variables, originalVariables);
 
-    if (nodesChanged || edgesChanged || variablesChanged) {
+    const profileImageChanged = !lodash.isEqual(profileImage, originalProfileImage);
+
+    const templateChanged = !lodash.isEqual(template, originalTemplate);
+
+    if (nodesChanged || edgesChanged || variablesChanged || profileImageChanged || templateChanged) {
       setHasChanges(true);
     } else {
       setHasChanges(false);
     }
 
-  }, [nodes, edges, variables]);
+  }, [nodes, edges, variables, profileImage, template]);
 
   const onConnect = useCallback((connection) => {
 
