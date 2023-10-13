@@ -90,8 +90,6 @@ const Flow = () => {
   const [originalProfileImage, setOriginalProfileImage] = useState("");
   const [originalTemplate, setOriginalTemplate] = useState("");
 
-  console.log(profileImage)
-
   async function getFlowData() {
     try {
       const response = await api.get(`/flows/get-flow/${user.id}/${params.flowid}`,
@@ -191,7 +189,9 @@ const Flow = () => {
 
     const isSourceNodeConnected = edges.some((edge) => edge.source === connection.source);
 
-    if (isSourceNodeConnected) {
+    const isTargetNodeConnected = edges.some((edge) => edge.target === connection.target);
+
+    if (isSourceNodeConnected || isTargetNodeConnected) {
       return;
     }
 

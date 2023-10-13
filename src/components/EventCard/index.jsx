@@ -1,13 +1,13 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { ButtonContainer, ButtonContent, CancelEvent, CloseButton, Container, Content, DeleteButton, DetailsContainer, EventColor, EventDetails, EventTime, InviteeEmail, Modal, ModalContent, PhoneContainer, ScheduleTimeContainer, ScheduledTime } from "./styles";
+import { ButtonContainer, ButtonContent, CancelEvent, CloseButton, Container, Content, DeleteButton, DetailsContainer, EventColor, EventDetails, EventTime, EventTitleContainer, InviteeEmail, Modal, ModalContent, PhoneContainer, ScheduleTimeContainer, ScheduledTime } from "./styles";
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import ClearIcon from '@mui/icons-material/Clear';
 import { useState } from "react";
 
-function EventCard({ color, start, end, eventDuration, inviteeName, inviteeEmail, inviteePhone, cancelEvent, calendarID, eventID, calendarTitle, local }) {
+function EventCard({ color, start, end, eventDuration, inviteeName, inviteeEmail, inviteePhone, cancelEvent, calendarID, eventID, calendarTitle, local, timezone }) {
 
   const [openDetails, setOpenDetails] = useState(false);
   const [modalIsVisible, setModalIsVisible] = useState(false);
@@ -43,7 +43,16 @@ function EventCard({ color, start, end, eventDuration, inviteeName, inviteeEmail
               {`${start} - ${end}`}
             </EventTime>
           </ScheduledTime>
-          <span>{calendarTitle}</span>
+          <EventTitleContainer>
+            <span>{calendarTitle}</span>
+            <span>
+              {`Fuso horário: 
+                ${timezone === 'America/Sao_Paulo' ?
+                  'America/Sao_Paulo (Horário de Brasília)' : timezone
+                }`
+              }
+            </span>
+          </EventTitleContainer>
         </ScheduleTimeContainer>
         <EventDetails>
           <h2>{inviteeName}</h2>

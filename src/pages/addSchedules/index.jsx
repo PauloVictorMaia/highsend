@@ -23,7 +23,8 @@ import {
   EnventsContainer,
   EventsContent,
   IntegrationsOptions,
-  Input
+  Input,
+  Select
 } from './styles.js';
 import { CalendarMenu } from "../../data/menus";
 import { toast } from "react-toastify";
@@ -38,6 +39,7 @@ import FeedIcon from '@mui/icons-material/Feed';
 import MapIcon from '@mui/icons-material/Map';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import AvTimerIcon from '@mui/icons-material/AvTimer';
+import moment from 'moment-timezone';
 
 function AddSchedule() {
   const { user, getCalendars } = useStateContext();
@@ -77,6 +79,10 @@ function AddSchedule() {
   const [googleIntegrationSelected, setGoogleIntegrationSelected] = useState("");
   const [whatsappIntegrationSelected, setWhatsappIntegrationSelected] = useState("");
   const [createdAt, setCreatedAt] = useState(null);
+  const [timezone, setTimezone] = useState("");
+  const brazilTimezones = moment.tz.zonesForCountry('BR');
+
+  console.log(timezone);
 
   async function getCalendarData() {
     try {
@@ -94,6 +100,7 @@ function AddSchedule() {
         setEventInterval(calendar.room.eventInterval);
         setLunchStartTime(calendar.calendar.lunchStartTime);
         setLunchEndTime(calendar.calendar.lunchEndTime);
+        setTimezone(calendar.calendar.timezone);
         setMeetingPlace(calendar.room.local);
         setAddress(calendar.room.local.local);
         setHasIntegration(calendar.room.integration.hasIntegration);
@@ -191,6 +198,7 @@ function AddSchedule() {
         type: selectedOption,
         startDate: startDate,
         endDate: endDate,
+        timezone: timezone,
         eventsIntervals: eventIntervals,
         daysOfTheWeek: eventConfigurations,
         daysAhead: daysAhead,
@@ -651,6 +659,15 @@ function AddSchedule() {
           >
             <ContentContainer>
               <h2>Configurar Horário e Duração do Evento</h2>
+              <label>Fuso horário:</label>
+              <Select value={timezone} onChange={(e) => setTimezone(e.target.value)}>
+                <option value="America/Sao_Paulo">America/Sao Paulo (Horário de Brasília)</option>
+                {brazilTimezones.map((timezone, index) => (
+                  <option key={index} value={timezone}>
+                    {timezone}
+                  </option>
+                ))}
+              </Select>
               <label>Duração do Evento (em minutos):</label>
               <Input
                 type="number"
