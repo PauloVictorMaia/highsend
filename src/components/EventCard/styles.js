@@ -47,6 +47,11 @@ export const EventTime = styled.div`
   align-items: center;
 `;
 
+export const EventTitleContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 export const EventDetails = styled.div`
   width: 400px;
   height: 100%;

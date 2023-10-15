@@ -133,6 +133,7 @@ function EventsList() {
                       eventID={event.id}
                       calendarTitle={event.calendarTitle}
                       local={event.local}
+                      timezone={event.timezone}
                     />
                   ))
                 }
@@ -169,6 +170,7 @@ function EventsList() {
                       eventID={event.id}
                       calendarTitle={event.calendarTitle}
                       local={event.local}
+                      timezone={event.timezone}
                     />
                   ))
                 }
@@ -235,6 +237,7 @@ function EventsList() {
                       eventID={event.id}
                       calendarTitle={event.calendarTitle}
                       local={event.local}
+                      timezone={event.timezone}
                     />
                   ))
                 }

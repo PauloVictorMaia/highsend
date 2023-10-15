@@ -105,6 +105,15 @@ export const Input = styled.input`
  box-sizing: border-box;
 `;
 
+export const Select = styled.select`
+  height: 40px;
+  border-radius: 4px;
+  outline: none;
+  border: 1px solid #333;
+  padding: 5px 10px;
+  box-sizing: border-box;
+`;
+
 export const EventItem = styled.div`
  height: 60px;
  background: #14140F;

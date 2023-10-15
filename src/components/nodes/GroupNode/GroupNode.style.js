@@ -40,6 +40,7 @@ export const LeftHandle = styled(Handle)`
 `;
 
 export const RightHandle = styled(Handle)`
+  visibility: ${({ hasbutton }) => hasbutton ? "hidden" : "visible"};
   width: 10px;
   height: 10px;
   background-color: rgba(153, 153, 255,1);

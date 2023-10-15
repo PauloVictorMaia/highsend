@@ -84,6 +84,11 @@ const Flow = () => {
   const [originalNodes, setOriginalNodes] = useState([]);
   const [originalEdges, setOriginalEdges] = useState([]);
   const [originalVariables, setOriginalVariables] = useState([]);
+  const [dropDownMenuIsVisible, setDropDownMenuIsVisible] = useState(false);
+  const [profileImage, setProfileImage] = useState("");
+  const [template, setTemplate] = useState("");
+  const [originalProfileImage, setOriginalProfileImage] = useState("");
+  const [originalTemplate, setOriginalTemplate] = useState("");
 
   async function getFlowData() {
     try {
@@ -96,6 +101,10 @@ const Flow = () => {
         setOriginalNodes(response.data.nodes);
         setOriginalEdges(response.data.edges);
         setOriginalVariables(response.data.variables);
+        setProfileImage(response.data.config.profileImage);
+        setTemplate(response.data.config.template);
+        setOriginalProfileImage(response.data.config.profileImage);
+        setOriginalTemplate(response.data.config.template);
       }
     } catch {
       toast.error('Erro ao buscar dados do flow.');
@@ -123,10 +132,9 @@ const Flow = () => {
       }
     }
 
-
     try {
       const response = await api.patch(`/flows/update-flow/${user.id}/${params.flowid}`,
-        { nodes, edges, variables },
+        { nodes, edges, variables, profileImage, template },
         { headers: { authorization: token } });
       if (response.status === 200) {
         toast.success('Dados salvos!');
@@ -162,21 +170,28 @@ const Flow = () => {
       edges.map(edge => lodash.omit(edge, 'selected')),
       originalEdges.map(edge => lodash.omit(edge, 'selected'))
     );
+
     const variablesChanged = !lodash.isEqual(variables, originalVariables);
 
-    if (nodesChanged || edgesChanged || variablesChanged) {
+    const profileImageChanged = !lodash.isEqual(profileImage, originalProfileImage);
+
+    const templateChanged = !lodash.isEqual(template, originalTemplate);
+
+    if (nodesChanged || edgesChanged || variablesChanged || profileImageChanged || templateChanged) {
       setHasChanges(true);
     } else {
       setHasChanges(false);
     }
 
-  }, [nodes, edges, variables]);
+  }, [nodes, edges, variables, profileImage, template]);
 
   const onConnect = useCallback((connection) => {
 
     const isSourceNodeConnected = edges.some((edge) => edge.source === connection.source);
 
-    if (isSourceNodeConnected) {
+    const isTargetNodeConnected = edges.some((edge) => edge.target === connection.target);
+
+    if (isSourceNodeConnected || isTargetNodeConnected) {
       return;
     }
 
@@ -474,7 +489,16 @@ const Flow = () => {
         <Sidebar />
       </Panel>
       <Panel position="top-right">
-        <PanelButtons save={saveFlowData} hasChanges={hasChanges} />
+        <PanelButtons
+          save={saveFlowData}
+          hasChanges={hasChanges}
+          dropDownMenuIsVisible={dropDownMenuIsVisible}
+          setDropDownMenuIsVisible={setDropDownMenuIsVisible}
+          profileImage={profileImage}
+          setProfileImage={setProfileImage}
+          template={template}
+          setTemplate={setTemplate}
+        />
       </Panel>
     </FlowContainer>
   );

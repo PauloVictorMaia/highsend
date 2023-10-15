@@ -125,6 +125,7 @@ export const ContextProvider = ({ children }) => {
                 type: "daysAhead",
                 startDate: formattedCurrentDate,
                 endDate: formattedFutureDate,
+                timezone: "America/Sao_Paulo",
                 eventsIntervals: [
                     {
                         day: "segunda",

@@ -12,7 +12,7 @@ import { useState, useEffect } from 'react';
 export default function GroupNode({ data, id, selected }) {
   const [nodeLabel, setNodeLabel] = useState(data.label)
   const { deleteElements } = useReactFlow();
-  const { setNodes } = useReactFlow();
+  const { setNodes, getEdges } = useReactFlow();
   const blocks = [...data.blocks]
   const onDelete = () => {
     deleteElements({ nodes: [{ id }] });
@@ -22,10 +22,16 @@ export default function GroupNode({ data, id, selected }) {
   useEffect(() => {
     const parentNodes = blocks.filter((node) => node.parentNode === id);
     const hasButtonNode = parentNodes.some(node => node.type === "buttonInputNode");
+    const edges = getEdges();
+    const edge = edges.find(edge => edge.source === id);
     if (hasButtonNode && !hasButton) {
       setHasButton(true);
     } else if (!hasButtonNode && hasButton) {
       setHasButton(false);
+    }
+    if (hasButtonNode && edge) {
+      const id = edge.id;
+      deleteElements({ edges: [{ id }] });
     }
   }, [blocks]);
 
@@ -109,14 +115,12 @@ export default function GroupNode({ data, id, selected }) {
         position={Position.Left}
       />
 
-      {
-        hasButton === false &&
-        <RightHandle
-          id="Right"
-          type="source"
-          position={Position.Right}
-        />
-      }
+      <RightHandle
+        id="Right"
+        type="source"
+        position={Position.Right}
+        hasbutton={hasButton}
+      />
 
       <Label defaultValue={data.label} onChange={(e) => setNodeLabel(e.target.value)} />
     </NodeContainer>

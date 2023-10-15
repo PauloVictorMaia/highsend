@@ -136,6 +136,7 @@ function ScheduleEvents({ calendarID }) {
                       eventID={event.id}
                       calendarTitle={event.calendarTitle}
                       local={event.local}
+                      timezone={event.timezone}
                     />
                   ))
                 }
@@ -172,6 +173,7 @@ function ScheduleEvents({ calendarID }) {
                       eventID={event.id}
                       calendarTitle={event.calendarTitle}
                       local={event.local}
+                      timezone={event.timezone}
                     />
                   ))
                 }
@@ -238,6 +240,7 @@ function ScheduleEvents({ calendarID }) {
                       eventID={event.id}
                       calendarTitle={event.calendarTitle}
                       local={event.local}
+                      timezone={event.timezone}
                     />
                   ))
                 }
