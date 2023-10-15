@@ -41,13 +41,15 @@ export const ContextProvider = ({ children }) => {
         if (!token && (location.pathname.includes('plans') || location.pathname.includes('subscription'))) {
             return
         }
+
+        console.log('aqui')
         try {
             const response = await api.get('/users/get-user', { headers: { authorization: token } });
             if (response.status === 200) {
                 setUser(response.data);
                 setLogin(true);
-                const location = window.location.pathname;
-                if (location !== '/') return navigate(location);
+                // const location = window.location.pathname;
+                // if (location !== '/') return navigate(location);
                 return navigate('/dashboard/fluxograms');
             }
         } catch {
