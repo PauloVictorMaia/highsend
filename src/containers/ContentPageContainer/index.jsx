@@ -1,6 +1,6 @@
 import {
   ContentContainer,
-  PageContent, 
+  PageContent,
   HeaderContent
 } from "./style";
 

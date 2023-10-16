@@ -6,6 +6,7 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import { Tooltip } from '@mui/material';
 import LogoImage from '../../assets/logohiflow.png';
+import { useNavigate } from 'react-router';
 
 const TopBarWrapper = styled.div`
   background-color: #fff;
@@ -102,6 +103,7 @@ const TopBar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const { openMenu, setOpenMenu, signOut, user } = useStateContext();
+  const navigate = useNavigate();
 
   const handleIconContainerClick = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -162,7 +164,7 @@ const TopBar = () => {
         </UserIconContainer>
         {isDropdownOpen && (
           <Dropdown ref={dropdownRef} isOpen={isDropdownOpen}>
-            <MenuItem>Meu Canal</MenuItem>
+            <MenuItem onClick={() => navigate('/dashboard/profile')} >Meu perfil</MenuItem>
             <MenuItem>Histórico</MenuItem>
             <MenuItem onClick={() => signOut()}>Sair</MenuItem>
           </Dropdown>

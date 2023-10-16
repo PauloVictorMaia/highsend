@@ -82,8 +82,6 @@ function AddSchedule() {
   const [timezone, setTimezone] = useState("");
   const brazilTimezones = moment.tz.zonesForCountry('BR');
 
-  console.log(timezone);
-
   async function getCalendarData() {
     try {
       const response = await api.get(`/calendars/get-calendar/${user.id}/${params.id}`, { headers: { authorization: token } });

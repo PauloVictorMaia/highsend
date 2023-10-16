@@ -28,3 +28,9 @@ export const leadsResultsMenu = [
 ]
 
 export const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
+
+export const myProfileMenu = [
+  {name: 'Dados do perfil'},
+  {name: 'Meu plano'},
+  {name: 'Configurações'},
+]

@@ -16,6 +16,7 @@ import LeadsResults from "./pages/leads/leadsResults";
 import SubscriptionPage from "./pages/subscription/SubscriptionPage";
 import NotFoundPage from "./pages/notFoundPage";
 import Plans from "./pages/Plans";
+import MyProfile from "./pages/MyProfile/index.jsx";
 // import Chatbot from "./pages/viewFluxogram";
 // import LandingPage from "./pages/LandingPage";
 // import ExternalPageShedule from "./pages/externalPageSchedule";
@@ -44,6 +45,7 @@ const App = () => {
             <Route path="analytics" element={<Analytics />} />
             <Route path="integrations" element={<IntegrationsList />} />
             <Route path="integrations/edit-integration/:name/:id" element={<EditIntegration />} />
+            <Route path="profile" element={<MyProfile />} />
           </Route>
         </Routes>
       </ContextProvider>
