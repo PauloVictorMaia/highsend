@@ -11,7 +11,7 @@ import './SubscriptionPage.style.css';
 import { plans } from "../../data/plans";
 
 const stripePromise = loadStripe(
-  "pk_test_51NxZCIKd09418g8AtJLqbAaANxQEzIVlWLx8mj2LITTTPwAA2Cdhifjqh6qPHdAbCbgTaBAhddEZXPtdjqMCkmw3003NF51QP4"
+  import.meta.env.VITE_STRIPE_PUBLIC_KEY
 );
 
 const SubscriptionPage = () => {
