@@ -56,29 +56,31 @@ export const DropDownMenu = styled.div`
   background-color: #fff;
   transition: 0.5s ease-out;
   box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.1);
-  padding: 20px 40px;
+  padding: 20px 20px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   row-gap: 20px;
+  text-align: center;
+  min-width: 220px;
 `;
 
 export const ProfileImageContainer = styled.div`
-  max-width: 150px;
+  max-width: 100%;
   padding: 5px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: 0.8rem;
-  border: 0.5px solid #9999FF;
+  border: 0.5px dashed #9999FF;
   border-radius: 5px;
   cursor: pointer;
 `;
 
 export const ProfileImage = styled.div`
-  width: 50px;
-  height: 50px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   background-image: ${({ img }) => `url(${img})`};
   background-size: cover;
@@ -86,14 +88,14 @@ export const ProfileImage = styled.div`
 `;
 
 export const TemplateContainer = styled.div`
-  max-width: 150px;
+  max-width: 100%;
   padding: 5px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   row-gap: 10px;
   font-size: 0.8rem;
-  border: 0.5px solid #9999FF;
+  border: 0.5px dashed #9999FF;
   border-radius: 5px;
 
   >select {
