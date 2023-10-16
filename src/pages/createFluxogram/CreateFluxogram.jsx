@@ -87,8 +87,10 @@ const Flow = () => {
   const [dropDownMenuIsVisible, setDropDownMenuIsVisible] = useState(false);
   const [profileImage, setProfileImage] = useState("");
   const [template, setTemplate] = useState("");
+  const [profileName, setProfileName] = useState("");
   const [originalProfileImage, setOriginalProfileImage] = useState("");
   const [originalTemplate, setOriginalTemplate] = useState("");
+  const [originalProfileName, setOriginalProfileName] = useState("");
 
   async function getFlowData() {
     try {
@@ -103,8 +105,10 @@ const Flow = () => {
         setOriginalVariables(response.data.variables);
         setProfileImage(response.data.config.profileImage);
         setTemplate(response.data.config.template);
+        setProfileName(response.data.config.profileName);
         setOriginalProfileImage(response.data.config.profileImage);
         setOriginalTemplate(response.data.config.template);
+        setOriginalProfileName(response.data.config.profileName);
       }
     } catch {
       toast.error('Erro ao buscar dados do flow.');
@@ -132,9 +136,14 @@ const Flow = () => {
       }
     }
 
+    if (template === "whatsapp" && !profileName) {
+      toast.warning('Ao escolher a template "Whatsapp" você deve informar um nome para o perfil.');
+      return;
+    }
+
     try {
       const response = await api.patch(`/flows/update-flow/${user.id}/${params.flowid}`,
-        { nodes, edges, variables, profileImage, template },
+        { nodes, edges, variables, profileImage, template, profileName },
         { headers: { authorization: token } });
       if (response.status === 200) {
         toast.success('Dados salvos!');
@@ -177,13 +186,15 @@ const Flow = () => {
 
     const templateChanged = !lodash.isEqual(template, originalTemplate);
 
-    if (nodesChanged || edgesChanged || variablesChanged || profileImageChanged || templateChanged) {
+    const profileNameChanged = !lodash.isEqual(profileName, originalProfileName);
+
+    if (nodesChanged || edgesChanged || variablesChanged || profileImageChanged || templateChanged || profileNameChanged) {
       setHasChanges(true);
     } else {
       setHasChanges(false);
     }
 
-  }, [nodes, edges, variables, profileImage, template]);
+  }, [nodes, edges, variables, profileImage, template, profileName]);
 
   const onConnect = useCallback((connection) => {
 
@@ -498,6 +509,8 @@ const Flow = () => {
           setProfileImage={setProfileImage}
           template={template}
           setTemplate={setTemplate}
+          profileName={profileName}
+          setProfileName={setProfileName}
         />
       </Panel>
     </FlowContainer>

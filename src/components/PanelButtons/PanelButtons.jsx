@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Container, Label, Button, DropDownMenu, ProfileImage, ProfileImageContainer, TemplateContainer, Modal, ModalContent, CloseButton } from "./PanelButtons.style"
+import { Container, Label, Button, DropDownMenu, ProfileImage, ProfileImageContainer, TemplateContainer, Modal, ModalContent, CloseButton, ProfileNameInput } from "./PanelButtons.style"
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import IosShareIcon from '@mui/icons-material/IosShare';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -10,7 +10,7 @@ import InputDropZone from "../InputDropZone";
 import api from "../../api";
 
 function PanelButtons({
-  save, hasChanges, dropDownMenuIsVisible, setDropDownMenuIsVisible, profileImage, setProfileImage, template, setTemplate
+  save, hasChanges, dropDownMenuIsVisible, setDropDownMenuIsVisible, profileImage, setProfileImage, template, setTemplate, profileName, setProfileName
 }) {
 
   const [modalIsVisible, setModalIsVisible] = useState(false);
@@ -65,6 +65,17 @@ function PanelButtons({
             <option value="whatsapp">Whatsapp</option>
           </select>
         </TemplateContainer>
+        {
+          template === "whatsapp" &&
+          <TemplateContainer>
+            <span>Nome do perfil</span>
+            <ProfileNameInput
+              type="text"
+              value={profileName}
+              onChange={(e) => setProfileName(e.target.value)}
+            />
+          </TemplateContainer>
+        }
       </DropDownMenu>
       <Modal onClick={(e) => e.stopPropagation()} isvisible={modalIsVisible}>
         <ModalContent width={300} height={200}>

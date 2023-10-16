@@ -161,3 +161,17 @@ export const CloseButton = styled.button`
     color: #fff;
   }
 `;
+
+export const ProfileNameInput = styled.input`
+  height: 30px;
+  border: 0.5px solid rgba(0,0,0,0.15);
+  border-radius: 3px;
+  outline: none;
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  color: #333;
+
+  &:focus {
+    outline: 2px solid #9999FF;
+  }
+`;
