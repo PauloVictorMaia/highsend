@@ -33,6 +33,9 @@ const Avatar = styled.div`
   text-align: center;
   font-size: 23px;
   border-radius: 50%;
+  background-image: ${({ profileimage }) => `url(${profileimage})`};
+  background-size: cover;
+  background-position: 50% 50%;
   background-color: #F26800;
   color: #fff;
 `;
@@ -153,18 +156,25 @@ const TopBar = () => {
         <UserIconContainer
           onClick={() => handleIconContainerClick()}
         >
-          <Avatar alt="User Avatar">
+          <Avatar alt="User Avatar" profileimage={user && user.profileImage}>
             {
-              user && Object.keys(user).length > 0 ?
-                user.name.charAt(0).toUpperCase()
-                :
-                ""
+              Object.keys(user).length > 0 &&
+              !user.profileImage &&
+              user.name.charAt(0).toUpperCase()
             }
           </Avatar>
         </UserIconContainer>
         {isDropdownOpen && (
           <Dropdown ref={dropdownRef} isOpen={isDropdownOpen}>
-            <MenuItem onClick={() => navigate('/dashboard/profile')} >Meu perfil</MenuItem>
+            <MenuItem
+              onClick={() => {
+                navigate('/dashboard/profile')
+                setIsDropdownOpen(false)
+              }}
+
+            >
+              Meu perfil
+            </MenuItem>
             <MenuItem>Histórico</MenuItem>
             <MenuItem onClick={() => signOut()}>Sair</MenuItem>
           </Dropdown>

@@ -49,7 +49,7 @@ export const ContextProvider = ({ children }) => {
                 setLogin(true);
                 // const location = window.location.pathname;
                 // if (location !== '/') return navigate(location);
-                return navigate('/dashboard/fluxograms');
+                // return navigate('/dashboard/fluxograms');
             }
         } catch {
             toast.error('Usuário não autenticado. Faça login novamente.');

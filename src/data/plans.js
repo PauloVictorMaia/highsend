@@ -1,23 +1,44 @@
 export const plans = [
   {
-    id: "price_1NyISTKd09418g8Aidl9IyeM",
-    type: "Básico",
+    id: "price_1O2HDtKd09418g8A6nvc7mTG",
+    type: "STARTER",
     description: "Para startups e profissionais individuais",
-    resources: ["Chatbot básico", "Agendamento simples", "Até 500 interações/mês"],
-    price: 29
+    resources: [
+      "2 Fluxos", 
+      "2 Agendas", 
+      "1.000 Leads", 
+      "R$15,00 a cada 100 Leads adicionais",
+      "1 Integração Google Calendar",
+      "1 Integração Whatsapp"
+    ],
+    price: 87
   },
   {
-    id: "price_1NyITZKd09418g8AtVjXt25M",
-    type: "Empresarial",
+    id: "price_1O2HExKd09418g8AUYkDVC50",
+    type: "PRO",
     description: "Para empresas em crescimento",
-    resources: ["Chatbot avançado", "Agendamento com integrações", "Até 10.000 interações/mês"],
-    price: 99
+    resources: [
+      "5 Fluxos", 
+      "5 Agendas", 
+      "3.000 Leads",
+      "R$10,00 a cada 100 Leads adicionais",
+      "2 Integrações Google Calendar",
+      "2 Integrações Whatsapp"
+    ],
+    price: 187
   },
   {
-    id: "price_1NyIUPKd09418g8A3cWW6HiF",
-    type: "Premium",
+    id: "price_1O2HGwKd09418g8Ak6rLfk9G",
+    type: "ENTERPRISE",
     description: "Para grandes empresas",
-    resources: ["Chatbot AI-driven", "Agendamento ilimitado", "Suporte prioritário 24/7"],
-    price: 199
+    resources: [
+      "10 Fluxos", 
+      "10 Agendas", 
+      "10.000 Leads",
+      "R$5,00 a cada 100 Leads adicionais",
+      "5 Integrações Google Calendar",
+      "5 Integrações Whatsapp"
+    ],
+    price: 397
   },
 ]
