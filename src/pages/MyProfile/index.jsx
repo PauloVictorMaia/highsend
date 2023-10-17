@@ -2,7 +2,7 @@ import CustomPageHeader from "../../components/CustomPageHeader";
 import { myProfileMenu } from "../../data/menus";
 import { useRef, useState, useEffect } from "react";
 import ContentPageContainer from "../../containers/ContentPageContainer";
-import { Container, ProfileDataContent, ProfileImage, ProfileImageContainer, ProfileName, Modal, ModalContent, CloseButton, ProfileNameInputContainer, ProfileNameInput, ProfileNameButtonsContainer, ProfileNameSaveButton } from "./styles";
+import { Container, ProfileDataContent, ProfileImage, ProfileImageContainer, ProfileName, Modal, ModalContent, CloseButton, ProfileNameInputContainer, ProfileNameInput, ProfileNameButtonsContainer, ProfileNameSaveButton, PasswordContainer, ChangePasswordButton, PasswordInputs, PasswordInput, ShowPasswordContainer } from "./styles";
 import { useStateContext } from "../../contexts/ContextProvider";
 import Tooltip from '@mui/material/Tooltip';
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
@@ -12,6 +12,8 @@ import InputDropZone from "../../components/InputDropZone";
 import { toast } from "react-toastify";
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import lodash from 'lodash';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 function MyProfile() {
 
@@ -24,6 +26,23 @@ function MyProfile() {
   const [profileNameInputIsDisabled, setProfileNameInputIsDisabled] = useState(true);
   const profileNameInputRef = useRef(null);
   const [profileNameHasChanges, setProfileNameHasChanges] = useState(false);
+  const [passwordInputsIsVisible, setPasswordInputsIsVisible] = useState(false);
+  const [originalPassword, setOriginalPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmationPassword, setConfirmationPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [passwordSaveButtonIsDisabled, setPasswordSaveButtonIsDisabled] = useState(true);
+  const confirmationPasswordInputRef = useRef(null);
+  const newPasswordInputRef = useRef(null);
+  const originalPasswordInputRef = useRef(null);
+
+  useEffect(() => {
+    if (originalPassword && newPassword && confirmationPassword) {
+      setPasswordSaveButtonIsDisabled(false);
+    } else {
+      setPasswordSaveButtonIsDisabled(true);
+    }
+  }, [originalPassword, newPassword, confirmationPassword]);
 
   useEffect(() => {
     if (!profileNameInputIsDisabled) {
@@ -87,6 +106,58 @@ function MyProfile() {
       return;
     }
   }
+
+  const editPassword = async () => {
+
+    if (newPassword !== confirmationPassword) {
+      toast.warning("Senhas diferentes! Verifique os dados e tente novamente.");
+      confirmationPasswordInputRef.current.focus();
+      return;
+    }
+
+    if (newPassword.length < 8) {
+      toast.warning("A nova senha precisa ter pelo menos 8 dígitos.");
+      newPasswordInputRef.current.focus();
+      return;
+    }
+
+    if (originalPassword.length < 8) {
+      toast.warning("A senha anterior precisa ter pelo menos 8 dígitos.");
+      originalPasswordInputRef.current.focus();
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      const response = await api.post(`/users/edit-password/${user.id}`,
+        { originalPassword, newPassword },
+        { headers: { authorization: token } }
+      );
+      if (response.status === 200) {
+        getUser(token);
+        toast.success("Sua senha foi alterada com sucesso.");
+        setPasswordInputsIsVisible(false);
+        setIsLoading(false);
+        if (showPassword) {
+          setShowPassword(false);
+        }
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        toast.warning('A senha anterior informada está incorreta. Verifique os dados e tente novamente.');
+        setIsLoading(false);
+        return;
+      } else {
+        return
+      }
+    }
+  }
+
+  const handleKeyDown = (event) => {
+    if (event.key === ' ') {
+      event.preventDefault();
+    }
+  };
 
   return (
     <ContentPageContainer
@@ -165,6 +236,74 @@ function MyProfile() {
                 </Tooltip>
               </ProfileNameButtonsContainer>
             </ProfileNameInputContainer>
+
+            <PasswordContainer>
+              {
+                passwordInputsIsVisible &&
+                <PasswordInputs>
+                  <PasswordInput
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Senha anterior"
+                    onChange={(e) => setOriginalPassword(e.target.value)}
+                    maxLength={8}
+                    onKeyDown={handleKeyDown}
+                    ref={originalPasswordInputRef}
+                  />
+                  <PasswordInput
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Nova senha"
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    ref={newPasswordInputRef}
+                    maxLength={8}
+                    onKeyDown={handleKeyDown}
+                  />
+                  <PasswordInput
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Confirme a senha"
+                    onChange={(e) => setConfirmationPassword(e.target.value)}
+                    ref={confirmationPasswordInputRef}
+                    maxLength={8}
+                    onKeyDown={handleKeyDown}
+                  />
+                </PasswordInputs>
+              }
+              {
+                passwordInputsIsVisible &&
+                <Tooltip
+                  title={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                  style={{ color: "#333", cursor: "pointer" }}
+                >
+                  <ShowPasswordContainer>
+                    {
+                      showPassword ?
+                        <VisibilityIcon onClick={() => setShowPassword(false)} />
+                        :
+                        <VisibilityOffIcon onClick={() => setShowPassword(true)} />
+                    }
+                  </ShowPasswordContainer>
+                </Tooltip>
+              }
+              {
+                passwordInputsIsVisible &&
+                <Tooltip
+                  title="Salvar"
+                  style={{ color: "#333", cursor: "pointer" }}
+                >
+                  <ProfileNameSaveButton
+                    onClick={() => {
+                      editPassword();
+                    }}
+                    color={originalPassword && newPassword && confirmationPassword}
+                    disabled={passwordSaveButtonIsDisabled}
+                  >
+                    {isLoading ? <div className="spinner" id="spinner"></div> : <SaveOutlinedIcon />}
+                  </ProfileNameSaveButton>
+                </Tooltip>
+              }
+              <ChangePasswordButton onClick={() => setPasswordInputsIsVisible(!passwordInputsIsVisible)}>
+                {passwordInputsIsVisible ? "Cancelar" : "Alterar senha"}
+              </ChangePasswordButton>
+            </PasswordContainer>
           </ProfileDataContent>
           <Modal onClick={(e) => e.stopPropagation()} isvisible={modalIsVisible}>
             <ModalContent width={300} height={200}>

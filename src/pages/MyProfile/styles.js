@@ -141,3 +141,55 @@ export const ProfileNameSaveButton = styled.button`
     cursor: not-allowed;
   }
 `;
+
+export const PasswordContainer = styled.div`
+  width: 100%;
+  margin-top: 20px;
+  display: flex;
+  column-gap: 30px;
+`;
+
+export const ChangePasswordButton = styled.button`
+  display: flex;
+  height: 40px;
+  width: 120px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  background-color: #E67200;
+  color: #fff;
+  font-size: 0.9rem;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  cursor: pointer;
+`;
+
+export const PasswordInputs = styled.div`
+  width: 40%;
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const PasswordInput = styled.input`
+  width: 30%;
+  height: 40px;
+  border-radius: 3px;
+  color: #333;
+  border: 0.5px solid rgba(0,0,0,0.15);
+  outline: none;
+  padding-left: 10px;
+  box-sizing: border-box;
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+
+  &:focus {
+    outline: 2px solid #9999FF;
+  }
+`;
+
+export const ShowPasswordContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
