@@ -16,7 +16,7 @@ export const NodeContainer = styled.textarea`
   box-sizing: border-box;
   resize: none;
   scrollbar-width: thin; 
-  scrollbar-color: #888 #f0f0f0; 
+  scrollbar-color: #888 #f0f0f0;
 
   &:focus {
     outline: 2px solid #9999FF;

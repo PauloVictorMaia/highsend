@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import CustomPageHeader from "../../components/CustomPageHeader";
 import ContentPageContainer from "../../containers/ContentPageContainer";
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Calendar } from 'react-date-range';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
@@ -24,7 +24,8 @@ import {
   EventsContent,
   IntegrationsOptions,
   Input,
-  Select
+  Select,
+  WhatsappMessage
 } from './styles.js';
 import { CalendarMenu } from "../../data/menus";
 import { toast } from "react-toastify";
@@ -78,6 +79,8 @@ function AddSchedule() {
   const [whatsappIntegrations, setWhatsappIntegrations] = useState([]);
   const [googleIntegrationSelected, setGoogleIntegrationSelected] = useState("");
   const [whatsappIntegrationSelected, setWhatsappIntegrationSelected] = useState("");
+  const [whatsappMessage, setWhatsappMessage] = useState("");
+  const whatsappMessageTextareaRef = useRef(null);
   const [createdAt, setCreatedAt] = useState(null);
   const [timezone, setTimezone] = useState("");
   const brazilTimezones = moment.tz.zonesForCountry('BR');
@@ -159,11 +162,17 @@ function AddSchedule() {
       }
     }
     if (whatsappChecked) {
-      if (whatsappIntegrationSelected !== "") {
-        selectedsIntegrations.push({ id: whatsappIntegrationSelected, type: "whatsapp" });
-      } else {
+      if (!whatsappIntegrationSelected) {
         toast.warning("Escolha uma integração para Whatsapp ou desmarque a opção.");
         return;
+      }
+      if (!whatsappMessage) {
+        toast.warning("Defina uma mensagem a ser enviada pelo whatsapp.");
+        whatsappMessageTextareaRef.current.focus();
+        return;
+      }
+      if (whatsappIntegrationSelected && whatsappMessage) {
+        selectedsIntegrations.push({ id: whatsappIntegrationSelected, type: "whatsapp", message: whatsappMessage });
       }
     }
 
@@ -338,8 +347,10 @@ function AddSchedule() {
     const whatsappIntegration = integrations.find(integration => integration.type === "whatsapp");
     if (whatsappIntegration) {
       setWhatsappIntegrationSelected(whatsappIntegration.id);
+      setWhatsappMessage(whatsappIntegration.message);
     } else {
       setWhatsappIntegrationSelected("");
+      setWhatsappMessage("");
     }
   };
 
@@ -569,18 +580,26 @@ function AddSchedule() {
                       {
                         whatsappChecked &&
                           whatsappIntegrations.length > 0 ?
-                          <select
-                            value={whatsappIntegrationSelected}
-                            onChange={(e) => setWhatsappIntegrationSelected(e.target.value)}
-                            style={{ marginLeft: "5px" }}
-                          >
-                            <option value="">Selecionar integração</option>
-                            {whatsappIntegrations &&
-                              whatsappIntegrations.map((integration, index) => (
-                                <option key={index} value={integration.id}>{integration.name}</option>
-                              ))
-                            }
-                          </select>
+                          <>
+                            <select
+                              value={whatsappIntegrationSelected}
+                              onChange={(e) => setWhatsappIntegrationSelected(e.target.value)}
+                              style={{ marginLeft: "5px" }}
+                            >
+                              <option value="">Selecionar integração</option>
+                              {whatsappIntegrations &&
+                                whatsappIntegrations.map((integration, index) => (
+                                  <option key={index} value={integration.id}>{integration.name}</option>
+                                ))
+                              }
+                            </select>
+                            <WhatsappMessage
+                              value={whatsappMessage}
+                              onChange={(e) => setWhatsappMessage(e.target.value)}
+                              placeholder="Digite aqui a mensagem que deve ser enviada pelo Whatsapp"
+                              ref={whatsappMessageTextareaRef}
+                            />
+                          </>
                           :
                           whatsappChecked && <span style={{ marginLeft: "15px" }}>Você não possui integração com esse serviço. Para integrar <NavLink to={"/dashboard/integrations"}>Clique aqui.</NavLink></span>
                       }

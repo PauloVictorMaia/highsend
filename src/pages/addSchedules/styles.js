@@ -137,3 +137,40 @@ export const  MenuContainer = styled.div`
 export const IntegrationsOptions = styled.div`
   padding: 15px 0;
 `;
+
+export const WhatsappMessage = styled.textarea`
+  display: block;
+  width: 200px;
+  height: 200px;
+  background-color: #fff;
+  border: 0.5px solid rgba(0,0,0,0.15);
+  outline: none;
+  border-radius: 8px;
+  color: #333;
+  font-size: 14px;
+  font-family: 'Oswald', sans-serif;
+  display: block;
+  padding: 5px;
+  box-sizing: border-box;
+  resize: none;
+  scrollbar-width: thin; 
+  scrollbar-color: #888 #f0f0f0;
+  margin-top: 5px;
+
+  &:focus {
+    outline: 2px solid #9999FF;
+  }
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #999;
+    border-radius: 15px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #f0f0f0;
+  }
+`;

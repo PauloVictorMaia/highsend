@@ -6,7 +6,6 @@ import WhatsappImg from '../../../assets/whatsapp-logo.png';
 import IntegrationCard from "../../../components/IntegrationCard";
 import UserIntegrationCard from "../../../components/UserIntegrationCards";
 import { toast } from "react-toastify";
-
 function IntegrationsList() {
 
   const token = localStorage.getItem('token');
@@ -24,8 +23,18 @@ function IntegrationsList() {
     }
   };
 
+  const phone = 5511954801434;
+
   const syncWhatsapp = async () => {
-    return;
+    console.log("exec")
+    try {
+      const response = await api.get(`/integrations/whatsapp-sync/${user.id}/${phone}`, { headers: { authorization: token }, body: { user: user.id, phone: phone } });
+      if (response.status === 200) {
+        console.log(response.data.qr);
+      }
+    } catch {
+      return;
+    }
   };
 
   const deleteIntegration = async (integrationID) => {
@@ -38,6 +47,15 @@ function IntegrationsList() {
     } catch {
       return;
     }
+  }
+
+  function selectLogo(type) {
+    const logos = {
+      google: GoogleCalendarImg,
+      whatsapp: WhatsappImg,
+    };
+
+    return logos[type];
   }
 
   return (
@@ -68,7 +86,7 @@ function IntegrationsList() {
             integrations.map((integration, index) => (
               <UserIntegrationCard
                 key={index}
-                img={integration.logo}
+                img={selectLogo(integration.type)}
                 description={integration.name}
                 id={integration.id}
                 name={integration.name}
