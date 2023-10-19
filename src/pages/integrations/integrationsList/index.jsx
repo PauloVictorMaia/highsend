@@ -1,4 +1,4 @@
-import { Container, Integrations, Title, UserIntegrations } from "./styles";
+import { Container, Integrations, Title, UserIntegrations, Modal, ModalContent, CloseButton } from "./styles";
 import api from '../../../api';
 import { useStateContext } from '../../../contexts/ContextProvider';
 import GoogleCalendarImg from '../../../assets/google-calendar.png';
@@ -6,10 +6,16 @@ import WhatsappImg from '../../../assets/whatsapp-logo.png';
 import IntegrationCard from "../../../components/IntegrationCard";
 import UserIntegrationCard from "../../../components/UserIntegrationCards";
 import { toast } from "react-toastify";
+import { useState } from 'react'
+import ClearIcon from '@mui/icons-material/Clear';
+
 function IntegrationsList() {
 
   const token = localStorage.getItem('token');
   const { user, integrations, integrationsDataLoaded, getIntegrations } = useStateContext();
+  const [modalIsVisible, setModalIsVisible] = useState(false);
+  const [qr, setQr] = useState('');
+  const [phone, setPhone] = useState('');
 
   const googleLogin = async () => {
     try {
@@ -23,19 +29,27 @@ function IntegrationsList() {
     }
   };
 
-  const phone = 5511954801434;
-
   const syncWhatsapp = async () => {
-    console.log("exec")
+
+    if (!phone) {
+      toast.warning("Preencha um número de telefone válido.");
+      return;
+    }
+
     try {
       const response = await api.get(`/integrations/whatsapp-sync/${user.id}/${phone}`, { headers: { authorization: token }, body: { user: user.id, phone: phone } });
       if (response.status === 200) {
         console.log(response.data.qr);
+        setQr(response.data.qr)
       }
     } catch {
       return;
     }
   };
+
+  const openModal = () => {
+    setModalIsVisible(true);
+  }
 
   const deleteIntegration = async (integrationID) => {
     try {
@@ -73,9 +87,36 @@ function IntegrationsList() {
         <IntegrationCard
           img={WhatsappImg}
           description={"Seu cliente receberá no whatsapp a mensagem que você escolher na sua agenda Hiflow."}
-          integrationFunction={syncWhatsapp}
+          integrationFunction={openModal}
           padding="0 20px"
         />
+
+        <Modal onClick={(e) => e.stopPropagation()} isvisible={modalIsVisible}>
+          <ModalContent width={350} height={200}>
+            <CloseButton
+              onClick={(e) => {
+                e.stopPropagation();
+                setModalIsVisible(false)
+              }
+              }>
+              <ClearIcon />
+            </CloseButton>
+            <div>
+              <label style={{ display: "block" }}>Número whatsapp</label>
+              <input
+                style={{ display: "block" }}
+                type="text"
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="11988888888"
+              />
+              <button onClick={() => syncWhatsapp()}>Gerar QR Code</button>
+            </div>
+
+            {
+              qr && <img style={{ width: "100px", height: "100px" }} src={qr} alt="QR Code" />
+            }
+          </ModalContent>
+        </Modal>
       </Integrations>
 
       <Title>Minhas integrações</Title>
