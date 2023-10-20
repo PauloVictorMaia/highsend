@@ -36,6 +36,7 @@ import { toast } from "react-toastify";
 import DelayLogicNode from "../../components/nodes/DelayLogicNode/DelayLogicNode";
 import LinkButtonInputNode from "../../components/nodes/LInkButtonInputNode/LinkButtonInputNode";
 import RedirectLogicNode from "../../components/nodes/RedirectLogicNode/RedirectLogicNode";
+import WhatsappMessageLogicNode from "../../components/nodes/WhatsappMessageLogicNode/WhatsappMessageLogicNode";
 
 const proOptions = {
   hideAttribution: true,
@@ -58,7 +59,8 @@ const NODE_TYPES = {
   buttonInputNode: ButtonInputNode,
   linkButtonInputNode: LinkButtonInputNode,
   delayLogicNode: DelayLogicNode,
-  redirectLogicNode: RedirectLogicNode
+  redirectLogicNode: RedirectLogicNode,
+  whatsappMessageLogicNode: WhatsappMessageLogicNode
 };
 
 const EDGE_TYPES = {
@@ -139,6 +141,19 @@ const Flow = () => {
     if (template === "whatsapp" && !profileName) {
       toast.warning('Ao escolher a template "Whatsapp" você deve informar um nome para o perfil.');
       return;
+    }
+
+    const whatsappMessageLogicNodes = nodes.filter((node) => node.type === "whatsappMessageLogicNode");
+    if (whatsappMessageLogicNodes.length > 0) {
+      const hasEmptyValue = whatsappMessageLogicNodes.some((node) => node.data.value === "");
+      const hasEmptyMessage = whatsappMessageLogicNodes.some((node) => node.data.message === "");
+      if (hasEmptyValue) {
+        toast.warning('Existem nodes do tipo "Whatsapp msg" sem uma integração atribuída. Atribua uma integração Whatsapp a esses nodes.');
+        return;
+      } else if (hasEmptyMessage) {
+        toast.warning('Existem nodes do tipo "Whatsapp msg" sem uma mensagem. Digite a mensagem que deve ser enviada.');
+        return;
+      }
     }
 
     try {

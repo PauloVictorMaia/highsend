@@ -14,6 +14,7 @@ import TaskAltOutlinedIcon from '@mui/icons-material/TaskAltOutlined';
 import LaunchIcon from '@mui/icons-material/Launch';
 import TimelapseIcon from '@mui/icons-material/Timelapse';
 import LanguageIcon from '@mui/icons-material/Language';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 // import PaymentIcon from '@mui/icons-material/Payment';
 // import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 // import BackupOutlinedIcon from '@mui/icons-material/BackupOutlined';
@@ -113,6 +114,14 @@ export default () => {
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'redirectLogicNode', '40')} draggable>
           <LaunchIcon style={{ fontSize: "large", color: "#9999FF" }} />
           Redirect
+        </NodeDraggable>
+
+        <NodeDraggable
+          onDragStart={(event) => onDragStart(event, 'group', 'whatsappMessageLogicNode', '40')}
+          draggable
+        >
+          <WhatsAppIcon style={{ fontSize: "large", color: "#9999FF" }} />
+          Whatsapp msg
         </NodeDraggable>
 
       </NodesContainer>
