@@ -15,7 +15,9 @@ function WhatsappMessageLogicNode({ data, id, selected }) {
   const { setNodes } = useReactFlow();
   const [nodeValue, setNodeValue] = useState(data.value || "");
   const [message, setMessage] = useState(data.message || "");
-  const { integrations } = useStateContext();
+  const { integrations, variables } = useStateContext();
+  const variablePhone = variables.filter(variable => variable.name === 'Telefone');
+  const [assignedVariable, setAssignedVariable] = useState(data.variable || variablePhone[0].id);
   const whatsappIntegrations = integrations.filter(integrations => integrations.type === 'whatsapp');
   const navigate = useNavigate();
 
@@ -29,6 +31,7 @@ function WhatsappMessageLogicNode({ data, id, selected }) {
             ...node.data,
             value: nodeValue,
             message: message,
+            variable: assignedVariable
           };
           setNodes((nds) =>
             nds.map((node) => {
@@ -95,11 +98,21 @@ function WhatsappMessageLogicNode({ data, id, selected }) {
         }
         {
           nodeValue &&
-          <MessageInput
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="Mensagem..."
-          />
+          <>
+            <span>Atribuir variável a esse input</span>
+            <select value={assignedVariable} onChange={(e) => setAssignedVariable(e.target.value)}>
+              {variables &&
+                variables.map((variable, index) => (
+                  <option key={index} value={variable.id}>{variable.name}</option>
+                ))
+              }
+            </select>
+            <MessageInput
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Mensagem..."
+            />
+          </>
         }
       </InputConfig>
 
