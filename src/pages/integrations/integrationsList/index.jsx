@@ -1,4 +1,5 @@
-import { Container, Integrations, Title, UserIntegrations, Modal, ModalContent, CloseButton } from "./styles";
+/* eslint-disable react/no-unescaped-entities */
+import { Container, Integrations, Title, UserIntegrations, Modal, ModalContent, CloseButton, ModalButton } from "./styles";
 import api from '../../../api';
 import { useStateContext } from '../../../contexts/ContextProvider';
 import GoogleCalendarImg from '../../../assets/google-calendar.png';
@@ -6,8 +7,9 @@ import WhatsappImg from '../../../assets/whatsapp-logo.png';
 import IntegrationCard from "../../../components/IntegrationCard";
 import UserIntegrationCard from "../../../components/UserIntegrationCards";
 import { toast } from "react-toastify";
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import ClearIcon from '@mui/icons-material/Clear';
+import InputMask from 'react-input-mask'
 
 function IntegrationsList() {
 
@@ -16,6 +18,8 @@ function IntegrationsList() {
   const { user, integrations, integrationsDataLoaded, getIntegrations } = useStateContext();
   const [qr, setQr] = useState('');
   const [phone, setPhone] = useState('');
+  const phoneInputRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const googleLogin = async () => {
     try {
@@ -31,24 +35,45 @@ function IntegrationsList() {
 
   const syncWhatsapp = async () => {
 
-    if (!phone) {
-      toast.warning("Preencha um número de telefone válido.");
+    if (phone.trim() === '') {
+      toast.warning('O campo "Telefone" é obrigatório.');
+      phoneInputRef.current.focus();
+      return;
+    } else if (phone.includes('_')) {
+      toast.warning('Digite um número de telefone válido.');
+      phoneInputRef.current.focus();
       return;
     }
 
     try {
-      const response = await api.get(`/integrations/whatsapp-sync/${user.id}/${phone}`, { headers: { authorization: token }, body: { user: user.id, phone: phone } });
+      setQr("");
+      setIsLoading(true);
+      const formatedPhone = Number(phone.replace(/\D/g, ''));
+      const completePhone = `55${formatedPhone}`
+      const response = await api.get(`/integrations/whatsapp-sync/${user.id}/${completePhone}`, { headers: { authorization: token }, body: { user: user.id, phone: phone } });
       if (response.status === 200) {
-        console.log(response.data.qr);
         setQr(response.data.qr)
+        setIsLoading(false);
       }
     } catch {
+      setIsLoading(false);
       return;
     }
   };
 
+  const finalizeIntegration = () => {
+    getIntegrations();
+    setQr("");
+    setModalIsVisible(false);
+  }
+
   const openModal = () => {
     setModalIsVisible(true);
+  }
+
+  const closeModal = () => {
+    setQr("");
+    setModalIsVisible(false);
   }
 
   const deleteIntegration = async (integrationID) => {
@@ -96,25 +121,52 @@ function IntegrationsList() {
             <CloseButton
               onClick={(e) => {
                 e.stopPropagation();
-                setModalIsVisible(false)
+                closeModal()
               }
               }>
               <ClearIcon />
             </CloseButton>
-            <div>
-              <label style={{ display: "block" }}>Número whatsapp</label>
-              <input
-                style={{ display: "block" }}
-                type="text"
-                onChange={(e) => setPhone(e.target.value)}
-                placeholder="11988888888"
-              />
-              <button onClick={() => syncWhatsapp()}>Gerar QR Code</button>
-            </div>
+
+            <span>Número whatsapp</span>
+            <InputMask
+              required
+              mask="(99) 99999-9999"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              ref={phoneInputRef}
+            />
 
             {
-              qr && <img style={{ width: "100px", height: "100px" }} src={qr} alt="QR Code" />
+              qr &&
+              <>
+                <span>Intruções:</span>
+                <span>1. Abra seu whatsapp</span>
+                <span>2. Clique em "Aparelhos conectados"</span>
+                <span>3. Clique em "Conectar um aparelho"</span>
+                <span>4. Escaneie o QR Code abaixo</span>
+                <img src={qr} alt="QR Code" />
+              </>
             }
+
+            <ModalButton
+              onClick={() => syncWhatsapp()}
+              disabled={isLoading}
+            >
+              {
+                isLoading ? <div className="spinner" id="spinner"></div> :
+                  qr ? "Gerar novo QR Code" : "Gerar QR Code"
+              }
+            </ModalButton>
+
+            {
+              qr &&
+              <>
+                <span>Aguarde a sincrozinação.</span>
+                <span>Clique no botão abaixo para concluir</span>
+                <ModalButton onClick={() => finalizeIntegration()}>Concluir</ModalButton>
+              </>
+            }
+
           </ModalContent>
         </Modal>
       </Integrations>

@@ -125,8 +125,15 @@ function AddSchedule() {
     try {
       const response = await api.get(`/integrations/get-integrations-filtered/${user.id}`, { headers: { authorization: token } });
       if (response.status === 200) {
-        setGoogleIntegrations(response.data.googleIntegrations);
-        setWhatsappIntegrations(response.data.whatsappIntegrations);
+        const responseIntegrations = response.data.integrationsFiltered
+        const google = responseIntegrations.filter(integrations => integrations.type === 'google');
+        const whatsapp = responseIntegrations.filter(integrations => integrations.type === 'whatsapp');
+        if (google.length > 0) {
+          setGoogleIntegrations(google);
+        }
+        if (whatsapp.length > 0) {
+          setWhatsappIntegrations(whatsapp);
+        }
       }
     } catch {
       return;
@@ -579,7 +586,7 @@ function AddSchedule() {
                       <label style={{ marginLeft: "5px" }}>Whatsapp</label>
                       {
                         whatsappChecked &&
-                          whatsappIntegrations.length > 0 ?
+                          whatsappIntegrations && whatsappIntegrations.length > 0 ?
                           <>
                             <select
                               value={whatsappIntegrationSelected}

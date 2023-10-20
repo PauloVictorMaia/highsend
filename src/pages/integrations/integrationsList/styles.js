@@ -58,9 +58,53 @@ export const ModalContent = styled.div`
   padding: 10px;
   box-sizing: border-box;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  row-gap: 5px;
   position: relative;
+
+  >input {
+    width: 55%;
+    height: 40px;
+    border-radius: 3px;
+    color: #333;
+    border: 0.5px solid rgba(0,0,0,0.15);
+    outline: none;
+    padding-left: 10px;
+    box-sizing: border-box;
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px;
+
+    &:focus {
+      outline: 2px solid #9999FF;
+    }
+  }
+
+  >img {
+    width: 55%;
+    height: auto;
+  }
+`;
+
+export const ModalButton = styled.button`
+  display: flex;
+  height: 30px;
+  width: 55%;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  background-color: #E67200;
+  color: #fff;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
 `;
 
 export const CloseButton = styled.button`
