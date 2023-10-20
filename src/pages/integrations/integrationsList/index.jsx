@@ -64,6 +64,7 @@ function IntegrationsList() {
   const finalizeIntegration = () => {
     getIntegrations();
     setQr("");
+    setPhone("");
     setModalIsVisible(false);
   }
 
@@ -73,6 +74,7 @@ function IntegrationsList() {
 
   const closeModal = () => {
     setQr("");
+    setPhone("");
     setModalIsVisible(false);
   }
 
