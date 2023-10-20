@@ -11,9 +11,9 @@ import ClearIcon from '@mui/icons-material/Clear';
 
 function IntegrationsList() {
 
+  const [modalIsVisible, setModalIsVisible] = useState(false);
   const token = localStorage.getItem('token');
   const { user, integrations, integrationsDataLoaded, getIntegrations } = useStateContext();
-  const [modalIsVisible, setModalIsVisible] = useState(false);
   const [qr, setQr] = useState('');
   const [phone, setPhone] = useState('');
 

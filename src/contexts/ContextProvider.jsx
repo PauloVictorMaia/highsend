@@ -83,7 +83,7 @@ export const ContextProvider = ({ children }) => {
         try {
             const response = await api.get(`/integrations/get-integrations-filtered/${user.id}`, { headers: { authorization: token } });
             if (response.status === 200) {
-                setIntegrations(response.data.googleIntegrations);
+                setIntegrations(response.data.integrationsFiltered);
                 setIntegrationsDataLoaded(true);
             }
         } catch {
