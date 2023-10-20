@@ -121,7 +121,7 @@ export default () => {
           draggable
         >
           <WhatsAppIcon style={{ fontSize: "large", color: "#9999FF" }} />
-          Whatsapp msg
+          Zap Msg
         </NodeDraggable>
 
       </NodesContainer>
