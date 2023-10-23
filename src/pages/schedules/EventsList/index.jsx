@@ -34,6 +34,7 @@ function EventsList() {
   const [datesInRange, setDatesInRange] = useState([]);
   const [eventsInRange, setEventsInRange] = useState([]);
   const [eventsInRangeLoaded, setEventsInRangeLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (Object.keys(user).length > 0) {
@@ -60,14 +61,17 @@ function EventsList() {
   }
 
   const cancelEvent = async (calendarID, eventID) => {
+    setIsLoading(true);
     try {
       const response = await api.delete(`/calendars/cancel-event/${user.id}/${calendarID}/${eventID}`, { headers: { authorization: token } });
       if (response.status === 200) {
         toast.success('Evento cancelado com sucesso!');
         getAllEventsSortedAndFiltered();
+        setIsLoading(false);
       }
     } catch {
       toast.error('Erro ao cancelar evento.');
+      setIsLoading(false);
     }
   }
 
@@ -134,6 +138,7 @@ function EventsList() {
                       calendarTitle={event.calendarTitle}
                       local={event.local}
                       timezone={event.timezone}
+                      isLoading={isLoading}
                     />
                   ))
                 }
@@ -171,6 +176,7 @@ function EventsList() {
                       calendarTitle={event.calendarTitle}
                       local={event.local}
                       timezone={event.timezone}
+                      isLoading={isLoading}
                     />
                   ))
                 }
@@ -238,6 +244,7 @@ function EventsList() {
                       calendarTitle={event.calendarTitle}
                       local={event.local}
                       timezone={event.timezone}
+                      isLoading={isLoading}
                     />
                   ))
                 }

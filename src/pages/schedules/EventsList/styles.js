@@ -35,7 +35,7 @@ export const Calendars = styled.div`
     border-radius: 5px;
     outline: none;
     border: none;
-    background-color: blue;
+    background-color: #F26800;
     color: #fff;
     font-weight: bold;
     text-align: center;

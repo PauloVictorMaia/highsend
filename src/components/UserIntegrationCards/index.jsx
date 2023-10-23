@@ -2,13 +2,12 @@ import { Container, DescriptionContainer, IconContainer, ImgContainer, Integrati
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import ClearIcon from '@mui/icons-material/Clear';
+import { Ring } from "@uiball/loaders";
 
-function UserIntegrationCard({ img, description, id, name, deleteIntegration }) {
+function UserIntegrationCard({ img, description, id, name, deleteIntegration, isLoading, integrationModalIsVisible, setIntegrationModalIsVisible }) {
 
   const navigate = useNavigate();
-  const [modalIsVisible, setModalIsVisible] = useState();
 
   return (
     <Container>
@@ -18,15 +17,15 @@ function UserIntegrationCard({ img, description, id, name, deleteIntegration }) 
       <DescriptionContainer>{description}</DescriptionContainer>
       <IconContainer>
         <EditIcon onClick={() => navigate(`/dashboard/integrations/edit-integration/${name}/${id}`)} />
-        <DeleteIcon onClick={() => setModalIsVisible(true)} />
+        <DeleteIcon onClick={() => setIntegrationModalIsVisible(true)} />
       </IconContainer>
 
-      <Modal isvisible={modalIsVisible} onClick={(e) => e.stopPropagation()}>
-        <ModalContent>
+      <Modal isvisible={integrationModalIsVisible} onClick={(e) => e.stopPropagation()}>
+        <ModalContent height={70}>
           <CloseButton
             onClick={(e) => {
               e.stopPropagation();
-              setModalIsVisible(false)
+              setIntegrationModalIsVisible(false)
             }}
           >
             <ClearIcon />
@@ -34,7 +33,12 @@ function UserIntegrationCard({ img, description, id, name, deleteIntegration }) 
 
           <DeleteIntegration>
             <span>Tem certeza que deseja deletar essa integração?</span>
-            <button onClick={() => deleteIntegration(id)}>Deletar</button>
+            <button
+              onClick={() => deleteIntegration(id)}
+              disabled={isLoading}
+            >
+              {isLoading ? <Ring size={20} color="#fff" /> : "Deletar"}
+            </button>
           </DeleteIntegration>
         </ModalContent>
       </Modal>

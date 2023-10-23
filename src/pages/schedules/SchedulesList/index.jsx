@@ -15,6 +15,7 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import { Switch } from "@mui/material";
 import ClearIcon from '@mui/icons-material/Clear';
 import clipboardCopy from "clipboard-copy";
+import { Ring } from "@uiball/loaders";
 
 function SchedulesList() {
   const [indexDrop, setIndexDrop] = useState(null);
@@ -26,6 +27,8 @@ function SchedulesList() {
   const buttonRefs = useRef([]);
   const BASE_URL = `${import.meta.env.VITE_OPEN_FRONT_URL}/agendar-evento/`
   const [deleteIsLoading, setDeleteIsLoading] = useState(false);
+  const [desativeIsLoading, setDesativeIsLoading] = useState(false);
+  const [cloning, setCloning] = useState(false);
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
@@ -36,12 +39,15 @@ function SchedulesList() {
 
   async function cloneCalendar(calendarID) {
     try {
+      setCloning(true);
       const response = await api.post(`/calendars/clone-calendar/${user.id}/${calendarID}`, {}, { headers: { authorization: token } });
       if (response.status === 200) {
         getCalendars();
+        setCloning(false);
       }
     } catch {
       toast.error('Erro ao clonar agenda.');
+      setCloning(false);
     }
   }
 
@@ -63,15 +69,18 @@ function SchedulesList() {
 
   async function handleActive(calendarID, active) {
     try {
+      setDesativeIsLoading(true);
       const response = await api.patch(`/calendars/handle-active/${user.id}/${calendarID}`, { active }, { headers: { authorization: token } });
       if (modalIsVisible) {
         setModalIsVisible(false);
       }
       if (response.status === 200) {
         getCalendars();
+        setDesativeIsLoading(false);
       }
     } catch {
       toast.error('Erro ao desativar agenda.');
+      setDesativeIsLoading(false);
     }
   }
 
@@ -181,7 +190,7 @@ function SchedulesList() {
               </MenuCardButtons>
 
               <MenuCardButtons onClick={() => cloneCalendar(calendar.room.id)}>
-                <ContentCopyOutlinedIcon />
+                {cloning ? <Ring color="#333" size={20} /> : <ContentCopyOutlinedIcon />}
                 <span>Clonar</span>
               </MenuCardButtons>
 
@@ -215,13 +224,19 @@ function SchedulesList() {
               <DeleteCalendar>
                 <span>Tem certeza que deseja excluir a agenda "{calendar.room.title}" ?</span>
                 <Buttons>
-                  <Button color="green" onClick={() => handleActive(calendar.room.id, false)}>Desativar</Button>
+                  <Button
+                    color="green"
+                    onClick={() => handleActive(calendar.room.id, false)}
+                    disabled={desativeIsLoading}
+                  >
+                    {desativeIsLoading ? <Ring color="#fff" size={20} /> : "Desativar"}
+                  </Button>
                   <Button
                     disabled={deleteIsLoading}
                     color="red"
                     onClick={() => deleteCalendar(calendar.room.id)}
                   >
-                    Excluir
+                    {deleteIsLoading ? <Ring color="#fff" size={20} /> : "Excluir"}
                   </Button>
                 </Buttons>
               </DeleteCalendar>

@@ -66,6 +66,8 @@ export const LeadStatus = styled.div`
 export const DropMenuCard = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   position: absolute;
   width: 160px;
   height: 150px;

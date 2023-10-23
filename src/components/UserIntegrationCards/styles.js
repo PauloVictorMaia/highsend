@@ -69,7 +69,7 @@ export const Modal = styled.div`
   width: 100vw;
   height: 100vh;
   position: fixed;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0,0,0,0.1);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -82,7 +82,7 @@ export const ModalContent = styled.div`
   height:${({ height }) => height? `${height}px` : '150px'}; ;
   background-color: #fff;
   border-radius: 8px;
-  padding: 10px;
+  padding: 40px;
   position: relative;
 `;
 
@@ -131,5 +131,10 @@ export const DeleteIntegration = styled.div`
     align-items: center;
     justify-content: center;
     margin-left: 35%;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
   }
 `;

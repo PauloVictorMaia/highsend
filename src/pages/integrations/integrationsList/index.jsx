@@ -20,6 +20,8 @@ function IntegrationsList() {
   const [phone, setPhone] = useState('');
   const phoneInputRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [deleteIsLoading, setDeleteIsLoading] = useState(false);
+  const [integrationModalIsVisible, setIntegrationModalIsVisible] = useState(false);
 
   const googleLogin = async () => {
     try {
@@ -80,12 +82,16 @@ function IntegrationsList() {
 
   const deleteIntegration = async (integrationID) => {
     try {
+      setDeleteIsLoading(true);
       const response = await api.delete(`/integrations/delete-integration/${user.id}/${integrationID}`, { headers: { authorization: token } });
       if (response.status === 200) {
         toast.success("Dados da integração excluídos com sucesso!");
         getIntegrations();
+        setDeleteIsLoading(false);
+        setIntegrationModalIsVisible(false);
       }
     } catch {
+      setDeleteIsLoading(false);
       return;
     }
   }
@@ -186,6 +192,9 @@ function IntegrationsList() {
                 id={integration.id}
                 name={integration.name}
                 deleteIntegration={deleteIntegration}
+                isLoading={deleteIsLoading}
+                integrationModalIsVisible={integrationModalIsVisible}
+                setIntegrationModalIsVisible={setIntegrationModalIsVisible}
               />
             ))
           )

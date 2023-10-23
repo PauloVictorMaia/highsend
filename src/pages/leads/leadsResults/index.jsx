@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 import { format } from "date-fns";
 import ptBR from "date-fns/locale/pt-BR"
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { Ring } from "@uiball/loaders";
 
 function LeadsResults() {
 
@@ -28,6 +29,7 @@ function LeadsResults() {
   const menuRef = useRef(null);
   const buttonRefs = useRef([]);
   const token = localStorage.getItem('token');
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -97,14 +99,17 @@ function LeadsResults() {
     if (!currentLeadID) return;
 
     try {
+      setIsLoading(true);
       const response = await api.patch(`/leads/edit-status-lead/${params.flowId}/${currentLeadID}`, { value }, { headers: { authorization: token } });
       if (response.status === 200) {
         setIndexDrop(null);
         getLeads();
         getVariables();
+        setIsLoading(false);
       }
     } catch {
       toast.error("Erro ao alterar status do lead. Tente novamente.");
+      setIsLoading(false);
     }
   }
 
@@ -176,25 +181,33 @@ function LeadsResults() {
                           {indexDrop === index &&
                             <DropMenuCard ref={menuRef}>
 
-                              <MenuCardButtons onClick={() => handleLeadStatus("Em aberto")}>
-                                <StatusColor color={"#ddd"} />
-                                <span>Em aberto</span>
-                              </MenuCardButtons>
+                              {
+                                isLoading ?
+                                  <Ring color="#333" size={50} />
+                                  :
+                                  <>
+                                    <MenuCardButtons onClick={() => handleLeadStatus("Em aberto")}>
+                                      <StatusColor color={"#ddd"} />
+                                      <span>Em aberto</span>
+                                    </MenuCardButtons>
 
-                              <MenuCardButtons onClick={() => handleLeadStatus("Comprou")}>
-                                <StatusColor color={"#66ff66"} />
-                                <span>Comprou</span>
-                              </MenuCardButtons>
+                                    <MenuCardButtons onClick={() => handleLeadStatus("Comprou")}>
+                                      <StatusColor color={"#66ff66"} />
+                                      <span>Comprou</span>
+                                    </MenuCardButtons>
 
-                              <MenuCardButtons onClick={() => handleLeadStatus("Não comprou")}>
-                                <StatusColor color={"#ff4d4d"} />
-                                <span>Não comprou</span>
-                              </MenuCardButtons>
+                                    <MenuCardButtons onClick={() => handleLeadStatus("Não comprou")}>
+                                      <StatusColor color={"#ff4d4d"} />
+                                      <span>Não comprou</span>
+                                    </MenuCardButtons>
 
-                              <MenuCardButtons onClick={() => handleLeadStatus("Não compareceu")}>
-                                <StatusColor color={"#ffff66"} />
-                                <span>Não compareceu</span>
-                              </MenuCardButtons>
+                                    <MenuCardButtons onClick={() => handleLeadStatus("Não compareceu")}>
+                                      <StatusColor color={"#ffff66"} />
+                                      <span>Não compareceu</span>
+                                    </MenuCardButtons>
+                                  </>
+                              }
+
                             </DropMenuCard>
                           }
                         </LeadStatusContainer>

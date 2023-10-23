@@ -6,8 +6,9 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import ClearIcon from '@mui/icons-material/Clear';
 import { useState } from "react";
+import { Ring } from "@uiball/loaders";
 
-function EventCard({ color, start, end, eventDuration, inviteeName, inviteeEmail, inviteePhone, cancelEvent, calendarID, eventID, calendarTitle, local, timezone }) {
+function EventCard({ color, start, end, eventDuration, inviteeName, inviteeEmail, inviteePhone, cancelEvent, calendarID, eventID, calendarTitle, local, timezone, isLoading }) {
 
   const [openDetails, setOpenDetails] = useState(false);
   const [modalIsVisible, setModalIsVisible] = useState(false);
@@ -31,7 +32,12 @@ function EventCard({ color, start, end, eventDuration, inviteeName, inviteeEmail
 
           <CancelEvent>
             <span>Tem certeza que deseja cancelar o evento agendado com {inviteeName}?</span>
-            <button onClick={() => cancelEventAndCloseModal(calendarID, eventID)}>Cancelar evento</button>
+            <button
+              onClick={() => cancelEventAndCloseModal(calendarID, eventID)}
+              disabled={isLoading}
+            >
+              {isLoading ? <Ring color="#fff" size={20} /> : "Cancelar evento"}
+            </button>
           </CancelEvent>
         </ModalContent>
       </Modal>

@@ -171,6 +171,11 @@ export const CancelEvent = styled.div`
     align-items: center;
     justify-content: center;
     margin-left: 30%;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
   }
 
   >span {
