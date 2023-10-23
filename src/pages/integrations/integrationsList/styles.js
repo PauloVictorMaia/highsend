@@ -26,7 +26,7 @@ export const Title = styled.h2`
 `;
 
 export const UserIntegrations = styled.div`
-  width: 100%;
+  width: 80vw;
   min-height: 120px;
   padding-left: 60px;
   display: flex;

@@ -16,7 +16,7 @@ export function WebsiteInputNode({ data, id, selected }) {
   const [placeholder, setPlaceholder] = useState(data.placeholder || "Digite uma URL...");
   const [buttonLabel, setButtonLabel] = useState(data.buttonLabel || "Enviar");
   const [assignedVariable, setAssignedVariable] = useState(data.variable || "");
-  const [retryMessage, setRetryMessage] = useState(data.retryMessage || "Esta URL não parece ser válida. Você pode digitá-la novamente?");
+  const [retryMessage, setRetryMessage] = useState(data.retryMessage || "Esta URL não parece ser válida.");
 
   const sendNewVariable = async () => {
     try {

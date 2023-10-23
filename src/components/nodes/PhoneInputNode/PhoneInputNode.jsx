@@ -17,7 +17,7 @@ export function PhoneInputNode({ data, id, selected }) {
   const [placeholder, setPlaceholder] = useState(data.placeholder || "Número de telefone...")
   const [buttonLabel, setButtonLabel] = useState(data.buttonLabel || "Enviar")
   const [assignedVariable, setAssignedVariable] = useState(data.variable || "")
-  const [retryMessage, setRetryMessage] = useState(data.retryMessage || "Esse não é um número de telefone válido. Pode digitar novamente?")
+  const [retryMessage, setRetryMessage] = useState(data.retryMessage || "Esse não é um número de telefone válido.")
   const [phoneCode, setPhoneCode] = useState(data.phoneCode || "+55")
 
   const sendNewVariable = async () => {

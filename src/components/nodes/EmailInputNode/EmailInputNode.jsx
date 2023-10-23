@@ -16,7 +16,7 @@ export function EmailInputNode({ data, id, selected }) {
   const [placeholder, setPlaceholder] = useState(data.placeholder || "Digite seu email...")
   const [buttonLabel, setButtonLabel] = useState(data.buttonLabel || "Enviar")
   const [assignedVariable, setAssignedVariable] = useState(data.variable || "")
-  const [retryMessage, setRetryMessage] = useState(data.retryMessage || "Esse não é um email válido. Você pode digitar novamente?")
+  const [retryMessage, setRetryMessage] = useState(data.retryMessage || "Esse não é um email válido.")
 
   const sendNewVariable = async () => {
     try {
