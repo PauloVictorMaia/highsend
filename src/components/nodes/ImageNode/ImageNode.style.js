@@ -111,6 +111,7 @@ export const ChooseFileButton = styled.label`
   justify-content: center;
   align-items: center;
   padding: 15px;
+  box-sizing: border-box;
   cursor: pointer;
 `;
 

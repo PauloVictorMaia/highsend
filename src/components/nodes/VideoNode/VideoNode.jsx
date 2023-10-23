@@ -15,6 +15,7 @@ export function VideoNode({ data, id, selected }) {
   const { setNodes } = useReactFlow();
   const [awaitTargetTime, setAwaitTargetTime] = useState(data.awaitTargetTime || false);
   const [targetTime, setTargetTime] = useState(data.targetTime || 10);
+  const [autoplay, setAutoplay] = useState(data.autoplay || false);
 
   const { deleteElements } = useReactFlow();
 
@@ -42,6 +43,7 @@ export function VideoNode({ data, id, selected }) {
           const parentNodes = nds.filter((node) => node.parentNode === groupID)
           node.data.value = type === "link" ? videoLink : script
           node.data.type = type
+          node.data.autoplay = autoplay
           if (type === "script") {
             node.data.awaitTargetTime = awaitTargetTime
             if (awaitTargetTime) {
@@ -142,6 +144,20 @@ export function VideoNode({ data, id, selected }) {
                 onChange={(e) => setVideoLink(e.target.value)}
               />
               <span>Trabalhamos com links do Youtube e Vimeo</span>
+              <SwitchContainer>
+                <span>Auto-play</span>
+                <Switch
+                  size="small"
+                  defaultChecked={autoplay}
+                  onChange={() => setAutoplay(!autoplay)}
+                />
+              </SwitchContainer>
+              {
+                autoplay &&
+                <span style={{ fontSize: "10px" }}>
+                  Lembrando que auto-play é uma funcionalidade extremamente incosistênte, varia de navegador para navegador e de dispositivo para disposivito, mas de qualquer forma, fazemos de tudo para entregar uma boa experiência de autoplay
+                </span>
+              }
             </>
           )}
           {type === "script" && (
@@ -153,7 +169,21 @@ export function VideoNode({ data, id, selected }) {
                 onChange={(e) => handleScript(e.target.value)}
               />
               <SwitchContainer>
-                <span>Tempo de espera?</span>
+                <span>Auto-play</span>
+                <Switch
+                  size="small"
+                  defaultChecked={autoplay}
+                  onChange={() => setAutoplay(!autoplay)}
+                />
+              </SwitchContainer>
+              {
+                autoplay &&
+                <span style={{ fontSize: "10px" }}>
+                  Lembrando que auto-play é uma funcionalidade extremamente incosistênte, varia de navegador para navegador e de dispositivo para disposivito, mas de qualquer forma, fazemos de tudo para entregar uma boa experiência de autoplay
+                </span>
+              }
+              <SwitchContainer>
+                <span>Tempo de espera</span>
                 <Switch
                   size="small"
                   defaultChecked={awaitTargetTime}

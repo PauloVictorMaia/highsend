@@ -33,13 +33,13 @@ export const PreviewImage = styled.img`
 export const InputContainer = styled.div`
   visibility: ${({isvisible}) => isvisible ? "visible" : "hidden"};
   width: 330px;
-  height: 300px;
+  min-height: 350px;
   position: absolute;
   left: -355px;
   top: -65px;
   border-radius: 5px;
   background-color: #fff;
-  padding: 0 10px;
+  padding: 10px;
   box-sizing: border-box;
   box-shadow: 0 5px 7px 0 rgba(0,0,0,0.15);
 `;
@@ -107,7 +107,7 @@ export const LinkInput = styled.input`
 export const Textarea = styled.textarea`
   display: block;
   width: 100%;
-  height: 50%;
+  height: 100px;
   background-color: #fff;
   border: 0.5px solid rgba(0,0,0,0.15);
   outline: none;
