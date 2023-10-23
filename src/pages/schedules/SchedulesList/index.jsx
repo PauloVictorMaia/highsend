@@ -25,6 +25,7 @@ function SchedulesList() {
   const menuRef = useRef(null);
   const buttonRefs = useRef([]);
   const BASE_URL = `${import.meta.env.VITE_OPEN_FRONT_URL}/agendar-evento/`
+  const [deleteIsLoading, setDeleteIsLoading] = useState(false);
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
@@ -46,14 +47,17 @@ function SchedulesList() {
 
   const deleteCalendar = async (calendarID) => {
     try {
+      setDeleteIsLoading(true);
       const response = await api.delete(`/calendars/delete-calendar/${user.id}/${calendarID}`, { headers: { authorization: token } });
       if (response.status === 200) {
         toast.success('Agenda excluída.');
         setModalIsVisible(false);
         getCalendars();
+        setDeleteIsLoading(false);
       }
     } catch {
       toast.error('Erro ao deletar calendário.');
+      setDeleteIsLoading(false);
     }
   };
 
@@ -212,7 +216,13 @@ function SchedulesList() {
                 <span>Tem certeza que deseja excluir a agenda "{calendar.room.title}" ?</span>
                 <Buttons>
                   <Button color="green" onClick={() => handleActive(calendar.room.id, false)}>Desativar</Button>
-                  <Button color="red" onClick={() => deleteCalendar(calendar.room.id)}>Excluir</Button>
+                  <Button
+                    disabled={deleteIsLoading}
+                    color="red"
+                    onClick={() => deleteCalendar(calendar.room.id)}
+                  >
+                    Excluir
+                  </Button>
                 </Buttons>
               </DeleteCalendar>
             </ModalContent>

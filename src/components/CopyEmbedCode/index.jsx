@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import clipboardCopy from 'clipboard-copy';
 import { IconButton, Tooltip } from '@mui/material';
 import { ContentCopy as CopyIcon } from '@mui/icons-material';
+import { toast } from 'react-toastify';
 
 const CodeBlock = styled.pre`
     border: 1px solid #ddd;
@@ -137,9 +138,14 @@ const CopyEmbed = ({ flowId, userId }) => {
 `;
 
   const handleCopy = () => {
-    clipboardCopy(chatScript);
-    setIsCopied(true);
-    setTimeout(() => setIsCopied(false), 2000);
+    try {
+      clipboardCopy(chatScript);
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
+      toast.success("Script copiado com sucesso!")
+    } catch (error) {
+      return;
+    }
   };
 
   return (

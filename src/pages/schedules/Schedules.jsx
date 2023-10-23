@@ -10,7 +10,7 @@ import CustomSchedule from "./CustomSchedule";
 function Schedules() {
 
   const [menuComponent, setMenuComponent] = useState(0);
-  const { createCalendar } = useStateContext();
+  const { createCalendar, createCalendarIsLoading } = useStateContext();
 
   return (
     <ContentPageContainer
@@ -22,6 +22,7 @@ function Schedules() {
           setMenuComponent={setMenuComponent}
           buttonName={'Criar Agenda'}
           button={() => createCalendar()}
+          isLoading={createCalendarIsLoading}
         />
       }
     >

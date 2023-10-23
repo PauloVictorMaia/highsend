@@ -32,6 +32,7 @@ import clipboardCopy from 'clipboard-copy';
 import Tooltip from '@mui/material/Tooltip';
 import CodeIcon from '@mui/icons-material/Code';
 import CopyEmbed from "../../components/CopyEmbedCode";
+import { Ring } from "@uiball/loaders";
 
 function Fluxograms() {
   const [menuComponent, setMenuComponent] = useState(0);
@@ -41,58 +42,79 @@ function Fluxograms() {
   const [modalEditIsVisible, setModalEditIsVisible] = useState(false);
   const [modalDeleteIsVisible, setModalDeleteIsVisible] = useState(false);
   const [modalEmbedIsVisible, setModalEmbedIsVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [deleteFlowIsLoading, setDeleteFlowIsLoading] = useState(false);
+  const [loadingStates, setLoadingStates] = useState(flows.map(() => false));
+  const [editFlowNameIsLoading, setEditFlowNameIsLoading] = useState(false);
   const [indexModal, setIndexModal] = useState(null);
   const [flowName, setFlowName] = useState("");
   const BASE_URL = `${import.meta.env.VITE_OPEN_FRONT_URL}/fluxo-de-bot/`;
 
   const createFlow = async () => {
+    setIsLoading(true);
     try {
       const response = await api.post(`/flows/create-flow/${user.id}`, {}, { headers: { authorization: token } });
       if (response.status === 201) {
         navigate(`/dashboard/fluxograms/edit/${response.data.id}`);
         getFlows();
+        setIsLoading(false);
       }
     } catch {
       toast.error('Erro ao criar novo flow.');
+      setIsLoading(false);
     }
   }
 
   const editFlowName = async (flowID) => {
     if (!flowName) return;
     try {
+      setEditFlowNameIsLoading(true);
       const response = await api.patch(`/flows/edit-flow/${user.id}/${flowID}`, { flowName }, { headers: { authorization: token } });
       if (response.status === 200) {
         toast.success('Alterações salvas.')
         getFlows();
         closeEditModal();
+        setEditFlowNameIsLoading(false);
       }
     } catch {
       toast.error('Erro ao editar o nome do flow.');
+      setEditFlowNameIsLoading(false);
     }
   };
 
-  const cloneFlow = async (flowID) => {
+  const cloneFlow = async (flowID, index) => {
     try {
+      const updatedLoadingStates = [...loadingStates];
+      updatedLoadingStates[index] = true;
+      setLoadingStates(updatedLoadingStates);
       const response = await api.post(`/flows/clone-flow/${user.id}/${flowID}`, {}, { headers: { authorization: token } });
       if (response.status === 200) {
         getFlows();
         closeEditModal();
+        updatedLoadingStates[index] = false;
+        setLoadingStates(updatedLoadingStates);
       }
     } catch {
       toast.error('Erro ao clonar flow.');
+      const updatedLoadingStates = [...loadingStates];
+      updatedLoadingStates[index] = false;
+      setLoadingStates(updatedLoadingStates);
     }
   };
 
   const deleteFlow = async (flowID) => {
     try {
+      setDeleteFlowIsLoading(true);
       const response = await api.delete(`/flows/delete-flow/${user.id}/${flowID}`, { headers: { authorization: token } });
       if (response.status === 200) {
         toast.success('Flow deletado.')
         getFlows();
         setModalDeleteIsVisible(false);
+        setDeleteFlowIsLoading(false);
       }
     } catch {
       toast.error('Erro ao deletar flow.');
+      setDeleteFlowIsLoading(false);
     }
   };
 
@@ -124,7 +146,9 @@ function Fluxograms() {
 
       <Container>
         <NewFluxogramCard onClick={createFlow}>
-          <AddIcon style={{ fontSize: "2.2rem" }} />
+          {
+            isLoading ? <Ring color="#fff" /> : <AddIcon style={{ fontSize: "2.2rem" }} />
+          }
           <span>Novo Flow</span>
         </NewFluxogramCard>
 
@@ -142,11 +166,15 @@ function Fluxograms() {
                 </Tooltip>
                 <ActiveComponent>Ativo</ActiveComponent>
                 <Tooltip title="Duplicar">
-                  <ControlPointDuplicateIcon onClick={(e) => {
-                    e.stopPropagation();
-                    cloneFlow(flow.id)
+                  {loadingStates[index] ?
+                    <Ring size={20} color="#333" />
+                    :
+                    <ControlPointDuplicateIcon onClick={(e) => {
+                      e.stopPropagation();
+                      cloneFlow(flow.id, index)
+                    }
+                    } />
                   }
-                  } />
                 </Tooltip>
               </Buttons>
               <Content>
@@ -198,7 +226,12 @@ function Fluxograms() {
                       defaultValue={flow.name}
                       onChange={(e) => setFlowName(e.target.value)}
                     />
-                    <button onClick={() => editFlowName(flow.id)}>Salvar</button>
+                    <button
+                      disabled={editFlowNameIsLoading}
+                      onClick={() => editFlowName(flow.id)}
+                    >
+                      {editFlowNameIsLoading ? <Ring color="#fff" size={20} /> : "Salvar"}
+                    </button>
                   </EditFlowName>
                 </ModalContent>
               </Modal>
@@ -215,7 +248,12 @@ function Fluxograms() {
 
                   <DeleteFlow>
                     <span>Tem certeza que deseja deletar o flow "{flow.name}" ?</span>
-                    <button onClick={() => deleteFlow(flow.id)}>Deletar</button>
+                    <button
+                      onClick={() => deleteFlow(flow.id)}
+                      disabled={deleteFlowIsLoading}
+                    >
+                      {deleteFlowIsLoading ? <Ring size={20} color="#fff" /> : "Deletar"}
+                    </button>
                   </DeleteFlow>
                 </ModalContent>
               </Modal>

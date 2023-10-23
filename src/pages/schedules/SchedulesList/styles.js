@@ -209,7 +209,7 @@ export const Buttons = styled.div`
 `;
 
 export const Button = styled.button`
-    width: 70px;
+    width: 80px;
     height: 25px;
     border-radius: 5px;
     background-color: ${({color}) => color};
@@ -221,4 +221,9 @@ export const Button = styled.button`
     display: flex;
     align-items: center;
     justify-content: center;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
 `;

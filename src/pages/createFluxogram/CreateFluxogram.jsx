@@ -95,6 +95,7 @@ const Flow = () => {
   const [originalTemplate, setOriginalTemplate] = useState("");
   const [originalProfileName, setOriginalProfileName] = useState("");
   const BASE_URL = `${import.meta.env.VITE_OPEN_FRONT_URL}/fluxo-de-bot/`;
+  const [isLoading, setIsLoading] = useState(false);
 
   async function getFlowData() {
     try {
@@ -159,6 +160,7 @@ const Flow = () => {
     }
 
     try {
+      setIsLoading(true);
       const response = await api.patch(`/flows/update-flow/${user.id}/${params.flowid}`,
         { nodes, edges, variables, profileImage, template, profileName },
         { headers: { authorization: token } });
@@ -166,10 +168,12 @@ const Flow = () => {
         toast.success('Dados salvos!');
         setHasChanges(false);
         getFlowData();
+        setIsLoading(false);
 
       }
     } catch (error) {
       toast.error('Erro ao salvar.');
+      setIsLoading(false);
     }
   }
 
@@ -217,9 +221,8 @@ const Flow = () => {
 
     const isSourceNodeConnected = edges.some((edge) => edge.source === connection.source);
 
-    const isTargetNodeConnected = edges.some((edge) => edge.target === connection.target);
 
-    if (isSourceNodeConnected || isTargetNodeConnected) {
+    if (isSourceNodeConnected) {
       return;
     }
 
@@ -539,6 +542,7 @@ const Flow = () => {
           profileName={profileName}
           setProfileName={setProfileName}
           copyURL={copyURL}
+          isLoading={isLoading}
         />
       </Panel>
     </FlowContainer>

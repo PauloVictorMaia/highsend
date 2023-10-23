@@ -21,6 +21,7 @@ export const ContextProvider = ({ children }) => {
     const [schedulesDataLoaded, setSchedulesDataLoaded] = useState(false);
     const [integrationsDataLoaded, setIntegrationsDataLoaded] = useState(false);
     const [leadsDataLoaded, setLeadsDataLoaded] = useState(false);
+    const [createCalendarIsLoading, setCreateCalendarIsLoading] = useState(false);
     const [token, setToken] = useState(localStorage.getItem('token'));
     const navigate = useNavigate();
     const location = useLocation();
@@ -354,13 +355,16 @@ export const ContextProvider = ({ children }) => {
         };
 
         try {
+            setCreateCalendarIsLoading(true);
             const response = await api.post(`calendars/create-calendar/${user.id}`, { calendar }, { headers: { authorization: token } })
             if (response.status === 201) {
                 navigate(`/dashboard/schedules/edit/${response.data.id}`);
                 getCalendars();
+                setCreateCalendarIsLoading(false);
             }
         } catch {
-            toast.error('Erro ao criar nova agenda.')
+            toast.error('Erro ao criar nova agenda.');
+            setCreateCalendarIsLoading(false);
         }
     }
 
@@ -428,7 +432,8 @@ export const ContextProvider = ({ children }) => {
                 schedulesDataLoaded,
                 leadsDataLoaded,
                 integrationsDataLoaded,
-                createCalendar
+                createCalendar,
+                createCalendarIsLoading
             }}
         >
             {children}

@@ -14,6 +14,7 @@ import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import lodash from 'lodash';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import { Ring } from "@uiball/loaders";
 
 function MyProfile() {
 
@@ -92,6 +93,7 @@ function MyProfile() {
     }
 
     try {
+      setIsLoading(true);
       const response = await api.post(`/users/edit-username/${user.id}`,
         { profileName },
         { headers: { authorization: token } }
@@ -100,9 +102,11 @@ function MyProfile() {
         getUser(token);
         toast.success("Nome do usuário alterado com sucesso.");
         setProfileNameInputIsDisabled(true);
+        setIsLoading(false);
       }
     } catch {
       toast.error('Erro ao alterar nome do usuário. Por favor, tente novamente.');
+      setIsLoading(false);
       return;
     }
   }
@@ -231,7 +235,7 @@ function MyProfile() {
                     color={profileNameHasChanges}
                     disabled={!profileNameHasChanges}
                   >
-                    <SaveOutlinedIcon />
+                    {isLoading ? <Ring /> : <SaveOutlinedIcon />}
                   </ProfileNameSaveButton>
                 </Tooltip>
               </ProfileNameButtonsContainer>
@@ -296,7 +300,7 @@ function MyProfile() {
                     color={originalPassword && newPassword && confirmationPassword}
                     disabled={passwordSaveButtonIsDisabled}
                   >
-                    {isLoading ? <div className="spinner" id="spinner"></div> : <SaveOutlinedIcon />}
+                    {isLoading ? <Ring /> : <SaveOutlinedIcon />}
                   </ProfileNameSaveButton>
                 </Tooltip>
               }
@@ -317,7 +321,7 @@ function MyProfile() {
               </CloseButton>
               {
                 isLoading ?
-                  <span>Aguarde enquanto realizamos o upload...</span>
+                  <Ring />
                   :
                   <InputDropZone sendFile={uploadImage} acceptedFileType="image/*" width={190} height={130} />
               }

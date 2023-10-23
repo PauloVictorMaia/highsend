@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
+import { Ring } from "@uiball/loaders";
 import { HeaderContainer, TitleHeader, MenuItems, Item, ItemElement, Button, ContentHeader } from "./styles";
 
-function CustomPageHeader({ menu, setMenuComponent, menuComponent, button, name, buttonName }) {
+function CustomPageHeader({ menu, setMenuComponent, menuComponent, button, name, buttonName, isLoading }) {
   return (
     <HeaderContainer>
       <TitleHeader>{name}</TitleHeader>
@@ -17,7 +18,7 @@ function CustomPageHeader({ menu, setMenuComponent, menuComponent, button, name,
         }
         {button &&
           <Button onClick={button}>
-            {buttonName}
+            {isLoading ? <Ring color="#fff" size={25} /> : buttonName}
           </Button>
         }
       </ContentHeader>

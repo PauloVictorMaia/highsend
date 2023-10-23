@@ -9,15 +9,18 @@ import { useState } from "react";
 import InputDropZone from "../InputDropZone";
 import api from "../../api";
 import CopyAllIcon from '@mui/icons-material/CopyAll';
+import { Ring } from "@uiball/loaders";
 
 function PanelButtons({
-  save, hasChanges, dropDownMenuIsVisible, setDropDownMenuIsVisible, profileImage, setProfileImage, template, setTemplate, profileName, setProfileName, copyURL
+  save, hasChanges, dropDownMenuIsVisible, setDropDownMenuIsVisible, profileImage, setProfileImage, template, setTemplate, profileName, setProfileName, copyURL, isLoading,
 }) {
 
   const [modalIsVisible, setModalIsVisible] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   const uploadImage = async (file) => {
     try {
+      setUploading(true);
       const formData = new FormData();
       formData.append('nodeImage', file);
       const response = await api.post('/flows/upload-image', formData,
@@ -27,8 +30,10 @@ function PanelButtons({
       if (response.status === 201) {
         setProfileImage(response.data.imageUrl);
         setModalIsVisible(false);
+        setUploading(false);
       }
     } catch {
+      setUploading(false);
       return;
     }
   }
@@ -36,7 +41,7 @@ function PanelButtons({
   return (
     <Container>
       <Button disabled={!hasChanges} onClick={() => save()} color={hasChanges}>
-        <SaveOutlinedIcon />
+        {isLoading ? <Ring color="#333" /> : <SaveOutlinedIcon />}
         <Label color={hasChanges}>Salvar</Label>
       </Button>
 
@@ -95,7 +100,11 @@ function PanelButtons({
             <ClearIcon />
           </CloseButton>
 
-          <InputDropZone sendFile={uploadImage} acceptedFileType="image/*" width={190} height={130} />
+          {uploading ?
+            <Ring />
+            :
+            <InputDropZone sendFile={uploadImage} acceptedFileType="image/*" width={190} height={130} />
+          }
 
         </ModalContent>
       </Modal>

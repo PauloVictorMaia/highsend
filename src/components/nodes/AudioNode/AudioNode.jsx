@@ -13,12 +13,14 @@ import AudioFileOutlinedIcon from '@mui/icons-material/AudioFileOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import api from '../../../api';
 import { toast } from "react-toastify";
+import { Ring } from "@uiball/loaders";
 
 function AudioNode({ data, id, selected }) {
 
   const [nodeValue, setNodeValue] = useState(data.value || "")
   const { setNodes } = useReactFlow();
   const [activeTab, setActiveTab] = useState("tab1");
+  const [uploading, setUploading] = useState(false);
 
   const { deleteElements } = useReactFlow();
 
@@ -27,6 +29,7 @@ function AudioNode({ data, id, selected }) {
   const uploadAudio = async (e) => {
     const file = e.target.files[0];
     try {
+      setUploading(true);
       const formData = new FormData();
       formData.append('nodeAudio', file);
       const response = await api.post('/flows/upload-audio', formData,
@@ -34,11 +37,13 @@ function AudioNode({ data, id, selected }) {
           headers: { 'Content-Type': 'audio/mpeg' }
         });
       if (response.status === 201) {
-        setNodeValue(response.data.audioUrl)
-        toast.success('Upload realizado com sucesso.')
+        setNodeValue(response.data.audioUrl);
+        toast.success('Upload realizado com sucesso.');
+        setUploading(false);
       }
     } catch {
-      toast.error('Erro ao realizar upload da imagem.')
+      toast.error('Erro ao realizar upload da imagem.');
+      setUploading(false);
     }
   };
 
@@ -122,7 +127,7 @@ function AudioNode({ data, id, selected }) {
           )}
           {activeTab === "tab2" && (
             <>
-              <ChooseFileButton htmlFor={id}>Escolher arquivo</ChooseFileButton>
+              <ChooseFileButton htmlFor={id}>{uploading ? <Ring color="#fff" size={25} /> : "Escolher arquivo"}</ChooseFileButton>
               <FileInput
                 type="file"
                 id={id}

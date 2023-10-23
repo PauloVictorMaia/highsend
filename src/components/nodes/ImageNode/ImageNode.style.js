@@ -105,6 +105,7 @@ export const LinkInput = styled.input`
 export const ChooseFileButton = styled.label`
   display: flex;
   height: 40px;
+  width: 130px;
   border-radius: 5px;
   background-color: #E67200;
   color: #fff;

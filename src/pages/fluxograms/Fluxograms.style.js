@@ -149,7 +149,7 @@ export const EditFlowName = styled.div`
     width: 70px;
     height: 25px;
     border-radius: 5px;
-    background-color: blue;
+    background-color: #E67200;
     outline: none;
     border: none;
     cursor: pointer;
@@ -158,6 +158,11 @@ export const EditFlowName = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
   }
 `;
 
@@ -183,5 +188,10 @@ export const DeleteFlow = styled.div`
     align-items: center;
     justify-content: center;
     margin-left: 35%;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
   }
 `;

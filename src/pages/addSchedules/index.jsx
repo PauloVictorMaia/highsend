@@ -84,6 +84,7 @@ function AddSchedule() {
   const [createdAt, setCreatedAt] = useState(null);
   const [timezone, setTimezone] = useState("");
   const brazilTimezones = moment.tz.zonesForCountry('BR');
+  const [isLoading, setIsLoading] = useState(false);
 
   async function getCalendarData() {
     try {
@@ -221,14 +222,17 @@ function AddSchedule() {
     }
 
     try {
+      setIsLoading(true);
       const response = await api.patch(`/calendars/edit-calendar/${user.id}/${params.id}`, { calendar }, { headers: { authorization: token } });
       if (response.status === 201) {
         toast.success('Dados salvos!');
         navigate('/dashboard/schedules');
         getCalendars();
+        setIsLoading(false);
       }
     } catch {
       toast.error('Erro ao salvar agenda.');
+      setIsLoading(false);
     }
   }
 
@@ -380,6 +384,7 @@ function AddSchedule() {
           buttonName={'Salvar Agenda'}
           menuComponent={menuComponent}
           setMenuComponent={setMenuComponent}
+          isLoading={isLoading}
         />
       }
     >
