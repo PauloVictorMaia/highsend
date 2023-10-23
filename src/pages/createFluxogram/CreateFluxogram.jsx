@@ -37,6 +37,7 @@ import DelayLogicNode from "../../components/nodes/DelayLogicNode/DelayLogicNode
 import LinkButtonInputNode from "../../components/nodes/LInkButtonInputNode/LinkButtonInputNode";
 import RedirectLogicNode from "../../components/nodes/RedirectLogicNode/RedirectLogicNode";
 import WhatsappMessageLogicNode from "../../components/nodes/WhatsappMessageLogicNode/WhatsappMessageLogicNode";
+import clipboardCopy from 'clipboard-copy';
 
 const proOptions = {
   hideAttribution: true,
@@ -93,6 +94,7 @@ const Flow = () => {
   const [originalProfileImage, setOriginalProfileImage] = useState("");
   const [originalTemplate, setOriginalTemplate] = useState("");
   const [originalProfileName, setOriginalProfileName] = useState("");
+  const BASE_URL = `${import.meta.env.VITE_OPEN_FRONT_URL}/fluxo-de-bot/`;
 
   async function getFlowData() {
     try {
@@ -481,6 +483,16 @@ const Flow = () => {
     [getIntersectingNodes, setNodes]
   );
 
+  const copyURL = () => {
+    try {
+      const URL = `${BASE_URL}${user.id}/${params.flowid}`;
+      clipboardCopy(URL);
+      toast.success('Link copiado.');
+    } catch {
+      toast.error('Erro ao copiar link.');
+    }
+  }
+
   return (
     <FlowContainer style={{ width: '100%', heigth: '100%' }} ref={wrapperRef}>
       <ReactFlow
@@ -526,6 +538,7 @@ const Flow = () => {
           setTemplate={setTemplate}
           profileName={profileName}
           setProfileName={setProfileName}
+          copyURL={copyURL}
         />
       </Panel>
     </FlowContainer>

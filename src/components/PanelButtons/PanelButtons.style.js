@@ -2,7 +2,6 @@ import { styled } from "styled-components";
 
 export const Container = styled.div`
   width: 60px;
-  height: 150px;
   margin-top: 60px;
   border-radius: 8px;
   border: 0.5px solid rgba(0,0,0,0.15);

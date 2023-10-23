@@ -8,9 +8,10 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { useState } from "react";
 import InputDropZone from "../InputDropZone";
 import api from "../../api";
+import CopyAllIcon from '@mui/icons-material/CopyAll';
 
 function PanelButtons({
-  save, hasChanges, dropDownMenuIsVisible, setDropDownMenuIsVisible, profileImage, setProfileImage, template, setTemplate, profileName, setProfileName
+  save, hasChanges, dropDownMenuIsVisible, setDropDownMenuIsVisible, profileImage, setProfileImage, template, setTemplate, profileName, setProfileName, copyURL
 }) {
 
   const [modalIsVisible, setModalIsVisible] = useState(false);
@@ -47,6 +48,11 @@ function PanelButtons({
       <Button onClick={() => setDropDownMenuIsVisible(!dropDownMenuIsVisible)}>
         {dropDownMenuIsVisible ? <CloseIcon /> : <SettingsIcon />}
         <Label>Configurar</Label>
+      </Button>
+
+      <Button onClick={() => copyURL()}>
+        <CopyAllIcon />
+        <Label>Link</Label>
       </Button>
 
       <DropDownMenu isvisible={dropDownMenuIsVisible}>
