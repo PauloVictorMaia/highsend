@@ -63,7 +63,7 @@ export function VideoNode({ data, id, selected }) {
         return node;
       })
     );
-  }, [videoLink, script, type, awaitTargetTime, targetTime]);
+  }, [videoLink, script, type, awaitTargetTime, targetTime, autoplay]);
 
   return (
     <NodeContainer>
