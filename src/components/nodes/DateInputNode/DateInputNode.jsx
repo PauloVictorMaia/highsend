@@ -1,11 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { InputConfig, InputPreview, NodeContainer } from "./DateInputNode.style";
+import { InputConfig, InputPreview, NodeContainer, SwitchContainer } from "./DateInputNode.style";
 import { useReactFlow, NodeToolbar } from "reactflow";
 import { useState, useEffect } from "react";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import EditCalendarOutlinedIcon from '@mui/icons-material/EditCalendarOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { Switch } from "@mui/material";
 
 export function DateInputNode({ data, id, selected }) {
   const { calendarsData, createCalendar } = useStateContext();
@@ -13,6 +14,7 @@ export function DateInputNode({ data, id, selected }) {
   const { setNodes } = useReactFlow();
   const { deleteElements } = useReactFlow();
   const onDelete = () => deleteElements({ nodes: [{ id }] });
+  const [interruptFlow, setInterruptFlow] = useState(false);
 
   useEffect(() => {
     setNodes((nds) =>
@@ -21,6 +23,7 @@ export function DateInputNode({ data, id, selected }) {
           const groupID = node.parentNode
           const parentNodes = nds.filter((node) => node.parentNode === groupID)
           node.data.value = nodeValue
+          node.data.interruptFlow = interruptFlow
           setNodes((nds) =>
             nds.map((node) => {
               if (node.id === groupID) {
@@ -34,7 +37,7 @@ export function DateInputNode({ data, id, selected }) {
         return node;
       })
     );
-  }, [nodeValue]);
+  }, [nodeValue, interruptFlow]);
 
   return (
     <NodeContainer>
@@ -80,6 +83,15 @@ export function DateInputNode({ data, id, selected }) {
               <button onClick={() => createCalendar()}>Criar primeira agenda</button>
             </>
         }
+
+        <SwitchContainer>
+          <span>Interromper fluxo até o agendamento</span>
+          <Switch
+            size="small"
+            defaultChecked={interruptFlow}
+            onChange={() => setInterruptFlow(!interruptFlow)}
+          />
+        </SwitchContainer>
 
       </InputConfig>
 
