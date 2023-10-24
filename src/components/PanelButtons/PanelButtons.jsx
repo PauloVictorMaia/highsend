@@ -45,9 +45,9 @@ function PanelButtons({
         <Label color={hasChanges}>Salvar</Label>
       </Button>
 
-      <Button>
-        <IosShareIcon />
-        <Label>Exportar</Label>
+      <Button onClick={() => copyURL()}>
+        <CopyAllIcon />
+        <Label>Link</Label>
       </Button>
 
       <Button onClick={() => setDropDownMenuIsVisible(!dropDownMenuIsVisible)}>
@@ -55,9 +55,9 @@ function PanelButtons({
         <Label>Configurar</Label>
       </Button>
 
-      <Button onClick={() => copyURL()}>
-        <CopyAllIcon />
-        <Label>Link</Label>
+      <Button>
+        <IosShareIcon />
+        <Label>Exportar</Label>
       </Button>
 
       <DropDownMenu isvisible={dropDownMenuIsVisible}>
