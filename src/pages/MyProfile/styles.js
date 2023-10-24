@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Img } from "react-image";
 
 export const Container = styled.div`
   width: 100%;
@@ -20,20 +21,23 @@ export const ProfileImageContainer = styled.div`
   column-gap: 50px;
 `;
 
-export const ProfileImage = styled.div`
+export const ProfileImageDiv = styled.div`
   width: 100px;
   height: 100px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: ${({ profileimage }) => `url(${profileimage})`};
-  background-size: cover;
-  background-position: 50% 50%;
   color: #fff;
   font-size: 3rem;
   background-color: #F26800;
   position: relative;
+`;
+
+export const ProfileImage = styled(Img)`
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
 `;
 
 export const ProfileName = styled.span`

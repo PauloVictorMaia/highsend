@@ -7,6 +7,7 @@ import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import { Tooltip } from '@mui/material';
 import LogoImage from '../../assets/logohiflow.png';
 import { useNavigate } from 'react-router';
+import { Img } from 'react-image';
 
 const TopBarWrapper = styled.div`
   background-color: #fff;
@@ -33,11 +34,14 @@ const Avatar = styled.div`
   text-align: center;
   font-size: 23px;
   border-radius: 50%;
-  background-image: ${({ profileimage }) => `url(${profileimage})`};
-  background-size: cover;
-  background-position: 50% 50%;
   background-color: #F26800;
   color: #fff;
+`;
+
+export const ProfileImage = styled(Img)`
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
 `;
 
 const Dropdown = styled.div`
@@ -156,11 +160,18 @@ const TopBar = () => {
         <UserIconContainer
           onClick={() => handleIconContainerClick()}
         >
-          <Avatar alt="User Avatar" profileimage={user && user.profileImage}>
+          <Avatar>
             {
               Object.keys(user).length > 0 &&
               !user.profileImage &&
               user.name.charAt(0).toUpperCase()
+            }
+            {
+              user && user.profileImage &&
+              <ProfileImage
+                src={user.profileImage}
+                alt="Imagem de perfil"
+              />
             }
           </Avatar>
         </UserIconContainer>

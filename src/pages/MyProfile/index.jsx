@@ -2,7 +2,7 @@ import CustomPageHeader from "../../components/CustomPageHeader";
 import { myProfileMenu } from "../../data/menus";
 import { useRef, useState, useEffect } from "react";
 import ContentPageContainer from "../../containers/ContentPageContainer";
-import { Container, ProfileDataContent, ProfileImage, ProfileImageContainer, ProfileName, Modal, ModalContent, CloseButton, ProfileNameInputContainer, ProfileNameInput, ProfileNameButtonsContainer, ProfileNameSaveButton, PasswordContainer, ChangePasswordButton, PasswordInputs, PasswordInput, ShowPasswordContainer } from "./styles";
+import { Container, ProfileDataContent, ProfileImageDiv, ProfileImage, ProfileImageContainer, ProfileName, Modal, ModalContent, CloseButton, ProfileNameInputContainer, ProfileNameInput, ProfileNameButtonsContainer, ProfileNameSaveButton, PasswordContainer, ChangePasswordButton, PasswordInputs, PasswordInput, ShowPasswordContainer } from "./styles";
 import { useStateContext } from "../../contexts/ContextProvider";
 import Tooltip from '@mui/material/Tooltip';
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
@@ -180,13 +180,21 @@ function MyProfile() {
         <Container>
           <ProfileDataContent>
             <ProfileImageContainer>
-              <ProfileImage
-                profileimage={user && user.profileImage}
-              >
+              <ProfileImageDiv>
                 {
                   Object.keys(user).length > 0 &&
                   !user.profileImage &&
                   user.name.charAt(0).toUpperCase()
+                }
+
+                {
+                  user && user.profileImage &&
+                  <ProfileImage
+                    src={user.profileImage}
+                    alt="Imagem de perfil"
+                    loader={<Ring color="#fff" size={40} />}
+                    loading={isLoading}
+                  />
                 }
 
                 <Tooltip
@@ -200,7 +208,7 @@ function MyProfile() {
                     }}
                   />
                 </Tooltip>
-              </ProfileImage>
+              </ProfileImageDiv>
               <ProfileName>{Object.keys(user).length > 0 && user.name}</ProfileName>
             </ProfileImageContainer>
 

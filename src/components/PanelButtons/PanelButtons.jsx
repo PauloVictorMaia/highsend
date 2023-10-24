@@ -22,17 +22,21 @@ function PanelButtons({
     try {
       setUploading(true);
       const formData = new FormData();
-      formData.append('nodeImage', file);
-      const response = await api.post('/flows/upload-image', formData,
+      formData.append('avatar', file);
+      const response = await api.post('/flows/upload-avatar', formData,
         {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
       if (response.status === 201) {
+        console.log(response.data.imageUrl);
         setProfileImage(response.data.imageUrl);
         setModalIsVisible(false);
         setUploading(false);
       }
-    } catch {
+    } catch (error) {
+      if (error.response && error.response.status === 500) {
+        console.log(error.response);
+      }
       setUploading(false);
       return;
     }
@@ -65,7 +69,7 @@ function PanelButtons({
 
         <ProfileImageContainer onClick={() => setModalIsVisible(true)}>
           <span>Avatar</span>
-          <ProfileImage img={profileImage}></ProfileImage>
+          <ProfileImage loading={uploading} loader={<Ring />} src={profileImage} alt="Avatar"></ProfileImage>
           <span>Clique para editar</span>
         </ProfileImageContainer>
         <TemplateContainer>

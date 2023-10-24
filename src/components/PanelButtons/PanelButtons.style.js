@@ -1,4 +1,5 @@
 import { styled } from "styled-components";
+import { Img } from 'react-image';
 
 export const Container = styled.div`
   width: 60px;
@@ -77,13 +78,10 @@ export const ProfileImageContainer = styled.div`
   cursor: pointer;
 `;
 
-export const ProfileImage = styled.div`
+export const ProfileImage = styled(Img)`
   width: 70px;
   height: 70px;
   border-radius: 50%;
-  background-image: ${({ img }) => `url(${img})`};
-  background-size: cover;
-  background-position: 50% 50%;
 `;
 
 export const TemplateContainer = styled.div`
