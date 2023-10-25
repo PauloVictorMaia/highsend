@@ -7,7 +7,7 @@ import WhatsappImg from '../../../assets/whatsapp-logo.png';
 import IntegrationCard from "../../../components/IntegrationCard";
 import UserIntegrationCard from "../../../components/UserIntegrationCards";
 import { toast } from "react-toastify";
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import ClearIcon from '@mui/icons-material/Clear';
 
 function IntegrationsList() {
@@ -16,8 +16,6 @@ function IntegrationsList() {
   const token = localStorage.getItem('token');
   const { user, integrations, integrationsDataLoaded, getIntegrations } = useStateContext();
   const [qr, setQr] = useState('');
-  const [phone, setPhone] = useState('');
-  const phoneInputRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
   const [deleteIsLoading, setDeleteIsLoading] = useState(false);
   const [integrationModalIsVisible, setIntegrationModalIsVisible] = useState(false);
@@ -36,16 +34,6 @@ function IntegrationsList() {
 
   const syncWhatsapp = async () => {
 
-    if (phone.trim() === '') {
-      toast.warning('O campo "Telefone" é obrigatório.');
-      phoneInputRef.current.focus();
-      return;
-    } else if (phone.includes('_')) {
-      toast.warning('Digite um número de telefone válido.');
-      phoneInputRef.current.focus();
-      return;
-    }
-
     try {
       setQr("");
       setIsLoading(true);
@@ -63,7 +51,6 @@ function IntegrationsList() {
   const finalizeIntegration = () => {
     getIntegrations();
     setQr("");
-    setPhone("");
     setModalIsVisible(false);
   }
 
@@ -73,7 +60,6 @@ function IntegrationsList() {
 
   const closeModal = () => {
     setQr("");
-    setPhone("");
     setModalIsVisible(false);
   }
 
