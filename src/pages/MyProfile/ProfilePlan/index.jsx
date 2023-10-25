@@ -15,15 +15,13 @@ import { toast } from "react-toastify";
 function ProfilePlan() {
 
   const { user, getUser } = useStateContext();
-  const currentPlan = plans.find(plan => plan.type === user.accountType);
+  const currentPlan = plans && plans.find(plan => plan.type === user.accountType);
   const [accordion, setAccordion] = useState(1);
   const [modalIsVisible, setModalIsVisible] = useState(false);
   const [chosenPlanId, setChosenPlanId] = useState(null);
   const [chosenPlanType, setChosenPlanType] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const token = localStorage.getItem('token');
-
-  console.log(chosenPlanId, chosenPlanType);
 
   const changeAccordionValue = (index) => {
     if (index === accordion) return setAccordion(0);
@@ -57,142 +55,147 @@ function ProfilePlan() {
   return (
     <Container>
       <ProfilePlanContent>
-        <Accordion
-          open={accordion === 1}
-          onClick={() => changeAccordionValue(1)}
-          title={"Informações do plano atual"}
-          icon={<InfoOutlinedIcon />}
-        >
-          <ContentContainer>
-            <AccountTypeContainer>
-              <h2>{`Plano ${currentPlan.type}`}</h2>
-              <span>{currentPlan.description}</span>
-            </AccountTypeContainer>
+        {
+          Object.keys(currentPlan).lenght > 0 && plans &&
+          <>
+            <Accordion
+              open={accordion === 1}
+              onClick={() => changeAccordionValue(1)}
+              title={"Informações do plano atual"}
+              icon={<InfoOutlinedIcon />}
+            >
+              <ContentContainer>
+                <AccountTypeContainer>
+                  <h2>{`Plano ${currentPlan.type}`}</h2>
+                  <span>{currentPlan.description}</span>
+                </AccountTypeContainer>
 
-            <BenefitsContainer>
-              <h3>Benefícios</h3>
-              <div>
-                {currentPlan.resources.map((resource, index, array) => (
-                  <span key={resource}>
-                    {resource}
-                    {index < array.length - 1 ? ", " : "."}
-                  </span>
-                ))}
-              </div>
-            </BenefitsContainer>
+                <BenefitsContainer>
+                  <h3>Benefícios</h3>
+                  <div>
+                    {currentPlan.resources.map((resource, index, array) => (
+                      <span key={resource}>
+                        {resource}
+                        {index < array.length - 1 ? ", " : "."}
+                      </span>
+                    ))}
+                  </div>
+                </BenefitsContainer>
 
-            <PriceContainer>
-              <h3>Valor do plano</h3>
-              <span>{`R$${currentPlan.price},00/mês`}</span>
-            </PriceContainer>
-          </ContentContainer>
-        </Accordion>
+                <PriceContainer>
+                  <h3>Valor do plano</h3>
+                  <span>{`R$${currentPlan.price},00/mês`}</span>
+                </PriceContainer>
+              </ContentContainer>
+            </Accordion>
 
-        <Accordion
-          open={accordion === 2}
-          onClick={() => changeAccordionValue(2)}
-          title={"Forma de pagamento"}
-          icon={<PaymentIcon />}
-        >
-          <ContentContainer>
-            Forma de pagamento
-          </ContentContainer>
-        </Accordion>
+            <Accordion
+              open={accordion === 2}
+              onClick={() => changeAccordionValue(2)}
+              title={"Forma de pagamento"}
+              icon={<PaymentIcon />}
+            >
+              <ContentContainer>
+                Forma de pagamento
+              </ContentContainer>
+            </Accordion>
 
-        <Accordion
-          open={accordion === 3}
-          onClick={() => changeAccordionValue(3)}
-          title={"Mudar de plano"}
-          icon={<PublishedWithChangesIcon />}
-        >
-          <ContentContainer>
-            <PlansContainer>
-              {
-                plans.map((plan) => (
-                  <PlanCard
-                    key={plan.id}
-                    disabled={currentPlan.type === plan.type}
-                  >
-                    <h3>{plan.type}</h3>
-                    <p>{plan.description}</p>
-                    <ul>
-                      {
-                        plan.resources.map((resource, index) => (
-                          <li key={index}>{resource}</li>
-                        ))
-                      }
-                    </ul>
-                    <h4>{`R$${plan.price}/mês`}</h4>
-                    <Button
-                      disabled={currentPlan.type === plan.type}
-                      onClick={() => openModal(plan.id, plan.type)}
-                    >
-                      {
-                        currentPlan.type === plan.type ?
-                          "Plano atual"
-                          :
-                          `Mudar para ${plan.type}`
-                      }
-                    </Button>
-                  </PlanCard>
-                ))
-              }
-            </PlansContainer>
-            <Modal onClick={(e) => e.stopPropagation()} isvisible={modalIsVisible}>
-              <ModalContent width={350} height={400}>
-                <CloseButton
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setModalIsVisible(false)
-                  }
-                  }>
-                  <ClearIcon />
-                </CloseButton>
-
-                <p>
+            <Accordion
+              open={accordion === 3}
+              onClick={() => changeAccordionValue(3)}
+              title={"Mudar de plano"}
+              icon={<PublishedWithChangesIcon />}
+            >
+              <ContentContainer>
+                <PlansContainer>
                   {
-                    `Você escolheu o plano ${chosenPlanType}. Prosseguir com a mudança de plano?`
+                    plans.map((plan) => (
+                      <PlanCard
+                        key={plan.id}
+                        disabled={currentPlan.type === plan.type}
+                      >
+                        <h3>{plan.type}</h3>
+                        <p>{plan.description}</p>
+                        <ul>
+                          {
+                            plan.resources.map((resource, index) => (
+                              <li key={index}>{resource}</li>
+                            ))
+                          }
+                        </ul>
+                        <h4>{`R$${plan.price}/mês`}</h4>
+                        <Button
+                          disabled={currentPlan.type === plan.type}
+                          onClick={() => openModal(plan.id, plan.type)}
+                        >
+                          {
+                            currentPlan.type === plan.type ?
+                              "Plano atual"
+                              :
+                              `Mudar para ${plan.type}`
+                          }
+                        </Button>
+                      </PlanCard>
+                    ))
                   }
-                </p>
+                </PlansContainer>
+                <Modal onClick={(e) => e.stopPropagation()} isvisible={modalIsVisible}>
+                  <ModalContent width={350} height={400}>
+                    <CloseButton
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setModalIsVisible(false)
+                      }
+                      }>
+                      <ClearIcon />
+                    </CloseButton>
 
-                <span>
-                  OBS: A data de pagamento do plano permanecerá a mesma. Faremos um ajuste de valores
-                  automático levando em consideração os dias restantes do plano atual e o valor do novo plano. Caso o plano escolhido seja inferior ao seu plano atual, poderão ser gerados créditos que serão aproveitados em sua próxima fatura.
-                </span>
+                    <p>
+                      {
+                        `Você escolheu o plano ${chosenPlanType}. Prosseguir com a mudança de plano?`
+                      }
+                    </p>
 
-                <ModalButtonsContainer>
-                  <ModalButton
-                    onClick={() => setModalIsVisible(false)}
-                    background="#9999FF"
-                    disabled={isLoading}
-                  >
-                    Voltar
-                  </ModalButton>
+                    <span>
+                      OBS: A data de pagamento do plano permanecerá a mesma. Faremos um ajuste de valores
+                      automático levando em consideração os dias restantes do plano atual e o valor do novo plano. Caso o plano escolhido seja inferior ao seu plano atual, poderão ser gerados créditos que serão aproveitados em sua próxima fatura.
+                    </span>
 
-                  <ModalButton
-                    disabled={isLoading}
-                    background="#E67200"
-                    onClick={() => ChangePlan()}
-                  >
-                    {isLoading ? <Ring size={20} color="#fff" /> : "Quero mudar"}
-                  </ModalButton>
-                </ModalButtonsContainer>
+                    <ModalButtonsContainer>
+                      <ModalButton
+                        onClick={() => setModalIsVisible(false)}
+                        background="#9999FF"
+                        disabled={isLoading}
+                      >
+                        Voltar
+                      </ModalButton>
 
-              </ModalContent>
-            </Modal>
-          </ContentContainer>
-        </Accordion>
+                      <ModalButton
+                        disabled={isLoading}
+                        background="#E67200"
+                        onClick={() => ChangePlan()}
+                      >
+                        {isLoading ? <Ring size={20} color="#fff" /> : "Quero mudar"}
+                      </ModalButton>
+                    </ModalButtonsContainer>
 
-        <Accordion
-          open={accordion === 4}
-          onClick={() => changeAccordionValue(4)}
-          title={"Cancelamento de plano"}
-          icon={<ReportGmailerrorredIcon />}
-        >
-          <ContentContainer>
-            Cancelamento de plano
-          </ContentContainer>
-        </Accordion>
+                  </ModalContent>
+                </Modal>
+              </ContentContainer>
+            </Accordion>
+
+            <Accordion
+              open={accordion === 4}
+              onClick={() => changeAccordionValue(4)}
+              title={"Cancelamento de plano"}
+              icon={<ReportGmailerrorredIcon />}
+            >
+              <ContentContainer>
+                Cancelamento de plano
+              </ContentContainer>
+            </Accordion>
+          </>
+        }
       </ProfilePlanContent>
     </Container>
   )
