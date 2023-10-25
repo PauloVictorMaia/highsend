@@ -4,7 +4,6 @@ import { Img } from "react-image";
 export const Container = styled.div`
   width: 100%;
   padding-top: 20px;
-  /* background-color: aquamarine; */
 `;
 
 export const ProfileDataContent = styled.div`
