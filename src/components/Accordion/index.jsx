@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const AccordionContainer = styled.div`
-  border: 1px solid #14140F;
+  border: 1px solid rgba(0,0,0,0.15);
   border-radius: 6px;
   width: 100%;
   margin-top: 15px;

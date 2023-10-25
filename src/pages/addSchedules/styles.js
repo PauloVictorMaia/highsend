@@ -57,7 +57,7 @@ export const IntervalsContainer = styled.div`
 export const ToggleContainer = styled.div`
   font-family: Arial, sans-serif;
   padding: 20px;
-  border: 1px solid #ccc;
+  border: 1px solid rgba(0,0,0,0.15);
   border-radius: 8px;
 `;
 
@@ -100,7 +100,7 @@ export const Input = styled.input`
  height: 40px;
  border-radius: 4px;
  outline: none;
- border: 1px solid #333;
+ border: 1px solid rgba(0,0,0,0.15);
  padding: 5px 10px;
  box-sizing: border-box;
 `;
@@ -109,7 +109,7 @@ export const Select = styled.select`
   height: 40px;
   border-radius: 4px;
   outline: none;
-  border: 1px solid #333;
+  border: 1px solid rgba(0,0,0,0.15);
   padding: 5px 10px;
   box-sizing: border-box;
 `;

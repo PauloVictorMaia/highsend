@@ -1,6 +1,6 @@
 export const plans = [
   {
-    id: "price_1O2HDtKd09418g8A6nvc7mTG",
+    id: import.meta.env.VITE_STRIPE_PLAN_STARTER_ID,
     type: "STARTER",
     description: "Para startups e profissionais individuais",
     resources: [
@@ -14,7 +14,7 @@ export const plans = [
     price: 87
   },
   {
-    id: "price_1O2HExKd09418g8AUYkDVC50",
+    id: import.meta.env.VITE_STRIPE_PLAN_PRO_ID,
     type: "PRO",
     description: "Para empresas em crescimento",
     resources: [
@@ -28,7 +28,7 @@ export const plans = [
     price: 187
   },
   {
-    id: "price_1O2HGwKd09418g8Ak6rLfk9G",
+    id: import.meta.env.VITE_STRIPE_PLAN_ENTERPRISE_ID,
     type: "ENTERPRISE",
     description: "Para grandes empresas",
     resources: [
