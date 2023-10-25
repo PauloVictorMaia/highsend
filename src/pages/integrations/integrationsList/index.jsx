@@ -9,7 +9,6 @@ import UserIntegrationCard from "../../../components/UserIntegrationCards";
 import { toast } from "react-toastify";
 import { useState, useRef } from 'react'
 import ClearIcon from '@mui/icons-material/Clear';
-import InputMask from 'react-input-mask'
 
 function IntegrationsList() {
 
@@ -50,9 +49,7 @@ function IntegrationsList() {
     try {
       setQr("");
       setIsLoading(true);
-      const formatedPhone = Number(phone.replace(/\D/g, ''));
-      const completePhone = `55${formatedPhone}`
-      const response = await api.get(`/integrations/whatsapp-sync/${user.id}/${completePhone}`, { headers: { authorization: token }, body: { user: user.id, phone: phone } });
+      const response = await api.get(`/integrations/whatsapp-sync/${user.id}/`, { headers: { authorization: token }, body: { user: user.id } });
       if (response.status === 200) {
         setQr(response.data.qr)
         setIsLoading(false);
@@ -134,15 +131,6 @@ function IntegrationsList() {
               }>
               <ClearIcon />
             </CloseButton>
-
-            <span>Número whatsapp</span>
-            <InputMask
-              required
-              mask="(99) 99999-9999"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              ref={phoneInputRef}
-            />
 
             {
               qr &&
