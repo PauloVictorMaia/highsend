@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import { Container, Integrations, Title, UserIntegrations, Modal, ModalContent, CloseButton, ModalButton } from "./styles";
+import { Container, Integrations, Title, UserIntegrations, Modal, ModalContent, CloseButton, ModalButton } from "./styles.js";
 import api from '../../../api';
 import { useStateContext } from '../../../contexts/ContextProvider';
 import GoogleCalendarImg from '../../../assets/google-calendar.png';
@@ -73,7 +73,10 @@ function IntegrationsList() {
         setDeleteIsLoading(false);
         setIntegrationModalIsVisible(false);
       }
-    } catch {
+    } catch (error) {
+      if (error.response & error.response.status === 500) {
+        toast.error("Erro ao deletar integração. Tente novamente.");
+      }
       setDeleteIsLoading(false);
       return;
     }
