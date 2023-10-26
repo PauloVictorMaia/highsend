@@ -6,7 +6,6 @@ export const Container = styled.div`
   border: 0.5px solid rgba(0,0,0,0.15);
   border-radius: 8px; 
   color: rgba(0,0,0,0.75);
-  /* background-color: blue; */
 
   &:hover {
     box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
@@ -20,7 +19,6 @@ export const ImgContainer = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 8px 8px 0 0;
-  /* background: pink; */
 `;
 
 export const IntegrationImg = styled.img`
@@ -40,10 +38,9 @@ export const DescriptionContainer = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 2; /* Número de linhas a serem exibidas */
+  -webkit-line-clamp: 2; 
   -webkit-box-orient: vertical;
   white-space: normal;
-  /* background-color: yellow; */
 `;
 
 export const IconContainer = styled.div`
@@ -54,7 +51,6 @@ export const IconContainer = styled.div`
   align-items: center;
   justify-content: center;
   column-gap: 30px;
-  /* background-color: green; */
 
   >svg {
     font-size: large;

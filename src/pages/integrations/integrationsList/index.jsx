@@ -6,7 +6,6 @@ import GoogleCalendarImg from '../../../assets/google-calendar.png';
 import WhatsappImg from '../../../assets/whatsapp-logo.png';
 import IntegrationCard from "../../../components/IntegrationCard";
 import UserIntegrationCard from "../../../components/UserIntegrationCards";
-import { toast } from "react-toastify";
 import { useState } from 'react'
 import ClearIcon from '@mui/icons-material/Clear';
 
@@ -17,8 +16,6 @@ function IntegrationsList() {
   const { user, integrations, integrationsDataLoaded, getIntegrations } = useStateContext();
   const [qr, setQr] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [deleteIsLoading, setDeleteIsLoading] = useState(false);
-  const [integrationModalIsVisible, setIntegrationModalIsVisible] = useState(false);
 
   const googleLogin = async () => {
     try {
@@ -63,24 +60,7 @@ function IntegrationsList() {
     setModalIsVisible(false);
   }
 
-  const deleteIntegration = async (integrationID) => {
-    try {
-      setDeleteIsLoading(true);
-      const response = await api.delete(`/integrations/delete-integration/${user.id}/${integrationID}`, { headers: { authorization: token } });
-      if (response.status === 200) {
-        toast.success("Dados da integração excluídos com sucesso!");
-        getIntegrations();
-        setDeleteIsLoading(false);
-        setIntegrationModalIsVisible(false);
-      }
-    } catch (error) {
-      if (error.response & error.response.status === 500) {
-        toast.error("Erro ao deletar integração. Tente novamente.");
-      }
-      setDeleteIsLoading(false);
-      return;
-    }
-  }
+
 
   function selectLogo(type) {
     const logos = {
@@ -168,10 +148,6 @@ function IntegrationsList() {
                 description={integration.name}
                 id={integration.id}
                 name={integration.name}
-                deleteIntegration={deleteIntegration}
-                isLoading={deleteIsLoading}
-                integrationModalIsVisible={integrationModalIsVisible}
-                setIntegrationModalIsVisible={setIntegrationModalIsVisible}
               />
             ))
           )
