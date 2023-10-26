@@ -516,6 +516,7 @@ const Flow = () => {
         onEdgeUpdate={onEdgeUpdate}
         onEdgeUpdateStart={onEdgeUpdateStart}
         onEdgeUpdateEnd={onEdgeUpdateEnd}
+        zoomOnDoubleClick={false}
       >
 
         <Background
