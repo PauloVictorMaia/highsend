@@ -173,3 +173,30 @@ export const ModalButton = styled.button`
     cursor: not-allowed;
   }
 `;
+
+export const CurrentCard = styled.div`
+  width: 60%;
+  height: 60px;
+  border: 2px solid #9999FF;
+  box-shadow: 0 5px 12px 0 rgba(0,0,0,0.15);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  justify-content: space-between;
+`;
+
+export const FakeNumbers = styled.div`
+  display: flex;
+  width: 15%;
+  height: 30px;
+  align-items: center;
+  padding: 0 10px;
+  justify-content: space-between;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+
+  >svg {
+    color: #555;
+    font-size: 0.5rem;
+  }
+`;

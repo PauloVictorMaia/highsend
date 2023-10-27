@@ -1,4 +1,4 @@
-import { Container, ProfilePlanContent, ContentContainer, AccountTypeContainer, BenefitsContainer, PriceContainer, PlansContainer, PlanCard, Button, Modal, ModalContent, CloseButton, ModalButtonsContainer, ModalButton } from "./styles";
+import { Container, ProfilePlanContent, ContentContainer, AccountTypeContainer, BenefitsContainer, PriceContainer, PlansContainer, PlanCard, Button, Modal, ModalContent, CloseButton, ModalButtonsContainer, ModalButton, CurrentCard, FakeNumbers } from "./styles";
 import { plans } from "../../../data/plans";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import { useState } from "react";
@@ -6,15 +6,18 @@ import Accordion from "../../../components/Accordion";
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import PaymentIcon from '@mui/icons-material/Payment';
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
-import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred';
 import ClearIcon from '@mui/icons-material/Clear';
 import { Ring } from "@uiball/loaders";
 import api from "../../../api";
 import { toast } from "react-toastify";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import PaymentForm from "../PaymentForm/paymentForm";
+import CircleIcon from '@mui/icons-material/Circle';
 
 function ProfilePlan() {
 
-  const { user, getUser } = useStateContext();
+  const { user, getUser, cardLast4 } = useStateContext();
   const currentPlan = plans.find(plan => plan.type === user.accountType);
   const [accordion, setAccordion] = useState(1);
   const [modalIsVisible, setModalIsVisible] = useState(false);
@@ -22,6 +25,10 @@ function ProfilePlan() {
   const [chosenPlanType, setChosenPlanType] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const token = localStorage.getItem('token');
+
+  const stripe = loadStripe(
+    import.meta.env.VITE_STRIPE_PUBLIC_KEY
+  );
 
   const changeAccordionValue = (index) => {
     if (index === accordion) return setAccordion(0);
@@ -93,7 +100,37 @@ function ProfilePlan() {
           icon={<PaymentIcon />}
         >
           <ContentContainer>
-            Forma de pagamento
+            <span>Atual</span>
+            <CurrentCard>
+              <PaymentIcon style={{ color: "#F26800" }} />
+              <FakeNumbers>
+                <CircleIcon />
+                <CircleIcon />
+                <CircleIcon />
+                <CircleIcon />
+              </FakeNumbers>
+              <FakeNumbers>
+                <CircleIcon />
+                <CircleIcon />
+                <CircleIcon />
+                <CircleIcon />
+              </FakeNumbers>
+              <FakeNumbers>
+                <CircleIcon />
+                <CircleIcon />
+                <CircleIcon />
+                <CircleIcon />
+              </FakeNumbers>
+              <FakeNumbers>
+                {cardLast4 && <span>{cardLast4.charAt(0).toUpperCase()}</span>}
+                {cardLast4 && <span>{cardLast4.charAt(1).toUpperCase()}</span>}
+                {cardLast4 && <span>{cardLast4.charAt(2).toUpperCase()}</span>}
+                {cardLast4 && <span>{cardLast4.charAt(3).toUpperCase()}</span>}
+              </FakeNumbers>
+            </CurrentCard>
+            <Elements stripe={stripe}>
+              <PaymentForm />
+            </Elements>
           </ContentContainer>
         </Accordion>
 
@@ -181,16 +218,6 @@ function ProfilePlan() {
           </ContentContainer>
         </Accordion>
 
-        <Accordion
-          open={accordion === 4}
-          onClick={() => changeAccordionValue(4)}
-          title={"Cancelamento de plano"}
-          icon={<ReportGmailerrorredIcon />}
-        >
-          <ContentContainer>
-            Cancelamento de plano
-          </ContentContainer>
-        </Accordion>
       </ProfilePlanContent>
     </Container>
   )

@@ -22,6 +22,7 @@ export const ContextProvider = ({ children }) => {
     const [integrationsDataLoaded, setIntegrationsDataLoaded] = useState(false);
     const [leadsDataLoaded, setLeadsDataLoaded] = useState(false);
     const [createCalendarIsLoading, setCreateCalendarIsLoading] = useState(false);
+    const [cardLast4, setCardLast4] = useState(null);
     const [token, setToken] = useState(localStorage.getItem('token'));
     const navigate = useNavigate();
     const location = useLocation();
@@ -32,9 +33,12 @@ export const ContextProvider = ({ children }) => {
 
     useEffect(() => {
         if (Object.keys(user).length > 0) {
-            getFlows();
-            getCalendars();
-            getIntegrations();
+            Promise.all([
+                getFlows(),
+                getCalendars(),
+                getIntegrations(),
+                getPaymentMethod()
+            ]);
         }
     }, [user]);
 
@@ -86,6 +90,17 @@ export const ContextProvider = ({ children }) => {
             if (response.status === 200) {
                 setIntegrations(response.data.integrationsFiltered);
                 setIntegrationsDataLoaded(true);
+            }
+        } catch {
+            return;
+        }
+    }
+
+    async function getPaymentMethod() {
+        try {
+            const response = await api.get(`subscriptions/get-payment-method/${user.subscriptionID}`, { headers: { authorization: token } })
+            if (response.status === 200) {
+                setCardLast4(response.data.last4);
             }
         } catch {
             return;
@@ -171,7 +186,9 @@ export const ContextProvider = ({ children }) => {
                 leadsDataLoaded,
                 integrationsDataLoaded,
                 createCalendar,
-                createCalendarIsLoading
+                createCalendarIsLoading,
+                getPaymentMethod,
+                cardLast4
             }}
         >
             {children}
