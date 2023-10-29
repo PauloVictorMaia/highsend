@@ -33,6 +33,7 @@ import Tooltip from '@mui/material/Tooltip';
 import CodeIcon from '@mui/icons-material/Code';
 import CopyEmbed from "../../components/CopyEmbedCode";
 import { Ring } from "@uiball/loaders";
+import { Skeleton } from "@mui/material";
 
 function Fluxograms() {
   const [menuComponent, setMenuComponent] = useState(0);
@@ -151,6 +152,14 @@ function Fluxograms() {
           }
           <span>Novo Flow</span>
         </NewFluxogramCard>
+
+        {!flows.length &&
+          <>
+            <Skeleton width={225} height={270} animation="wave" variant="rectangular" style={{ borderRadius: '8px' }} />
+            <Skeleton width={225} height={270} animation="wave" variant="rectangular" style={{ borderRadius: '8px' }} />
+            <Skeleton width={225} height={270} animation="wave" variant="rectangular" style={{ borderRadius: '8px' }} />
+          </>
+        }
 
         {
           flows &&

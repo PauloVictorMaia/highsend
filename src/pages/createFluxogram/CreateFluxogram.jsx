@@ -530,7 +530,7 @@ const Flow = () => {
       <Panel position="top-left" style={openMenu ? { left: 230, top: -15 } : { left: 90 }}>
         <Sidebar />
       </Panel>
-      <Panel position="top-right">
+      <Panel position="top-right" style={{ top: 60 }}>
         <PanelButtons
           save={saveFlowData}
           hasChanges={hasChanges}

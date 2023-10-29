@@ -12,7 +12,7 @@ import api from "../../../api";
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import { Switch } from "@mui/material";
+import { Skeleton, Switch } from "@mui/material";
 import ClearIcon from '@mui/icons-material/Clear';
 import clipboardCopy from "clipboard-copy";
 import { Ring } from "@uiball/loaders";
@@ -119,6 +119,13 @@ function SchedulesList() {
 
   return (
     <Container>
+      {!calendarsData.length &&
+        <>
+          <Skeleton width={320} height={250} animation="wave" variant="rectangular" style={{ borderRadius: '8px' }} />
+          <Skeleton width={320} height={250} animation="wave" variant="rectangular" style={{ borderRadius: '8px' }} />
+        </>
+      }
+
       {calendarsData.length >= 1 ? calendarsData.map((calendar, index) => (
         <ScheduleCard onClick={() => navigate(`/dashboard/schedules/edit/${calendar.room.id}`)} key={index} active={calendar.room.active}>
           <TitleContainer>
