@@ -15,6 +15,7 @@ import LaunchIcon from '@mui/icons-material/Launch';
 import TimelapseIcon from '@mui/icons-material/Timelapse';
 import LanguageIcon from '@mui/icons-material/Language';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined';
 // import PaymentIcon from '@mui/icons-material/Payment';
 // import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 // import BackupOutlinedIcon from '@mui/icons-material/BackupOutlined';
@@ -122,6 +123,14 @@ export default () => {
         >
           <WhatsAppIcon style={{ fontSize: "large", color: "#9999FF" }} />
           Zap Msg
+        </NodeDraggable>
+
+        <NodeDraggable
+          onDragStart={(event) => onDragStart(event, 'group', 'pixelFacebookLogicNode', '40')}
+          draggable
+        >
+          <FacebookOutlinedIcon style={{ fontSize: "large", color: "#9999FF" }} />
+          Pixel Facebook
         </NodeDraggable>
 
       </NodesContainer>

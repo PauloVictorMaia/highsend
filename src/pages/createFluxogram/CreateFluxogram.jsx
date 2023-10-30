@@ -38,6 +38,7 @@ import LinkButtonInputNode from "../../components/nodes/LInkButtonInputNode/Link
 import RedirectLogicNode from "../../components/nodes/RedirectLogicNode/RedirectLogicNode";
 import WhatsappMessageLogicNode from "../../components/nodes/WhatsappMessageLogicNode/WhatsappMessageLogicNode";
 import clipboardCopy from 'clipboard-copy';
+import PixelFacebookLogicNode from "../../components/nodes/PixelFacebook/PixelFacebookLogicNode";
 
 const proOptions = {
   hideAttribution: true,
@@ -61,7 +62,8 @@ const NODE_TYPES = {
   linkButtonInputNode: LinkButtonInputNode,
   delayLogicNode: DelayLogicNode,
   redirectLogicNode: RedirectLogicNode,
-  whatsappMessageLogicNode: WhatsappMessageLogicNode
+  whatsappMessageLogicNode: WhatsappMessageLogicNode,
+  pixelFacebookLogicNode: PixelFacebookLogicNode
 };
 
 const EDGE_TYPES = {
@@ -96,6 +98,8 @@ const Flow = () => {
   const [originalProfileName, setOriginalProfileName] = useState("");
   const BASE_URL = `${import.meta.env.VITE_OPEN_FRONT_URL}/fluxo-de-bot/`;
   const [isLoading, setIsLoading] = useState(false);
+
+  console.log(nodes);
 
   async function getFlowData() {
     try {
