@@ -25,11 +25,9 @@ function MyProfile() {
       {menuComponent == 0 &&
         <ProfileData />
       }
+
       {menuComponent == 1 &&
         <ProfilePlan />
-      }
-      {menuComponent == 2 &&
-        <span>Configurações</span>
       }
 
     </ContentPageContainer>

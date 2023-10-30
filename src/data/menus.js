@@ -1,7 +1,6 @@
 export const scheduleMenu = [
   {name: 'Minhas agendas'}, 
   {name: 'Eventos'},
-  {name: 'Agenda'},
 ]
 
 export const flowMenu = [
@@ -32,5 +31,4 @@ export const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho
 export const myProfileMenu = [
   {name: 'Dados do perfil'},
   {name: 'Meu plano'},
-  {name: 'Configurações'},
 ]

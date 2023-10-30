@@ -186,7 +186,6 @@ const TopBar = () => {
             >
               Meu perfil
             </MenuItem>
-            <MenuItem>Histórico</MenuItem>
             <MenuItem onClick={() => signOut()}>Sair</MenuItem>
           </Dropdown>
         )}

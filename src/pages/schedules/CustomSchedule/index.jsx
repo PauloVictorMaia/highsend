@@ -3,7 +3,7 @@ import { Container } from "./styles";
 function CustomSchedule() {
   return (
     <Container>
-      Schedule Component
+      Componente agenda personalizado.
     </Container>
   )
 }

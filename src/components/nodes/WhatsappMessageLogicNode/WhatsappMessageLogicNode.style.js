@@ -38,6 +38,22 @@ export const InputConfig = styled.div`
   >span {
     font-size: 1rem;
   }
+
+  >button {
+    width: 200px;
+    height: 40px;
+    border-radius: 5px;
+    background-color: #E67200;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+  }
   
   >select {
     margin: 5px 0;
