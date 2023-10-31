@@ -39,6 +39,7 @@ import RedirectLogicNode from "../../components/nodes/RedirectLogicNode/Redirect
 import WhatsappMessageLogicNode from "../../components/nodes/WhatsappMessageLogicNode/WhatsappMessageLogicNode";
 import clipboardCopy from 'clipboard-copy';
 import PixelFacebookLogicNode from "../../components/nodes/PixelFacebook/PixelFacebookLogicNode";
+import WebhookLogicNode from "../../components/nodes/WebhookLogicNode/WebhookLogicNode";
 
 const proOptions = {
   hideAttribution: true,
@@ -63,7 +64,8 @@ const NODE_TYPES = {
   delayLogicNode: DelayLogicNode,
   redirectLogicNode: RedirectLogicNode,
   whatsappMessageLogicNode: WhatsappMessageLogicNode,
-  pixelFacebookLogicNode: PixelFacebookLogicNode
+  pixelFacebookLogicNode: PixelFacebookLogicNode,
+  webhookLogicNode: WebhookLogicNode
 };
 
 const EDGE_TYPES = {

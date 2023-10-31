@@ -16,6 +16,7 @@ import TimelapseIcon from '@mui/icons-material/Timelapse';
 import LanguageIcon from '@mui/icons-material/Language';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined';
+import WebhookIcon from '@mui/icons-material/Webhook';
 // import PaymentIcon from '@mui/icons-material/Payment';
 // import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 // import BackupOutlinedIcon from '@mui/icons-material/BackupOutlined';
@@ -131,6 +132,14 @@ export default () => {
         >
           <FacebookOutlinedIcon style={{ fontSize: "large", color: "#9999FF" }} />
           Pixel Facebook
+        </NodeDraggable>
+
+        <NodeDraggable
+          onDragStart={(event) => onDragStart(event, 'group', 'webhookLogicNode', '40')}
+          draggable
+        >
+          <WebhookIcon style={{ fontSize: "large", color: "#9999FF" }} />
+          Webhook
         </NodeDraggable>
 
       </NodesContainer>

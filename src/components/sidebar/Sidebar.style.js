@@ -2,7 +2,9 @@ import { styled } from "styled-components";
 
 export const SidebarContainer = styled.aside`
   width: 305px;
+  max-height: 85vh;
   margin-top: 80px;
+  overflow-y: scroll;
   color: #000;
   background-color: #fff;
   padding: 15px;
@@ -10,6 +12,10 @@ export const SidebarContainer = styled.aside`
   border-radius: 8px;
   border: 0.5px solid rgba(0,0,0,0.15);
   box-shadow: 0 5px 7px 0 rgba(0,0,0,0.15);
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const NodeDraggable = styled.div`
