@@ -12,7 +12,7 @@ const StateContext = createContext();
 export const ContextProvider = ({ children }) => {
 
     const [variables, setVariables] = useState([]);
-    const [openMenu, setOpenMenu] = useState(true);
+    const [openMenu, setOpenMenu] = useState(false);
     const [login, setLogin] = useState(false);
     const [user, setUser] = useState({});
     const [flows, setFlows] = useState([]);
@@ -52,9 +52,9 @@ export const ContextProvider = ({ children }) => {
             if (response.status === 200) {
                 setUser(response.data);
                 setLogin(true);
-                // const location = window.location.pathname;
-                // if (location !== '/') return navigate(location);
-                // return navigate('/dashboard/fluxograms');
+                const location = window.location.pathname;
+                if (location !== '/login') return navigate(location);
+                return navigate('/dashboard/fluxograms');
             }
         } catch {
             toast.error('Usuário não autenticado. Faça login novamente.');

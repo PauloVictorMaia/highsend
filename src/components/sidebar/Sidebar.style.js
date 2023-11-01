@@ -3,7 +3,9 @@ import { styled } from "styled-components";
 export const SidebarContainer = styled.aside`
   width: 305px;
   max-height: 85vh;
-  margin-top: 80px;
+  position: relative;
+  top: 90px;
+  left: 20px;
   overflow-y: scroll;
   color: #000;
   background-color: #fff;
