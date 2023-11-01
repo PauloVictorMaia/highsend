@@ -53,7 +53,7 @@ export const ContextProvider = ({ children }) => {
                 setUser(response.data);
                 setLogin(true);
                 const location = window.location.pathname;
-                if (location !== '/') return navigate(location);
+                if (location !== '/login') return navigate(location);
                 return navigate('/dashboard/fluxograms');
             }
         } catch {
