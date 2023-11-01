@@ -22,9 +22,10 @@ export const DashContent = styled.div`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: space-between;
   height: 80%;
-  max-height: 720px;
+  max-height: 850px;
   border-radius: 0 0 15px 0;
 `;
 
@@ -44,7 +45,7 @@ export const IconContainer = styled.div`
 `;
 
 export const MenuContainer = styled.div`
-  
+
 `;
 
 export const IconsContainer = styled.div`
@@ -85,7 +86,7 @@ export const MenuItem = styled.div`
 
   span {
     font-size: 16px;
-    margin-left: 25px;
+    margin-left: 15px;
     display: ${({openmenu}) => openmenu ? 'block' : 'none'};
     white-space: nowrap;
     max-width: 100%;

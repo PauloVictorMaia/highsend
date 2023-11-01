@@ -16,7 +16,7 @@ const TopBarWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 45px 0 35px;
+  padding: 0 45px 0 40px;
   box-sizing: border-box;
 `;
 
