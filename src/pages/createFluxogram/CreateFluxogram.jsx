@@ -101,7 +101,7 @@ const Flow = () => {
   const BASE_URL = `${import.meta.env.VITE_OPEN_FRONT_URL}/fluxo-de-bot/`;
   const [isLoading, setIsLoading] = useState(false);
 
-  console.log(nodes);
+  console.log("nodes create", nodes);
 
   async function getFlowData() {
     try {
@@ -183,12 +183,6 @@ const Flow = () => {
     }
   }
 
-  document.addEventListener("beforeunload", function (event) {
-    event.preventDefault();
-    event.returnValue = "";
-    return "";
-  });
-
   useEffect(() => {
     if (Object.keys(user).length > 0) {
       getFlowData();
@@ -235,7 +229,9 @@ const Flow = () => {
     setEdges((eds) => addEdge(connection, eds))
   }, [edges]);
 
+
   const onDragOver = useCallback((event) => {
+
     event.preventDefault();
     event.dataTransfer.dropEffect = 'move';
   }, []);
@@ -260,6 +256,8 @@ const Flow = () => {
     event.preventDefault();
 
     if (wrapperRef.current) {
+
+
       const wrapperBounds = wrapperRef.current.getBoundingClientRect();
       const type = event.dataTransfer.getData('application/reactflow/type');
       const subType = event.dataTransfer.getData('application/reactflow/subtype');
@@ -286,6 +284,7 @@ const Flow = () => {
         id: getId(),
         type,
         position,
+        dragHandle: '.custom-drag-handle',
         data: {
           label: getLabel(),
           blocks: [],
@@ -308,42 +307,38 @@ const Flow = () => {
 
 
       if (groupNode) {
-        const parentNodes = nodes.filter((node) => node.parentNode === groupNode.id);
-        const lastParentNode = parentNodes[parentNodes.length - 1];
-        const rowGap = 5
-        const initialGroupHeight = nodeStyle.height
-        let parentNodesHeight = parentNodes.reduce((totalHeight, node) => {
-          return totalHeight + node.style.height;
-        }, 0);
-        const totalGroupHeight = ((initialGroupHeight + parentNodesHeight) + ((parentNodes.length + 1) * rowGap));
+        // console.log("aqui")
+        // const parentNodes = nodes.filter((node) => node.parentNode === groupNode.id);
+        // const lastParentNode = parentNodes[parentNodes.length - 1];
+        // const rowGap = 5
+        // const initialGroupHeight = nodeStyle.height
+        // let parentNodesHeight = parentNodes.reduce((totalHeight, node) => {
+        //   return totalHeight + node.style.height;
+        // }, 0);
+        // const totalGroupHeight = ((initialGroupHeight + parentNodesHeight) + ((parentNodes.length + 1) * rowGap));
 
-        newSubnode.position = { x: 20, y: lastParentNode.position.y + (lastParentNode.style.height + rowGap) };
+        // newSubnode.position = { x: 20, y: lastParentNode.position.y + (lastParentNode.style.height + rowGap) };
         newSubnode.parentNode = groupNode?.id;
-        newSubnode.extent = groupNode ? 'parent' : undefined;
+
         newSubnode.type = subType;
 
         let newNodesGroup = nodes.map((node) => {
           if (node.id === groupNode.id) {
-            node.style = {
-              width: 250,
-              height: totalGroupHeight,
-              backgroundColor: '#fff',
-              border: "none",
-              padding: '0',
-              borderRadius: '8px'
-            };
             node.data.blocks = [...node.data.blocks, newSubnode]
+            node.selected = !node.selected //isso faz a renderização funcionar
             return node;
           }
           return node;
         });
 
-        const sortedNodes = [...newNodesGroup, newSubnode];
+
+
+        const sortedNodes = [...newNodesGroup];
         setNodes(sortedNodes);
       }
 
       if (!groupNode) {
-        const sortedNodes = store.getState().getNodes().concat(newNode, newSubnode).sort(sortNodes);
+        const sortedNodes = store.getState().getNodes().concat(newNode).sort(sortNodes);
         setNodes(sortedNodes);
       }
 
@@ -421,76 +416,76 @@ const Flow = () => {
     [nodes, edges]
   );
 
-  const onNodeDragStop = useCallback(
-    (_, node) => {
-      if (node.type !== 'node' && !node.parentNode) {
-        return;
-      }
+  // const onNodeDragStop = useCallback(
+  //   (_, node) => {
+  //     if (node.type !== 'node' && !node.parentNode) {
+  //       return;
+  //     }
 
-      const intersections = getIntersectingNodes(node).filter((n) => n.type === 'group');
-      const groupNode = intersections[0];
+  //     const intersections = getIntersectingNodes(node).filter((n) => n.type === 'group');
+  //     const groupNode = intersections[0];
 
-      if (intersections.length && node.parentNode !== groupNode?.id) {
-        const nextNodes = store
-          .getState()
-          .getNodes()
-          .map((n) => {
-            if (n.id === groupNode.id) {
-              return {
-                ...n,
-                className: '',
-              };
-            } else if (n.id === node.id) {
-              const position = getNodePositionInsideParent(n, groupNode) ?? { x: 0, y: 0 };
+  //     if (intersections.length && node.parentNode !== groupNode?.id) {
+  //       const nextNodes = store
+  //         .getState()
+  //         .getNodes()
+  //         .map((n) => {
+  //           if (n.id === groupNode.id) {
+  //             return {
+  //               ...n,
+  //               className: '',
+  //             };
+  //           } else if (n.id === node.id) {
+  //             const position = getNodePositionInsideParent(n, groupNode) ?? { x: 0, y: 0 };
 
-              return {
-                ...n,
-                position,
-                parentNode: groupNode.id,
-                dragging: false,
-                extent: 'parent',
-              };
-            }
+  //             return {
+  //               ...n,
+  //               position,
+  //               parentNode: groupNode.id,
+  //               dragging: false,
+  //               extent: 'parent',
+  //             };
+  //           }
 
-            return n;
-          })
-          .sort(sortNodes);
+  //           return n;
+  //         })
+  //         .sort(sortNodes);
 
-        setNodes(nextNodes);
-      }
-    },
-    [getIntersectingNodes, setNodes, store]
-  );
+  //       setNodes(nextNodes);
+  //     }
+  //   },
+  //   [getIntersectingNodes, setNodes, store]
+  // );
 
-  const onNodeDrag = useCallback(
-    (_, node) => {
-      if (node.type !== 'node' && !node.parentNode) {
-        return;
-      }
+  // const onNodeDrag = useCallback(
+  //   (_, node) => {
+  //     if (node.type !== 'node' && !node.parentNode) {
+  //       return;
+  //     }
 
-      const intersections = getIntersectingNodes(node).filter((n) => n.type === 'group');
-      const groupClassName = intersections.length && node.parentNode !== intersections[0]?.id ? 'active' : '';
+  //     const intersections = getIntersectingNodes(node).filter((n) => n.type === 'group');
+  //     const groupClassName = intersections.length && node.parentNode !== intersections[0]?.id ? 'active' : '';
 
-      setNodes((nds) => {
-        return nds.map((n) => {
-          if (n.type === 'group') {
-            return {
-              ...n,
-              className: groupClassName,
-            };
-          } else if (n.id === node.id) {
-            return {
-              ...n,
-              position: node.position,
-            };
-          }
+  //     setNodes((nds) => {
+  //       return nds.map((n) => {
+  //         if (n.type === 'group') {
+  //           return {
+  //             ...n,
+  //             className: groupClassName,
+  //           };
+  //         } else if (n.id === node.id) {
+  //           return {
+  //             ...n,
+  //             position: node.position,
+  //           };
+  //         }
 
-          return { ...n };
-        });
-      });
-    },
-    [getIntersectingNodes, setNodes]
-  );
+  //         return { ...n };
+  //       });
+  //     });
+  //   },
+  //   [getIntersectingNodes, setNodes]
+  // );
 
   const copyURL = () => {
     try {
@@ -515,8 +510,8 @@ const Flow = () => {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         onDrop={onDrop}
-        onNodeDrag={onNodeDrag}
-        onNodeDragStop={onNodeDragStop}
+        // onNodeDrag={onNodeDrag}
+        // onNodeDragStop={onNodeDragStop}
         proOptions={proOptions}
         onDragOver={onDragOver}
         onEdgeUpdate={onEdgeUpdate}

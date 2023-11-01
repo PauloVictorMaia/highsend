@@ -3,7 +3,7 @@ import { styled } from "styled-components";
 export const NodeContainer = styled.textarea`
   display: block;
   width: 100%;
-  height: 100%;
+  height: 80px;
   background-color: #fff;
   border: 0.5px solid rgba(0,0,0,0.15);
   outline: none;
@@ -34,4 +34,24 @@ export const NodeContainer = styled.textarea`
   &::-webkit-scrollbar-track {
     background-color: #f0f0f0;
   }
+`;
+
+export const CustomToolbar = styled.div`
+  display: ${({ isvisible }) => isvisible ? "flex" : "none"};
+  width: 30px;
+  height: 30px;
+  background-color: #fff;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  box-sizing: border-box;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 3px;
+  position: absolute;
+  top: -35px;
+  right: 30px;
+`;
+
+export const Container = styled.div`
+  position: relative;
 `;

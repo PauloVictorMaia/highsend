@@ -6,7 +6,7 @@ import {
   Navigation, ListTabs,
   Tabs, SendImages,
   LinkInput, ChooseFileButton,
-  FileInput
+  FileInput, CloseButton, CustomToolbar
 } from "./ImageNode.style";
 import { useReactFlow, NodeToolbar } from "reactflow";
 import { useState, useEffect } from "react";
@@ -15,12 +15,47 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import api from '../../../api';
 import { toast } from "react-toastify";
 import { Ring } from "@uiball/loaders";
+import { useSortable } from "@dnd-kit/sortable"
+import { CSS } from "@dnd-kit/utilities"
+import ClearIcon from '@mui/icons-material/Clear';
 
-export function ImageNode({ id, data, selected }) {
-  const [nodeValue, setNodeValue] = useState(data.value || "")
+export function ImageNode({ id, groupID, data }) {
+
+  const [nodeValue, setNodeValue] = useState(data.value || "");
   const { setNodes } = useReactFlow();
   const [activeTab, setActiveTab] = useState("tab1");
   const [uploading, setUploading] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition
+  } = useSortable({
+    id: id
+  })
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    marginBottom: "10px"
+  }
+
+  useEffect(() => {
+    setNodes((nds) =>
+      nds.map((node) => {
+        if (node.id === groupID) {
+          node.data.blocks.map((nodeOnBlock) => {
+            if (nodeOnBlock.id === id) {
+              nodeOnBlock.data.value = nodeValue
+            }
+            return nodeOnBlock;
+          })
+        }
+        return node;
+      })
+    );
+  }, [nodeValue]);
 
   const uploadImage = async (e) => {
     const file = e.target.files[0];
@@ -43,48 +78,42 @@ export function ImageNode({ id, data, selected }) {
     }
   };
 
-  const { deleteElements } = useReactFlow();
-  const onDelete = () => deleteElements({ nodes: [{ id }] });
-
-  useEffect(() => {
-    setNodes((nds) =>
-      nds.map((node) => {
-        if (node.id === id) {
-          const groupID = node.parentNode
-          const parentNodes = nds.filter((node) => node.parentNode === groupID)
-          node.data.value = nodeValue
-          setNodes((nds) =>
-            nds.map((node) => {
-              if (node.id === groupID) {
-                node.data.blocks = [...parentNodes]
-              }
-              return node;
-            })
-          )
+  const deleteNode = () => {
+    setNodes((nodes) => {
+      return nodes.map((node) => {
+        if (node.id === groupID) {
+          const updatedBlocks = node.data.blocks.filter((block) => block.id !== id);
+          if (updatedBlocks.length === 0) {
+            return null;
+          }
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              blocks: updatedBlocks,
+            },
+          };
         }
-
         return node;
-      })
-    );
-  }, [nodeValue]);
+      }).filter(Boolean);
+    });
+  };
 
   return (
-    <NodeContainer>
+    <NodeContainer
+      onClick={() => setIsVisible(!isVisible)}
+      onBlur={() => setIsVisible(false)}
+      style={style}
+      {...attributes}
+      {...listeners}
+      ref={setNodeRef}
+    >
 
-      <NodeToolbar
-        offset={5}
-        align='end'
-        style={{
-          backgroundColor: '#fff',
-          color: '#595959',
-          border: '0.5px solid rgba(0,0,0,0.15)',
-          borderRadius: '3px',
-          padding: "5px",
-          boxSizing: "border-box",
-        }}
+      <CustomToolbar
+        isvisible={isVisible}
       >
-        <DeleteOutlineIcon style={{ cursor: 'pointer', fontSize: 'large' }} onClick={onDelete} />
-      </NodeToolbar>
+        <DeleteOutlineIcon style={{ cursor: 'pointer', fontSize: 'large' }} onClick={() => deleteNode()} />
+      </CustomToolbar>
 
       <ImagePreview>
         <PhotoCameraOutlinedIcon />
@@ -95,7 +124,15 @@ export function ImageNode({ id, data, selected }) {
         }
       </ImagePreview>
 
-      <ImageNodeMenu isvisible={selected}>
+      <ImageNodeMenu isvisible={isVisible} onClick={(e) => e.stopPropagation()}>
+        <CloseButton
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsVisible(false)
+          }
+          }>
+          <ClearIcon />
+        </CloseButton>
         <Navigation>
           <ListTabs>
             <Tabs
@@ -123,8 +160,12 @@ export function ImageNode({ id, data, selected }) {
           )}
           {activeTab === "tab2" && (
             <>
-              <ChooseFileButton htmlFor={id}>{uploading ? <Ring size={25} color="#fff" /> : "Escolher arquivo"}</ChooseFileButton>
+              <ChooseFileButton
+                htmlFor={id}>{uploading ? <Ring size={25}
+                  color="#fff" /> : "Escolher arquivo"}
+              </ChooseFileButton>
               <FileInput
+                onClick={(e) => e.stopPropagation()}
                 type="file"
                 id={id}
                 onChange={uploadImage}
