@@ -12,7 +12,7 @@ const StateContext = createContext();
 export const ContextProvider = ({ children }) => {
 
     const [variables, setVariables] = useState([]);
-    const [openMenu, setOpenMenu] = useState(true);
+    const [openMenu, setOpenMenu] = useState(false);
     const [login, setLogin] = useState(false);
     const [user, setUser] = useState({});
     const [flows, setFlows] = useState([]);

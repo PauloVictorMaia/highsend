@@ -528,15 +528,16 @@ const Flow = () => {
         <Background
           gap={34}
           size={2}
-          color="#C6D0E1"
-          style={{ backgroundColor: "#f4f5f8" }}
+          // color="#C6D0E1"
+          color="transparent"
+          style={{ backgroundColor: "#F8F8F8" }}
         />
         <Controls position="bottom-right" style={{ bottom: '100px' }} />
       </ReactFlow>
       <Panel position="top-left" style={openMenu ? { left: 230, top: -15 } : { left: 90 }}>
         <Sidebar />
       </Panel>
-      <Panel position="top-right" style={{ top: 60 }}>
+      <Panel position="top-right" style={{ top: 85 }}>
         <PanelButtons
           save={saveFlowData}
           hasChanges={hasChanges}
