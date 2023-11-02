@@ -1,7 +1,6 @@
 import { styled } from "styled-components";
 
 export const NodeContainer = styled.textarea`
-  display: block;
   width: 100%;
   height: 80px;
   background-color: #fff;
@@ -11,7 +10,6 @@ export const NodeContainer = styled.textarea`
   color: #333;
   font-size: 14px;
   font-family: 'Oswald', sans-serif;
-  display: block;
   padding: 5px;
   box-sizing: border-box;
   resize: none;

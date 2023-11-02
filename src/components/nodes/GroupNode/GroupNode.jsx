@@ -7,11 +7,27 @@ import { Label, LeftHandle, NodeContainer, RightHandle } from './GroupNode.style
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { useState, useEffect } from 'react';
-import { DndContext, closestCenter, KeyboardSensor, MouseSensor, useSensor, useSensors } from "@dnd-kit/core"
+import { DndContext, closestCenter, MouseSensor, useSensor, useSensors } from "@dnd-kit/core"
 import { SortableContext, verticalListSortingStrategy, arrayMove } from "@dnd-kit/sortable"
 import { ImageNode } from '../ImageNode/ImageNode';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import { TextNode } from '../TextNode/TextNode';
+import { VideoNode } from '../VideoNode/VideoNode';
+import EmbedNode from '../EmbedNode/EmbedNode';
+import AudioNode from '../AudioNode/AudioNode';
+import { TextInputNode } from '../TextInputNode/TextInputNode';
+import { NumberInputNode } from '../NumberInputNode/NumberInputNode';
+import { EmailInputNode } from '../EmailInputNode/EmailInputNode';
+import { WebsiteInputNode } from '../WebsiteInputNode/WebsiteInputNode';
+import { DateInputNode } from '../DateInputNode/DateInputNode';
+import { PhoneInputNode } from '../PhoneInputNode/PhoneInputNode';
+import { ButtonInputNode } from '../ButtonInputNode/ButtonInputNode';
+import LinkButtonInputNode from '../LInkButtonInputNode/LinkButtonInputNode';
+import DelayLogicNode from '../DelayLogicNode/DelayLogicNode';
+import RedirectLogicNode from '../RedirectLogicNode/RedirectLogicNode';
+import WhatsappMessageLogicNode from '../WhatsappMessageLogicNode/WhatsappMessageLogicNode';
+import PixelFacebookLogicNode from '../PixelFacebook/PixelFacebookLogicNode';
+import WebhookLogicNode from '../WebhookLogicNode/WebhookLogicNode';
 
 export default function GroupNode(props) {
 
@@ -35,8 +51,8 @@ export default function GroupNode(props) {
       distance: 10,
     },
   })
-  const keyboardSensor = useSensor(KeyboardSensor)
-  const sensors = useSensors(mouseSensor, keyboardSensor)
+
+  const sensors = useSensors(mouseSensor)
 
   useEffect(() => {
     setBlocks(props.data.blocks);
@@ -61,37 +77,24 @@ export default function GroupNode(props) {
   }, [nodeLabel]);
 
   useEffect(() => {
-    // const parentNodes = blocks.filter((node) => node.parentNode === id);
-    // const hasButtonNode = parentNodes.some(node => node.type === "buttonInputNode");
-    // const edges = getEdges();
-    // const edge = edges.find(edge => edge.source === id);
-    // if (hasButtonNode && !hasButton) {
-    //   setHasButton(true);
-    // } else if (!hasButtonNode && hasButton) {
-    //   setHasButton(false);
-    // }
-    // if (hasButtonNode && edge) {
-    //   const id = edge.id;
-    //   deleteElements({ edges: [{ id }] });
-    // }
-
-    // console.log("Grupo renderizado.")
-
-    // setNodes((nds) =>
-    //   nds.map((node) => {
-    //     if (node.id === props.id) {
-    //       node.data.blocks = [...blocks]
-    //     }
-    //     return node;
-    //   })
-    // )
+    const hasButtonNode = blocks.some(node => node.type === "buttonInputNode");
+    const edges = getEdges();
+    const edge = edges.find(edge => edge.source === id);
+    if (hasButtonNode && !hasButton) {
+      setHasButton(true);
+    } else if (!hasButtonNode && hasButton) {
+      setHasButton(false);
+    }
+    if (hasButtonNode && edge) {
+      const id = edge.id;
+      deleteElements({ edges: [{ id }] });
+    }
 
   }, [blocks]);
 
   const cloneGroup = () => {
     setNodes((nodes) => {
       const originalNode = nodes.find((node) => node.id === props.id);
-      const parentNodes = nodes.filter((node) => node.parentNode === props.id);
 
       if (!originalNode) {
         return nodes;
@@ -112,14 +115,14 @@ export default function GroupNode(props) {
         },
       };
 
-      const clonedChildren = parentNodes.map((child) => {
+      const clonedChildren = blocks.map((child) => {
         const clonedChild = {
           ...child,
           id: getId(),
           parentNode: clonedNode.id,
         };
 
-        clonedNode.data.blocks.push(clonedChild.id);
+        clonedNode.data.blocks.push(clonedChild);
 
         return clonedChild;
       });
@@ -198,6 +201,54 @@ export default function GroupNode(props) {
 
               case 'imageNode':
                 return <ImageNode key={node.id} id={node.id} groupID={props.id} data={node.data} />;
+
+              case 'videoNode':
+                return <VideoNode key={node.id} id={node.id} groupID={props.id} data={node.data} />;
+
+              case 'embedNode':
+                return <EmbedNode key={node.id} id={node.id} groupID={props.id} data={node.data} />;
+
+              case 'audioNode':
+                return <AudioNode key={node.id} id={node.id} groupID={props.id} data={node.data} />;
+
+              case 'textInputNode':
+                return <TextInputNode key={node.id} id={node.id} groupID={props.id} data={node.data} />;
+
+              case 'numberInputNode':
+                return <NumberInputNode key={node.id} id={node.id} groupID={props.id} data={node.data} />;
+
+              case 'emailInputNode':
+                return <EmailInputNode key={node.id} id={node.id} groupID={props.id} data={node.data} />;
+
+              case 'websiteInputNode':
+                return <WebsiteInputNode key={node.id} id={node.id} groupID={props.id} data={node.data} />;
+
+              case 'dateInputNode':
+                return <DateInputNode key={node.id} id={node.id} groupID={props.id} data={node.data} />;
+
+              case 'phoneInputNode':
+                return <PhoneInputNode key={node.id} id={node.id} groupID={props.id} data={node.data} />;
+
+              case 'buttonInputNode':
+                return <ButtonInputNode key={node.id} id={node.id} groupID={props.id} data={node.data} />;
+
+              case 'linkButtonInputNode':
+                return <LinkButtonInputNode key={node.id} id={node.id} groupID={props.id} data={node.data} />;
+
+              case 'delayLogicNode':
+                return <DelayLogicNode key={node.id} id={node.id} groupID={props.id} data={node.data} />;
+
+              case 'redirectLogicNode':
+                return <RedirectLogicNode key={node.id} id={node.id} groupID={props.id} data={node.data} />;
+
+              case 'whatsappMessageLogicNode':
+                return <WhatsappMessageLogicNode key={node.id} id={node.id} groupID={props.id} data={node.data} />;
+
+              case 'pixelFacebookLogicNode':
+                return <PixelFacebookLogicNode key={node.id} id={node.id} groupID={props.id} data={node.data} />;
+
+              case 'webhookLogicNode':
+                return <WebhookLogicNode key={node.id} id={node.id} groupID={props.id} data={node.data} />;
 
               default:
                 return null;

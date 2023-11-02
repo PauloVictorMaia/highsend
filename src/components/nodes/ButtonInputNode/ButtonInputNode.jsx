@@ -1,21 +1,36 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { InputConfig, InputPreview, MultipleChoiceInput, NodeContainer, RightHandle, MenuInput, MenuButton } from "./ButtonInputNode.style";
-import { useReactFlow, NodeToolbar, Position } from "reactflow";
+import { InputConfig, InputPreview, NodeContainer, RightHandle, MenuInput, MenuButton, CustomToolbar, CloseButton, Container } from "./ButtonInputNode.style";
+import { useReactFlow, Position } from "reactflow";
 import { useState, useEffect } from "react";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import TaskAltOutlinedIcon from '@mui/icons-material/TaskAltOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { useSortable } from "@dnd-kit/sortable"
+import { CSS } from "@dnd-kit/utilities"
+import ClearIcon from '@mui/icons-material/Clear';
 
-export function ButtonInputNode({ data, id, selected }) {
+export function ButtonInputNode({ data, id, groupID }) {
   const { createNewVariable, variables } = useStateContext();
   const { setNodes } = useReactFlow();
-  const { deleteElements } = useReactFlow();
-  const onDelete = () => deleteElements({ nodes: [{ id }] });
-  const [newVariable, setNewVariable] = useState("")
-  const [buttonLabel, setButtonLabel] = useState(data.buttonLabel || "Click para editar...")
-  const [assignedVariable, setAssignedVariable] = useState(data.variable || "")
-  const [multipleChoice, setMultipleChoice] = useState(data.multipleChoice || false)
+  const [newVariable, setNewVariable] = useState("");
+  const [buttonLabel, setButtonLabel] = useState(data.buttonLabel || "Click para editar...");
+  const [assignedVariable, setAssignedVariable] = useState(data.variable || "");
+  const [isVisible, setIsVisible] = useState(false);
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition
+  } = useSortable({
+    id: id
+  })
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    marginBottom: "10px"
+  }
 
   const sendNewVariable = async () => {
     try {
@@ -28,100 +43,111 @@ export function ButtonInputNode({ data, id, selected }) {
   useEffect(() => {
     setNodes((nds) =>
       nds.map((node) => {
-        if (node.id === id) {
-          const groupID = node.parentNode
-          const parentNodes = nds.filter((node) => node.parentNode === groupID)
-          node.data = {
-            ...node.data,
-            buttonLabel: buttonLabel,
-            variable: assignedVariable,
-            multipleChoice: multipleChoice,
-          };
-          setNodes((nds) =>
-            nds.map((node) => {
-              if (node.id === groupID) {
-                node.data.blocks = [...parentNodes]
-              }
-              return node;
-            })
-          )
+        if (node.id === groupID) {
+          node.data.blocks.map((nodeOnBlock) => {
+            if (nodeOnBlock.id === id) {
+              nodeOnBlock.data.buttonLabel = buttonLabel
+              nodeOnBlock.data.variable = assignedVariable
+            }
+            return nodeOnBlock;
+          })
         }
-
         return node;
       })
     );
-  }, [buttonLabel, assignedVariable, multipleChoice]);
+  }, [buttonLabel, assignedVariable]);
 
   const handleAssignedVariable = (variableValue) => {
     setAssignedVariable(variableValue);
   }
 
+  const deleteNode = () => {
+    setNodes((nodes) => {
+      return nodes.map((node) => {
+        if (node.id === groupID) {
+          const updatedBlocks = node.data.blocks.filter((block) => block.id !== id);
+          if (updatedBlocks.length === 0) {
+            return null;
+          }
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              blocks: updatedBlocks,
+            },
+          };
+        }
+        return node;
+      }).filter(Boolean);
+    });
+  };
+
+
   return (
-    <NodeContainer>
+    <Container>
 
-      <NodeToolbar
-        offset={5}
-        align='end'
-        style={{
-          backgroundColor: '#fff',
-          color: '#595959',
-          border: '0.5px solid rgba(0,0,0,0.15)',
-          borderRadius: '3px',
-          padding: "5px",
-          boxSizing: "border-box",
-        }}
+      <NodeContainer
+        onClick={() => setIsVisible(!isVisible)}
+        style={style}
+        {...attributes}
+        {...listeners}
+        ref={setNodeRef}
       >
-        <DeleteOutlineIcon style={{ cursor: 'pointer', fontSize: 'large' }} onClick={onDelete} />
-      </NodeToolbar>
 
+        <CustomToolbar
+          isvisible={isVisible}
+        >
+          <DeleteOutlineIcon style={{ cursor: 'pointer', fontSize: 'large' }} onClick={() => deleteNode()} />
+        </CustomToolbar>
+
+        <InputPreview>
+          <TaskAltOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
+          <MenuInput
+            type="text"
+            placeholder={buttonLabel}
+            value={buttonLabel}
+            onChange={(e) => setButtonLabel(e.target.value)}
+            style={{ border: "none", outline: "none" }}
+          />
+        </InputPreview>
+
+        <InputConfig isvisible={isVisible} onClick={(e) => e.stopPropagation()}>
+          <CloseButton
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsVisible(false)
+            }
+            }>
+            <ClearIcon />
+          </CloseButton>
+          <span>Criar nova variável:</span>
+          <div>
+            <MenuInput
+              width="80%"
+              type="text"
+              placeholder="Defina o nome da nova variável"
+              onChange={(e) => setNewVariable(e.target.value)}
+            />
+            <MenuButton onClick={sendNewVariable}>Criar</MenuButton>
+          </div>
+
+          <span>Atribuir variável a esse input</span>
+          <select value={assignedVariable} onChange={(e) => handleAssignedVariable(e.target.value)}>
+            <option value="">Selecionar variável</option>
+            {variables &&
+              variables.map((variable, index) => (
+                <option key={index} value={variable.id}>{variable.name}</option>
+              ))
+            }
+          </select>
+        </InputConfig>
+
+      </NodeContainer>
       <RightHandle
         id="Right"
         type="source"
         position={Position.Right}
       />
-
-      <InputPreview>
-        <TaskAltOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
-        <MenuInput
-          type="text"
-          placeholder={buttonLabel}
-          value={buttonLabel}
-          onChange={(e) => setButtonLabel(e.target.value)}
-          style={{ border: "none", outline: "none" }}
-        />
-      </InputPreview>
-
-      <InputConfig isvisible={selected}>
-        {/* <MultipleChoiceInput>
-          <span>Multipla escolha?</span>
-          <MenuInput
-            type="checkbox"
-            checked={multipleChoice}
-            onChange={() => setMultipleChoice(!multipleChoice)}
-          />
-        </MultipleChoiceInput> */}
-        <span>Criar nova variável:</span>
-        <div>
-          <MenuInput
-            width="80%"
-            type="text"
-            placeholder="Defina o nome da nova variável"
-            onChange={(e) => setNewVariable(e.target.value)}
-          />
-          <MenuButton onClick={sendNewVariable}>Criar</MenuButton>
-        </div>
-
-        <span>Atribuir variável a esse input</span>
-        <select value={assignedVariable} onChange={(e) => handleAssignedVariable(e.target.value)}>
-          <option value="">Selecionar variável</option>
-          {variables &&
-            variables.map((variable, index) => (
-              <option key={index} value={variable.id}>{variable.name}</option>
-            ))
-          }
-        </select>
-      </InputConfig>
-
-    </NodeContainer>
+    </Container>
   )
 }

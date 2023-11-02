@@ -3,7 +3,7 @@ import { Handle } from "reactflow";
 
 export const NodeContainer = styled.div`
   width: 100%;
-  height: 100%;
+  height: 40px;
   color: #333;
   display: Flex;
   align-items: center;
@@ -12,6 +12,7 @@ export const NodeContainer = styled.div`
   border-radius: 8px;
   padding: 0 0 0 10px;
   box-sizing: border-box;
+  position: relative;
 `;
 
 export const InputPreview = styled.div`
@@ -35,7 +36,7 @@ export const InputConfig = styled.div`
   flex-direction: column;
   box-sizing: border-box;
   left: -325px;
-  top: -100px;
+  top: -60px;
   border-radius: 5px;
   background-color: #fff;
   padding: 10px;
@@ -44,6 +45,7 @@ export const InputConfig = styled.div`
 
   >span {
     font-size: 1rem;
+    text-align: left;
   }
   
   >select {
@@ -76,13 +78,6 @@ export const RightHandle = styled(Handle)`
   right: -29px;
 `;
 
-export const MultipleChoiceInput = styled.div`
-  width: 100%;
-  height: 30px;
-  display: flex;
-  justify-content: space-between;
-`;
-
 export const MenuInput = styled.input`
   width: ${({width}) => width};
   height: 32px;
@@ -93,7 +88,7 @@ export const MenuInput = styled.input`
   padding-left: 10px;
   box-sizing: border-box;
   font-family: 'Oswald', sans-serif;
-  font-size: 14px;
+  font-size: 10px;
   margin: 5px 0 10px 0;
 
   &:focus {
@@ -115,4 +110,47 @@ export const MenuButton = styled.button`
   padding: 15px;
   margin: 5px 0 10px 0;
   cursor: pointer;
+`;
+
+export const CloseButton = styled.button`
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  outline: none;
+  background-color: #ff4d4d;
+  padding: 2px;
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  cursor: pointer;
+
+  >svg {
+    width: 100%;
+    height: 100%;
+    color: #fff;
+  }
+`;
+
+export const CustomToolbar = styled.div`
+  display: ${({ isvisible }) => isvisible ? "flex" : "none"};
+  width: 30px;
+  height: 30px;
+  background-color: #fff;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  box-sizing: border-box;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 3px;
+  position: absolute;
+  top: -35px;
+  right: 30px;
+`;
+
+export const Container = styled.div`
+  position: relative;
 `;

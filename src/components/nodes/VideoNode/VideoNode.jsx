@@ -1,14 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { LinkInput, InputContainer, NodeContainer, VideoPreview, Inputs, Navigation, ListTabs, Tabs, Textarea, SwitchContainer, TargetTimeInput } from "./VideoNode.style";
-import { useReactFlow, NodeToolbar } from "reactflow";
+import { LinkInput, InputContainer, NodeContainer, VideoPreview, Inputs, Navigation, ListTabs, Tabs, Textarea, SwitchContainer, TargetTimeInput, CustomToolbar, CloseButton } from "./VideoNode.style";
+import { useReactFlow } from "reactflow";
 import MovieCreationOutlinedIcon from '@mui/icons-material/MovieCreationOutlined';
 import { useState, useEffect } from "react";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { Switch } from "@mui/material";
 import ReactPlayer from "react-player";
+import { useSortable } from "@dnd-kit/sortable"
+import { CSS } from "@dnd-kit/utilities"
+import ClearIcon from '@mui/icons-material/Clear';
 
-export function VideoNode({ data, id, selected }) {
+export function VideoNode({ data, id, groupID }) {
   const [videoLink, setVideoLink] = useState(data.type === 'link' && data.value ? data.value : "");
   const [script, setScript] = useState(data.type === 'script' && data.value ? data.value : "");
   const [type, setType] = useState(data.type || "link");
@@ -16,10 +19,21 @@ export function VideoNode({ data, id, selected }) {
   const [awaitTargetTime, setAwaitTargetTime] = useState(data.awaitTargetTime || false);
   const [targetTime, setTargetTime] = useState(data.targetTime || 10);
   const [autoplay, setAutoplay] = useState(data.autoplay || false);
-
-  const { deleteElements } = useReactFlow();
-
-  const onDelete = () => deleteElements({ nodes: [{ id }] });
+  const [isVisible, setIsVisible] = useState(false);
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition
+  } = useSortable({
+    id: id
+  })
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    marginBottom: "10px"
+  }
 
   const handleScript = (script) => {
     setScript(script);
@@ -35,53 +49,95 @@ export function VideoNode({ data, id, selected }) {
     }
   }
 
+  // useEffect(() => {
+  //   setNodes((nds) =>
+  //     nds.map((node) => {
+  //       if (node.id === id) {
+  //         const groupID = node.parentNode
+  //         const parentNodes = nds.filter((node) => node.parentNode === groupID)
+  //         node.data.value = type === "link" ? videoLink : script
+  //         node.data.type = type
+  //         node.data.autoplay = autoplay
+  //         if (type === "script") {
+  //           node.data.awaitTargetTime = awaitTargetTime
+  //           if (awaitTargetTime) {
+  //             node.data.targetTime = targetTime
+  //           }
+  //         }
+  //         setNodes((nds) =>
+  //           nds.map((node) => {
+  //             if (node.id === groupID) {
+  //               node.data.blocks = [...parentNodes]
+  //             }
+  //             return node;
+  //           })
+  //         )
+  //       }
+
+  //       return node;
+  //     })
+  //   );
+  // }, [videoLink, script, type, awaitTargetTime, targetTime, autoplay]);
+
   useEffect(() => {
     setNodes((nds) =>
       nds.map((node) => {
-        if (node.id === id) {
-          const groupID = node.parentNode
-          const parentNodes = nds.filter((node) => node.parentNode === groupID)
-          node.data.value = type === "link" ? videoLink : script
-          node.data.type = type
-          node.data.autoplay = autoplay
-          if (type === "script") {
-            node.data.awaitTargetTime = awaitTargetTime
-            if (awaitTargetTime) {
-              node.data.targetTime = targetTime
-            }
-          }
-          setNodes((nds) =>
-            nds.map((node) => {
-              if (node.id === groupID) {
-                node.data.blocks = [...parentNodes]
+        if (node.id === groupID) {
+          node.data.blocks.map((nodeOnBlock) => {
+            if (nodeOnBlock.id === id) {
+              nodeOnBlock.data.value = type === "link" ? videoLink : script
+              nodeOnBlock.data.type = type
+              nodeOnBlock.data.autoplay = autoplay
+              if (type === "script") {
+                nodeOnBlock.data.awaitTargetTime = awaitTargetTime
+                if (awaitTargetTime) {
+                  nodeOnBlock.data.targetTime = targetTime
+                }
               }
-              return node;
-            })
-          )
+            }
+            return nodeOnBlock;
+          })
         }
-
         return node;
       })
     );
   }, [videoLink, script, type, awaitTargetTime, targetTime, autoplay]);
 
-  return (
-    <NodeContainer>
+  const deleteNode = () => {
+    setNodes((nodes) => {
+      return nodes.map((node) => {
+        if (node.id === groupID) {
+          const updatedBlocks = node.data.blocks.filter((block) => block.id !== id);
+          if (updatedBlocks.length === 0) {
+            return null;
+          }
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              blocks: updatedBlocks,
+            },
+          };
+        }
+        return node;
+      }).filter(Boolean);
+    });
+  };
 
-      <NodeToolbar
-        offset={5}
-        align='end'
-        style={{
-          backgroundColor: '#fff',
-          color: '#595959',
-          border: '0.5px solid rgba(0,0,0,0.15)',
-          borderRadius: '3px',
-          padding: "5px",
-          boxSizing: "border-box",
-        }}
+  return (
+    <NodeContainer
+      onClick={() => setIsVisible(!isVisible)}
+      style={style}
+      {...attributes}
+      {...listeners}
+      ref={setNodeRef}
+    >
+
+      <CustomToolbar
+        isvisible={isVisible}
       >
-        <DeleteOutlineIcon style={{ cursor: 'pointer', fontSize: 'large' }} onClick={onDelete} />
-      </NodeToolbar>
+        <DeleteOutlineIcon style={{ cursor: 'pointer', fontSize: 'large' }} onClick={() => deleteNode()} />
+      </CustomToolbar>
 
       {
         type === "link" &&
@@ -117,7 +173,15 @@ export function VideoNode({ data, id, selected }) {
         </VideoPreview>
       }
 
-      <InputContainer isvisible={selected}>
+      <InputContainer isvisible={isVisible} onClick={(e) => e.stopPropagation()}>
+        <CloseButton
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsVisible(false)
+          }
+          }>
+          <ClearIcon />
+        </CloseButton>
         <Navigation>
           <ListTabs>
             <Tabs

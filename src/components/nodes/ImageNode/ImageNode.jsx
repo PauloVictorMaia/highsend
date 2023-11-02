@@ -8,7 +8,7 @@ import {
   LinkInput, ChooseFileButton,
   FileInput, CloseButton, CustomToolbar
 } from "./ImageNode.style";
-import { useReactFlow, NodeToolbar } from "reactflow";
+import { useReactFlow } from "reactflow";
 import { useState, useEffect } from "react";
 import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
@@ -102,7 +102,6 @@ export function ImageNode({ id, groupID, data }) {
   return (
     <NodeContainer
       onClick={() => setIsVisible(!isVisible)}
-      onBlur={() => setIsVisible(false)}
       style={style}
       {...attributes}
       {...listeners}
@@ -161,11 +160,11 @@ export function ImageNode({ id, groupID, data }) {
           {activeTab === "tab2" && (
             <>
               <ChooseFileButton
-                htmlFor={id}>{uploading ? <Ring size={25}
-                  color="#fff" /> : "Escolher arquivo"}
+                htmlFor={id}
+              >
+                {uploading ? <Ring size={25} color="#fff" /> : "Escolher arquivo"}
               </ChooseFileButton>
               <FileInput
-                onClick={(e) => e.stopPropagation()}
                 type="file"
                 id={id}
                 onChange={uploadImage}

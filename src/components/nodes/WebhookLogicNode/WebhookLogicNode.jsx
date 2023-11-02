@@ -1,23 +1,24 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { NodeContainer, NodePreview, InputContainer, Inputs, LinkInput, SwitchContainer, MethodInput, ConfigContainer, ConfigLabel, ConfigButtonContainer, EditConfigContainer, EditConfigInputs } from "./WebhookLogicNode.style";
+import { NodeContainer, NodePreview, InputContainer, Inputs, LinkInput, SwitchContainer, MethodInput, ConfigContainer, ConfigLabel, ConfigButtonContainer, EditConfigContainer, EditConfigInputs, CloseButton, CustomToolbar } from "./WebhookLogicNode.style";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import WebhookIcon from '@mui/icons-material/Webhook';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { useReactFlow, NodeToolbar } from "reactflow";
+import { useReactFlow } from "reactflow";
 import { useState, useEffect } from "react";
 import { Switch } from "@mui/material";
 import { v4 as uuidv4 } from 'uuid';
 import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-monokai';
+import { useSortable } from "@dnd-kit/sortable"
+import { CSS } from "@dnd-kit/utilities"
+import ClearIcon from '@mui/icons-material/Clear';
 
-function WebhookLogicNode({ data, id, selected }) {
+function WebhookLogicNode({ data, id, groupID }) {
 
   const { setNodes } = useReactFlow();
-  const { deleteElements } = useReactFlow();
-  const onDelete = () => deleteElements({ nodes: [{ id }] });
   const [url, setUrl] = useState(data.url || "");
   const [advancedConfiguration, setAdvancedConfiguration] = useState(data.advancedConfiguration || false);
   // const [executeOnClient, setExecuteOnClient] = useState(data.executeOnClient || false);
@@ -29,37 +30,101 @@ function WebhookLogicNode({ data, id, selected }) {
   const [isCustomBody, setIsCustomBody] = useState();
   const [hasCustomBody, setHasCustomBody] = useState(data.hasCustomBody || false);
   const [customBody, setCustomBody] = useState(data.customBody || "");
+  const [isVisible, setIsVisible] = useState(false);
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition
+  } = useSortable({
+    id: id
+  })
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    marginBottom: "10px"
+  }
+
+
+
+  // useEffect(() => {
+  //   setNodes((nds) =>
+  //     nds.map((node) => {
+  //       if (node.id === id) {
+  //         const groupID = node.parentNode
+  //         const parentNodes = nds.filter((node) => node.parentNode === groupID)
+  //         node.data.url = url
+  //         node.data.advancedConfiguration = advancedConfiguration
+  //         // node.data.executeOnClient = executeOnClient
+  //         node.data.method = method
+  //         node.data.queryParams = queryParams
+  //         node.data.headers = headers
+  //         node.data.hasCustomBody = hasCustomBody
+  //         if (hasCustomBody) {
+  //           node.data.customBody = customBody
+  //         }
+  //         setNodes((nds) =>
+  //           nds.map((node) => {
+  //             if (node.id === groupID) {
+  //               node.data.blocks = [...parentNodes]
+  //             }
+  //             return node;
+  //           })
+  //         )
+  //       }
+
+  //       return node;
+  //     })
+  //   );
+  // }, [url, advancedConfiguration, method, queryParams, headers, hasCustomBody, customBody]);
 
   useEffect(() => {
     setNodes((nds) =>
       nds.map((node) => {
-        if (node.id === id) {
-          const groupID = node.parentNode
-          const parentNodes = nds.filter((node) => node.parentNode === groupID)
-          node.data.url = url
-          node.data.advancedConfiguration = advancedConfiguration
-          // node.data.executeOnClient = executeOnClient
-          node.data.method = method
-          node.data.queryParams = queryParams
-          node.data.headers = headers
-          node.data.hasCustomBody = hasCustomBody
-          if (hasCustomBody) {
-            node.data.customBody = customBody
-          }
-          setNodes((nds) =>
-            nds.map((node) => {
-              if (node.id === groupID) {
-                node.data.blocks = [...parentNodes]
+        if (node.id === groupID) {
+          node.data.blocks.map((nodeOnBlock) => {
+            if (nodeOnBlock.id === id) {
+              nodeOnBlock.data.url = url
+              nodeOnBlock.data.advancedConfiguration = advancedConfiguration
+              nodeOnBlock.data.method = method
+              nodeOnBlock.data.queryParams = queryParams
+              nodeOnBlock.data.headers = headers
+              nodeOnBlock.data.hasCustomBody = hasCustomBody
+              if (hasCustomBody) {
+                nodeOnBlock.data.customBody = customBody
               }
-              return node;
-            })
-          )
+            }
+            return nodeOnBlock;
+          })
         }
-
         return node;
       })
     );
   }, [url, advancedConfiguration, method, queryParams, headers, hasCustomBody, customBody]);
+
+
+
+  const deleteNode = () => {
+    setNodes((nodes) => {
+      return nodes.map((node) => {
+        if (node.id === groupID) {
+          const updatedBlocks = node.data.blocks.filter((block) => block.id !== id);
+          if (updatedBlocks.length === 0) {
+            return null;
+          }
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              blocks: updatedBlocks,
+            },
+          };
+        }
+        return node;
+      }).filter(Boolean);
+    });
+  };
 
   function handleQueryParams(id, inputType, value) {
 
@@ -122,28 +187,34 @@ function WebhookLogicNode({ data, id, selected }) {
   };
 
   return (
-    <NodeContainer>
-      <NodeToolbar
-        offset={5}
-        align='end'
-        style={{
-          backgroundColor: '#fff',
-          color: '#595959',
-          border: '0.5px solid rgba(0,0,0,0.15)',
-          borderRadius: '3px',
-          padding: "5px",
-          boxSizing: "border-box",
-        }}
+    <NodeContainer
+      onClick={() => setIsVisible(!isVisible)}
+      style={style}
+      {...attributes}
+      {...listeners}
+      ref={setNodeRef}
+    >
+      <CustomToolbar
+        isvisible={isVisible}
       >
-        <DeleteOutlineIcon style={{ cursor: 'pointer', fontSize: 'large' }} onClick={onDelete} />
-      </NodeToolbar>
+        <DeleteOutlineIcon style={{ cursor: 'pointer', fontSize: 'large' }} onClick={() => deleteNode()} />
+      </CustomToolbar>
 
       <NodePreview>
         <WebhookIcon />
         <span>Click para configurar...</span>
       </NodePreview>
 
-      <InputContainer isvisible={selected}>
+      <InputContainer isvisible={isVisible} onClick={(e) => e.stopPropagation()}>
+
+        <CloseButton
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsVisible(false)
+          }
+          }>
+          <ClearIcon />
+        </CloseButton>
 
         <Inputs>
 

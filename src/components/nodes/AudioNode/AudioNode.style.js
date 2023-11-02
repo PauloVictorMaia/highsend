@@ -2,7 +2,7 @@ import { styled } from "styled-components";
 
 export const NodeContainer = styled.div`
   width: 100%;
-  height: 100%;
+  height: 40px;
   color: #333;
   display: Flex;
   align-items: center;
@@ -11,6 +11,7 @@ export const NodeContainer = styled.div`
   border-radius: 8px;
   padding: 0 0 0 10px;
   box-sizing: border-box;
+  position: relative;
 `;
 
 export const AudioPreview = styled.div`
@@ -35,7 +36,7 @@ export const AudioNodeMenu = styled.div`
   height: 90px;
   position: absolute;
   left: -325px;
-  top: -45px;
+  top: -35px;
   border-radius: 5px;
   background-color: #fff;
   padding: 0 10px;
@@ -118,4 +119,43 @@ export const ChooseFileButton = styled.label`
 
 export const FileInput = styled.input`
   display: none;
+`;
+
+export const CustomToolbar = styled.div`
+  display: ${({ isvisible }) => isvisible ? "flex" : "none"};
+  width: 30px;
+  height: 30px;
+  background-color: #fff;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  box-sizing: border-box;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 3px;
+  position: absolute;
+  top: -35px;
+  right: 30px;
+`;
+
+export const CloseButton = styled.button`
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  outline: none;
+  background-color: #ff4d4d;
+  padding: 2px;
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  cursor: pointer;
+
+  >svg {
+    width: 100%;
+    height: 100%;
+    color: #fff;
+  }
 `;

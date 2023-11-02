@@ -3,7 +3,7 @@
 /* eslint-disable react/prop-types */
 
 import { NodeContainer, CustomToolbar, Container } from "./TextNode.style";
-import { useReactFlow, NodeToolbar } from "reactflow";
+import { useReactFlow } from "reactflow";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { useState, useEffect } from "react";
 import { useSortable } from "@dnd-kit/sortable"
@@ -66,6 +66,12 @@ export function TextNode({ data, id, groupID }) {
     });
   };
 
+  const handleVisibility = () => {
+    setTimeout(() => {
+      setIsVisible(false)
+    }, 100);
+  }
+
   return (
     <Container
       style={style}
@@ -77,14 +83,22 @@ export function TextNode({ data, id, groupID }) {
         value={nodeValue}
         onChange={(e) => setNodeValue(e.target.value)}
         onFocus={() => setIsVisible(true)}
-        onBlur={() => setIsVisible(false)}
+        onBlur={handleVisibility}
       />
 
       <CustomToolbar
         isvisible={isVisible}
       >
-        <DeleteOutlineIcon style={{ cursor: 'pointer', fontSize: 'large' }} onClick={() => deleteNode()} />
+        <DeleteOutlineIcon
+          style={{ cursor: 'pointer', fontSize: 'large' }}
+          onClick={(e) => {
+            e.stopPropagation();
+            deleteNode()
+          }
+          }
+        />
       </CustomToolbar>
+
     </Container>
   )
 }
