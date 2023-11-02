@@ -94,43 +94,29 @@ export default function GroupNode(props) {
   }, [blocks]);
 
   const cloneGroup = () => {
-    setNodes((nodes) => {
-      const originalNode = nodes.find((node) => node.id === id);
-      const parentNodes = nodes.filter((node) => node.parentNode === id);
+    const nodes = getNodes();
+    const node = nodes.find(node => node.id === props.id);
 
-      if (!originalNode) {
-        return nodes;
-      }
-
-      const clonedNode = {
-        ...originalNode,
-        id: getId(),
-        position: { x: originalNode.position.x + 260, y: originalNode.position.y + 30 },
-        positionAbsolute: {
-          x: originalNode.positionAbsolute.x + 260,
-          y: originalNode.positionAbsolute.y + 30,
-        },
-        selected: false,
-        data: {
-          ...originalNode.data,
-          blocks: [],
-        },
-      };
-
-      const clonedChildren = parentNodes.map((child) => {
-        const clonedChild = {
-          ...child,
-          id: getId(),
-          parentNode: clonedNode.id,
-        };
-
-        clonedNode.data.blocks.push(clonedChild.id);
-
-        return clonedChild;
-      });
-
-      return [...nodes, clonedNode, ...clonedChildren];
+    const clonedBlocks = blocks.map(node => {
+      return { ...node, id: getId() };
     });
+
+    const clonedNode = {
+      ...node,
+      id: getId(),
+      position: { x: node.position.x + 260, y: node.position.y + 30 },
+      positionAbsolute: {
+        x: node.positionAbsolute.x + 260,
+        y: node.positionAbsolute.y + 30,
+      },
+      selected: false,
+      data: {
+        ...node.data,
+        blocks: clonedBlocks,
+      },
+    };
+
+    setNodes(nds => [...nds, clonedNode]);
   };
 
   const handleDragEnd = (e) => {

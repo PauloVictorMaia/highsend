@@ -175,10 +175,6 @@ const Flow = () => {
       originalEdges.map(edge => lodash.omit(edge, 'selected'))
     );
 
-    console.log(nodesChanged)
-
-    console.log(edgesChanged)
-
     const variablesChanged = !lodash.isEqual(variables, originalVariables);
 
     const profileImageChanged = !lodash.isEqual(profileImage, originalProfileImage);

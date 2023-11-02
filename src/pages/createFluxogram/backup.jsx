@@ -124,3 +124,44 @@
 //   }
 
 // }, [nodes, edges, variables, profileImage, template, profileName]);
+
+
+// const cloneGroup = () => {
+//   setNodes((nodes) => {
+//     const originalNode = nodes.find((node) => node.id === id);
+//     const parentNodes = nodes.filter((node) => node.parentNode === id);
+
+//     if (!originalNode) {
+//       return nodes;
+//     }
+
+//     const clonedNode = {
+//       ...originalNode,
+//       id: getId(),
+//       position: { x: originalNode.position.x + 260, y: originalNode.position.y + 30 },
+//       positionAbsolute: {
+//         x: originalNode.positionAbsolute.x + 260,
+//         y: originalNode.positionAbsolute.y + 30,
+//       },
+//       selected: false,
+//       data: {
+//         ...originalNode.data,
+//         blocks: [],
+//       },
+//     };
+
+//     const clonedChildren = parentNodes.map((child) => {
+//       const clonedChild = {
+//         ...child,
+//         id: getId(),
+//         parentNode: clonedNode.id,
+//       };
+
+//       clonedNode.data.blocks.push(clonedChild.id);
+
+//       return clonedChild;
+//     });
+
+//     return [...nodes, clonedNode, ...clonedChildren];
+//   });
+// };
