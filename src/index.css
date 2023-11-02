@@ -51,3 +51,7 @@ h1 {
 .react-flow__node-group.selectable:focus-visible {
   box-shadow: none;
 }
+
+.react-flow__panel.left {
+  left: auto;
+}

@@ -588,7 +588,7 @@ const Flow = () => {
         />
         <Controls position="bottom-right" style={{ bottom: '100px' }} />
       </ReactFlow>
-      <Panel position="top-left" style={openMenu ? { left: 230, top: -15 } : { left: 90 }}>
+      <Panel position="top-left">
         <Sidebar />
       </Panel>
       <Panel position="top-right" style={{ top: 85 }}>
