@@ -24,8 +24,8 @@ export const DashContent = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  height: 80%;
-  max-height: 850px;
+  height: 700px;
+  max-height: 100%;
   border-radius: 0 0 15px 0;
 `;
 
