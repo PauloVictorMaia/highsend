@@ -13,32 +13,15 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Sidebar from '../../components/sidebar/Sidebar';
 import DefaultEdge from "../../components/edges/DefaultEdge/DefaultEdge";
 import { StartNode } from "../../components/nodes/StartNode/StartNode";
-import { TextNode } from "../../components/nodes/TextNode/TextNode";
-import { VideoNode } from "../../components/nodes/VideoNode/VideoNode";
-import { ImageNode } from "../../components/nodes/ImageNode/ImageNode";
-import { TextInputNode } from "../../components/nodes/TextInputNode/TextInputNode";
-import EmbedNode from "../../components/nodes/EmbedNode/EmbedNode";
-import AudioNode from "../../components/nodes/AudioNode/AudioNode";
 import GroupNode from "../../components/nodes/GroupNode/GroupNode";
-import { NumberInputNode } from "../../components/nodes/NumberInputNode/NumberInputNode";
-import { EmailInputNode } from "../../components/nodes/EmailInputNode/EmailInputNode";
-import { WebsiteInputNode } from "../../components/nodes/WebsiteInputNode/WebsiteInputNode";
-import { PhoneInputNode } from "../../components/nodes/PhoneInputNode/PhoneInputNode";
-import { DateInputNode } from "../../components/nodes/DateInputNode/DateInputNode";
-import { sortNodes, getId, getNodePositionInsideParent } from '../../utils';
+import { sortNodes, getId } from '../../utils';
 import { useStateContext } from "../../contexts/ContextProvider";
 import { useParams } from "react-router-dom";
 import api from '../../api';
 import PanelButtons from "../../components/PanelButtons/PanelButtons";
 import lodash from 'lodash';
 import { toast } from "react-toastify";
-import DelayLogicNode from "../../components/nodes/DelayLogicNode/DelayLogicNode";
-import LinkButtonInputNode from "../../components/nodes/LInkButtonInputNode/LinkButtonInputNode";
-import RedirectLogicNode from "../../components/nodes/RedirectLogicNode/RedirectLogicNode";
-import WhatsappMessageLogicNode from "../../components/nodes/WhatsappMessageLogicNode/WhatsappMessageLogicNode";
 import clipboardCopy from 'clipboard-copy';
-import PixelFacebookLogicNode from "../../components/nodes/PixelFacebook/PixelFacebookLogicNode";
-import WebhookLogicNode from "../../components/nodes/WebhookLogicNode/WebhookLogicNode";
 import { ButtonInputOriginalNode } from "../../components/nodes/ButtonInputOriginalNode/ButtonInputOriginalNode";
 import GroupNodeOriginal from "../../components/nodes/GroupNodeOriginal/GroupNodeOriginal";
 
@@ -48,26 +31,9 @@ const proOptions = {
 
 const NODE_TYPES = {
   startNode: StartNode,
-  textNode: TextNode,
-  videoNode: VideoNode,
-  imageNode: ImageNode,
-  embedNode: EmbedNode,
-  audioNode: AudioNode,
-  textInputNode: TextInputNode,
   group: GroupNode,
   groupOriginal: GroupNodeOriginal,
-  numberInputNode: NumberInputNode,
-  emailInputNode: EmailInputNode,
-  websiteInputNode: WebsiteInputNode,
-  phoneInputNode: PhoneInputNode,
-  dateInputNode: DateInputNode,
   buttonInputNode: ButtonInputOriginalNode,
-  linkButtonInputNode: LinkButtonInputNode,
-  delayLogicNode: DelayLogicNode,
-  redirectLogicNode: RedirectLogicNode,
-  whatsappMessageLogicNode: WhatsappMessageLogicNode,
-  pixelFacebookLogicNode: PixelFacebookLogicNode,
-  webhookLogicNode: WebhookLogicNode
 };
 
 const EDGE_TYPES = {
@@ -83,7 +49,7 @@ const Flow = () => {
   const { setVariables, variables } = useStateContext();
   const wrapperRef = useRef(null);
   const edgeUpdateSuccessful = useRef(true);
-  const { openMenu, user } = useStateContext();
+  const { user } = useStateContext();
   const token = localStorage.getItem('token');
   const { project, getIntersectingNodes } = useReactFlow();
   const store = useStoreApi();
@@ -103,7 +69,17 @@ const Flow = () => {
   const BASE_URL = `${import.meta.env.VITE_OPEN_FRONT_URL}/fluxo-de-bot/`;
   const [isLoading, setIsLoading] = useState(false);
 
-  console.log("nodes create", nodes);
+  useEffect(() => {
+    if (Object.keys(user).length > 0) {
+      getFlowData();
+    }
+  }, []);
+
+  function handleHasChanged() {
+    setTimeout(() => {
+      setHasChanges(false);
+    }, 200);
+  }
 
   async function getFlowData() {
     try {
@@ -113,8 +89,8 @@ const Flow = () => {
         setNodes(response.data.nodes);
         setEdges(response.data.edges);
         setVariables(response.data.variables);
-        setOriginalNodes(response.data.nodes);
-        setOriginalEdges(response.data.edges);
+        setOriginalNodes(JSON.parse(JSON.stringify(response.data.nodes)));
+        setOriginalEdges(JSON.parse(JSON.stringify(response.data.edges)));
         setOriginalVariables(response.data.variables);
         setProfileImage(response.data.config.profileImage);
         setTemplate(response.data.config.template);
@@ -122,6 +98,7 @@ const Flow = () => {
         setOriginalProfileImage(response.data.config.profileImage);
         setOriginalTemplate(response.data.config.template);
         setOriginalProfileName(response.data.config.profileName);
+        handleHasChanged();
       }
     } catch {
       toast.error('Erro ao buscar dados do flow.');
@@ -130,7 +107,9 @@ const Flow = () => {
 
   async function saveFlowData() {
 
-    const dateNodes = nodes.filter((node) => node.type === "dateInputNode");
+    const newNodesArray = nodes.flatMap(node => node.data?.blocks || []);
+
+    const dateNodes = newNodesArray.filter((node) => node.type === "dateInputNode");
     if (dateNodes.length > 0) {
       const hasEmptyValue = dateNodes.some((node) => node.data.value === "");
       if (hasEmptyValue) {
@@ -139,7 +118,7 @@ const Flow = () => {
       }
     }
 
-    const filteredNodes = nodes.filter((node) => node.type !== "dateInputNode");
+    const filteredNodes = newNodesArray.filter((node) => node.type !== "dateInputNode");
     const inputNodes = filteredNodes.filter((node) => /input/i.test(node.type));
     if (inputNodes.length > 0) {
       const hasEmptyVariables = inputNodes.some((node) => node.data.variable === "");
@@ -154,15 +133,15 @@ const Flow = () => {
       return;
     }
 
-    const whatsappMessageLogicNodes = nodes.filter((node) => node.type === "whatsappMessageLogicNode");
+    const whatsappMessageLogicNodes = newNodesArray.filter((node) => node.type === "whatsappMessageLogicNode");
     if (whatsappMessageLogicNodes.length > 0) {
       const hasEmptyValue = whatsappMessageLogicNodes.some((node) => node.data.value === "");
       const hasEmptyMessage = whatsappMessageLogicNodes.some((node) => node.data.message === "");
       if (hasEmptyValue) {
-        toast.warning('Existem nodes do tipo "Whatsapp msg" sem uma integração atribuída. Atribua uma integração Whatsapp a esses nodes.');
+        toast.warning('Existem nodes do tipo "Zap Msg" sem uma integração atribuída. Atribua uma integração Whatsapp a esses nodes.');
         return;
       } else if (hasEmptyMessage) {
-        toast.warning('Existem nodes do tipo "Whatsapp msg" sem uma mensagem. Digite a mensagem que deve ser enviada.');
+        toast.warning('Existem nodes do tipo "Zap Msg" sem uma mensagem. Digite a mensagem que deve ser enviada.');
         return;
       }
     }
@@ -186,13 +165,6 @@ const Flow = () => {
   }
 
   useEffect(() => {
-    if (Object.keys(user).length > 0) {
-      getFlowData();
-    }
-  }, []);
-
-  useEffect(() => {
-
     const nodesChanged = !lodash.isEqual(
       nodes.map(node => lodash.omit(node, 'selected')),
       originalNodes.map(node => lodash.omit(node, 'selected'))
@@ -202,6 +174,10 @@ const Flow = () => {
       edges.map(edge => lodash.omit(edge, 'selected')),
       originalEdges.map(edge => lodash.omit(edge, 'selected'))
     );
+
+    console.log(nodesChanged)
+
+    console.log(edgesChanged)
 
     const variablesChanged = !lodash.isEqual(variables, originalVariables);
 
@@ -318,6 +294,7 @@ const Flow = () => {
       if (groupNodeOriginal) {
 
         if (subType !== "buttonInputNode") {
+          toast.warning('Esse grupo só aceita nodes do tipo "Botão"');
           return;
         }
         if (subType === "buttonInputNode") {
@@ -359,25 +336,32 @@ const Flow = () => {
 
       if (groupNode) {
         if (subType === "buttonInputNode") {
+          toast.warning('Nodes do tipo "Botão" devem ser criados em um grupo separado');
           return;
         }
-        // console.log("aqui")
-        // const parentNodes = nodes.filter((node) => node.parentNode === groupNode.id);
-        // const lastParentNode = parentNodes[parentNodes.length - 1];
-        // const rowGap = 5
-        // const initialGroupHeight = nodeStyle.height
-        // let parentNodesHeight = parentNodes.reduce((totalHeight, node) => {
-        //   return totalHeight + node.style.height;
-        // }, 0);
-        // const totalGroupHeight = ((initialGroupHeight + parentNodesHeight) + ((parentNodes.length + 1) * rowGap));
 
-        // newSubnode.position = { x: 20, y: lastParentNode.position.y + (lastParentNode.style.height + rowGap) };
+        const initialGroupHeight = nodeStyle.height;
+        const rowGap = 10;
+        const parentNodes = groupNode.data.blocks;
+        let parentNodesHeight = parentNodes.reduce((totalHeight, node) => {
+          return totalHeight + node.style.height;
+        }, 0);
+        const totalGroupHeight = ((initialGroupHeight + parentNodesHeight) + ((parentNodes.length + 1) * rowGap));
         newSubnode.parentNode = groupNode?.id;
 
         newSubnode.type = subType;
 
+
         let newNodesGroup = nodes.map((node) => {
           if (node.id === groupNode.id) {
+            node.style = {
+              width: 250,
+              height: totalGroupHeight,
+              backgroundColor: '#fff',
+              border: "none",
+              padding: '0',
+              borderRadius: '8px'
+            };
             node.data.blocks = [...node.data.blocks, newSubnode]
             node.selected = !node.selected //isso faz a renderização funcionar
             return node;
@@ -475,77 +459,6 @@ const Flow = () => {
     [nodes, edges]
   );
 
-  // const onNodeDragStop = useCallback(
-  //   (_, node) => {
-  //     if (node.type !== 'node' && !node.parentNode) {
-  //       return;
-  //     }
-
-  //     const intersections = getIntersectingNodes(node).filter((n) => n.type === 'group');
-  //     const groupNode = intersections[0];
-
-  //     if (intersections.length && node.parentNode !== groupNode?.id) {
-  //       const nextNodes = store
-  //         .getState()
-  //         .getNodes()
-  //         .map((n) => {
-  //           if (n.id === groupNode.id) {
-  //             return {
-  //               ...n,
-  //               className: '',
-  //             };
-  //           } else if (n.id === node.id) {
-  //             const position = getNodePositionInsideParent(n, groupNode) ?? { x: 0, y: 0 };
-
-  //             return {
-  //               ...n,
-  //               position,
-  //               parentNode: groupNode.id,
-  //               dragging: false,
-  //               extent: 'parent',
-  //             };
-  //           }
-
-  //           return n;
-  //         })
-  //         .sort(sortNodes);
-
-  //       setNodes(nextNodes);
-  //     }
-  //   },
-  //   [getIntersectingNodes, setNodes, store]
-  // );
-
-  // const onNodeDrag = useCallback(
-  //   (_, node) => {
-  //     if (node.type !== 'node' && !node.parentNode) {
-  //       return;
-  //     }
-
-  //     const intersections = getIntersectingNodes(node).filter((n) => n.type === 'group');
-  //     const groupClassName = intersections.length && node.parentNode !== intersections[0]?.id ? 'active' : '';
-
-  //     setNodes((nds) => {
-  //       return nds.map((n) => {
-  //         if (n.type === 'group') {
-  //           return {
-  //             ...n,
-  //             className: groupClassName,
-  //           };
-  //         } else if (n.id === node.id) {
-  //           return {
-  //             ...n,
-  //             position: node.position,
-  //           };
-  //         }
-
-  //         return { ...n };
-  //       });
-  //     });
-  //   },
-  //   [getIntersectingNodes, setNodes]
-  // );
-
   const copyURL = () => {
     try {
       const URL = `${BASE_URL}${user.id}/${params.flowid}`;
@@ -569,8 +482,6 @@ const Flow = () => {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         onDrop={onDrop}
-        // onNodeDrag={onNodeDrag}
-        // onNodeDragStop={onNodeDragStop}
         proOptions={proOptions}
         onDragOver={onDragOver}
         onEdgeUpdate={onEdgeUpdate}

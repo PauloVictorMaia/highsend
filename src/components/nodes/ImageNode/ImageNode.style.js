@@ -29,6 +29,7 @@ export const Image = styled.img`
   width: 100%;
   max-width: 165px;
   height: auto;
+  max-height: 140px;
 `;
 
 export const ImageNodeMenu = styled.div`

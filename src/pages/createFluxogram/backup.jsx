@@ -95,3 +95,32 @@
 //     }
 
 //   };
+
+
+// useEffect(() => {
+
+//   const nodesChanged = !lodash.isEqual(
+//     nodes.map(node => lodash.omit(node, 'selected')),
+//     originalNodes.map(node => lodash.omit(node, 'selected'))
+//   );
+
+//   const edgesChanged = !lodash.isEqual(
+//     edges.map(edge => lodash.omit(edge, 'selected')),
+//     originalEdges.map(edge => lodash.omit(edge, 'selected'))
+//   );
+
+//   const variablesChanged = !lodash.isEqual(variables, originalVariables);
+
+//   const profileImageChanged = !lodash.isEqual(profileImage, originalProfileImage);
+
+//   const templateChanged = !lodash.isEqual(template, originalTemplate);
+
+//   const profileNameChanged = !lodash.isEqual(profileName, originalProfileName);
+
+//   if (nodesChanged || edgesChanged || variablesChanged || profileImageChanged || templateChanged || profileNameChanged) {
+//     setHasChanges(true);
+//   } else {
+//     setHasChanges(false);
+//   }
+
+// }, [nodes, edges, variables, profileImage, template, profileName]);
