@@ -93,7 +93,7 @@ export default () => {
           Telefone
         </NodeDraggable>
 
-        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'buttonInputNode', '40')} draggable>
+        <NodeDraggable onDragStart={(event) => onDragStart(event, 'groupOriginal', 'buttonInputNode', '40')} draggable>
           <TaskAltOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
           Botão
         </NodeDraggable>

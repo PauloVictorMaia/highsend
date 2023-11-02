@@ -21,7 +21,6 @@ import { EmailInputNode } from '../EmailInputNode/EmailInputNode';
 import { WebsiteInputNode } from '../WebsiteInputNode/WebsiteInputNode';
 import { DateInputNode } from '../DateInputNode/DateInputNode';
 import { PhoneInputNode } from '../PhoneInputNode/PhoneInputNode';
-import { ButtonInputNode } from '../ButtonInputNode/ButtonInputNode';
 import LinkButtonInputNode from '../LInkButtonInputNode/LinkButtonInputNode';
 import DelayLogicNode from '../DelayLogicNode/DelayLogicNode';
 import RedirectLogicNode from '../RedirectLogicNode/RedirectLogicNode';
@@ -55,14 +54,16 @@ export default function GroupNode(props) {
   const sensors = useSensors(mouseSensor)
 
   useEffect(() => {
-    setBlocks(props.data.blocks);
+    const filteredBlocks = props.data.blocks.filter(blocks => blocks.type !== "buttonInputNode");
+    setBlocks(filteredBlocks);
   }, [props]);
 
 
   useEffect(() => {
     const nodes = getNodes();
     const node = nodes.find(node => node.id === props.id);
-    setBlocks(node.data.blocks);
+    const filteredBlocks = node.data.blocks.filter(blocks => blocks.type !== "buttonInputNode");
+    setBlocks(filteredBlocks);
   }, [drag]);
 
   useEffect(() => {
@@ -94,7 +95,8 @@ export default function GroupNode(props) {
 
   const cloneGroup = () => {
     setNodes((nodes) => {
-      const originalNode = nodes.find((node) => node.id === props.id);
+      const originalNode = nodes.find((node) => node.id === id);
+      const parentNodes = nodes.filter((node) => node.parentNode === id);
 
       if (!originalNode) {
         return nodes;
@@ -115,14 +117,14 @@ export default function GroupNode(props) {
         },
       };
 
-      const clonedChildren = blocks.map((child) => {
+      const clonedChildren = parentNodes.map((child) => {
         const clonedChild = {
           ...child,
           id: getId(),
           parentNode: clonedNode.id,
         };
 
-        clonedNode.data.blocks.push(clonedChild);
+        clonedNode.data.blocks.push(clonedChild.id);
 
         return clonedChild;
       });
@@ -228,9 +230,6 @@ export default function GroupNode(props) {
 
               case 'phoneInputNode':
                 return <PhoneInputNode key={node.id} id={node.id} groupID={props.id} data={node.data} />;
-
-              case 'buttonInputNode':
-                return <ButtonInputNode key={node.id} id={node.id} groupID={props.id} data={node.data} />;
 
               case 'linkButtonInputNode':
                 return <LinkButtonInputNode key={node.id} id={node.id} groupID={props.id} data={node.data} />;

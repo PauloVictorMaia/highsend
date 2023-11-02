@@ -25,7 +25,6 @@ import { EmailInputNode } from "../../components/nodes/EmailInputNode/EmailInput
 import { WebsiteInputNode } from "../../components/nodes/WebsiteInputNode/WebsiteInputNode";
 import { PhoneInputNode } from "../../components/nodes/PhoneInputNode/PhoneInputNode";
 import { DateInputNode } from "../../components/nodes/DateInputNode/DateInputNode";
-import { ButtonInputNode } from "../../components/nodes/ButtonInputNode/ButtonInputNode";
 import { sortNodes, getId, getNodePositionInsideParent } from '../../utils';
 import { useStateContext } from "../../contexts/ContextProvider";
 import { useParams } from "react-router-dom";
@@ -40,6 +39,8 @@ import WhatsappMessageLogicNode from "../../components/nodes/WhatsappMessageLogi
 import clipboardCopy from 'clipboard-copy';
 import PixelFacebookLogicNode from "../../components/nodes/PixelFacebook/PixelFacebookLogicNode";
 import WebhookLogicNode from "../../components/nodes/WebhookLogicNode/WebhookLogicNode";
+import { ButtonInputOriginalNode } from "../../components/nodes/ButtonInputOriginalNode/ButtonInputOriginalNode";
+import GroupNodeOriginal from "../../components/nodes/GroupNodeOriginal/GroupNodeOriginal";
 
 const proOptions = {
   hideAttribution: true,
@@ -54,12 +55,13 @@ const NODE_TYPES = {
   audioNode: AudioNode,
   textInputNode: TextInputNode,
   group: GroupNode,
+  groupOriginal: GroupNodeOriginal,
   numberInputNode: NumberInputNode,
   emailInputNode: EmailInputNode,
   websiteInputNode: WebsiteInputNode,
   phoneInputNode: PhoneInputNode,
   dateInputNode: DateInputNode,
-  buttonInputNode: ButtonInputNode,
+  buttonInputNode: ButtonInputOriginalNode,
   linkButtonInputNode: LinkButtonInputNode,
   delayLogicNode: DelayLogicNode,
   redirectLogicNode: RedirectLogicNode,
@@ -264,7 +266,7 @@ const Flow = () => {
       const heightString = event.dataTransfer.getData('application/reactflow/height');
       const height = parseFloat(heightString);
       let position = project({ x: event.clientX - wrapperBounds.x - 20, y: event.clientY - wrapperBounds.top - 20 });
-      const nodeStyle = type === 'group' ? {
+      const nodeStyle = type === 'group' || type === 'groupOriginal' ? {
         width: 250,
         height: height + 60,
         border: "none",
@@ -279,6 +281,14 @@ const Flow = () => {
         height: 40,
       }).filter((n) => n.type === 'group');
       const groupNode = intersections[0];
+
+      const intersectionsOfButtons = getIntersectingNodes({
+        x: position.x,
+        y: position.y,
+        width: 40,
+        height: 40,
+      }).filter((n) => n.type === 'groupOriginal');
+      const groupNodeOriginal = intersectionsOfButtons[0];
 
       let newNode = {
         id: getId(),
@@ -305,8 +315,52 @@ const Flow = () => {
 
       newNode.data.blocks = [newSubnode];
 
+      if (groupNodeOriginal) {
+
+        if (subType !== "buttonInputNode") {
+          return;
+        }
+        if (subType === "buttonInputNode") {
+          const parentNodes = nodes.filter((node) => node.parentNode === groupNodeOriginal.id);
+          const lastParentNode = parentNodes[parentNodes.length - 1];
+          const rowGap = 5
+          const initialGroupHeight = nodeStyle.height
+          let parentNodesHeight = parentNodes.reduce((totalHeight, node) => {
+            return totalHeight + node.style.height;
+          }, 0);
+          const totalGroupHeight = ((initialGroupHeight + parentNodesHeight) + ((parentNodes.length + 1) * rowGap));
+
+          newSubnode.position = { x: 20, y: lastParentNode.position.y + (lastParentNode.style.height + rowGap) };
+          newSubnode.parentNode = groupNodeOriginal?.id;
+          newSubnode.extent = groupNodeOriginal ? 'parent' : undefined;
+          newSubnode.type = subType;
+
+          let newNodesGroup = nodes.map((node) => {
+            if (node.id === groupNodeOriginal.id) {
+              node.style = {
+                width: 250,
+                height: totalGroupHeight,
+                backgroundColor: '#fff',
+                border: "none",
+                padding: '0',
+                borderRadius: '8px'
+              };
+              node.data.blocks = [...node.data.blocks, newSubnode]
+              return node;
+            }
+            return node;
+          });
+
+          const sortedNodes = [...newNodesGroup, newSubnode];
+          setNodes(sortedNodes);
+          return;
+        }
+      }
 
       if (groupNode) {
+        if (subType === "buttonInputNode") {
+          return;
+        }
         // console.log("aqui")
         // const parentNodes = nodes.filter((node) => node.parentNode === groupNode.id);
         // const lastParentNode = parentNodes[parentNodes.length - 1];
@@ -338,6 +392,11 @@ const Flow = () => {
       }
 
       if (!groupNode) {
+        if (subType === "buttonInputNode") {
+          const sortedNodes = store.getState().getNodes().concat(newNode, newSubnode).sort(sortNodes);
+          setNodes(sortedNodes);
+          return;
+        }
         const sortedNodes = store.getState().getNodes().concat(newNode).sort(sortNodes);
         setNodes(sortedNodes);
       }
