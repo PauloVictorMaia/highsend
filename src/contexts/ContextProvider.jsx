@@ -22,6 +22,9 @@ export const ContextProvider = ({ children }) => {
     const [integrationsDataLoaded, setIntegrationsDataLoaded] = useState(false);
     const [leadsDataLoaded, setLeadsDataLoaded] = useState(false);
     const [createCalendarIsLoading, setCreateCalendarIsLoading] = useState(false);
+    const [loadingFlows, setLoadingFlows] = useState(true);
+    const [loadingCalendars, setLoadingCalendars] = useState(true);
+    const [loadingIntegrations, setLoadingIntegrations] = useState(true);
     const [cardLast4, setCardLast4] = useState(null);
     const [token, setToken] = useState(localStorage.getItem('token'));
     const navigate = useNavigate();
@@ -67,8 +70,10 @@ export const ContextProvider = ({ children }) => {
             const response = await api.get(`/flows/get-flows/${user.id}`, { headers: { authorization: token } });
             setFlows(response.data);
             setLeadsDataLoaded(true);
+            setLoadingFlows(false);
         } catch {
             toast.error('Erro ao carregar flows.');
+            setLoadingFlows(false);
         }
     };
 
@@ -78,9 +83,11 @@ export const ContextProvider = ({ children }) => {
             if (response.status === 201) {
                 setCalendarsData(response.data.filteredCalendars);
                 setSchedulesDataLoaded(true);
+                setLoadingCalendars(false);
             }
         } catch {
             toast.error('Erro ao buscar agendas.');
+            setLoadingCalendars(false);
         }
     }
 
@@ -90,8 +97,10 @@ export const ContextProvider = ({ children }) => {
             if (response.status === 200) {
                 setIntegrations(response.data.integrationsFiltered);
                 setIntegrationsDataLoaded(true);
+                setLoadingIntegrations(false);
             }
         } catch {
+            setLoadingIntegrations(false);
             return;
         }
     }
@@ -188,7 +197,10 @@ export const ContextProvider = ({ children }) => {
                 createCalendar,
                 createCalendarIsLoading,
                 getPaymentMethod,
-                cardLast4
+                cardLast4,
+                loadingFlows,
+                loadingCalendars,
+                loadingIntegrations
             }}
         >
             {children}

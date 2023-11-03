@@ -20,7 +20,7 @@ import { Ring } from "@uiball/loaders";
 function SchedulesList() {
   const [indexDrop, setIndexDrop] = useState(null);
   const navigate = useNavigate();
-  const { user, calendarsData, getCalendars, schedulesDataLoaded } = useStateContext();
+  const { user, calendarsData, getCalendars, schedulesDataLoaded, loadingCalendars } = useStateContext();
   const token = localStorage.getItem('token');
   const [modalIsVisible, setModalIsVisible] = useState(false);
   const menuRef = useRef(null);
@@ -119,7 +119,7 @@ function SchedulesList() {
 
   return (
     <Container>
-      {!calendarsData.length &&
+      {loadingCalendars &&
         <>
           <Skeleton width={320} height={250} animation="wave" variant="rectangular" style={{ borderRadius: '8px' }} />
           <Skeleton width={320} height={250} animation="wave" variant="rectangular" style={{ borderRadius: '8px' }} />

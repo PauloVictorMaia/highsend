@@ -38,7 +38,7 @@ import { Skeleton } from "@mui/material";
 function Fluxograms() {
   const [menuComponent, setMenuComponent] = useState(0);
   const navigate = useNavigate();
-  const { user, getFlows, flows } = useStateContext();
+  const { user, getFlows, flows, loadingFlows } = useStateContext();
   const token = localStorage.getItem('token');
   const [modalEditIsVisible, setModalEditIsVisible] = useState(false);
   const [modalDeleteIsVisible, setModalDeleteIsVisible] = useState(false);
@@ -153,7 +153,7 @@ function Fluxograms() {
           <span>Novo Flow</span>
         </NewFluxogramCard>
 
-        {!flows.length &&
+        {loadingFlows &&
           <>
             <Skeleton width={225} height={270} animation="wave" variant="rectangular" style={{ borderRadius: '8px' }} />
             <Skeleton width={225} height={270} animation="wave" variant="rectangular" style={{ borderRadius: '8px' }} />
