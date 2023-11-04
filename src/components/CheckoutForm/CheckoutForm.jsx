@@ -8,6 +8,7 @@ import {
 import './Checkout.style.css';
 import api from "../../api";
 import { useStateContext } from "../../contexts/ContextProvider";
+import { Ring } from "@uiball/loaders";
 
 export default function CheckoutForm({ name, email, password, accountType, subscriptionID, customerID, planID }) {
   const stripe = useStripe();
@@ -99,7 +100,7 @@ export default function CheckoutForm({ name, email, password, accountType, subsc
       <PaymentElement id="payment-element" options={paymentElementOptions} />
       <button disabled={isLoading || !stripe || !elements} id="submit">
         <span id="button-text">
-          {isLoading ? <div className="spinner" id="spinner"></div> : "Concluir assinatura"}
+          {isLoading ? <Ring color="#fff" size={25} /> : "Concluir assinatura"}
         </span>
       </button>
       {message && <div id="payment-message">{message}</div>}
