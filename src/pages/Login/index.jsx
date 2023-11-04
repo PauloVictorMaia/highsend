@@ -8,6 +8,7 @@ import { NavLink } from 'react-router-dom';
 import { TextField } from '@mui/material';
 import IconLogo from '../../assets/SVGComponents/iconLogo';
 import TextLogo from '../../assets/SVGComponents/textLogo';
+import { Ring } from '@uiball/loaders';
 
 const PageContainer = styled.div`
   display: flex;
@@ -175,7 +176,7 @@ const ErrorText = styled.div`
 `;
 
 const LoginPage = () => {
-  const { signIn } = useStateContext();
+  const { signIn, loadingLogin } = useStateContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -223,7 +224,7 @@ const LoginPage = () => {
               />
               {/* <ErrorText><ErrorMessage name="password" /></ErrorText> */}
 
-              <Button type="submit" onClick={() => signIn(email, password)}>Entrar</Button>
+              <Button type="submit" onClick={() => signIn(email, password)}>{loadingLogin? <Ring color="#fff" size={25} /> : 'Entrar'}</Button>
               <Link style={{ textDecoration: 'none', width: '100%' }} to={`/plans`}>
                 <Button type="submit" outlined>Criar uma conta Hiflow</Button>
               </Link>

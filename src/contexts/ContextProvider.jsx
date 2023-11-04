@@ -25,6 +25,7 @@ export const ContextProvider = ({ children }) => {
     const [loadingFlows, setLoadingFlows] = useState(true);
     const [loadingCalendars, setLoadingCalendars] = useState(true);
     const [loadingIntegrations, setLoadingIntegrations] = useState(true);
+    const [loadingLogin, setLoadingLogin] = useState(true);
     const [cardLast4, setCardLast4] = useState(null);
     const [token, setToken] = useState(localStorage.getItem('token'));
     const navigate = useNavigate();
@@ -55,11 +56,13 @@ export const ContextProvider = ({ children }) => {
             if (response.status === 200) {
                 setUser(response.data);
                 setLogin(true);
+                setLoadingLogin(false);
                 const location = window.location.pathname;
                 if (location !== '/login') return navigate(location);
                 return navigate('/dashboard/fluxograms');
             }
         } catch {
+            setLoadingLogin(false);
             toast.error('Usuário não autenticado. Faça login novamente.');
             navigate('/login');
         }
@@ -200,7 +203,8 @@ export const ContextProvider = ({ children }) => {
                 cardLast4,
                 loadingFlows,
                 loadingCalendars,
-                loadingIntegrations
+                loadingIntegrations,
+                loadingLogin
             }}
         >
             {children}
