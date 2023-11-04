@@ -210,6 +210,7 @@ const LoginPage = () => {
                 label="E-mail"
                 variant="outlined"
                 type="text"
+                name="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -219,6 +220,7 @@ const LoginPage = () => {
                 label="Senha"
                 variant="outlined"
                 type="password"
+                name="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
