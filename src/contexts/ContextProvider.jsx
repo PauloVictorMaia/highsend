@@ -25,7 +25,7 @@ export const ContextProvider = ({ children }) => {
     const [loadingFlows, setLoadingFlows] = useState(true);
     const [loadingCalendars, setLoadingCalendars] = useState(true);
     const [loadingIntegrations, setLoadingIntegrations] = useState(true);
-    const [loadingLogin, setLoadingLogin] = useState(true);
+    const [loadingLogin, setLoadingLogin] = useState(false);
     const [cardLast4, setCardLast4] = useState(null);
     const [token, setToken] = useState(localStorage.getItem('token'));
     const navigate = useNavigate();
@@ -50,6 +50,8 @@ export const ContextProvider = ({ children }) => {
         if (!token && (location.pathname.includes('plans') || location.pathname.includes('subscription'))) {
             return
         }
+
+        setLoadingLogin(true);
 
         try {
             const response = await api.get('/users/get-user', { headers: { authorization: token } });
