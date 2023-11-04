@@ -231,9 +231,11 @@ function Plans() {
                 <span className='price-value'>{plan.price}</span>
                 <span className='prive-period'>/Mês</span>
               </div>
-              <ButtonContainer>
-                <NavLink to={`/subscription/${plan.type}/${plan.id}`}>Comece agora</NavLink>
-              </ButtonContainer>
+              <NavLink to={`/subscription/${plan.type}/${plan.id}`}>
+                <ButtonContainer>
+                  Comece agora
+                </ButtonContainer>
+              </NavLink>
               <div className='details-plan'>
                 {
                   plan.resources.map((resource, index) => (
