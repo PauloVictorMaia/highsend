@@ -131,7 +131,7 @@ export default () => {
           draggable
         >
           <FacebookOutlinedIcon style={{ fontSize: "large", color: "#9999FF" }} />
-          Pixel Facebook
+          Pixel
         </NodeDraggable>
 
         <NodeDraggable

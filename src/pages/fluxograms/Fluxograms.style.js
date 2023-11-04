@@ -5,7 +5,7 @@ export const Container = styled.div`
   padding: 20px 0;
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   column-gap: 30px;
   row-gap: 30px;
 `;
@@ -43,7 +43,7 @@ export const FluxogramCard = styled.div`
 `;
 
 export const ActiveComponent = styled.div`
- background-color: #99e699;
+ background-color: #91D6AC;
  padding: 5px 8px;
  border-radius: 10px;
  font-size: 12px;

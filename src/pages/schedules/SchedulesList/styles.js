@@ -5,13 +5,14 @@ export const Container = styled.div`
   padding: 20px 0;
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   column-gap: 30px;
   row-gap: 30px;
 `;
 
 export const ScheduleCard = styled.div`
  width: 100%;
+ max-width: 350px;
  height: 250px;
  background-color: #fff;
  border-radius: 8px;
