@@ -108,15 +108,17 @@ function IntegrationsList() {
           />
 
           <Modal onClick={(e) => e.stopPropagation()} isvisible={modalIsVisible}>
-            <ModalContent width={350} height={200}>
-              <CloseButton
-                onClick={(e) => {
-                  e.stopPropagation();
-                  closeModal()
-                }
-                }>
-                <ClearIcon />
-              </CloseButton>
+            <ModalContent width={650} height={600}>
+              {!qr &&
+                <CloseButton
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    closeModal()
+                  }
+                  }>
+                  <ClearIcon />
+                </CloseButton>
+              }
 
               {
                 qr &&
@@ -130,7 +132,7 @@ function IntegrationsList() {
                 </>
               }
 
-              {isLoading? <Ring color="#333" size={25} /> : ''}
+              {isLoading && !qr? <Ring color="#333" size={25} /> : ''}
 
               {
                 qr &&

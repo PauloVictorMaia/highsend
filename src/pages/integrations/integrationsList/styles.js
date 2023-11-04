@@ -59,6 +59,7 @@ export const ModalContent = styled.div`
   align-items: center;
   row-gap: 5px;
   position: relative;
+  padding: 15px 0%;
 
   >input {
     width: 55%;
@@ -85,12 +86,13 @@ export const ModalContent = styled.div`
 
 export const ModalButton = styled.button`
   display: flex;
-  height: 30px;
+  height: 45px;
+  margin: 10px 0;
   width: 55%;
   border-radius: 5px;
   border: none;
   outline: none;
-  background-color: #E67200;
+  background-color: #4339F2;
   color: #fff;
   justify-content: center;
   align-items: center;
