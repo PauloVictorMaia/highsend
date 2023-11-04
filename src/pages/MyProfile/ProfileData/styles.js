@@ -159,7 +159,7 @@ export const ChangePasswordButton = styled.button`
   border-radius: 5px;
   border: none;
   outline: none;
-  background-color: #E67200;
+  background-color: #4339F2;
   color: #fff;
   font-size: 0.9rem;
   justify-content: center;
