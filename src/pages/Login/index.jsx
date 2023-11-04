@@ -5,57 +5,130 @@ import * as Yup from 'yup';
 import { useState } from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { NavLink } from 'react-router-dom';
+import { TextField } from '@mui/material';
+import IconLogo from '../../assets/SVGComponents/iconLogo';
+import TextLogo from '../../assets/SVGComponents/textLogo';
 
 const PageContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #999;
+  background-color: #F8F8F8;
+  padding: 20px;
+  box-sizing: border-box;
+`;
+
+const Content = styled.div`
+ background-color: transparent;
+ width: 100%;
+ max-width: 500px;
+ display: flex;
+ flex-direction: column;
+
+ .info-content {
+    color: #526B92;
+    font-weight: 600;
+    font-size: 16px;
+    width: 100%;
+  }
+
+  .icon-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    column-gap: 10px;
+    margin-bottom: 30px;
+  }
+`;
+
+export const InputItem = styled(TextField)`
+ border: 1.5px solid red;
+ color: red;
+ border: none;
+ width: 100%;
+
+ div {
+  border-radius: 8px;
+ }
+
+ label {
+  color: #526B92;
+ }
+
+ fieldset {
+  border: 2px solid #E0EAFF;
+ }
+
+ input:focus {
+  fieldset {
+    border: 2px solid #4339F2;
+  }
+
+  label {
+    color: #4339F2;
+  }
+ }
 `;
 
 const FormContainer = styled.div`
-  width: 40%;
+  width: 100%;
   max-width: 500px;
-  padding: 40px;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+  box-sizing: border-box;
+  align-items: center;
 
-  @media (max-width: 768px) {
-    width: 90%;
+  .forgot-pass {
+    font-size: 18px;
+    text-align: center;
+    margin-top: 20px;
+    cursor: pointer;
+    width: 200px;
+    color: #4339F2;
+    font-weight:600;
+  }
+
+  .privacy-text {
+    color: #526B92;
+    font-size: 17px;
+    padding: 5px;
+    box-sizing: border-box;
+    margin-top: 25px;
   }
 `;
 
-const Title = styled.h1`
-  color: #F26800;
-  margin-bottom: 30px;
-  text-align: center;
-`;
-
-const Input = styled(Field)`
+const StepWrapper = styled.div`
+  display: flex;
   width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: none;
-  border-radius: 8px;
-  background-color: #eee;
+  justify-content: space-between;
+  align-items: center;
+
+  h2 {
+    font-size: 20px;
+    font-weight: 400;
+  }
 `;
 
 const Button = styled.button`
-  width: 100%;
-  padding: 10px;
-  margin: 15px 0;
-  border: none;
-  border-radius: 8px;
-  background-color: #F26800;
-  color: white;
+  background: ${({ outlined }) => outlined ? 'transparent' : '#4339F2'};
+  font-family: Arial, sans-serif;
+  color: ${({ outlined }) => outlined ? '#4339F2' : '#fff'};
+  border-radius: 4px;
+  border: ${({ outlined }) => outlined ? '1px solid #4339F2' : 'none'};
+  padding: 12px 16px;
+  font-size: 18px;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
-
-  &:hover {
-    background-color: #d45700;
-  }
+  display: block;
+  width: 100%;
+  border-radius: 40px;
+  height: 60px;
 `;
 
 const Link = styled(NavLink)`
@@ -102,7 +175,7 @@ const ErrorText = styled.div`
 `;
 
 const LoginPage = () => {
-  const { signOut, signIn } = useStateContext();
+  const { signIn } = useStateContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -122,22 +195,51 @@ const LoginPage = () => {
     >
       <Form>
         <PageContainer>
-          <FormContainer>
-            <Title>Login</Title>
+          <Content>
+            <div className='icon-container'>
+              <IconLogo />
+              <TextLogo />
+            </div>
+            <FormContainer>
+              <StepWrapper>
+                <h2>Olá! Seja bem vindo.</h2>
+              </StepWrapper>
+              <span className="info-content">informações pessoais</span>
+              <InputItem
+                label="E-mail"
+                variant="outlined"
+                type="text"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              {/* <ErrorText><ErrorMessage name="username" /></ErrorText> */}
 
-            <Input name="username" type="text" placeholder="Username" value={email} onChange={(e) => setEmail(e.target.value)} />
-            <ErrorText><ErrorMessage name="username" /></ErrorText>
+              <InputItem
+                label="Senha"
+                variant="outlined"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              {/* <ErrorText><ErrorMessage name="password" /></ErrorText> */}
 
-            <Input name="password" type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-            <ErrorText><ErrorMessage name="password" /></ErrorText>
+              <Button type="submit" onClick={() => signIn(email, password)}>Entrar</Button>
+              <Link style={{ textDecoration: 'none', width: '100%' }} to={`/plans`}>
+                <Button type="submit" outlined>Criar uma conta Hiflow</Button>
+              </Link>
 
-            <Button type="submit" onClick={() => signIn(email, password)}>Login</Button>
-            <GoogleLoginButton>
-              <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google Logo" />
-              Login with Google
-            </GoogleLoginButton>
-            <Link to={`/plans`}>Don't have an account? Sign Up</Link>
-          </FormContainer>
+              <span className="forgot-pass">Esqueci minha senha</span>
+
+              <span className='privacy-text'>
+                Seus dados serão respeitados de acordo com nossa <span style={{ color: '#4339F2' }}>política de privacidade</span>
+              </span>
+
+              {/* <GoogleLoginButton>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google Logo" />
+                Login with Google
+              </GoogleLoginButton> */}
+            </FormContainer>
+          </Content>
         </PageContainer>
       </Form>
     </Formik>
