@@ -51,20 +51,16 @@ export const ContextProvider = ({ children }) => {
             return
         }
 
-        setLoadingLogin(true);
-
         try {
             const response = await api.get('/users/get-user', { headers: { authorization: token } });
             if (response.status === 200) {
                 setUser(response.data);
                 setLogin(true);
-                setLoadingLogin(false);
                 const location = window.location.pathname;
                 if (location !== '/login') return navigate(location);
                 return navigate('/dashboard/fluxograms');
             }
         } catch {
-            setLoadingLogin(false);
             toast.error('Usuário não autenticado. Faça login novamente.');
             navigate('/login');
         }
@@ -139,6 +135,8 @@ export const ContextProvider = ({ children }) => {
     const signIn = async (email, password) => {
         if (!email || !password) return toast.warning('Faltam dados!');
 
+        setLoadingLogin(true);
+
         try {
             const response = await api.post('/users/sign-in', { email, password });
             if (response.status === 200) {
@@ -147,10 +145,12 @@ export const ContextProvider = ({ children }) => {
                 localStorage.setItem('token', response.data.token);
                 setLogin(true);
                 navigate('/dashboard/fluxograms');
+                setLoadingLogin(false);
             }
         }
         catch {
             toast.warning('Usuário ou senha incorretos. Verifique os dados e tente novamente.');
+            setLoadingLogin(false);
         }
     };
 
