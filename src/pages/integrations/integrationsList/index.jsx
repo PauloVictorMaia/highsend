@@ -130,7 +130,7 @@ function IntegrationsList() {
                 </>
               }
 
-              {isLoading? <Ring color="#fff" size={25} /> : ''}
+              {isLoading? <Ring color="#333" size={25} /> : ''}
 
               {
                 qr &&
