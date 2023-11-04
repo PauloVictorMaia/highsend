@@ -29,6 +29,7 @@ function SchedulesList() {
   const [deleteIsLoading, setDeleteIsLoading] = useState(false);
   const [desativeIsLoading, setDesativeIsLoading] = useState(false);
   const [cloning, setCloning] = useState(false);
+  const [indexModal, setIndexModal] = useState(null);
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
@@ -205,6 +206,7 @@ function SchedulesList() {
                 onClick={(e) => {
                   e.stopPropagation();
                   openDeleteModal();
+                  setIndexModal(index);
                 }}
               >
                 <DeleteOutlineOutlinedIcon />
@@ -222,7 +224,7 @@ function SchedulesList() {
 
             </DropMenuCard>
           }
-          <Modal onClick={(e) => e.stopPropagation()} isvisible={modalIsVisible}>
+          <Modal onClick={(e) => e.stopPropagation()} isvisible={modalIsVisible && index === indexModal}>
             <ModalContent>
               <CloseButton onClick={() => setModalIsVisible(false)}>
                 <ClearIcon />
@@ -232,7 +234,7 @@ function SchedulesList() {
                 <span>Tem certeza que deseja excluir a agenda "{calendar.room.title}" ?</span>
                 <Buttons>
                   <Button
-                    color="green"
+                    color="#91D6AC"
                     onClick={() => handleActive(calendar.room.id, false)}
                     disabled={desativeIsLoading}
                   >
@@ -240,7 +242,7 @@ function SchedulesList() {
                   </Button>
                   <Button
                     disabled={deleteIsLoading}
-                    color="red"
+                    color="#ff4d4d"
                     onClick={() => deleteCalendar(calendar.room.id)}
                   >
                     {deleteIsLoading ? <Ring color="#fff" size={20} /> : "Excluir"}

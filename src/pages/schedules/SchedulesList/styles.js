@@ -171,19 +171,19 @@ export const ModalContent = styled.div`
 `;
 
 export const CloseButton = styled.button`
-  width: 25px;
-  height: 25px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   border: none;
   outline: none;
-  background-color: red;
+  background-color: #ff4d4d;
   padding: 2px;
   position: relative;
   top: -10px;
-  right: -315px;
+  right: -310px;
   cursor: pointer;
 
   >svg {
@@ -210,7 +210,8 @@ export const Buttons = styled.div`
 `;
 
 export const Button = styled.button`
-    width: 80px;
+    width: 100px;
+    padding: 20px 60px;
     height: 25px;
     border-radius: 5px;
     background-color: ${({color}) => color};

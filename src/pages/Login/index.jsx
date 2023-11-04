@@ -45,7 +45,6 @@ const Content = styled.div`
 
 export const InputItem = styled(TextField)`
  border: 1.5px solid red;
- color: red;
  border: none;
  width: 100%;
 
@@ -227,6 +226,7 @@ const LoginPage = () => {
               {/* <ErrorText><ErrorMessage name="password" /></ErrorText> */}
 
               <Button type="submit" onClick={() => signIn(email, password)}>{loadingLogin? <Ring color="#fff" size={25} /> : 'Entrar'}</Button>
+              
               <Link style={{ textDecoration: 'none', width: '100%' }} to={`/plans`}>
                 <Button type="submit" outlined>Criar uma conta Hiflow</Button>
               </Link>

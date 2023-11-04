@@ -12,7 +12,8 @@ import {
   EditFlowName,
   DeleteFlow,
   IconContainer,
-  ActiveComponent
+  ActiveComponent,
+  InputItem
 } from "./Fluxograms.style";
 import AddIcon from '@mui/icons-material/Add';
 import { useState } from "react";
@@ -229,18 +230,22 @@ function Fluxograms() {
                   </CloseButton>
 
                   <EditFlowName>
-                    <span>flow name:</span>
-                    <input
-                      type="text"
-                      defaultValue={flow.name}
-                      onChange={(e) => setFlowName(e.target.value)}
-                    />
-                    <button
-                      disabled={editFlowNameIsLoading}
-                      onClick={() => editFlowName(flow.id)}
-                    >
-                      {editFlowNameIsLoading ? <Ring color="#fff" size={20} /> : "Salvar"}
-                    </button>
+                    {/* <span>Nome do fluxo:</span> */}
+                    <div className="modal-edit-content">
+                      <InputItem
+                        type="text"
+                        label="Nome do fluxo"
+                        variant="outlined"
+                        defaultValue={flow.name}
+                        onChange={(e) => setFlowName(e.target.value)}
+                      />
+                      <button
+                        disabled={editFlowNameIsLoading}
+                        onClick={() => editFlowName(flow.id)}
+                      >
+                        {editFlowNameIsLoading ? <Ring color="#fff" size={20} /> : "Salvar"}
+                      </button>
+                    </div>
                   </EditFlowName>
                 </ModalContent>
               </Modal>

@@ -1,3 +1,4 @@
+import { TextField } from "@mui/material";
 import { styled } from "styled-components";
 
 export const Container = styled.div`
@@ -126,11 +127,42 @@ export const CloseButton = styled.button`
   }
 `;
 
+export const InputItem = styled(TextField)`
+ border: 1.5px solid red;
+ border: none;
+ width: 100%;
+
+ div {
+  border-radius: 8px;
+ }
+
+ label {
+  color: #526B92;
+ }
+
+ fieldset {
+  border: 2px solid #E0EAFF;
+ }
+
+ input:focus {
+  fieldset {
+    border: 2px solid #4339F2;
+  }
+
+  label {
+    color: #4339F2;
+  }
+ }
+`;
+
 export const EditFlowName = styled.div`
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 0 10px;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
   box-sizing: border-box;
   row-gap: 10px;
 
@@ -144,41 +176,40 @@ export const EditFlowName = styled.div`
       border: 1px solid rgba(0,0,0,0.35);
     }
   }
-  
-  >button {
-    width: 70px;
-    height: 25px;
-    border-radius: 5px;
-    background-color: #E67200;
-    outline: none;
-    border: none;
-    cursor: pointer;
-    color: #fff;
-    font-size: 0.9rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 
-    &:disabled {
-      opacity: 0.5;
-      cursor: default;
+  .modal-edit-content {
+    width: 100%;
+    display: flex;
+    column-gap: 10px;
+
+    button {
+      background-color: #4339F2;
+      outline: none;
+      border: none;
+      width: 100px;
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
     }
   }
 `;
 
 export const DeleteFlow = styled.div`
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 0 10px;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 10px;
   box-sizing: border-box;
   row-gap: 20px;
   
   >button {
-    width: 70px;
-    height: 25px;
+    width: 150px;
+    height: 35px;
     border-radius: 5px;
-    background-color: red;
+    background-color: #ff4d4d;
     outline: none;
     border: none;
     cursor: pointer;
@@ -187,7 +218,6 @@ export const DeleteFlow = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: 35%;
 
     &:disabled {
       opacity: 0.5;
