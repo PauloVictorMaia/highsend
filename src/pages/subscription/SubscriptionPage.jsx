@@ -211,7 +211,6 @@ const SubscriptionPage = () => {
           <StepContainer>
             <StepWrapper>
               <h2>Informações de Pagamento</h2>
-              <button onClick={() => setCurrentStep(1)}>Voltar</button>
             </StepWrapper>
             {clientSecret && (
               <Elements options={options} stripe={stripePromise}>
@@ -223,6 +222,7 @@ const SubscriptionPage = () => {
                   subscriptionID={subscriptionID}
                   customerID={customerID}
                   planID={planID}
+                  style={{ boxShadow: 'none' }}
                 />
               </Elements>
             )}

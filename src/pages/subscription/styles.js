@@ -131,30 +131,6 @@ export const StepWrapper = styled.div`
     font-size: 20px;
     font-weight: 400;
   }
-
-  >button {
-    background: #F26800;
-    font-family: Arial, sans-serif;
-    color: #ffffff;
-    border-radius: 4px;
-    border: 0;
-    padding: 12px 16px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    display: block;
-    box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07);
-    width: 100px;
-
-    &:hover {
-      filter: contrast(115%);
-    }
-
-    &:disabled {
-      opacity: 0.5;
-      cursor: default;
-    }
-  }
 `;
 
 export const CheckBoxContainer = styled.div`
