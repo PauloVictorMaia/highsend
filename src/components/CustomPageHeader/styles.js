@@ -40,12 +40,12 @@ export const ContentHeader = styled.div`
 `;
 
 export const Button = styled.button`
-width: 150px;
+ width: 150px;
  margin-bottom: 5px;
  border-radius: 15px;
  cursor: pointer;
  padding: 10px 15px;
  border: none;
- background-color: #F26800;
+ background-color: #4339F2;
  color: #fff;
 `;

@@ -33,7 +33,7 @@ const Avatar = styled.div`
   text-align: center;
   font-size: 23px;
   border-radius: 50%;
-  background-color: #F26800;
+  background-color: #4339F2;
   color: #fff;
 `;
 
