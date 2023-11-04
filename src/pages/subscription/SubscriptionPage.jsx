@@ -222,7 +222,6 @@ const SubscriptionPage = () => {
                   subscriptionID={subscriptionID}
                   customerID={customerID}
                   planID={planID}
-                  style={{ boxShadow: 'none' }}
                 />
               </Elements>
             )}
