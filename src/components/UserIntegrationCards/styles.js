@@ -1,11 +1,16 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  width: 150px;
+  width: 200px;
   height: 110px;
+  padding: 10px;
+  box-sizing: border-box;
   border: 0.5px solid rgba(0,0,0,0.15);
   border-radius: 8px; 
   color: rgba(0,0,0,0.75);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   &:hover {
     box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
@@ -28,13 +33,11 @@ export const IntegrationImg = styled.img`
 
 export const DescriptionContainer = styled.div`
   width: 100%;
-  height: 50%;
+  margin: 10px 0;
   padding: 5px;
-  display: flex;
-  align-items: center;
+  text-align: center;
   box-sizing: border-box;
   font-size: 0.95rem;
-  text-align: left;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;

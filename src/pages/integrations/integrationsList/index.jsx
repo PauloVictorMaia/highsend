@@ -8,6 +8,10 @@ import IntegrationCard from "../../../components/IntegrationCard";
 import UserIntegrationCard from "../../../components/UserIntegrationCards";
 import { useState } from 'react'
 import ClearIcon from '@mui/icons-material/Clear';
+import CustomPageHeader from "../../../components/CustomPageHeader/index.jsx";
+import ContentPageContainer from "../../../containers/ContentPageContainer/index.jsx";
+import { integrationsMenu } from "../../../data/menus.js";
+import { Ring } from "@uiball/loaders";
 
 function IntegrationsList() {
 
@@ -16,6 +20,7 @@ function IntegrationsList() {
   const { user, integrations, integrationsDataLoaded, getIntegrations } = useStateContext();
   const [qr, setQr] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [menuComponent, setMenuComponent] = useState(0);
 
   const googleLogin = async () => {
     try {
@@ -53,6 +58,7 @@ function IntegrationsList() {
 
   const openModal = () => {
     setModalIsVisible(true);
+    syncWhatsapp();
   }
 
   const closeModal = () => {
@@ -72,92 +78,96 @@ function IntegrationsList() {
   }
 
   return (
-    <Container>
-      <Title>Adicionar nova integração</Title>
-
-      <Integrations>
-        <IntegrationCard
-          img={GoogleCalendarImg}
-          description={"Todos os eventos agendados na sua agenda Hiflow também serão agendados no Google Calendar."}
-          integrationFunction={googleLogin}
-          padding="0 50px"
+    <ContentPageContainer
+      header={
+        <CustomPageHeader
+          menu={integrationsMenu}
+          name={'Integrações'}
+          setMenuComponent={setMenuComponent}
+          menuComponent={menuComponent}
         />
+      }
+    >
 
-        <IntegrationCard
-          img={WhatsappImg}
-          description={"Seu cliente receberá no whatsapp a mensagem que você escolher na sua agenda Hiflow."}
-          integrationFunction={openModal}
-          padding="0 20px"
-        />
+      <Container>
+        <Title>Adicionar nova integração</Title>
 
-        <Modal onClick={(e) => e.stopPropagation()} isvisible={modalIsVisible}>
-          <ModalContent width={350} height={200}>
-            <CloseButton
-              onClick={(e) => {
-                e.stopPropagation();
-                closeModal()
-              }
-              }>
-              <ClearIcon />
-            </CloseButton>
+        <Integrations>
+          <IntegrationCard
+            img={GoogleCalendarImg}
+            description={"Todos os eventos agendados na sua agenda Hiflow também serão agendados no Google Calendar."}
+            integrationFunction={googleLogin}
+            padding="0 50px"
+          />
 
-            {
-              qr &&
-              <>
-                <span>Intruções:</span>
-                <span>1. Abra seu whatsapp</span>
-                <span>2. Clique em "Aparelhos conectados"</span>
-                <span>3. Clique em "Conectar um aparelho"</span>
-                <span>4. Escaneie o QR Code abaixo</span>
-                <img src={qr} alt="QR Code" />
-              </>
-            }
+          <IntegrationCard
+            img={WhatsappImg}
+            description={"Seu cliente receberá no whatsapp a mensagem que você escolher na sua agenda Hiflow."}
+            integrationFunction={openModal}
+            padding="0 20px"
+          />
 
-            <ModalButton
-              onClick={() => syncWhatsapp()}
-              disabled={isLoading}
-            >
+          <Modal onClick={(e) => e.stopPropagation()} isvisible={modalIsVisible}>
+            <ModalContent width={350} height={200}>
+              <CloseButton
+                onClick={(e) => {
+                  e.stopPropagation();
+                  closeModal()
+                }
+                }>
+                <ClearIcon />
+              </CloseButton>
+
               {
-                isLoading ? <div className="spinner" id="spinner"></div> :
-                  qr ? "Gerar novo QR Code" : "Gerar QR Code"
+                qr &&
+                <>
+                  <span>Intruções:</span>
+                  <span>1. Abra seu whatsapp</span>
+                  <span>2. Clique em "Aparelhos conectados"</span>
+                  <span>3. Clique em "Conectar um aparelho"</span>
+                  <span>4. Escaneie o QR Code abaixo</span>
+                  <img src={qr} alt="QR Code" />
+                </>
               }
-            </ModalButton>
 
-            {
-              qr &&
-              <>
-                <span>Aguarde a sincrozinação.</span>
-                <span>Clique no botão abaixo para concluir</span>
-                <ModalButton onClick={() => finalizeIntegration()}>Concluir</ModalButton>
-              </>
-            }
+              {isLoading? <Ring color="#fff" size={25} /> : ''}
 
-          </ModalContent>
-        </Modal>
-      </Integrations>
+              {
+                qr &&
+                <>
+                  <span>Aguarde a sincrozinação.</span>
+                  <span>Clique no botão abaixo para concluir</span>
+                  <ModalButton onClick={() => finalizeIntegration()}>Concluir</ModalButton>
+                </>
+              }
 
-      <Title>Minhas integrações</Title>
+            </ModalContent>
+          </Modal>
+        </Integrations>
 
-      <UserIntegrations>
-        {
-          integrations && integrations.length > 0 ? (
-            integrations.map((integration, index) => (
-              <UserIntegrationCard
-                key={index}
-                img={selectLogo(integration.type)}
-                description={integration.name}
-                id={integration.id}
-                name={integration.name}
-              />
-            ))
-          )
-            :
-            (
-              integrationsDataLoaded && <span>Você ainda não possui integrações.</span>
+        <Title>Minhas integrações</Title>
+
+        <UserIntegrations>
+          {
+            integrations && integrations.length > 0 ? (
+              integrations.map((integration, index) => (
+                <UserIntegrationCard
+                  key={index}
+                  img={selectLogo(integration.type)}
+                  description={integration.name}
+                  id={integration.id}
+                  name={integration.name}
+                />
+              ))
             )
-        }
-      </UserIntegrations>
-    </Container>
+              :
+              (
+                integrationsDataLoaded && <span>Você ainda não possui integrações.</span>
+              )
+          }
+        </UserIntegrations>
+      </Container>
+    </ContentPageContainer>
   )
 }
 

@@ -16,7 +16,6 @@ export const Integrations = styled.div`
   flex-wrap: wrap;
   column-gap: 30px;
   row-gap: 20px;
-  padding-left: 60px;
   margin-bottom: 10px;
 `;
 
@@ -25,9 +24,7 @@ export const Title = styled.h2`
 `;
 
 export const UserIntegrations = styled.div`
-  width: 80vw;
   min-height: 120px;
-  padding-left: 60px;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
