@@ -9,6 +9,7 @@ const Container = styled.div`
   font-family: Arial, sans-serif;
   background-color: #F8F8F8;
   padding: 50px;
+  box-sizing: border-box;
   width: 100vw;
   height: 100vh;
   display: flex;
