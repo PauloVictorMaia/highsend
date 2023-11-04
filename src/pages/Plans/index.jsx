@@ -231,7 +231,7 @@ function Plans() {
                 <span className='price-value'>{plan.price}</span>
                 <span className='prive-period'>/Mês</span>
               </div>
-              <NavLink to={`/subscription/${plan.type}/${plan.id}`}>
+              <NavLink to={`/subscription/${plan.type}/${plan.id}`} style={{ textDecoration: 'none', width: '100%' }}>
                 <ButtonContainer>
                   Comece agora
                 </ButtonContainer>
