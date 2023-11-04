@@ -12,6 +12,7 @@ import { plans } from "../../data/plans";
 import IconLogo from "../../assets/SVGComponents/iconLogo";
 import TextLogo from "../../assets/SVGComponents/textLogo";
 import { TextField } from "@mui/material";
+import { Ring } from "@uiball/loaders";
 
 const stripePromise = loadStripe(
   import.meta.env.VITE_STRIPE_PUBLIC_KEY
@@ -202,7 +203,7 @@ const SubscriptionPage = () => {
 
             <button id="next-button" disabled={isLoading} onClick={() => handleStep()}>
               <span>
-                {isLoading ? <div className="spinner" id="spinner"></div> : "Ir para pagamento"}
+                {isLoading ? <Ring color="#fff" size={25} /> : "Ir para pagamento"}
               </span>
             </button>
 
