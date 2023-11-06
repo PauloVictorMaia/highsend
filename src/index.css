@@ -54,3 +54,7 @@ h1 {
 .react-flow__panel.left {
   left: auto;
 }
+
+.react-flow__node-group {
+  background-color: transparent;
+}

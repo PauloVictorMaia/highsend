@@ -313,7 +313,6 @@ const Flow = () => {
               node.style = {
                 width: 250,
                 height: totalGroupHeight,
-                backgroundColor: '#fff',
                 border: "none",
                 padding: '0',
                 borderRadius: '8px'
@@ -353,7 +352,6 @@ const Flow = () => {
             node.style = {
               width: 250,
               height: totalGroupHeight,
-              backgroundColor: '#fff',
               border: "none",
               padding: '0',
               borderRadius: '8px'
@@ -422,7 +420,6 @@ const Flow = () => {
                   height: groupNodeHeight,
                   padding: '0px',
                   borderRadius: '8px',
-                  backgroundColor: '#fff',
                   border: "none"
                 }
               }

@@ -55,6 +55,8 @@ export function TextInputNode({ data, id, groupID }) {
     setNodes((nodes) => {
       return nodes.map((node) => {
         if (node.id === groupID) {
+          const deletedBlock = node.data.blocks.find(block => block.id === id);
+          const deletedBlockHeight = deletedBlock.style.height;
           const updatedBlocks = node.data.blocks.filter((block) => block.id !== id);
           if (updatedBlocks.length === 0) {
             return null;
@@ -65,6 +67,13 @@ export function TextInputNode({ data, id, groupID }) {
               ...node.data,
               blocks: updatedBlocks,
             },
+            style: {
+              width: 250,
+              height: node.style.height - deletedBlockHeight - 10,
+              padding: '0px',
+              borderRadius: '8px',
+              border: "none"
+            }
           };
         }
         return node;
