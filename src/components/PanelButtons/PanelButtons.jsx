@@ -10,6 +10,7 @@ import InputDropZone from "../InputDropZone";
 import api from "../../api";
 import CopyAllIcon from '@mui/icons-material/CopyAll';
 import { Ring } from "@uiball/loaders";
+import { useStateContext } from "../../contexts/ContextProvider";
 
 function PanelButtons({
   save, hasChanges, dropDownMenuIsVisible, setDropDownMenuIsVisible, profileImage, setProfileImage, template, setTemplate, profileName, setProfileName, copyURL, isLoading,
@@ -17,6 +18,7 @@ function PanelButtons({
 
   const [modalIsVisible, setModalIsVisible] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const { nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
 
   const uploadImage = async (file) => {
     try {
@@ -43,7 +45,7 @@ function PanelButtons({
   }
 
   return (
-    <Container>
+    <Container onClick={() => setNodeMenuIsOpen(!nodeMenuIsOpen)}>
       <Button disabled={!hasChanges} onClick={() => save()} color={hasChanges}>
         {isLoading ? <Ring color="#333" /> : <SaveOutlinedIcon />}
         <Label color={hasChanges}>Salvar</Label>

@@ -30,6 +30,7 @@ export const ContextProvider = ({ children }) => {
     const [token, setToken] = useState(localStorage.getItem('token'));
     const navigate = useNavigate();
     const location = useLocation();
+    const [nodeMenuIsOpen, setNodeMenuIsOpen] = useState(false);
 
     useEffect(() => {
         getUser(token);
@@ -206,7 +207,9 @@ export const ContextProvider = ({ children }) => {
                 loadingFlows,
                 loadingCalendars,
                 loadingIntegrations,
-                loadingLogin
+                loadingLogin,
+                nodeMenuIsOpen,
+                setNodeMenuIsOpen
             }}
         >
             {children}

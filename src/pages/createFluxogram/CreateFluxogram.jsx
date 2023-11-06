@@ -49,7 +49,7 @@ const Flow = () => {
   const { setVariables, variables } = useStateContext();
   const wrapperRef = useRef(null);
   const edgeUpdateSuccessful = useRef(true);
-  const { user } = useStateContext();
+  const { user, nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
   const token = localStorage.getItem('token');
   const { project, getIntersectingNodes } = useReactFlow();
   const store = useStoreApi();
@@ -481,6 +481,7 @@ const Flow = () => {
         onEdgeUpdateStart={onEdgeUpdateStart}
         onEdgeUpdateEnd={onEdgeUpdateEnd}
         zoomOnDoubleClick={false}
+        onPaneClick={() => setNodeMenuIsOpen(!nodeMenuIsOpen)}
       >
 
         <Background

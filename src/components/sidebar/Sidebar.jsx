@@ -17,6 +17,7 @@ import LanguageIcon from '@mui/icons-material/Language';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined';
 import WebhookIcon from '@mui/icons-material/Webhook';
+import { useStateContext } from '../../contexts/ContextProvider';
 // import PaymentIcon from '@mui/icons-material/Payment';
 // import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 // import BackupOutlinedIcon from '@mui/icons-material/BackupOutlined';
@@ -24,14 +25,17 @@ import WebhookIcon from '@mui/icons-material/Webhook';
 /* eslint-disable react-refresh/only-export-components */
 export default () => {
   const onDragStart = (event, nodeType, nodeSubType, height) => {
+    setNodeMenuIsOpen(!nodeMenuIsOpen);
     event.dataTransfer.setData('application/reactflow/type', nodeType);
     event.dataTransfer.setData('application/reactflow/subtype', nodeSubType);
     event.dataTransfer.setData('application/reactflow/height', height);
     event.dataTransfer.effectAllowed = 'move';
   };
 
+  const { nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
+
   return (
-    <SidebarContainer>
+    <SidebarContainer onClick={() => setNodeMenuIsOpen(!nodeMenuIsOpen)}>
       <NodesType>Mensagens</NodesType>
       <NodesContainer>
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'textNode', '80')} draggable>

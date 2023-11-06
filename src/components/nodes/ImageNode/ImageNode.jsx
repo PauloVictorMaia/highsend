@@ -18,6 +18,7 @@ import { Ring } from "@uiball/loaders";
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 import ClearIcon from '@mui/icons-material/Clear';
+import { useStateContext } from "../../../contexts/ContextProvider";
 
 export function ImageNode({ id, groupID, data }) {
 
@@ -26,6 +27,7 @@ export function ImageNode({ id, groupID, data }) {
   const [activeTab, setActiveTab] = useState("tab1");
   const [uploading, setUploading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const { nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
   const {
     attributes,
     listeners,
@@ -40,6 +42,12 @@ export function ImageNode({ id, groupID, data }) {
     transition,
     marginBottom: "10px"
   }
+
+  useEffect(() => {
+    if (isVisible) {
+      setIsVisible(false);
+    }
+  }, [nodeMenuIsOpen]);
 
   useEffect(() => {
     setNodes((nds) =>
@@ -108,9 +116,20 @@ export function ImageNode({ id, groupID, data }) {
     });
   };
 
+  const openMenu = () => {
+    if (isVisible) {
+      setIsVisible(false);
+      return;
+    }
+    setNodeMenuIsOpen(!nodeMenuIsOpen);
+    setTimeout(() => {
+      setIsVisible(true);
+    }, 100);
+  }
+
   return (
     <NodeContainer
-      onClick={() => setIsVisible(!isVisible)}
+      onClick={() => openMenu()}
       style={style}
       {...attributes}
       {...listeners}

@@ -12,7 +12,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 
 export function TextInputNode({ data, id, groupID }) {
   const { setNodes } = useReactFlow();
-  const { createNewVariable, variables } = useStateContext();
+  const { createNewVariable, variables, nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
   const [newVariable, setNewVariable] = useState("");
   const [placeholder, setPlaceholder] = useState(data.placeholder || "Digite sua resposta...");
   const [buttonLabel, setButtonLabel] = useState(data.buttonLabel || "Enviar");
@@ -32,6 +32,12 @@ export function TextInputNode({ data, id, groupID }) {
     transition,
     marginBottom: "10px"
   }
+
+  useEffect(() => {
+    if (isVisible) {
+      setIsVisible(false);
+    }
+  }, [nodeMenuIsOpen]);
 
   useEffect(() => {
     setNodes((nds) =>
@@ -93,9 +99,20 @@ export function TextInputNode({ data, id, groupID }) {
     setAssignedVariable(variableValue);
   }
 
+  const openMenu = () => {
+    if (isVisible) {
+      setIsVisible(false);
+      return;
+    }
+    setNodeMenuIsOpen(!nodeMenuIsOpen);
+    setTimeout(() => {
+      setIsVisible(true);
+    }, 100);
+  }
+
   return (
     <NodeContainer
-      onClick={() => setIsVisible(!isVisible)}
+      onClick={() => openMenu()}
       style={style}
       {...attributes}
       {...listeners}

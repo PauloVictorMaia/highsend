@@ -104,7 +104,7 @@ export const UserIconContainer = styled.div`
 const TopBar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const { openMenu, signOut, user } = useStateContext();
+  const { openMenu, signOut, user, nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
   const navigate = useNavigate();
 
   const handleIconContainerClick = () => {
@@ -134,7 +134,7 @@ const TopBar = () => {
   };
 
   return (
-    <TopBarWrapper>
+    <TopBarWrapper onClick={() => setNodeMenuIsOpen(!nodeMenuIsOpen)}>
       <LogoContainer>
         {/* <IconContainer onClick={() => setOpenMenu(!openMenu)} >
           <MenuIcon />
