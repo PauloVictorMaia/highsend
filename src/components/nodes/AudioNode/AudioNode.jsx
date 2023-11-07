@@ -198,6 +198,12 @@ function AudioNode({ data, id, groupID }) {
                   onChange={() => setAutoplay(!autoplay)}
                 />
               </SwitchContainer>
+              {
+                autoplay &&
+                <span>
+                  Para o autoplay no áudio funcionar, o usuário ja deve ter interagido com a página. Lembrando que o autoplay é inconsistente e pode variar de local para local, caso ative o mesmo estará assumindo o risco de quebrar a fluidez do seu fluxo.
+                </span>
+              }
             </InputsContainer>
           )}
           {activeTab === "tab2" && (
@@ -223,6 +229,12 @@ function AudioNode({ data, id, groupID }) {
                   onChange={() => setAutoplay(!autoplay)}
                 />
               </SwitchContainer>
+              {
+                autoplay &&
+                <span>
+                  Para o autoplay no áudio funcionar, o usuário ja deve ter interagido com a página. Lembrando que o autoplay é inconsistente e pode variar de local para local, caso ative o mesmo estará assumindo o risco de quebrar a fluidez do seu fluxo.
+                </span>
+              }
             </InputsContainer>
           )}
         </SendAudio>

@@ -69,8 +69,6 @@ const Flow = () => {
   const BASE_URL = `${import.meta.env.VITE_OPEN_FRONT_URL}/fluxo-de-bot/`;
   const [isLoading, setIsLoading] = useState(false);
 
-  console.log(nodes)
-
   useEffect(() => {
     if (Object.keys(user).length > 0) {
       getFlowData();

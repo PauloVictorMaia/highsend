@@ -163,6 +163,11 @@ export const InputsContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+
+  >span {
+    font-size: 10px;
+    margin-bottom: 10px;
+  }
 `;
 
 export const UploadButtonContainer = styled.div`
