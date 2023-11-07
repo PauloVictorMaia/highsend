@@ -6,14 +6,16 @@ import { NodeContainer, CustomToolbar, Container } from "./TextNode.style";
 import { useReactFlow } from "reactflow";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { useState, useEffect } from "react";
-import { useSortable } from "@dnd-kit/sortable"
-import { CSS } from "@dnd-kit/utilities"
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { useStateContext } from "../../../contexts/ContextProvider";
 
 export function TextNode({ data, id, groupID }) {
 
   const [nodeValue, setNodeValue] = useState(data.value || "");
   const [isVisible, setIsVisible] = useState(false);
   const { setNodes } = useReactFlow();
+  const { nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
   const {
     attributes,
     listeners,
@@ -44,6 +46,23 @@ export function TextNode({ data, id, groupID }) {
       })
     );
   }, [nodeValue]);
+
+  useEffect(() => {
+    if (isVisible) {
+      setIsVisible(false);
+    }
+  }, [nodeMenuIsOpen]);
+
+  const openMenu = () => {
+    if (isVisible) {
+      setIsVisible(false);
+      return;
+    }
+    setNodeMenuIsOpen(!nodeMenuIsOpen);
+    setTimeout(() => {
+      setIsVisible(true);
+    }, 100);
+  }
 
   const deleteNode = () => {
     setNodes((nodes) => {
@@ -91,7 +110,7 @@ export function TextNode({ data, id, groupID }) {
       <NodeContainer
         value={nodeValue}
         onChange={(e) => setNodeValue(e.target.value)}
-        onFocus={() => setIsVisible(true)}
+        onFocus={() => openMenu()}
         onBlur={handleVisibility}
       />
 
