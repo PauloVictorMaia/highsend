@@ -1,4 +1,6 @@
 import { styled } from "styled-components";
+import ReactQuill from "react-quill";
+import 'react-quill/dist/quill.snow.css';
 
 export const NodeContainer = styled.textarea`
   width: 100%;
@@ -52,4 +54,40 @@ export const CustomToolbar = styled.div`
 
 export const Container = styled.div`
   position: relative;
+  border: ${({ isvisible }) => isvisible ? "2px solid #9999FF" : "none"};
+  border-radius: 9px;
+
+  &:focus {
+    border: 2px solid #9999FF; 
+    border-radius: 9px;
+  }
+`;
+
+export const StyledTextarea = styled(ReactQuill)`
+
+  .ql-container {
+    border: 1px solid rgba(0, 0, 0, 0.15); 
+    border-top: none; 
+    border-radius: 0 0 8px 8px; 
+    transition: border-color 0.3s ease; 
+    height: 107px;
+  }
+
+  .ql-toolbar {
+    border: 1px solid rgba(0, 0, 0, 0.15); 
+    border-bottom: none; 
+    border-radius: 8px 8px 0 0; 
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .ql-toolbar.ql-snow {
+    button,
+    .ql-picker-label,
+    .ql-picker-options {
+      margin: 0; 
+    }
+  }
 `;

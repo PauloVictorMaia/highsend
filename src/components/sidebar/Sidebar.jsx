@@ -38,7 +38,7 @@ export default () => {
     <SidebarContainer onClick={() => setNodeMenuIsOpen(!nodeMenuIsOpen)}>
       <NodesType>Mensagens</NodesType>
       <NodesContainer>
-        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'textNode', '80')} draggable>
+        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'textNode', '150')} draggable>
           <TextFieldsIcon style={{ fontSize: "large", color: "#0042DA" }} />
           Texto
         </NodeDraggable>

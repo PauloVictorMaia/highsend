@@ -2,7 +2,7 @@
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable react/prop-types */
 
-import { NodeContainer, CustomToolbar, Container } from "./TextNode.style";
+import { CustomToolbar, Container, StyledTextarea } from "./TextNode.style";
 import { useReactFlow } from "reactflow";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { useState, useEffect } from "react";
@@ -100,18 +100,29 @@ export function TextNode({ data, id, groupID }) {
     }, 100);
   }
 
+  const handleEditorChange = (content) => {
+    setNodeValue(content);
+  };
+
   return (
     <Container
       style={style}
       {...attributes}
       {...listeners}
       ref={setNodeRef}
+      onFocus={() => openMenu()}
+      isvisible={isVisible}
     >
-      <NodeContainer
+      <StyledTextarea
         value={nodeValue}
-        onChange={(e) => setNodeValue(e.target.value)}
+        onChange={handleEditorChange}
         onFocus={() => openMenu()}
         onBlur={handleVisibility}
+        modules={{
+          toolbar: [
+            ['bold', 'italic', 'underline', 'strike']
+          ],
+        }}
       />
 
       <CustomToolbar
