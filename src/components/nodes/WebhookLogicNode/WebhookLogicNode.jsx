@@ -15,6 +15,7 @@ import 'ace-builds/src-noconflict/theme-monokai';
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 import ClearIcon from '@mui/icons-material/Clear';
+import { useStateContext } from "../../../contexts/ContextProvider";
 
 function WebhookLogicNode({ data, id, groupID }) {
 
@@ -31,6 +32,7 @@ function WebhookLogicNode({ data, id, groupID }) {
   const [hasCustomBody, setHasCustomBody] = useState(data.hasCustomBody || false);
   const [customBody, setCustomBody] = useState(data.customBody || "");
   const [isVisible, setIsVisible] = useState(false);
+  const { nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
   const {
     attributes,
     listeners,
@@ -45,39 +47,6 @@ function WebhookLogicNode({ data, id, groupID }) {
     transition,
     marginBottom: "10px"
   }
-
-
-
-  // useEffect(() => {
-  //   setNodes((nds) =>
-  //     nds.map((node) => {
-  //       if (node.id === id) {
-  //         const groupID = node.parentNode
-  //         const parentNodes = nds.filter((node) => node.parentNode === groupID)
-  //         node.data.url = url
-  //         node.data.advancedConfiguration = advancedConfiguration
-  //         // node.data.executeOnClient = executeOnClient
-  //         node.data.method = method
-  //         node.data.queryParams = queryParams
-  //         node.data.headers = headers
-  //         node.data.hasCustomBody = hasCustomBody
-  //         if (hasCustomBody) {
-  //           node.data.customBody = customBody
-  //         }
-  //         setNodes((nds) =>
-  //           nds.map((node) => {
-  //             if (node.id === groupID) {
-  //               node.data.blocks = [...parentNodes]
-  //             }
-  //             return node;
-  //           })
-  //         )
-  //       }
-
-  //       return node;
-  //     })
-  //   );
-  // }, [url, advancedConfiguration, method, queryParams, headers, hasCustomBody, customBody]);
 
   useEffect(() => {
     setNodes((nds) =>
@@ -103,7 +72,11 @@ function WebhookLogicNode({ data, id, groupID }) {
     );
   }, [url, advancedConfiguration, method, queryParams, headers, hasCustomBody, customBody]);
 
-
+  useEffect(() => {
+    if (isVisible) {
+      setIsVisible(false);
+    }
+  }, [nodeMenuIsOpen]);
 
   const deleteNode = () => {
     setNodes((nodes) => {
@@ -195,9 +168,30 @@ function WebhookLogicNode({ data, id, groupID }) {
     setCustomBody(newData);
   };
 
+  const openMenu = () => {
+    if (isVisible) {
+      setIsVisible(false);
+      return;
+    }
+    setNodeMenuIsOpen(!nodeMenuIsOpen);
+    setTimeout(() => {
+      setIsVisible(true);
+    }, 100);
+  }
+
+  const deleteQuery = (id) => {
+    const newQueryArray = queryParams.filter(param => param.id !== id);
+    setQueryParams(newQueryArray);
+  }
+
+  const deleteHeaders = (id) => {
+    const newHeadersArray = headers.filter(headers => headers.id !== id);
+    setHeaders(newHeadersArray);
+  }
+
   return (
     <NodeContainer
-      onClick={() => setIsVisible(!isVisible)}
+      onClick={() => openMenu()}
       style={style}
       {...attributes}
       {...listeners}
@@ -286,6 +280,7 @@ function WebhookLogicNode({ data, id, groupID }) {
                       queryParams && queryParams.length > 0 &&
                       queryParams.map((param) => (
                         <EditConfigContainer key={param.id}>
+                          <DeleteOutlineIcon onClick={() => deleteQuery(param.id)} />
                           <EditConfigInputs>
                             <span>Key</span>
                             <input
@@ -327,6 +322,7 @@ function WebhookLogicNode({ data, id, groupID }) {
                       headers && headers.length > 0 &&
                       headers.map((headers) => (
                         <EditConfigContainer key={headers.id}>
+                          <DeleteOutlineIcon onClick={() => deleteHeaders(headers.id)} />
                           <EditConfigInputs>
                             <span>Key</span>
                             <input

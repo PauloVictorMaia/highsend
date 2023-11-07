@@ -5,7 +5,7 @@ import {
   AudioNodeMenu, SendAudio,
   Tabs, Navigation,
   ListTabs, ChooseFileButton,
-  FileInput, LinkInput, CustomToolbar, CloseButton
+  FileInput, LinkInput, CustomToolbar, CloseButton, SwitchContainer, InputsContainer, UploadButtonContainer
 } from "./AudioNode.style"
 import { useReactFlow } from "reactflow";
 import { useState, useEffect } from "react";
@@ -17,6 +17,8 @@ import { Ring } from "@uiball/loaders";
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 import ClearIcon from '@mui/icons-material/Clear';
+import { useStateContext } from "../../../contexts/ContextProvider";
+import { Switch } from "@mui/material";
 
 function AudioNode({ data, id, groupID }) {
 
@@ -25,6 +27,8 @@ function AudioNode({ data, id, groupID }) {
   const [activeTab, setActiveTab] = useState("tab1");
   const [uploading, setUploading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const { nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
+  const [autoplay, setAutoplay] = useState(data.autoplay || false);
   const {
     attributes,
     listeners,
@@ -98,6 +102,7 @@ function AudioNode({ data, id, groupID }) {
           node.data.blocks.map((nodeOnBlock) => {
             if (nodeOnBlock.id === id) {
               nodeOnBlock.data.value = nodeValue
+              nodeOnBlock.data.autoplay = autoplay
             }
             return nodeOnBlock;
           })
@@ -107,9 +112,26 @@ function AudioNode({ data, id, groupID }) {
     );
   }, [nodeValue]);
 
+  useEffect(() => {
+    if (isVisible) {
+      setIsVisible(false);
+    }
+  }, [nodeMenuIsOpen]);
+
+  const openMenu = () => {
+    if (isVisible) {
+      setIsVisible(false);
+      return;
+    }
+    setNodeMenuIsOpen(!nodeMenuIsOpen);
+    setTimeout(() => {
+      setIsVisible(true);
+    }, 100);
+  }
+
   return (
     <NodeContainer
-      onClick={() => setIsVisible(!isVisible)}
+      onClick={() => openMenu()}
       style={style}
       {...attributes}
       {...listeners}
@@ -161,23 +183,47 @@ function AudioNode({ data, id, groupID }) {
         </Navigation>
         <SendAudio>
           {activeTab === "tab1" && (
-            <LinkInput
-              type="text"
-              placeholder="Cole aqui o link do áudio"
-              onChange={(e) => setNodeValue(e.target.value)}
-              value={nodeValue}
-            />
+            <InputsContainer>
+              <LinkInput
+                type="text"
+                placeholder="Cole aqui o link do áudio"
+                onChange={(e) => setNodeValue(e.target.value)}
+                value={nodeValue}
+              />
+              <SwitchContainer>
+                <span>Auto-play</span>
+                <Switch
+                  size="small"
+                  defaultChecked={autoplay}
+                  onChange={() => setAutoplay(!autoplay)}
+                />
+              </SwitchContainer>
+            </InputsContainer>
           )}
           {activeTab === "tab2" && (
-            <>
-              <ChooseFileButton htmlFor={id}>{uploading ? <Ring color="#fff" size={25} /> : "Escolher arquivo"}</ChooseFileButton>
-              <FileInput
-                type="file"
-                id={id}
-                onChange={uploadAudio}
-                accept=".mp3, .wav"
-              />
-            </>
+            <InputsContainer>
+              <UploadButtonContainer>
+                <ChooseFileButton
+                  htmlFor={id}
+                >
+                  {uploading ? <Ring color="#fff" size={25} /> : "Escolher arquivo"}
+                </ChooseFileButton>
+                <FileInput
+                  type="file"
+                  id={id}
+                  onChange={uploadAudio}
+                  accept=".mp3, .wav"
+                />
+              </UploadButtonContainer>
+              <SwitchContainer>
+                <span>Auto-play</span>
+                <Switch
+                  size="small"
+                  defaultChecked={autoplay}
+                  onChange={() => setAutoplay(!autoplay)}
+                />
+              </SwitchContainer>
+            </InputsContainer>
           )}
         </SendAudio>
       </AudioNodeMenu>

@@ -10,6 +10,7 @@ import ReactPlayer from "react-player";
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 import ClearIcon from '@mui/icons-material/Clear';
+import { useStateContext } from "../../../contexts/ContextProvider";
 
 export function VideoNode({ data, id, groupID }) {
   const [videoLink, setVideoLink] = useState(data.type === 'link' && data.value ? data.value : "");
@@ -20,6 +21,7 @@ export function VideoNode({ data, id, groupID }) {
   const [targetTime, setTargetTime] = useState(data.targetTime || 10);
   const [autoplay, setAutoplay] = useState(data.autoplay || false);
   const [isVisible, setIsVisible] = useState(false);
+  const { nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
   const {
     attributes,
     listeners,
@@ -49,36 +51,6 @@ export function VideoNode({ data, id, groupID }) {
     }
   }
 
-  // useEffect(() => {
-  //   setNodes((nds) =>
-  //     nds.map((node) => {
-  //       if (node.id === id) {
-  //         const groupID = node.parentNode
-  //         const parentNodes = nds.filter((node) => node.parentNode === groupID)
-  //         node.data.value = type === "link" ? videoLink : script
-  //         node.data.type = type
-  //         node.data.autoplay = autoplay
-  //         if (type === "script") {
-  //           node.data.awaitTargetTime = awaitTargetTime
-  //           if (awaitTargetTime) {
-  //             node.data.targetTime = targetTime
-  //           }
-  //         }
-  //         setNodes((nds) =>
-  //           nds.map((node) => {
-  //             if (node.id === groupID) {
-  //               node.data.blocks = [...parentNodes]
-  //             }
-  //             return node;
-  //           })
-  //         )
-  //       }
-
-  //       return node;
-  //     })
-  //   );
-  // }, [videoLink, script, type, awaitTargetTime, targetTime, autoplay]);
-
   useEffect(() => {
     setNodes((nds) =>
       nds.map((node) => {
@@ -102,6 +74,12 @@ export function VideoNode({ data, id, groupID }) {
       })
     );
   }, [videoLink, script, type, awaitTargetTime, targetTime, autoplay]);
+
+  useEffect(() => {
+    if (isVisible) {
+      setIsVisible(false);
+    }
+  }, [nodeMenuIsOpen]);
 
   const deleteNode = () => {
     setNodes((nodes) => {
@@ -133,9 +111,20 @@ export function VideoNode({ data, id, groupID }) {
     });
   };
 
+  const openMenu = () => {
+    if (isVisible) {
+      setIsVisible(false);
+      return;
+    }
+    setNodeMenuIsOpen(!nodeMenuIsOpen);
+    setTimeout(() => {
+      setIsVisible(true);
+    }, 100);
+  }
+
   return (
     <NodeContainer
-      onClick={() => setIsVisible(!isVisible)}
+      onClick={() => openMenu()}
       style={style}
       {...attributes}
       {...listeners}

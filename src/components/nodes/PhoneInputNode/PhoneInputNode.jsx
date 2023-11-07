@@ -12,7 +12,7 @@ import { CSS } from "@dnd-kit/utilities"
 import ClearIcon from '@mui/icons-material/Clear';
 
 export function PhoneInputNode({ data, id, groupID }) {
-  const { createNewVariable, variables } = useStateContext();
+  const { createNewVariable, variables, nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
   const { setNodes } = useReactFlow();
   const [newVariable, setNewVariable] = useState("");
   const [placeholder, setPlaceholder] = useState(data.placeholder || "Número de telefone...");
@@ -70,6 +70,12 @@ export function PhoneInputNode({ data, id, groupID }) {
     );
   }, [placeholder, buttonLabel, assignedVariable, retryMessage, phoneCode]);
 
+  useEffect(() => {
+    if (isVisible) {
+      setIsVisible(false);
+    }
+  }, [nodeMenuIsOpen]);
+
   const handleAssignedVariable = (variableValue) => {
     setAssignedVariable(variableValue);
   }
@@ -104,9 +110,20 @@ export function PhoneInputNode({ data, id, groupID }) {
     });
   };
 
+  const openMenu = () => {
+    if (isVisible) {
+      setIsVisible(false);
+      return;
+    }
+    setNodeMenuIsOpen(!nodeMenuIsOpen);
+    setTimeout(() => {
+      setIsVisible(true);
+    }, 100);
+  }
+
   return (
     <NodeContainer
-      onClick={() => setIsVisible(!isVisible)}
+      onClick={() => openMenu()}
       style={style}
       {...attributes}
       {...listeners}

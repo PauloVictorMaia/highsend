@@ -8,6 +8,7 @@ import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined';
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 import ClearIcon from '@mui/icons-material/Clear';
+import { useStateContext } from "../../../contexts/ContextProvider";
 
 function PixelFacebookLogicNode({ data, id, groupID }) {
 
@@ -15,6 +16,7 @@ function PixelFacebookLogicNode({ data, id, groupID }) {
   const [tab, setTab] = useState("pixel");
   const { setNodes } = useReactFlow();
   const [isVisible, setIsVisible] = useState(false);
+  const { nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
   const {
     attributes,
     listeners,
@@ -46,6 +48,12 @@ function PixelFacebookLogicNode({ data, id, groupID }) {
     );
   }, [nodeValue]);
 
+  useEffect(() => {
+    if (isVisible) {
+      setIsVisible(false);
+    }
+  }, [nodeMenuIsOpen]);
+
   const deleteNode = () => {
     setNodes((nodes) => {
       return nodes.map((node) => {
@@ -76,9 +84,20 @@ function PixelFacebookLogicNode({ data, id, groupID }) {
     });
   };
 
+  const openMenu = () => {
+    if (isVisible) {
+      setIsVisible(false);
+      return;
+    }
+    setNodeMenuIsOpen(!nodeMenuIsOpen);
+    setTimeout(() => {
+      setIsVisible(true);
+    }, 100);
+  }
+
   return (
     <NodeContainer
-      onClick={() => setIsVisible(!isVisible)}
+      onClick={() => openMenu()}
       style={style}
       {...attributes}
       {...listeners}

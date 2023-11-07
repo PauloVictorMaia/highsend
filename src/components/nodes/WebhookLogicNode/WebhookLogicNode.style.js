@@ -158,7 +158,13 @@ export const EditConfigContainer = styled.div`
   border: 0.5px solid rgba(0,0,0,0.15);
   border-radius: 5px;
   margin: 10px 0;
-  `;
+
+  >svg {
+    color: rgba(0,0,0,0.6);
+    font-size: large;
+    cursor: pointer;
+  }
+`;
 
 export const EditConfigInputs = styled.div`
   display: flex;

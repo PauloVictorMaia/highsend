@@ -16,7 +16,7 @@ function WhatsappMessageLogicNode({ data, id, groupID }) {
   const { setNodes } = useReactFlow();
   const [nodeValue, setNodeValue] = useState(data.value || "");
   const [message, setMessage] = useState(data.message || "");
-  const { integrations, variables } = useStateContext();
+  const { integrations, variables, nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
   const variablePhone = variables.filter(variable => variable.name === 'Telefone');
   const [assignedVariable, setAssignedVariable] = useState(data.variable || variablePhone[0].id);
   const whatsappIntegrations = integrations.filter(integrations => integrations.type === 'whatsapp');
@@ -55,8 +55,25 @@ function WhatsappMessageLogicNode({ data, id, groupID }) {
     );
   }, [nodeValue, message, assignedVariable]);
 
+  useEffect(() => {
+    if (isVisible) {
+      setIsVisible(false);
+    }
+  }, [nodeMenuIsOpen]);
+
   const createWhatsappIntegration = () => {
     navigate('/dashboard/integrations');
+  }
+
+  const openMenu = () => {
+    if (isVisible) {
+      setIsVisible(false);
+      return;
+    }
+    setNodeMenuIsOpen(!nodeMenuIsOpen);
+    setTimeout(() => {
+      setIsVisible(true);
+    }, 100);
   }
 
   const deleteNode = () => {
@@ -91,7 +108,7 @@ function WhatsappMessageLogicNode({ data, id, groupID }) {
 
   return (
     <NodeContainer
-      onClick={() => setIsVisible(!isVisible)}
+      onClick={() => openMenu()}
       style={style}
       {...attributes}
       {...listeners}

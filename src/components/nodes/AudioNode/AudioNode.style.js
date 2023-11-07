@@ -33,10 +33,9 @@ export const AudioPreview = styled.div`
 export const AudioNodeMenu = styled.div`
   visibility: ${({isvisible}) => isvisible ? "visible" : "hidden"};
   width: 300px;
-  height: 90px;
   position: absolute;
   left: -325px;
-  top: -35px;
+  top: -55px;
   border-radius: 5px;
   background-color: #fff;
   padding: 0 10px;
@@ -77,12 +76,12 @@ export const Tabs = styled.li`
 
 export const SendAudio = styled.div`
   width: 100%;
-  height: 60%;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0 10px;
   box-sizing: border-box;
+  margin-top: 10px;
 `;
 
 export const LinkInput = styled.input`
@@ -157,5 +156,32 @@ export const CloseButton = styled.button`
     width: 100%;
     height: 100%;
     color: #fff;
+  }
+`;
+
+export const InputsContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
+export const UploadButtonContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const SwitchContainer = styled.div`
+  width: 100%;
+  height: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+
+  >span {
+    color: #333;
+    font-size: 0.9rem;
   }
 `;

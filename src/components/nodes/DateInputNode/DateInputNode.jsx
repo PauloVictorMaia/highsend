@@ -12,7 +12,7 @@ import { CSS } from "@dnd-kit/utilities"
 import ClearIcon from '@mui/icons-material/Clear';
 
 export function DateInputNode({ data, id, groupID }) {
-  const { calendarsData, createCalendar } = useStateContext();
+  const { calendarsData, createCalendar, nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
   const [nodeValue, setNodeValue] = useState(data.value || "")
   const { setNodes } = useReactFlow();
   const [interruptFlow, setInterruptFlow] = useState(data.interruptFlow || false);
@@ -49,6 +49,12 @@ export function DateInputNode({ data, id, groupID }) {
     );
   }, [nodeValue, interruptFlow]);
 
+  useEffect(() => {
+    if (isVisible) {
+      setIsVisible(false);
+    }
+  }, [nodeMenuIsOpen]);
+
   const deleteNode = () => {
     setNodes((nodes) => {
       return nodes.map((node) => {
@@ -79,9 +85,20 @@ export function DateInputNode({ data, id, groupID }) {
     });
   };
 
+  const openMenu = () => {
+    if (isVisible) {
+      setIsVisible(false);
+      return;
+    }
+    setNodeMenuIsOpen(!nodeMenuIsOpen);
+    setTimeout(() => {
+      setIsVisible(true);
+    }, 100);
+  }
+
   return (
     <NodeContainer
-      onClick={() => setIsVisible(!isVisible)}
+      onClick={() => openMenu()}
       style={style}
       {...attributes}
       {...listeners}

@@ -1,20 +1,21 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { InputConfig, InputPreview, NodeContainer, RightHandle, MenuInput, MenuButton } from "./ButtonInputOriginalNode.style";
-import { useReactFlow, NodeToolbar, Position } from "reactflow";
+import { InputConfig, InputPreview, NodeContainer, RightHandle, MenuInput, MenuButton, CustomToolbar } from "./ButtonInputOriginalNode.style";
+import { useReactFlow, Position } from "reactflow";
 import { useState, useEffect } from "react";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import TaskAltOutlinedIcon from '@mui/icons-material/TaskAltOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
-export function ButtonInputOriginalNode({ data, id, selected }) {
-  const { createNewVariable, variables } = useStateContext();
+export function ButtonInputOriginalNode({ data, id }) {
+  const { createNewVariable, variables, nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
   const { setNodes } = useReactFlow();
   const { deleteElements } = useReactFlow();
   const onDelete = () => deleteElements({ nodes: [{ id }] });
-  const [newVariable, setNewVariable] = useState("")
-  const [buttonLabel, setButtonLabel] = useState(data.buttonLabel || "Click para editar...")
-  const [assignedVariable, setAssignedVariable] = useState(data.variable || "")
+  const [newVariable, setNewVariable] = useState("");
+  const [buttonLabel, setButtonLabel] = useState(data.buttonLabel || "Click para editar...");
+  const [assignedVariable, setAssignedVariable] = useState(data.variable || "");
+  const [isVisible, setIsVisible] = useState(false);
 
   const sendNewVariable = async () => {
     try {
@@ -50,27 +51,37 @@ export function ButtonInputOriginalNode({ data, id, selected }) {
     );
   }, [buttonLabel, assignedVariable]);
 
+  useEffect(() => {
+    if (isVisible) {
+      setIsVisible(false);
+    }
+  }, [nodeMenuIsOpen]);
+
   const handleAssignedVariable = (variableValue) => {
     setAssignedVariable(variableValue);
   }
 
-  return (
-    <NodeContainer>
+  const openMenu = () => {
+    if (isVisible) {
+      setIsVisible(false);
+      return;
+    }
+    setNodeMenuIsOpen(!nodeMenuIsOpen);
+    setTimeout(() => {
+      setIsVisible(true);
+    }, 100);
+  }
 
-      <NodeToolbar
-        offset={5}
-        align='center'
-        style={{
-          backgroundColor: '#fff',
-          color: '#595959',
-          border: '0.5px solid rgba(0,0,0,0.15)',
-          borderRadius: '3px',
-          padding: "5px",
-          boxSizing: "border-box",
-        }}
+  return (
+    <NodeContainer
+      onClick={() => openMenu()}
+    >
+
+      <CustomToolbar
+        isvisible={isVisible}
       >
-        <DeleteOutlineIcon style={{ cursor: 'pointer', fontSize: 'large' }} onClick={onDelete} />
-      </NodeToolbar>
+        <DeleteOutlineIcon style={{ cursor: 'pointer', fontSize: 'large' }} onClick={() => onDelete()} />
+      </CustomToolbar>
 
       <RightHandle
         id="Right"
@@ -89,7 +100,7 @@ export function ButtonInputOriginalNode({ data, id, selected }) {
         />
       </InputPreview>
 
-      <InputConfig isvisible={selected}>
+      <InputConfig isvisible={isVisible} onClick={(e) => e.stopPropagation()}>
         <span>Criar nova variável:</span>
         <div>
           <MenuInput
