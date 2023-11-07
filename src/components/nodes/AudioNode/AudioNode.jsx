@@ -110,7 +110,7 @@ function AudioNode({ data, id, groupID }) {
         return node;
       })
     );
-  }, [nodeValue]);
+  }, [nodeValue, autoplay]);
 
   useEffect(() => {
     if (isVisible) {
