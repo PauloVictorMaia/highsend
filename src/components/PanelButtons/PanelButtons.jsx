@@ -13,7 +13,7 @@ import { Ring } from "@uiball/loaders";
 import { useStateContext } from "../../contexts/ContextProvider";
 
 function PanelButtons({
-  save, hasChanges, dropDownMenuIsVisible, setDropDownMenuIsVisible, profileImage, setProfileImage, template, setTemplate, profileName, setProfileName, copyURL, isLoading,
+  save, hasChanges, dropDownMenuIsVisible, setDropDownMenuIsVisible, profileImage, setProfileImage, template, setTemplate, profileName, setProfileName, copyURL, isLoading, exportToJson
 }) {
 
   const [modalIsVisible, setModalIsVisible] = useState(false);
@@ -61,7 +61,7 @@ function PanelButtons({
         <Label>Configurar</Label>
       </Button>
 
-      <Button>
+      <Button onClick={() => exportToJson()}>
         <IosShareIcon />
         <Label>Exportar</Label>
       </Button>

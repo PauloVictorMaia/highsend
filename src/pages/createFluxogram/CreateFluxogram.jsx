@@ -63,6 +63,7 @@ const Flow = () => {
   const [profileImage, setProfileImage] = useState("");
   const [template, setTemplate] = useState("");
   const [profileName, setProfileName] = useState("");
+  const [flowName, setFlowName] = useState("");
   const [originalProfileImage, setOriginalProfileImage] = useState("");
   const [originalTemplate, setOriginalTemplate] = useState("");
   const [originalProfileName, setOriginalProfileName] = useState("");
@@ -74,6 +75,29 @@ const Flow = () => {
       getFlowData();
     }
   }, []);
+
+  const exportToJson = () => {
+    const data = {
+      nodes,
+      edges,
+      variables,
+      config: {
+        profileName,
+        profileImage,
+        template
+      },
+      name: flowName
+    }
+    const json = JSON.stringify(data, null, 2);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${data.name}.json`;
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+  };
 
   function handleHasChanged() {
     setTimeout(() => {
@@ -98,6 +122,7 @@ const Flow = () => {
         setOriginalProfileImage(response.data.config.profileImage);
         setOriginalTemplate(response.data.config.template);
         setOriginalProfileName(response.data.config.profileName);
+        setFlowName(response.data.name);
         handleHasChanged();
       }
     } catch {
@@ -510,6 +535,7 @@ const Flow = () => {
           setProfileName={setProfileName}
           copyURL={copyURL}
           isLoading={isLoading}
+          exportToJson={exportToJson}
         />
       </Panel>
     </FlowContainer>
