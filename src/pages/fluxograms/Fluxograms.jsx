@@ -13,7 +13,12 @@ import {
   DeleteFlow,
   IconContainer,
   ActiveComponent,
-  InputItem
+  InputItem,
+  CreationOptions,
+  FlowNameInput,
+  CreationOptionsTitle,
+  FlowOption,
+  FileInput
 } from "./Fluxograms.style";
 import AddIcon from '@mui/icons-material/Add';
 import { useState } from "react";
@@ -35,6 +40,8 @@ import CodeIcon from '@mui/icons-material/Code';
 import CopyEmbed from "../../components/CopyEmbedCode";
 import { Ring } from "@uiball/loaders";
 import { Skeleton } from "@mui/material";
+import BuildIcon from '@mui/icons-material/Build';
+import PublishIcon from '@mui/icons-material/Publish';
 
 function Fluxograms() {
   const [menuComponent, setMenuComponent] = useState(0);
@@ -44,26 +51,56 @@ function Fluxograms() {
   const [modalEditIsVisible, setModalEditIsVisible] = useState(false);
   const [modalDeleteIsVisible, setModalDeleteIsVisible] = useState(false);
   const [modalEmbedIsVisible, setModalEmbedIsVisible] = useState(false);
+  const [modalNewFlowIsVisible, setModalNewFlowIsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [uploadingFile, setUploadingFile] = useState(false);
   const [deleteFlowIsLoading, setDeleteFlowIsLoading] = useState(false);
   const [loadingStates, setLoadingStates] = useState(flows.map(() => false));
   const [editFlowNameIsLoading, setEditFlowNameIsLoading] = useState(false);
   const [indexModal, setIndexModal] = useState(null);
   const [flowName, setFlowName] = useState("");
+  const [newFlowName, setNewFlowName] = useState("My flow");
   const BASE_URL = `${import.meta.env.VITE_OPEN_FRONT_URL}/fluxo-de-bot/`;
 
   const createFlow = async () => {
     setIsLoading(true);
     try {
-      const response = await api.post(`/flows/create-flow/${user.id}`, {}, { headers: { authorization: token } });
+      const response = await api.post(`/flows/create-flow/${user.id}`, { flowName: newFlowName }, { headers: { authorization: token } });
       if (response.status === 201) {
         navigate(`/dashboard/fluxograms/edit/${response.data.id}`);
         getFlows();
         setIsLoading(false);
+        setModalNewFlowIsVisible(false);
       }
     } catch {
       toast.error('Erro ao criar novo flow.');
       setIsLoading(false);
+    }
+  }
+
+  const createFlowWithJsonFile = async (event) => {
+    try {
+      setUploadingFile(true);
+      const fileInput = event.target;
+      const jsonFile = fileInput.files[0];
+      const formData = new FormData();
+      formData.append('flowJson', jsonFile);
+      const response = await api.post(`/flows/create-flow-with-json/${user.id}/${newFlowName}`, formData,
+        {
+          headers: {
+            authorization: token,
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+      if (response.status === 200) {
+        navigate(`/dashboard/fluxograms/edit/${response.data.id}`);
+        getFlows();
+        setUploadingFile(false);
+        setModalNewFlowIsVisible(false);
+      }
+    } catch (error) {
+      toast.error('Esse não é um arquivo válido.');
+      setUploadingFile(false);
     }
   }
 
@@ -147,10 +184,8 @@ function Fluxograms() {
     >
 
       <Container>
-        <NewFluxogramCard onClick={createFlow}>
-          {
-            isLoading ? <Ring color="#fff" /> : <AddIcon style={{ fontSize: "2.2rem" }} />
-          }
+        <NewFluxogramCard onClick={() => setModalNewFlowIsVisible(true)}>
+          <AddIcon style={{ fontSize: "2.2rem" }} />
           <span>Novo Flow</span>
         </NewFluxogramCard>
 
@@ -254,7 +289,7 @@ function Fluxograms() {
                 <ModalContent>
                   <CloseButton onClick={(e) => {
                     e.stopPropagation();
-                    setModalDeleteIsVisible(false)
+                    setModalDeleteIsVisible(false);
                   }
                   }>
                     <ClearIcon />
@@ -277,13 +312,70 @@ function Fluxograms() {
                   <h2>Copie o códido do flow e insira no seu site</h2>
                   <CloseButton onClick={(e) => {
                     e.stopPropagation();
-                    setModalEmbedIsVisible(false)
+                    setModalEmbedIsVisible(false);
                   }
                   }>
                     <ClearIcon />
                   </CloseButton>
 
                   <CopyEmbed flowId={flow.id} userId={user.id} />
+                </ModalContent>
+              </Modal>
+
+              <Modal onClick={(e) => e.stopPropagation()} isvisible={modalNewFlowIsVisible}>
+                <ModalContent width={450} height={400}>
+                  <CloseButton onClick={(e) => {
+                    e.stopPropagation();
+                    setModalNewFlowIsVisible(false);
+                  }
+                  }>
+                    <ClearIcon />
+                  </CloseButton>
+
+                  <CreationOptions>
+
+                    <FlowNameInput>
+                      <InputItem
+                        type="text"
+                        label="Nome do fluxo"
+                        variant="outlined"
+                        defaultValue={newFlowName}
+                        onChange={(e) => setNewFlowName(e.target.value)}
+                      />
+                    </FlowNameInput>
+
+                    <CreationOptionsTitle>
+                      <h2>Opções de criação</h2>
+                    </CreationOptionsTitle>
+
+                    <FlowOption onClick={createFlow}>
+                      {
+                        isLoading ? <Ring color="#333" size={30} /> : <BuildIcon />
+                      }
+                      <span>Em branco</span>
+                    </FlowOption>
+
+                    <FlowOption htmlFor="importJSON">
+                      {
+                        uploadingFile ? <Ring color="#333" size={30} /> : <PublishIcon style={{ fontSize: "1.9rem" }} />
+                      }
+                      <span>Importar JSON</span>
+                      <FileInput
+                        type="file"
+                        id="importJSON"
+                        onChange={createFlowWithJsonFile}
+                        accept=".json"
+                      />
+                    </FlowOption>
+                  </CreationOptions>
+
+                  {/* <span>Modal new flow</span>
+                  <button onClick={createFlow}>
+                    {
+                      isLoading ? <Ring color="#fff" /> : "Criar novo"
+                    }
+                  </button> */}
+
                 </ModalContent>
               </Modal>
             </FluxogramCard>

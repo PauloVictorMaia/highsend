@@ -225,3 +225,51 @@ export const DeleteFlow = styled.div`
     }
   }
 `;
+
+export const CreationOptions = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+`;
+
+export const FlowNameInput = styled.div`
+  margin-top: 25px;
+`;
+
+export const CreationOptionsTitle = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  >h2 {
+    margin: 0;
+    color: #333;
+  }
+`;
+
+export const FlowOption = styled.label`
+  width: 100%;
+  height: 60px;
+  border: 2px solid #E0EAFF;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 30px;
+
+  >svg {
+    color: #4339F2;
+  }
+
+  &:hover {
+    border: 2px solid #4339F2;
+    cursor: pointer;
+  }
+`;
+
+export const FileInput = styled.input`
+  display: none;
+`;

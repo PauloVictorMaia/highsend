@@ -55,7 +55,9 @@ export function TextNode({ data, id, groupID }) {
 
   const openMenu = () => {
     if (isVisible) {
-      setIsVisible(false);
+      setTimeout(() => {
+        setIsVisible(false)
+      }, 100);
       return;
     }
     setNodeMenuIsOpen(!nodeMenuIsOpen);
