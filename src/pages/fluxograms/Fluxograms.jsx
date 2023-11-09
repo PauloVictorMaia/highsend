@@ -18,7 +18,9 @@ import {
   FlowNameInput,
   CreationOptionsTitle,
   FlowOption,
-  FileInput
+  FileInput,
+  TemplateCard,
+  TemplatesContainer
 } from "./Fluxograms.style";
 import AddIcon from '@mui/icons-material/Add';
 import { useState } from "react";
@@ -63,6 +65,10 @@ function Fluxograms() {
   const BASE_URL = `${import.meta.env.VITE_OPEN_FRONT_URL}/fluxo-de-bot/`;
 
   const createFlow = async () => {
+    if (!newFlowName) {
+      toast.warning("Escolha um nome para o seu fluxo");
+      return;
+    }
     setIsLoading(true);
     try {
       const response = await api.post(`/flows/create-flow/${user.id}`, { flowName: newFlowName }, { headers: { authorization: token } });
@@ -79,6 +85,10 @@ function Fluxograms() {
   }
 
   const createFlowWithJsonFile = async (event) => {
+    if (!newFlowName) {
+      toast.warning("Escolha um nome para o seu fluxo");
+      return;
+    }
     try {
       setUploadingFile(true);
       const fileInput = event.target;
@@ -99,7 +109,13 @@ function Fluxograms() {
         setModalNewFlowIsVisible(false);
       }
     } catch (error) {
-      toast.error('Esse não é um arquivo válido.');
+      if (error.response && error.response.status === 400) {
+        console.log(error.response);
+        toast.error(error.response.data.message);
+        setUploadingFile(false);
+        return;
+      }
+      toast.error('Erro ao processar arquivo.');
       setUploadingFile(false);
     }
   }
@@ -171,6 +187,16 @@ function Fluxograms() {
     }
   }
 
+  const openModalNewFlow = () => {
+    setModalNewFlowIsVisible(true);
+  }
+
+  const closeModalNewFlow = (e) => {
+    e.stopPropagation();
+    setModalNewFlowIsVisible(false);
+    setNewFlowName("My flow");
+  }
+
   return (
     <ContentPageContainer
       header={
@@ -184,7 +210,7 @@ function Fluxograms() {
     >
 
       <Container>
-        <NewFluxogramCard onClick={() => setModalNewFlowIsVisible(true)}>
+        <NewFluxogramCard onClick={() => openModalNewFlow()}>
           <AddIcon style={{ fontSize: "2.2rem" }} />
           <span>Novo Flow</span>
         </NewFluxogramCard>
@@ -323,12 +349,8 @@ function Fluxograms() {
               </Modal>
 
               <Modal onClick={(e) => e.stopPropagation()} isvisible={modalNewFlowIsVisible}>
-                <ModalContent width={450} height={400}>
-                  <CloseButton onClick={(e) => {
-                    e.stopPropagation();
-                    setModalNewFlowIsVisible(false);
-                  }
-                  }>
+                <ModalContent width={450} height={550}>
+                  <CloseButton onClick={(e) => closeModalNewFlow(e)}>
                     <ClearIcon />
                   </CloseButton>
 
@@ -339,7 +361,7 @@ function Fluxograms() {
                         type="text"
                         label="Nome do fluxo"
                         variant="outlined"
-                        defaultValue={newFlowName}
+                        value={newFlowName}
                         onChange={(e) => setNewFlowName(e.target.value)}
                       />
                     </FlowNameInput>
@@ -367,14 +389,29 @@ function Fluxograms() {
                         accept=".json"
                       />
                     </FlowOption>
-                  </CreationOptions>
 
-                  {/* <span>Modal new flow</span>
-                  <button onClick={createFlow}>
-                    {
-                      isLoading ? <Ring color="#fff" /> : "Criar novo"
-                    }
-                  </button> */}
+                    <CreationOptionsTitle>
+                      <h2>Templates</h2>
+                    </CreationOptionsTitle>
+
+                    <TemplatesContainer>
+                      <TemplateCard disabled>
+                        <h2>Vendas</h2>
+                        <h2>Em breve</h2>
+                      </TemplateCard>
+
+                      <TemplateCard disabled>
+                        <h2>Prospec</h2>
+                        <h2>Em breve</h2>
+                      </TemplateCard>
+
+                      <TemplateCard disabled>
+                        <h2>Promo</h2>
+                        <h2>Em breve</h2>
+                      </TemplateCard>
+                    </TemplatesContainer>
+
+                  </CreationOptions>
 
                 </ModalContent>
               </Modal>

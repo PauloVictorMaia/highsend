@@ -86,7 +86,8 @@ const Flow = () => {
         profileImage,
         template
       },
-      name: flowName
+      name: flowName,
+      id: "hiflow_jhdujmdhhbbvfkppojdb7ubdyge355mskja"
     }
     const json = JSON.stringify(data, null, 2);
     const blob = new Blob([json], { type: 'application/json' });
@@ -102,7 +103,7 @@ const Flow = () => {
   function handleHasChanged() {
     setTimeout(() => {
       setHasChanges(false);
-    }, 200);
+    }, 400);
   }
 
   async function getFlowData() {

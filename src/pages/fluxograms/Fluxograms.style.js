@@ -273,3 +273,35 @@ export const FlowOption = styled.label`
 export const FileInput = styled.input`
   display: none;
 `;
+
+export const TemplatesContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const TemplateCard = styled.button`
+  width: 140px;
+  height: 200px;
+  border-radius: 8px;
+  border: 1px solid #4339F2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+
+  >h2 {
+    margin: 0;
+    color: #333;
+  }
+
+  /* &:hover {
+    cursor: pointer;
+    border: 2px solid #4339F2;
+  } */
+
+  &:disabled {
+    opacity: 0.5;
+  }
+`;
