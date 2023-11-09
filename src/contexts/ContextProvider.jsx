@@ -62,7 +62,6 @@ export const ContextProvider = ({ children }) => {
                 return navigate('/dashboard/fluxograms');
             }
         } catch {
-            toast.error('Usuário não autenticado. Faça login novamente.');
             navigate('/login');
         }
     };

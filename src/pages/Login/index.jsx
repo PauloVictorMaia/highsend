@@ -24,6 +24,7 @@ const Content = styled.div`
  background-color: transparent;
  width: 100%;
  max-width: 500px;
+ max-height: 90vh;
  display: flex;
  flex-direction: column;
 
@@ -83,6 +84,7 @@ const FormContainer = styled.div`
   row-gap: 15px;
   box-sizing: border-box;
   align-items: center;
+  margin-top: 30px;
 
   .forgot-pass {
     font-size: 18px;
@@ -174,10 +176,23 @@ const ErrorText = styled.div`
   margin-bottom: 15px;
 `;
 
+export const CheckBoxContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  column-gap: 5px;
+  margin-top: 5px;
+
+  > input:checked {
+    background-color: red;
+  }
+`;
+
 const LoginPage = () => {
   const { signIn, loadingLogin } = useStateContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <Formik
@@ -218,15 +233,26 @@ const LoginPage = () => {
               <InputItem
                 label="Senha"
                 variant="outlined"
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 name="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
               {/* <ErrorText><ErrorMessage name="password" /></ErrorText> */}
 
-              <Button type="submit" onClick={() => signIn(email, password)}>{loadingLogin? <Ring color="#fff" size={25} /> : 'Entrar'}</Button>
-              
+              <CheckBoxContainer>
+                <input
+                  type="checkbox"
+                  id="show-password"
+                  style={{ width: '20px', height: '20px', cursor: 'pointer' }}
+                  checked={showPassword}
+                  onChange={() => setShowPassword(!showPassword)}
+                />
+                <label htmlFor="show-password" className="show-password">Mostrar senha</label>
+              </CheckBoxContainer>
+
+              <Button type="submit" onClick={() => signIn(email, password)}>{loadingLogin ? <Ring color="#fff" size={25} /> : 'Entrar'}</Button>
+
               <Link style={{ textDecoration: 'none', width: '100%' }} to={`/plans`}>
                 <Button type="submit" outlined>Criar uma conta Hiflow</Button>
               </Link>

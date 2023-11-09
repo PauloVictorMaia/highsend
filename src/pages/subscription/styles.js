@@ -3,14 +3,12 @@ import { TextField } from "@mui/material";
 
 export const Container = styled.div`
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #F8F8F8;
-  padding: 20px;
-  box-sizing: border-box;
+  background-color: #F8F8F8; 
 
   .icons {
     margin-bottom: 30px;
@@ -26,6 +24,7 @@ export const Content = styled.div`
  background-color: transparent;
  width: 100%;
  max-width: 700px;
+ max-height: 90vh;
  display: flex;
  flex-direction: column;
 `;

@@ -10,7 +10,7 @@ const Container = styled.div`
   background-color: #F8F8F8;
   padding: 50px;
   box-sizing: border-box;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -37,6 +37,7 @@ const PlanSection = styled.section`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   column-gap: 15px;
+  max-height: 85vh;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
