@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { leadsResultsMenu } from "../../../data/menus";
 import ContentPageContainer from "../../../containers/ContentPageContainer";
 import CustomPageHeader from "../../../components/CustomPageHeader";
-import { Container, LeadStatus, LeadStatusContainer, StyledTable, DropMenuCard, MenuCardButtons, StatusColor } from "./styles";
+import { Container, LeadStatus, LeadStatusContainer, StyledTable, DropMenuCard, MenuCardButtons, StatusColor, Options, MainContainer, ExportButton } from "./styles";
 import api from "../../../api";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import { toast } from "react-toastify";
@@ -11,6 +11,7 @@ import { format } from "date-fns";
 import ptBR from "date-fns/locale/pt-BR"
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Ring } from "@uiball/loaders";
+import * as XLSX from 'xlsx';
 
 function LeadsResults() {
 
@@ -140,6 +141,80 @@ function LeadsResults() {
     };
   }, []);
 
+  const exportToJson = () => {
+    try {
+      const data = {
+        leads
+      }
+      const json = JSON.stringify(data, null, 2);
+      const blob = new Blob([json], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `hiflow_leads_${params.flowName}.json`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+    } catch {
+      toast.error("Erro ao exportar para JSON");
+    }
+  };
+
+  const exportToCSV = () => {
+    try {
+      const csvData = [];
+      const headers = ["Status", "Enviado em", ...variables.map(variable => variable.name)];
+      csvData.push(headers.join(","));
+
+      leads.forEach(lead => {
+        const leadRow = [
+          lead.status,
+          format(new Date(lead.createdAt), "dd 'de' MMMM 'de' yyyy, 'as' HH:mm", { locale: ptBR }),
+          ...variables.map(variable => lead.variables.find(v => v.name === variable.name)?.value || "")
+        ];
+        csvData.push(leadRow.join(","));
+      });
+
+      const csvContent = csvData.join("\n");
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `hiflow_leads_${params.flowName}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch {
+      toast.error("Erro ao exportar para CSV");
+    }
+  };
+
+  const exportToXLSX = () => {
+    try {
+      const worksheet = XLSX.utils.json_to_sheet(leads.map(lead => {
+        const formattedDate = format(new Date(lead.createdAt), "dd 'de' MMMM 'de' yyyy, às HH:mm", { locale: ptBR });
+        const leadData = {
+          Status: lead.status,
+          'Enviado em': formattedDate
+        };
+
+        variables.forEach(variable => {
+          leadData[variable.name] = lead.variables.find(v => v.name === variable.name)?.value || '';
+        });
+
+        return leadData;
+      }));
+
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Leads');
+      XLSX.writeFile(workbook, `hiflow_leads_${params.flowName}.xlsx`);
+    } catch {
+      toast.error("Erro ao exportar para JSON");
+    }
+  };
+
   return (
     <ContentPageContainer
       header={
@@ -153,79 +228,105 @@ function LeadsResults() {
     >
       {
         loaded && leads.length > 0 ? (
-          <Container ref={containerRef}>
-            <StyledTable>
-              <thead>
-                <tr>
-                  <th>Status</th>
-                  <th>Enviado em</th>
-                  {variables.map((variable) => (
-                    <th key={variable.id}>{variable.name}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {leads.map((lead, index) => (
-                  <tr key={lead.id}>
-                    <td>
-                      {
-                        <LeadStatusContainer>
-                          <MoreVertIcon
-                            onClick={(event) => handleMenuClick(event, index, lead.id)}
-                            ref={ref => (buttonRefs.current[index] = ref)}
-                          />
-                          <LeadStatus leadcolor={lead.status}>
-                            {lead.status}
-                          </LeadStatus>
+          <MainContainer>
 
-                          {indexDrop === index &&
-                            <DropMenuCard ref={menuRef}>
+            <Options>
+              <ExportButton
+                onClick={() => exportToJson()}
+                disabled={leads && leads.length < 1}
+              >
+                Exportar para JSON
+              </ExportButton>
 
-                              {
-                                isLoading ?
-                                  <Ring color="#333" size={50} />
-                                  :
-                                  <>
-                                    <MenuCardButtons onClick={() => handleLeadStatus("Em aberto")}>
-                                      <StatusColor color={"#ddd"} />
-                                      <span>Em aberto</span>
-                                    </MenuCardButtons>
+              <ExportButton
+                onClick={() => exportToCSV()}
+                disabled={leads && leads.length < 1}
+              >
+                Exportar para CSV
+              </ExportButton>
 
-                                    <MenuCardButtons onClick={() => handleLeadStatus("Comprou")}>
-                                      <StatusColor color={"#66ff66"} />
-                                      <span>Comprou</span>
-                                    </MenuCardButtons>
+              <ExportButton
+                onClick={() => exportToXLSX()}
+                disabled={leads && leads.length < 1}
+              >
+                Exportar para XSLX
+              </ExportButton>
+            </Options>
 
-                                    <MenuCardButtons onClick={() => handleLeadStatus("Não comprou")}>
-                                      <StatusColor color={"#ff4d4d"} />
-                                      <span>Não comprou</span>
-                                    </MenuCardButtons>
-
-                                    <MenuCardButtons onClick={() => handleLeadStatus("Não compareceu")}>
-                                      <StatusColor color={"#ffff66"} />
-                                      <span>Não compareceu</span>
-                                    </MenuCardButtons>
-                                  </>
-                              }
-
-                            </DropMenuCard>
-                          }
-                        </LeadStatusContainer>
-                      }
-                    </td>
-                    <td>
-                      {format(new Date(lead.createdAt), "dd 'de' MMMM 'de' yyyy, 'às' HH:mm", { locale: ptBR })}
-                    </td>
+            <Container ref={containerRef}>
+              <StyledTable>
+                <thead>
+                  <tr>
+                    <th>Status</th>
+                    <th>Enviado em</th>
                     {variables.map((variable) => (
-                      <td key={variable.id}>
-                        {lead.variables.find((v) => v.name === variable.name)?.value || ""}
-                      </td>
+                      <th key={variable.id}>{variable.name}</th>
                     ))}
                   </tr>
-                ))}
-              </tbody>
-            </StyledTable>
-          </Container>
+                </thead>
+                <tbody>
+                  {leads.map((lead, index) => (
+                    <tr key={lead.id}>
+                      <td>
+                        {
+                          <LeadStatusContainer>
+                            <MoreVertIcon
+                              onClick={(event) => handleMenuClick(event, index, lead.id)}
+                              ref={ref => (buttonRefs.current[index] = ref)}
+                            />
+                            <LeadStatus leadcolor={lead.status}>
+                              {lead.status}
+                            </LeadStatus>
+
+                            {indexDrop === index &&
+                              <DropMenuCard ref={menuRef}>
+
+                                {
+                                  isLoading ?
+                                    <Ring color="#333" size={50} />
+                                    :
+                                    <>
+                                      <MenuCardButtons onClick={() => handleLeadStatus("Em aberto")}>
+                                        <StatusColor color={"#ddd"} />
+                                        <span>Em aberto</span>
+                                      </MenuCardButtons>
+
+                                      <MenuCardButtons onClick={() => handleLeadStatus("Comprou")}>
+                                        <StatusColor color={"#66ff66"} />
+                                        <span>Comprou</span>
+                                      </MenuCardButtons>
+
+                                      <MenuCardButtons onClick={() => handleLeadStatus("Não comprou")}>
+                                        <StatusColor color={"#ff4d4d"} />
+                                        <span>Não comprou</span>
+                                      </MenuCardButtons>
+
+                                      <MenuCardButtons onClick={() => handleLeadStatus("Não compareceu")}>
+                                        <StatusColor color={"#ffff66"} />
+                                        <span>Não compareceu</span>
+                                      </MenuCardButtons>
+                                    </>
+                                }
+
+                              </DropMenuCard>
+                            }
+                          </LeadStatusContainer>
+                        }
+                      </td>
+                      <td>
+                        {format(new Date(lead.createdAt), "dd 'de' MMMM 'de' yyyy, 'às' HH:mm", { locale: ptBR })}
+                      </td>
+                      {variables.map((variable) => (
+                        <td key={variable.id}>
+                          {lead.variables.find((v) => v.name === variable.name)?.value || ""}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </StyledTable>
+            </Container>
+          </MainContainer>
         )
           :
           (

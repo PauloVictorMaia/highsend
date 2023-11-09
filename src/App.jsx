@@ -41,7 +41,7 @@ const App = () => {
             <Route path="schedules" element={<Schedules />} />
             <Route path="schedules/edit/:id" element={<AddSchedule />} />
             <Route path="leads" element={<Leads />} />
-            <Route path="leads/:flowId" element={<LeadsResults />} />
+            <Route path="leads/:flowName/:flowId" element={<LeadsResults />} />
             <Route path="analytics" element={<Analytics />} />
             <Route path="integrations" element={<IntegrationsList />} />
             <Route path="integrations/edit-integration/:name/:id" element={<EditIntegration />} />

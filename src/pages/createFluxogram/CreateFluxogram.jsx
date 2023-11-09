@@ -77,27 +77,31 @@ const Flow = () => {
   }, []);
 
   const exportToJson = () => {
-    const data = {
-      nodes,
-      edges,
-      variables,
-      config: {
-        profileName,
-        profileImage,
-        template
-      },
-      name: flowName,
-      id: "hiflow_jhdujmdhhbbvfkppojdb7ubdyge355mskja"
+    try {
+      const data = {
+        nodes,
+        edges,
+        variables,
+        config: {
+          profileName,
+          profileImage,
+          template
+        },
+        name: flowName,
+        id: "hiflow_jhdujmdhhbbvfkppojdb7ubdyge355mskja"
+      }
+      const json = JSON.stringify(data, null, 2);
+      const blob = new Blob([json], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `hiflow_fluxo_${data.name}.json`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+    } catch {
+      toast.error("Erro ao exportar para JSON.");
     }
-    const json = JSON.stringify(data, null, 2);
-    const blob = new Blob([json], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${data.name}.json`;
-    document.body.appendChild(a);
-    a.click();
-    window.URL.revokeObjectURL(url);
   };
 
   function handleHasChanged() {
