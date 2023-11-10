@@ -100,7 +100,7 @@ export const ModalContent = styled.div`
   height:${({ height }) => height? `${height}px` : '150px'}; ;
   background-color: #fff;
   border-radius: 8px;
-  padding: 10px;
+  padding: 30px;
   position: relative;
 `;
 
