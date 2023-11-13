@@ -33,7 +33,7 @@ export const Button = styled.button`
   }
 
   >svg {
-    color: ${({color}) => color ? "#ff8c1a" : "#333"};
+    color: ${({color}) => color ? "#E67200" : "#333"};
     width: 70%;
     height: auto;
     font-size: small;
@@ -43,7 +43,7 @@ export const Button = styled.button`
 export const Label = styled.span`
   font-size: 10px;
   color: #333;
-  color: ${({color}) => color ? "#ff8c1a" : "#333"};
+  color: ${({color}) => color ? "#E67200" : "#333"};
 `;
 
 export const DropDownMenu = styled.div`
