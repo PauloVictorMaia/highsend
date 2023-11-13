@@ -129,7 +129,7 @@ export function EmailInputNode({ data, id, groupID }) {
       </CustomToolbar>
 
       <InputPreview>
-        <EmailOutlinedIcon style={{ fontSize: "large", color: "#4339F2" }} />
+        <EmailOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
         <span>{placeholder}</span>
       </InputPreview>
 

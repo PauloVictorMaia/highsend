@@ -126,7 +126,7 @@ export function TextInputNode({ data, id, groupID }) {
       </CustomToolbar>
 
       <InputPreview>
-        <TextFieldsIcon style={{ fontSize: "large", color: "#4339F2" }} />
+        <TextFieldsIcon style={{ fontSize: "large", color: "#E67200" }} />
         <span>{placeholder}</span>
       </InputPreview>
 

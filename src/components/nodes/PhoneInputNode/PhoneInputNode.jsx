@@ -137,7 +137,7 @@ export function PhoneInputNode({ data, id, groupID }) {
       </CustomToolbar>
 
       <InputPreview>
-        <PhoneIphoneOutlinedIcon style={{ fontSize: "large", color: "#4339F2" }} />
+        <PhoneIphoneOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
         <span>{placeholder}</span>
       </InputPreview>
 

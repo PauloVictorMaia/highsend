@@ -128,7 +128,7 @@ export function WebsiteInputNode({ data, id, groupID }) {
       </CustomToolbar>
 
       <InputPreview>
-        <MouseOutlinedIcon style={{ fontSize: "large", color: "#4339F2" }} />
+        <MouseOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
         <span>{placeholder}</span>
       </InputPreview>
 
