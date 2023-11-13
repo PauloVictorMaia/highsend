@@ -21,7 +21,7 @@ export const AddLink = styled.div`
   column-gap: 5px;
 
   > svg {
-    color: #E67200;
+    color: #4339F2;
   }
 `;
 

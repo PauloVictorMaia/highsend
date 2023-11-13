@@ -112,7 +112,7 @@ export function DateInputNode({ data, id, groupID }) {
       </CustomToolbar>
 
       <InputPreview>
-        <EditCalendarOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
+        <EditCalendarOutlinedIcon style={{ fontSize: "large", color: "#4339F2" }} />
         <span>Escolha uma data...</span>
       </InputPreview>
 

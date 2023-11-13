@@ -206,7 +206,7 @@ function ProfilePlan() {
 
                   <ModalButton
                     disabled={isLoading}
-                    background="#E67200"
+                    background="#4339F2"
                     onClick={() => ChangePlan()}
                   >
                     {isLoading ? <Ring size={20} color="#fff" /> : "Quero mudar"}

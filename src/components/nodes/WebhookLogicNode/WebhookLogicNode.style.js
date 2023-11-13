@@ -135,7 +135,7 @@ export const ConfigButtonContainer = styled.div`
     width: 130px;
     height: 30px;
     border-radius: 5px;
-    background-color: #E67200;
+    background-color: #4339F2;
     outline: none;
     border: none;
     cursor: pointer;
@@ -216,7 +216,7 @@ export const HeadersButtonContainer = styled.div`
     width: 130px;
     height: 30px;
     border-radius: 5px;
-    background-color: #E67200;
+    background-color: #4339F2;
     outline: none;
     border: none;
     cursor: pointer;

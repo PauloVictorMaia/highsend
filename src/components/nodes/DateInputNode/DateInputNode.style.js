@@ -65,7 +65,7 @@ export const InputConfigButton = styled.button`
   width: 170px;
   height: 40px;
   border-radius: 5px;
-  background-color: #E67200;
+  background-color: #4339F2;
   outline: none;
   border: none;
   cursor: pointer;

@@ -90,7 +90,7 @@ export function ButtonInputOriginalNode({ data, id }) {
       />
 
       <InputPreview>
-        <TaskAltOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
+        <TaskAltOutlinedIcon style={{ fontSize: "large", color: "#4339F2" }} />
         <MenuInput
           type="text"
           placeholder={buttonLabel}

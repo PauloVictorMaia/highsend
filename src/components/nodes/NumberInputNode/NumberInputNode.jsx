@@ -148,7 +148,7 @@ export function NumberInputNode({ data, id, groupID }) {
       </CustomToolbar>
 
       <InputPreview>
-        <NumbersIcon style={{ fontSize: "large", color: "#E67200" }} />
+        <NumbersIcon style={{ fontSize: "large", color: "#4339F2" }} />
         <span>{placeholder}</span>
       </InputPreview>
 

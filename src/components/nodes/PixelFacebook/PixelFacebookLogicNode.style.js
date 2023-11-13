@@ -63,14 +63,14 @@ export const Tabs = styled.li`
 
   &:hover {
     text-decoration: none;
-    border-bottom: 2px solid  ${({ activetab }) => activetab === "false" ? "#555" : "#E67200"};
+    border-bottom: 2px solid  ${({ activetab }) => activetab === "false" ? "#555" : "#4339F2"};
   }
 
   ${({ activetab }) =>
     activetab === "true" &&
     `
     text-decoration: none;
-    border-bottom: 2px solid #E67200;
+    border-bottom: 2px solid #4339F2;
   `}
 `;
 
