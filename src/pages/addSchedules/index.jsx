@@ -24,8 +24,11 @@ import {
   EventsContent,
   IntegrationsOptions,
   Input,
-  Select,
-  WhatsappMessage
+  WhatsappMessage,
+  CountContainer,
+  EventConfig,
+  TimeCount,
+  CountInput,
 } from './styles.js';
 import { CalendarMenu } from "../../data/menus";
 import { toast } from "react-toastify";
@@ -33,7 +36,6 @@ import api from "../../api";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { useNavigate, useParams } from "react-router-dom";
 import ScheduleEvents from "./ScheduleEvents";
-import { SketchPicker } from "react-color";
 import Accordion from "../../components/Accordion";
 import { NavLink } from "react-router-dom";
 import FeedIcon from '@mui/icons-material/Feed';
@@ -41,6 +43,14 @@ import MapIcon from '@mui/icons-material/Map';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import AvTimerIcon from '@mui/icons-material/AvTimer';
 import moment from 'moment-timezone';
+import Radio from '@mui/material/Radio';
+import Circle from '@uiw/react-color-circle';
+import Checkbox from '@mui/material/Checkbox';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 
 function AddSchedule() {
   const { user, getCalendars } = useStateContext();
@@ -63,7 +73,7 @@ function AddSchedule() {
   const [eventInterval, setEventInterval] = useState(15);
   const [lunchStartTime, setLunchStartTime] = useState('12:00');
   const [lunchEndTime, setLunchEndTime] = useState('13:00');
-
+  const IntegrationPlaceholder = "Selecione uma integração"
   const [eventConfigurations, setEventConfigurations] = useState([]);
   const [eventIntervals, setEventIntervals] = useState([]);
 
@@ -193,6 +203,11 @@ function AddSchedule() {
       return;
     }
 
+    if (eventDuration < 1 || !eventDuration) {
+      toast.warning("A duração do evento não pede ser vazia ou menor que 1 minuto.");
+      return;
+    }
+
     const calendar = {
       room: {
         id: params.id,
@@ -243,6 +258,7 @@ function AddSchedule() {
   };
 
   const handleStartTimeChange = (index, value) => {
+    console.log(value)
     let newWeekDays = [...eventConfigurations];
     newWeekDays[index].startTime = value;
     setEventConfigurations(newWeekDays);
@@ -374,6 +390,24 @@ function AddSchedule() {
     }
   }, [integrations]);
 
+  const handleEventDuration = (e) => {
+    const number = parseInt(e.target.value);
+    if (isNaN(number)) {
+      setEventDuration(null);
+    } else {
+      setEventDuration(number);
+    }
+  }
+
+  const handleEventInterval = (e) => {
+    const number = parseInt(e.target.value);
+    if (isNaN(number)) {
+      setEventInterval(null);
+    } else {
+      setEventInterval(number);
+    }
+  }
+
   return (
     <ContentPageContainer
       header={
@@ -397,35 +431,53 @@ function AddSchedule() {
             icon={<FeedIcon />}
           >
             <ContentContainer>
-              <h2>Título do evento</h2>
-              <Input value={eventTitle} onChange={(e) => setEventTitle(e.target.value)} />
+              <Input
+                value={eventTitle}
+                onChange={(e) => setEventTitle(e.target.value)}
+                placeholder="Título do evento"
+              />
             </ContentContainer>
 
             <ContentContainer>
-              <h2>Intervalo de datas do evento</h2>
 
+              <h5>Intervalo de datas do evento</h5>
               <ToggleContainer>
                 <OptionLabel>
-                  <input
-                    type="radio"
+                  <Radio
                     value="daysAhead"
                     checked={selectedOption === 'daysAhead'}
                     onChange={() => daysAHead()}
+                    size="small"
+                    sx={{
+                      '& .MuiSvgIcon-root:not(.MuiSvgIcon-root ~ .MuiSvgIcon-root)':
+                      {
+                        color: '#4339F2',
+                      }
+                    }}
                   />
                   Dias corridos no futuro
                 </OptionLabel>
                 {selectedOption === 'daysAhead' &&
-                  <div>
-                    <Input type="number" defaultValue={daysAhead} onChange={(e) => setDaysAhead(e.target.value)} />
-                    <span style={{ marginLeft: '10px' }}>dias a frente no futuro</span>
-                  </div>
+                  <Input
+                    type="number"
+                    defaultValue={daysAhead}
+                    onChange={(e) => setDaysAhead(e.target.value)}
+                    style={{ width: "100%" }}
+                    placeholder="Número de dias a frente no futuro"
+                  />
                 }
                 <OptionLabel>
-                  <input
-                    type="radio"
+                  <Radio
                     value="specificDate"
                     checked={selectedOption === 'specificDate'}
                     onChange={() => setSelectedOption('specificDate')}
+                    size="small"
+                    sx={{
+                      '& .MuiSvgIcon-root:not(.MuiSvgIcon-root ~ .MuiSvgIcon-root)':
+                      {
+                        color: '#4339F2',
+                      },
+                    }}
                   />
                   Intervalo de data específico
                 </OptionLabel>
@@ -454,11 +506,17 @@ function AddSchedule() {
                   </div>
                 }
                 <OptionLabel>
-                  <input
-                    type="radio"
+                  <Radio
                     value="indefinitely"
                     checked={selectedOption === 'indefinitely'}
                     onChange={() => handleDaysAhead()}
+                    size="small"
+                    sx={{
+                      '& .MuiSvgIcon-root:not(.MuiSvgIcon-root ~ .MuiSvgIcon-root)':
+                      {
+                        color: '#4339F2',
+                      },
+                    }}
                   />
                   Indefinidamente no futuro
                 </OptionLabel>
@@ -466,10 +524,13 @@ function AddSchedule() {
             </ContentContainer>
 
             <ContentContainer>
-              <h2>Escolha uma cor para a sua agenda:</h2>
-              <SketchPicker
+              <h5>Escolha uma cor para a sua agenda:</h5>
+              <Circle
+                colors={['#4339F2', '#1B192E', '#E22A4B', '#FF9900', '#006627', '#AD00FF', '#ff6699']}
                 color={eventColor}
-                onChange={(color) => setEventColor(color.hex)}
+                onChange={(color) => {
+                  setEventColor(color.hex);
+                }}
               />
             </ContentContainer>
           </Accordion>
@@ -481,22 +542,27 @@ function AddSchedule() {
             icon={<MapIcon />}
           >
             <ContentContainer style={{ margin: "10px 0" }}>
-              <ToggleContainer style={{ marginTop: '10px' }}>
-                <span>Local do evento:</span>
+              <ToggleContainer>
+                <h5>Local do evento:</h5>
                 <OptionLabel style={{ marginTop: '10px' }}>
-                  <input
-                    type="radio"
+                  <Radio
                     value="Presencial"
                     checked={selectedLocal === 'Presencial'}
                     onChange={() => setSelectedLocal('Presencial')}
+                    size="small"
+                    sx={{
+                      '& .MuiSvgIcon-root:not(.MuiSvgIcon-root ~ .MuiSvgIcon-root)':
+                      {
+                        color: '#4339F2',
+                      },
+                    }}
                   />
                   Presencial
                 </OptionLabel>
                 {selectedLocal === 'Presencial' &&
                   <div>
-                    <span style={{ marginRight: '10px' }}>No endereço:</span>
                     <Input
-                      style={{ width: "400px" }}
+                      style={{ width: "100%" }}
                       type="text"
                       defaultValue={meetingPlace.type === "Presencial" ? address : ""}
                       placeholder="R. Exemplo, 222 - cidade - estado - cep: 00000-000"
@@ -506,30 +572,41 @@ function AddSchedule() {
                 }
 
                 <OptionLabel>
-                  <input
-                    type="radio"
+                  <Radio
                     value="Online Google Meet"
                     checked={selectedLocal === 'Online Google Meet'}
                     onChange={() => setSelectedLocal("Online Google Meet")}
+                    size="small"
+                    sx={{
+                      '& .MuiSvgIcon-root:not(.MuiSvgIcon-root ~ .MuiSvgIcon-root)':
+                      {
+                        color: '#4339F2',
+                      },
+                    }}
                   />
                   Online pelo Google Meet
                 </OptionLabel>
 
                 <OptionLabel>
-                  <input
-                    type="radio"
+                  <Radio
                     value="Online outra plataforma"
                     checked={selectedLocal === 'Online outra plataforma'}
                     onChange={() => setSelectedLocal("Online outra plataforma")}
+                    size="small"
+                    sx={{
+                      '& .MuiSvgIcon-root:not(.MuiSvgIcon-root ~ .MuiSvgIcon-root)':
+                      {
+                        color: '#4339F2',
+                      },
+                    }}
                   />
                   Online por outra plataforma
                 </OptionLabel>
 
                 {selectedLocal === 'Online outra plataforma' &&
                   <div>
-                    <span style={{ marginRight: '10px' }}>Nome da plataforma online:</span>
                     <Input
-                      style={{ width: "400px" }}
+                      style={{ width: "100%" }}
                       type="text"
                       defaultValue={otherPlataformName}
                       placeholder="Nome da plataforma online"
@@ -540,12 +617,18 @@ function AddSchedule() {
               </ToggleContainer>
 
               <ToggleContainer style={{ marginTop: '10px' }}>
-                <span>Integrações:</span>
+                <h5>Integrações:</h5>
                 <OptionLabel style={{ marginTop: '10px' }}>
-                  <input
-                    type="radio"
+                  <Radio
                     checked={hasIntegration}
                     onChange={() => setHasIntegration(!hasIntegration)}
+                    size="small"
+                    sx={{
+                      '& .MuiSvgIcon-root:not(.MuiSvgIcon-root ~ .MuiSvgIcon-root)':
+                      {
+                        color: '#4339F2',
+                      },
+                    }}
                   />
                   Atribuir integração a essa agenda
                 </OptionLabel>
@@ -554,57 +637,95 @@ function AddSchedule() {
                   <IntegrationsOptions>
                     <span>Escolha quais integrações deseja adicionar:</span>
                     <div style={{ margin: "10px 0" }}>
-                      <input
-                        type="checkbox"
+                      <Checkbox
                         name="integration option"
                         checked={googleChecked}
                         onChange={() => setGoogleChecked(!googleChecked)}
+                        size='small'
+                        sx={{
+                          '& .MuiSvgIcon-root:not(.MuiSvgIcon-root ~ .MuiSvgIcon-root)':
+                          {
+                            color: '#4339F2',
+                          },
+                        }}
                       />
                       <label style={{ marginLeft: "5px" }}>Google</label>
                       {
                         googleChecked &&
                           googleIntegrations.length > 0 ?
-                          <select
+
+                          <Select
+                            IconComponent={KeyboardArrowDownIcon}
+                            size="small"
                             value={googleIntegrationSelected}
                             onChange={(e) => setGoogleIntegrationSelected(e.target.value)}
                             style={{ marginLeft: "5px" }}
+                            sx={{
+                              '& .MuiSelect-select .notranslate::after': IntegrationPlaceholder
+                                ? {
+                                  content: `"${IntegrationPlaceholder}"`,
+                                  opacity: 0.72,
+                                }
+                                : {},
+
+                              '.MuiSvgIcon-root ': {
+                                fill: "#4339F2 !important",
+                              }
+                            }}
                           >
-                            <option value="">Selecionar integração</option>
                             {googleIntegrations &&
                               googleIntegrations.map((integration, index) => (
-                                <option key={index} value={integration.id}>{integration.name}</option>
+                                <MenuItem key={index} value={integration.id}>{integration.name}</MenuItem>
                               ))
                             }
-                          </select>
+                          </Select>
                           :
                           googleChecked && <span style={{ marginLeft: "15px" }}>Você não possui integração com esse serviço. Para integrar <NavLink to={"/dashboard/integrations"}>Clique aqui.</NavLink></span>
                       }
                     </div>
 
                     <div>
-                      <input
-                        type="checkbox"
+                      <Checkbox
                         name="integration option"
                         checked={whatsappChecked}
                         onChange={() => setWhatsappChecked(!whatsappChecked)}
+                        size='small'
+                        sx={{
+                          '& .MuiSvgIcon-root:not(.MuiSvgIcon-root ~ .MuiSvgIcon-root)':
+                          {
+                            color: '#4339F2',
+                          },
+                        }}
                       />
                       <label style={{ marginLeft: "5px" }}>Whatsapp</label>
                       {
                         whatsappChecked &&
                           whatsappIntegrations && whatsappIntegrations.length > 0 ?
                           <>
-                            <select
+                            <Select
+                              IconComponent={KeyboardArrowDownIcon}
                               value={whatsappIntegrationSelected}
+                              size="small"
                               onChange={(e) => setWhatsappIntegrationSelected(e.target.value)}
                               style={{ marginLeft: "5px" }}
+                              sx={{
+                                '& .MuiSelect-select .notranslate::after': IntegrationPlaceholder
+                                  ? {
+                                    content: `"${IntegrationPlaceholder}"`,
+                                    opacity: 0.72,
+                                  }
+                                  : {},
+                                '.MuiSvgIcon-root ': {
+                                  fill: "#4339F2 !important",
+                                }
+                              }}
                             >
-                              <option value="">Selecionar integração</option>
                               {whatsappIntegrations &&
                                 whatsappIntegrations.map((integration, index) => (
-                                  <option key={index} value={integration.id}>{integration.name}</option>
+                                  <MenuItem key={index} value={integration.id}>{integration.name}</MenuItem >
                                 ))
                               }
-                            </select>
+                            </Select>
                             <WhatsappMessage
                               value={whatsappMessage}
                               onChange={(e) => setWhatsappMessage(e.target.value)}
@@ -620,10 +741,16 @@ function AddSchedule() {
                 }
 
                 <OptionLabel>
-                  <input
-                    type="radio"
+                  <Radio
                     checked={!hasIntegration}
                     onChange={() => setHasIntegration(!hasIntegration)}
+                    size="small"
+                    sx={{
+                      '& .MuiSvgIcon-root:not(.MuiSvgIcon-root ~ .MuiSvgIcon-root)':
+                      {
+                        color: '#4339F2',
+                      },
+                    }}
                   />
                   Não atribuir integração
                 </OptionLabel>
@@ -687,46 +814,104 @@ function AddSchedule() {
             icon={<AvTimerIcon />}
           >
             <ContentContainer>
-              <h2>Configurar Horário e Duração do Evento</h2>
+              <h5>Configurar Horário e Duração do Evento</h5>
               <label>Fuso horário:</label>
-              <Select value={timezone} onChange={(e) => setTimezone(e.target.value)}>
-                <option value="America/Sao_Paulo">America/Sao Paulo (Horário de Brasília)</option>
+              <Select
+                IconComponent={KeyboardArrowDownIcon}
+                size="medium"
+                value={timezone}
+                onChange={(e) => setTimezone(e.target.value)}
+                sx={{
+                  '.MuiSvgIcon-root ': {
+                    fill: "#4339F2 !important",
+                  },
+                  '.MuiOutlinedInput-notchedOutline': {
+                    borderColor: '#E0EAFF',
+                  },
+                }}
+                style={{ marginBottom: "20px" }}
+              >
+                <MenuItem value="America/Sao_Paulo">America/Sao Paulo (Horário de Brasília)</MenuItem>
                 {brazilTimezones.map((timezone, index) => (
-                  <option key={index} value={timezone}>
+                  <MenuItem key={index} value={timezone}>
                     {timezone}
-                  </option>
+                  </MenuItem>
                 ))}
               </Select>
-              <label>Duração do Evento (em minutos):</label>
-              <Input
-                type="number"
-                min="1"
-                value={eventDuration}
-                onChange={(e) => setEventDuration(parseInt(e.target.value))}
-              />
-              <label>Intervalo entre os Eventos (em minutos):</label>
-              <Input
-                type="number"
-                min="1"
-                value={eventInterval}
-                onChange={(e) => setEventInterval(parseInt(e.target.value))}
-              />
+
+              <CountContainer>
+                <EventConfig>
+                  <h5>Duração do evento</h5>
+                  <span>{`(em minutos)`}</span>
+                </EventConfig>
+
+                <TimeCount>
+                  <RemoveIcon
+                    onClick={() => {
+                      if (eventDuration === 1 || !eventDuration) {
+                        return;
+                      } else {
+                        setEventDuration(prevEventDuration => prevEventDuration - 1);
+                      }
+                    }}
+                  />
+                  <CountInput
+                    type="text"
+                    value={eventDuration}
+                    onChange={(e) => handleEventDuration(e)}
+                  />
+                  <AddIcon
+                    style={{ color: "#4339F2" }}
+                    onClick={() => setEventDuration(prevEventDuration => prevEventDuration + 1)}
+                  />
+                </TimeCount>
+              </CountContainer>
+
+              <CountContainer>
+                <EventConfig>
+                  <h5>Intervalo entre os eventos</h5>
+                  <span>{`(em minutos)`}</span>
+                </EventConfig>
+
+                <TimeCount>
+                  <RemoveIcon
+                    onClick={() => {
+                      if (eventInterval === 0 || !eventInterval) {
+                        return;
+                      } else {
+                        setEventInterval(prevEventInterval => prevEventInterval - 1);
+                      }
+                    }}
+                  />
+                  <CountInput
+                    type="text"
+                    value={eventInterval}
+                    onChange={(e) => handleEventInterval(e)}
+                  />
+                  <AddIcon
+                    style={{ color: "#4339F2" }}
+                    onClick={() => setEventInterval(prevEventInterval => prevEventInterval + 1)}
+                  />
+                </TimeCount>
+              </CountContainer>
+
               <label>Horário de Início do Almoço:</label>
               <Input
                 type="time"
                 value={lunchStartTime}
                 onChange={(e) => setLunchStartTime(e.target.value)}
               />
-              <label>Horário de Término do Almoço:</label>
+              <label style={{ marginTop: "20px" }}>Horário de Término do Almoço:</label>
               <Input
                 type="time"
                 value={lunchEndTime}
                 onChange={(e) => setLunchEndTime(e.target.value)}
               />
+
             </ContentContainer>
           </Accordion>
 
-          <ContentContainer style={{ marginTop: 40 }}>
+          {/* <ContentContainer style={{ marginTop: 40 }}>
             <h2 style={{ marginBottom: 10 }}>Intervalos de Evento:</h2>
             <IntervalsContainer>
               <EnventsContainer columns={eventIntervals.length}>
@@ -744,7 +929,7 @@ function AddSchedule() {
                 ))}
               </EnventsContainer>
             </IntervalsContainer>
-          </ContentContainer>
+          </ContentContainer> */}
         </Container >
       }
 

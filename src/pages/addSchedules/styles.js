@@ -5,8 +5,8 @@ export const Container = styled.div`
  display: flex;
  flex-direction: column;
  align-items: center;
- color: #333;
- padding: 0 15px;
+ color: #092C4C;
+ padding: 0 15px 20px 15px;
 `;
 
 export const CheckboxContainer = styled.div`
@@ -55,14 +55,14 @@ export const IntervalsContainer = styled.div`
 
 
 export const ToggleContainer = styled.div`
-  font-family: Arial, sans-serif;
   padding: 20px;
   border: 1px solid rgba(0,0,0,0.15);
   border-radius: 8px;
 `;
 
-export const OptionLabel = styled.label`
-  display: block;
+export const OptionLabel = styled.div`
+  display: flex;
+  align-items: center;
   margin-bottom: 10px;
   cursor: pointer;
 `;
@@ -97,21 +97,14 @@ export const EventsContent = styled.div`
 `;
 
 export const Input = styled.input`
- height: 40px;
+ height: 60px;
  border-radius: 4px;
  outline: none;
- border: 1px solid rgba(0,0,0,0.15);
- padding: 5px 10px;
+ border: 1px solid #E0EAFF;
+ padding: 8px 16px; 
  box-sizing: border-box;
-`;
-
-export const Select = styled.select`
-  height: 40px;
-  border-radius: 4px;
-  outline: none;
-  border: 1px solid rgba(0,0,0,0.15);
-  padding: 5px 10px;
-  box-sizing: border-box;
+ line-height: 20px;
+ font-family: 'Poppins', sans-serif;
 `;
 
 export const EventItem = styled.div`
@@ -135,7 +128,7 @@ export const  MenuContainer = styled.div`
 `;
 
 export const IntegrationsOptions = styled.div`
-  padding: 15px 0;
+  padding: 15px 0 15px 10px;
 `;
 
 export const WhatsappMessage = styled.textarea`
@@ -148,7 +141,6 @@ export const WhatsappMessage = styled.textarea`
   border-radius: 8px;
   color: #333;
   font-size: 14px;
-  font-family: 'Oswald', sans-serif;
   display: block;
   padding: 5px;
   box-sizing: border-box;
@@ -156,9 +148,10 @@ export const WhatsappMessage = styled.textarea`
   scrollbar-width: thin; 
   scrollbar-color: #888 #f0f0f0;
   margin-top: 5px;
+  margin-left: 10px;
 
   &:focus {
-    outline: 2px solid #9999FF;
+    outline: 2px solid #4339F2;
   }
 
   &::-webkit-scrollbar {
@@ -172,5 +165,53 @@ export const WhatsappMessage = styled.textarea`
 
   &::-webkit-scrollbar-track {
     background-color: #f0f0f0;
+  }
+`;
+
+export const CountContainer = styled.div`
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+`;
+
+export const EventConfig = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  row-gap: 10px;
+
+  >h5 {
+    margin: 0;
+    color: #4339F2;
+  }
+
+  >span {
+    font-size: 0.9rem;
+  }
+`
+
+export const CountInput = styled.input`
+  width: 50px;
+  text-align: center;
+  font-size: 1rem;
+  border: none;
+  outline: none;
+`;
+
+export const TimeCount = styled.div`
+  display: flex;
+  width: 100px;
+  height: 100%;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+  border: 1px solid #E0EAFF;
+  border-radius: 200px;
+
+  >svg {
+    cursor: pointer;
   }
 `;
