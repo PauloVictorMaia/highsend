@@ -347,78 +347,77 @@ function Fluxograms() {
                   <CopyEmbed flowId={flow.id} userId={user.id} />
                 </ModalContent>
               </Modal>
-
-              <Modal onClick={(e) => e.stopPropagation()} isvisible={modalNewFlowIsVisible}>
-                <ModalContent width={450} height={550}>
-                  <CloseButton onClick={(e) => closeModalNewFlow(e)}>
-                    <ClearIcon />
-                  </CloseButton>
-
-                  <CreationOptions>
-
-                    <FlowNameInput>
-                      <InputItem
-                        type="text"
-                        label="Nome do fluxo"
-                        variant="outlined"
-                        value={newFlowName}
-                        onChange={(e) => setNewFlowName(e.target.value)}
-                      />
-                    </FlowNameInput>
-
-                    <CreationOptionsTitle>
-                      <h2>Opções de criação</h2>
-                    </CreationOptionsTitle>
-
-                    <FlowOption onClick={createFlow}>
-                      {
-                        isLoading ? <Ring color="#333" size={30} /> : <BuildIcon />
-                      }
-                      <span>Em branco</span>
-                    </FlowOption>
-
-                    <FlowOption htmlFor="importJSON">
-                      {
-                        uploadingFile ? <Ring color="#333" size={30} /> : <PublishIcon style={{ fontSize: "1.9rem" }} />
-                      }
-                      <span>Importar JSON</span>
-                      <FileInput
-                        type="file"
-                        id="importJSON"
-                        onChange={createFlowWithJsonFile}
-                        accept=".json"
-                      />
-                    </FlowOption>
-
-                    <CreationOptionsTitle>
-                      <h2>Templates</h2>
-                    </CreationOptionsTitle>
-
-                    <TemplatesContainer>
-                      <TemplateCard disabled>
-                        <h2>Vendas</h2>
-                        <h2>Em breve</h2>
-                      </TemplateCard>
-
-                      <TemplateCard disabled>
-                        <h2>Prospec</h2>
-                        <h2>Em breve</h2>
-                      </TemplateCard>
-
-                      <TemplateCard disabled>
-                        <h2>Promo</h2>
-                        <h2>Em breve</h2>
-                      </TemplateCard>
-                    </TemplatesContainer>
-
-                  </CreationOptions>
-
-                </ModalContent>
-              </Modal>
             </FluxogramCard>
           ))
         }
 
+        <Modal onClick={(e) => e.stopPropagation()} isvisible={modalNewFlowIsVisible}>
+          <ModalContent width={450} height={550}>
+            <CloseButton onClick={(e) => closeModalNewFlow(e)}>
+              <ClearIcon />
+            </CloseButton>
+
+            <CreationOptions>
+
+              <FlowNameInput>
+                <InputItem
+                  type="text"
+                  label="Nome do fluxo"
+                  variant="outlined"
+                  value={newFlowName}
+                  onChange={(e) => setNewFlowName(e.target.value)}
+                />
+              </FlowNameInput>
+
+              <CreationOptionsTitle>
+                <h2>Opções de criação</h2>
+              </CreationOptionsTitle>
+
+              <FlowOption onClick={createFlow}>
+                {
+                  isLoading ? <Ring color="#333" size={30} /> : <BuildIcon />
+                }
+                <span>Em branco</span>
+              </FlowOption>
+
+              <FlowOption htmlFor="importJSON">
+                {
+                  uploadingFile ? <Ring color="#333" size={30} /> : <PublishIcon style={{ fontSize: "1.9rem" }} />
+                }
+                <span>Importar JSON</span>
+                <FileInput
+                  type="file"
+                  id="importJSON"
+                  onChange={createFlowWithJsonFile}
+                  accept=".json"
+                />
+              </FlowOption>
+
+              <CreationOptionsTitle>
+                <h2>Templates</h2>
+              </CreationOptionsTitle>
+
+              <TemplatesContainer>
+                <TemplateCard disabled>
+                  <h2>Vendas</h2>
+                  <h2>Em breve</h2>
+                </TemplateCard>
+
+                <TemplateCard disabled>
+                  <h2>Prospec</h2>
+                  <h2>Em breve</h2>
+                </TemplateCard>
+
+                <TemplateCard disabled>
+                  <h2>Promo</h2>
+                  <h2>Em breve</h2>
+                </TemplateCard>
+              </TemplatesContainer>
+
+            </CreationOptions>
+
+          </ModalContent>
+        </Modal>
       </Container>
 
     </ContentPageContainer>
