@@ -7,12 +7,8 @@ import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import { format, setHours, setMinutes, addMinutes } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
-import CheckIcon from '../../assets/check.png';
 import {
-  CheckboxContainer,
   DaysContainer,
-  StyledCheckbox,
-  Text,
   Container,
   IntervalsContainer,
   ToggleContainer,
@@ -29,6 +25,11 @@ import {
   EventConfig,
   TimeCount,
   CountInput,
+  TimeContainer,
+  InputTimeContainer,
+  CheckboxContent,
+  SaveButtonContainer,
+  SaveButton,
 } from './styles.js';
 import { CalendarMenu } from "../../data/menus";
 import { toast } from "react-toastify";
@@ -51,6 +52,9 @@ import Select from '@mui/material/Select';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import HourglassTopIcon from '@mui/icons-material/HourglassTop';
+import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
+import { Ring } from "@uiball/loaders";
 
 function AddSchedule() {
   const { user, getCalendars } = useStateContext();
@@ -768,39 +772,47 @@ function AddSchedule() {
             <ContentContainer>
               {eventConfigurations.map((day, index) => (
                 <DaysContainer key={index}>
-                  <CheckboxContainer
-                    onClick={() => handleAvailabilityChange(index, !day.available)}
-                    checked={day.available}
-                  >
-                    <StyledCheckbox
+
+                  <CheckboxContent>
+                    <Checkbox
                       checked={day.available}
-                    >
-                      {day.available &&
-                        <img
-                          alt="tick icon"
-                          style={{ width: '15px' }}
-                          src={CheckIcon}
-                        />
-                      }
-                    </StyledCheckbox>
-                    <Text checked={day.available}>{day.day}</Text>
-                  </CheckboxContainer>
+                      onChange={() => handleAvailabilityChange(index, !day.available)}
+                      size='small'
+                      sx={{
+                        '& .MuiSvgIcon-root:not(.MuiSvgIcon-root ~ .MuiSvgIcon-root)':
+                        {
+                          color: '#4339F2',
+                        },
+                      }}
+                    />
+                    <span>{day.day}</span>
+                  </CheckboxContent>
+
                   {day.available && (
-                    <>
-                      <label style={{ marginRight: '10px' }}>Início:</label>
-                      <input
-                        style={{ marginRight: '20px' }}
-                        type="time"
-                        value={day.startTime}
-                        onChange={(e) => handleStartTimeChange(index, e.target.value)}
-                      />
-                      <label style={{ marginRight: '10px' }}>Término:</label>
-                      <input
-                        type="time"
-                        value={day.endTime}
-                        onChange={(e) => handleEndTimeChange(index, e.target.value)}
-                      />
-                    </>
+
+                    <TimeContainer>
+                      <InputTimeContainer>
+                        <HourglassTopIcon />
+                        <Input
+                          style={{ color: "#4339F2", border: "none" }}
+                          type="time"
+                          value={day.startTime}
+                          onChange={(e) => handleStartTimeChange(index, e.target.value)}
+                        />
+                      </InputTimeContainer>
+
+                      <InputTimeContainer>
+                        <HourglassBottomIcon />
+                        <Input
+                          style={{ color: "#4339F2", border: "none" }}
+                          type="time"
+                          value={day.endTime}
+                          onChange={(e) => handleEndTimeChange(index, e.target.value)}
+                        />
+                      </InputTimeContainer>
+
+                    </TimeContainer>
+
                   )}
                 </DaysContainer>
               ))}
@@ -910,6 +922,14 @@ function AddSchedule() {
 
             </ContentContainer>
           </Accordion>
+
+          <SaveButtonContainer>
+            <SaveButton onClick={() => saveCalendar()}>
+              {
+                isLoading ? <Ring size={30} color="#fff" /> : "Salvar agenda"
+              }
+            </SaveButton>
+          </SaveButtonContainer>
 
           {/* <ContentContainer style={{ marginTop: 40 }}>
             <h2 style={{ marginBottom: 10 }}>Intervalos de Evento:</h2>

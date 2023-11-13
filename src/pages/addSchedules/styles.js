@@ -9,43 +9,46 @@ export const Container = styled.div`
  padding: 0 15px 20px 15px;
 `;
 
-export const CheckboxContainer = styled.div`
-  width: 120px;
-  height: 35px;
-  padding-left: 5px;
-  margin: 0px 25px 0 0;
-  border-radius: 5px;
-  
-  background-color: ${props => props.checked ? '#97C160' : '#E5E5E5'};
-  
+export const CheckboxContent = styled.div`
+  height: 100%;
   display: flex;
   align-items: center;
-
-  cursor: pointer;
-`;
-
-export const StyledCheckbox = styled.label`
-  width: 23px;
-  height: 23px;
-  margin-right: 6px;
-  border-radius: 50%;
-  background: #F6F6F6;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-`;
-
-export const Text = styled.label`
-  color: ${props => props.checked ? '#FFF' : '#555'};
-  cursor: pointer;
-  margin-left: 10px;
 `;
 
 export const DaysContainer = styled.div`
+  width: 100%;
+  min-height: 85px;
+  justify-content: space-between;
  display: flex;
  margin: 10px 0;
  align-items: center;
+ border: 1px solid #E0EAFF;
+ border-radius: 8px;
+ padding: 10px 20px;
+ box-sizing: border-box;
+`;
+
+export const TimeContainer = styled.div`
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+`;
+
+export const InputTimeContainer = styled.div`
+  display: flex;
+  column-gap: 10px;
+  height: 100%;
+  width: 130px;
+  align-items: center;
+  padding: 0 10px;
+  box-sizing: border-box;
+  justify-content: space-around;
+  border: 1px solid #E0EAFF;
+  border-radius: 8px;
+
+  >svg {
+    color: #4339F2;
+  }
 `;
 
 export const IntervalsContainer = styled.div`
@@ -141,6 +144,7 @@ export const WhatsappMessage = styled.textarea`
   border-radius: 8px;
   color: #333;
   font-size: 14px;
+  font-family: 'Poppins', sans-serif;
   display: block;
   padding: 5px;
   box-sizing: border-box;
@@ -214,4 +218,27 @@ export const TimeCount = styled.div`
   >svg {
     cursor: pointer;
   }
+`;
+
+export const SaveButtonContainer = styled.div`
+  width: 100%;
+  display: flex;
+  margin-top: 15px;
+  justify-content: end;
+  padding: 0 20px;
+  box-sizing: border-box;
+`;
+
+export const SaveButton = styled.button`
+  width: 150px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 200px;
+  color: #fff;
+  background-color: #4339F2;
+  outline: none;
+  cursor: pointer;
 `;

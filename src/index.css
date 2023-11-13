@@ -58,3 +58,7 @@ h1 {
 .react-flow__node-group {
   background-color: transparent;
 }
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+  display: none;
+}
