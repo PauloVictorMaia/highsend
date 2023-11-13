@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 
 export const Container = styled.div`
- width: 100%;
+ width: 97%;
  display: flex;
  flex-direction: column;
  align-items: center;
@@ -225,8 +225,6 @@ export const SaveButtonContainer = styled.div`
   display: flex;
   margin-top: 15px;
   justify-content: end;
-  padding: 0 20px;
-  box-sizing: border-box;
 `;
 
 export const SaveButton = styled.button`

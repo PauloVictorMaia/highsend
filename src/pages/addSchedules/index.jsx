@@ -100,6 +100,8 @@ function AddSchedule() {
   const brazilTimezones = moment.tz.zonesForCountry('BR');
   const [isLoading, setIsLoading] = useState(false);
 
+  console.log(timezone)
+
   async function getCalendarData() {
     try {
       const response = await api.get(`/calendars/get-calendar/${user.id}/${params.id}`, { headers: { authorization: token } });
@@ -409,6 +411,15 @@ function AddSchedule() {
       setEventInterval(null);
     } else {
       setEventInterval(number);
+    }
+  }
+
+  const handleTimezone = (value) => {
+    if (value === "America/Sao_Paulo (Horário de Brasília)") {
+      setTimezone("America/Sao_Paulo");
+      return;
+    } else {
+      setTimezone(value);
     }
   }
 
@@ -831,8 +842,8 @@ function AddSchedule() {
               <Select
                 IconComponent={KeyboardArrowDownIcon}
                 size="medium"
-                value={timezone}
-                onChange={(e) => setTimezone(e.target.value)}
+                value={timezone === "America/Sao_Paulo" ? "America/Sao_Paulo (Horário de Brasília)" : timezone}
+                onChange={(e) => handleTimezone(e.target.value)}
                 sx={{
                   '.MuiSvgIcon-root ': {
                     fill: "#4339F2 !important",
@@ -843,7 +854,7 @@ function AddSchedule() {
                 }}
                 style={{ marginBottom: "20px" }}
               >
-                <MenuItem value="America/Sao_Paulo">America/Sao Paulo (Horário de Brasília)</MenuItem>
+                <MenuItem value="America/Sao_Paulo (Horário de Brasília)">America/Sao Paulo (Horário de Brasília)</MenuItem>
                 {brazilTimezones.map((timezone, index) => (
                   <MenuItem key={index} value={timezone}>
                     {timezone}
