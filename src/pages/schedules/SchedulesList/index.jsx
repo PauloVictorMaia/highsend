@@ -1,7 +1,7 @@
 
 import { Container, ScheduleCard, CardTitle, CardDetails, ButtonCard, ButtonText, TitleContainer, CardColor, DropMenuCard, MenuCardButtons, SwitchContainer, Modal, ModalContent, DeleteCalendar, CloseButton, Buttons, Button } from "./styles";
 import CopyAllIcon from '@mui/icons-material/CopyAll';
-import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
+import SettingsIcon from '@mui/icons-material/Settings';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useEffect, useState, useRef } from "react";
 import { months } from "../../../data/menus";
@@ -137,7 +137,7 @@ function SchedulesList() {
               hover
               ref={ref => (buttonRefs.current[index] = ref)}
             >
-              <SettingsApplicationsIcon />
+              <SettingsIcon fontSize="100px" />
               <ArrowDropDownIcon />
             </ButtonText>
           </TitleContainer>

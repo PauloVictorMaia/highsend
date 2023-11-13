@@ -97,7 +97,7 @@ export const StepContainer = styled.div`
     width: 100%;
 
     &:focus {
-      outline: 1px solid #F26800;
+      outline: 1px solid #4339F2;
     }
   } */
 

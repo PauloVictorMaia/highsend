@@ -13,11 +13,11 @@ export const Container = styled.div`
 export const ScheduleCard = styled.div`
  width: 100%;
  max-width: 350px;
- height: 250px;
+ height: 270px;
  background-color: #fff;
  border-radius: 8px;
  transition: .5s;
- padding: 10px;
+ padding: 20px;
  box-sizing: border-box;
  position: relative;
  display: flex;
@@ -73,12 +73,14 @@ export const ButtonText = styled.div`
  display: flex;
  align-items: center;
  height: 30px;
+ padding: 5px;
+ box-sizing: border-box;
 
  &:hover{
   box-sizing: border-box;
   border-radius: 4px;
-  background: ${({ hover }) => hover? '#bfbfbf' : ''};
-  padding: ${({ hover }) => hover? '2px' : ''};
+  background: ${({ hover }) => hover? '#f2f2f2' : ''};
+  /* padding: ${({ hover }) => hover? '2px' : ''}; */
  }
 
  span {

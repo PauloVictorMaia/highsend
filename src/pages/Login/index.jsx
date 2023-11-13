@@ -134,7 +134,7 @@ const Button = styled.button`
 `;
 
 const Link = styled(NavLink)`
-  color: #F26800;
+  color: #4339F2;
   cursor: pointer;
   display: block;
   margin-top: 10px;

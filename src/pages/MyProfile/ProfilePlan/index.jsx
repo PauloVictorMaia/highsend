@@ -102,7 +102,7 @@ function ProfilePlan() {
           <ContentContainer>
             <span>Atual</span>
             <CurrentCard>
-              <PaymentIcon style={{ color: "#F26800" }} />
+              <PaymentIcon style={{ color: "#4339F2" }} />
               <FakeNumbers>
                 <CircleIcon />
                 <CircleIcon />
