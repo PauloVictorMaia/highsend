@@ -80,6 +80,7 @@ export const Content = styled.div`
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  text-align: center;
 `;
 
 export const Modal = styled.div`
