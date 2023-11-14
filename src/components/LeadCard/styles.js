@@ -15,4 +15,5 @@ export const Container = styled.div`
   justify-content: space-evenly;
   border-radius: 8px;
   cursor: pointer;
+  text-align: center;
 `;

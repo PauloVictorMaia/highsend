@@ -58,7 +58,7 @@ const CopyEmbed = ({ flowId, userId }) => {
     }
     #chatWindow {
         width: 370px;
-        height: 550px;
+        height: 500px;
         background-color: white;
         border: 1px solid #ccc;
         position: fixed;
@@ -67,6 +67,7 @@ const CopyEmbed = ({ flowId, userId }) => {
         display: none;
         overflow: hidden;
         border-radius: 8px;
+        z-index: 10000;
     }
     iframe {
         width: 100%;
