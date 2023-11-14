@@ -226,7 +226,7 @@ function Plans() {
               <h3 className='plan-type'>{plan.type}</h3>
               <span className='plan-description'>{plan.description}</span>
               {plan.type === 'PRO' &&
-                <span className='past-value'>R$297</span>
+                <span className='past-value'>R$397</span>
               }
               <div className='price-block'>
                 <span className='price-cifrao'>R$</span>
