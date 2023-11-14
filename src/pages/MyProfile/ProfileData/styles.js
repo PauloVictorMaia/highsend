@@ -29,7 +29,7 @@ export const ProfileImageDiv = styled.div`
   justify-content: center;
   color: #fff;
   font-size: 3rem;
-  background-color: #F26800;
+  background-color: #4339F2;
   position: relative;
 `;
 
@@ -136,7 +136,7 @@ export const ProfileNameSaveButton = styled.button`
   border: none;
 
   > svg {
-    color: ${({ color }) => color ? "#F26800" : "#333"};
+    color: ${({ color }) => color ? "#4339F2" : "#333"};
   }
 
   &:disabled {
@@ -159,7 +159,7 @@ export const ChangePasswordButton = styled.button`
   border-radius: 5px;
   border: none;
   outline: none;
-  background-color: #E67200;
+  background-color: #4339F2;
   color: #fff;
   font-size: 0.9rem;
   justify-content: center;

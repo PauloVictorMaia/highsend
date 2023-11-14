@@ -1,13 +1,14 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  width: 200px;
-  height: 150px;
+  width: 250px;
+  height: 350px;
   border: 0.5px solid rgba(0,0,0,0.15);
   border-radius: 8px; 
   color: rgba(0,0,0,0.75);
   cursor: pointer;
-  /* background-color: blue; */
+  padding: 10px;
+  box-sizing: border-box;
 
   &:hover {
     box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
@@ -34,7 +35,6 @@ export const DescriptionContainer = styled.div`
   padding: 5px;
   box-sizing: border-box;
   font-size: 0.95rem;
-  text-align: justify;
   line-height: 1.3;
   /* background-color: yellow; */
 `;

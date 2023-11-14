@@ -2,7 +2,7 @@ import { styled } from "styled-components";
 
 export const NodeContainer = styled.div`
   width: 100%;
-  height: 100%;
+  height: 150px;
   display: Flex;
   align-items: center;
   padding: 0 0 0 10px;
@@ -11,6 +11,7 @@ export const NodeContainer = styled.div`
   border: 0.5px solid rgba(0,0,0,0.15);
   border-radius: 8px;
   color: #333;
+  position: relative;
 `;
 
 export const VideoPreview = styled.div`
@@ -64,14 +65,14 @@ export const Tabs = styled.li`
 
   &:hover {
     text-decoration: none;
-    border-bottom: 2px solid  ${({ activetab }) => activetab === "false" ? "#555" : "#E67200"};
+    border-bottom: 2px solid  ${({ activetab }) => activetab === "false" ? "#555" : "#4339F2"};
   }
 
   ${({ activetab }) =>
     activetab === "true" &&
     `
     text-decoration: none;
-    border-bottom: 2px solid #E67200;
+    border-bottom: 2px solid #4339F2;
   `}
 `;
 
@@ -161,4 +162,43 @@ export const TargetTimeInput = styled.input`
   outline: none;
   padding-left: 8px;
   margin-top: 10px;
+`;
+
+export const CustomToolbar = styled.div`
+  display: ${({ isvisible }) => isvisible ? "flex" : "none"};
+  width: 30px;
+  height: 30px;
+  background-color: #fff;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  box-sizing: border-box;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 3px;
+  position: absolute;
+  top: -35px;
+  right: 30px;
+`;
+
+export const CloseButton = styled.button`
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  outline: none;
+  background-color: #ff4d4d;
+  padding: 2px;
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  cursor: pointer;
+
+  >svg {
+    width: 100%;
+    height: 100%;
+    color: #fff;
+  }
 `;

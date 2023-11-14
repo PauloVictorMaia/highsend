@@ -102,7 +102,7 @@ function ProfilePlan() {
           <ContentContainer>
             <span>Atual</span>
             <CurrentCard>
-              <PaymentIcon style={{ color: "#F26800" }} />
+              <PaymentIcon style={{ color: "#4339F2" }} />
               <FakeNumbers>
                 <CircleIcon />
                 <CircleIcon />
@@ -206,7 +206,7 @@ function ProfilePlan() {
 
                   <ModalButton
                     disabled={isLoading}
-                    background="#E67200"
+                    background="#4339F2"
                     onClick={() => ChangePlan()}
                   >
                     {isLoading ? <Ring size={20} color="#fff" /> : "Quero mudar"}

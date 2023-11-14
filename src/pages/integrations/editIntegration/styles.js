@@ -20,7 +20,7 @@ export const EditInputsContent = styled.div`
     border-radius: 4px;
     
     &:focus {
-      outline: 1.5px solid #F26800;
+      outline: 1.5px solid #4339F2;
     }
   }
 
@@ -28,7 +28,7 @@ export const EditInputsContent = styled.div`
     width: 70px;
     height: 25px;
     border-radius: 5px;
-    background-color: #F26800;
+    background-color: #4339F2;
     outline: none;
     border: none;
     cursor: pointer;

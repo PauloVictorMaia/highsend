@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import { Container, StepContainer, StepWrapper, CheckBoxContainer } from "./styles";
+import { Container, StepContainer, StepWrapper, CheckBoxContainer, Content, InputItem } from "./styles";
 import { useParams } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
@@ -9,6 +9,10 @@ import api from '../../api';
 import { toast } from "react-toastify";
 import './SubscriptionPage.style.css';
 import { plans } from "../../data/plans";
+import IconLogo from "../../assets/SVGComponents/iconLogo";
+import TextLogo from "../../assets/SVGComponents/textLogo";
+import { TextField } from "@mui/material";
+import { Ring } from "@uiball/loaders";
 
 const stripePromise = loadStripe(
   import.meta.env.VITE_STRIPE_PUBLIC_KEY
@@ -69,10 +73,10 @@ const SubscriptionPage = () => {
       return;
     }
 
-    if (!lastName) {
-      toast.warning('Preencha o campo "Sobrenome".');
-      return;
-    }
+    // if (!lastName) {
+    //   toast.warning('Preencha o campo "Sobrenome".');
+    //   return;
+    // }
 
     if (!email) {
       toast.warning('Preencha o campo "Email".');
@@ -122,88 +126,109 @@ const SubscriptionPage = () => {
 
   return (
     <Container>
-      {currentStep === 1 ? (
-        <StepContainer>
-          <StepWrapper style={{ marginBottom: "40px" }}>
-            <h2>Informações Pessoais</h2>
-            {plan && <span>{`Plano ${plan.type} - R$${plan.price}/mês`}</span>}
-          </StepWrapper>
+      <Content>
+        <div className="icons">
+          <div className='icon-container'>
+            <IconLogo />
+            <TextLogo />
+          </div>
+        </div>
+        {currentStep === 1 ? (
+          <StepContainer>
+            <StepWrapper>
+              <h2>Crie sua conta</h2>
+              {plan && <span>{`Plano ${plan.type} - R$${plan.price}/mês`}</span>}
+            </StepWrapper>
 
-          <input
-            type="text"
-            placeholder="Primeiro Nome"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-          />
+            <span className="info-content">informações pessoais</span>
 
-          <input
-            type="text"
-            placeholder="Sobrenome"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-          />
-
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-
-          <input
-            type={showPassword ? 'text' : 'password'}
-            placeholder="Senha (deve conter 8 caracteres)"
-            value={password}
-            maxLength={8}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-
-          <input
-            type={showPassword ? 'text' : 'password'}
-            placeholder="Confirme a Senha"
-            value={confirmPassword}
-            maxLength={8}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-
-          <CheckBoxContainer>
-            <input
-              type="checkbox"
-              id="show-password"
-              checked={showPassword}
-              onChange={() => setShowPassword(!showPassword)}
+            <InputItem
+              label="Nome Completo"
+              variant="outlined"
+              type="text"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
             />
-            <label htmlFor="show-password">Mostrar senha</label>
-          </CheckBoxContainer>
 
-          <button id="next-button" disabled={isLoading} onClick={() => handleStep()}>
-            <span>
-              {isLoading ? <div className="spinner" id="spinner"></div> : "Ir para pagamento"}
-            </span>
-          </button>
+            {/* <InputItem
+              label="Nome Completo"
+              variant="outlined"
+              type="text"
+              placeholder="Sobrenome"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+            /> */}
 
-        </StepContainer>
-      ) : (
-        <StepContainer>
-          <StepWrapper>
-            <h2>Informações de Pagamento</h2>
-            <button onClick={() => setCurrentStep(1)}>Voltar</button>
-          </StepWrapper>
-          {clientSecret && (
-            <Elements options={options} stripe={stripePromise}>
-              <CheckoutForm
-                name={name}
-                email={email}
-                password={password}
-                accountType={accountType}
-                subscriptionID={subscriptionID}
-                customerID={customerID}
-                planID={planID}
+            <InputItem
+              label="Email"
+              variant="outlined"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+
+            <span className="info-content">Crie uma senha</span>
+
+            <div className="pass-container">
+              <InputItem
+                label="Senha"
+                variant="outlined"
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                maxLength={8}
+                onChange={(e) => setPassword(e.target.value)}
               />
-            </Elements>
-          )}
-        </StepContainer>
-      )}
+
+              <InputItem
+                label="Confirmar senha"
+                variant="outlined"
+                
+                type={showPassword ? 'text' : 'password'}
+                value={confirmPassword}
+                maxLength={8}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+            </div>
+
+            <CheckBoxContainer>
+              <input
+                type="checkbox"
+                id="show-password"
+                style={{ width: '20px', height: '20px', cursor: 'pointer' }}
+                checked={showPassword}
+                onChange={() => setShowPassword(!showPassword)}
+              />
+              <label htmlFor="show-password" className="show-password">Mostrar senha</label>
+            </CheckBoxContainer>
+
+            <button id="next-button" disabled={isLoading} onClick={() => handleStep()}>
+              <span>
+                {isLoading ? <Ring color="#fff" size={25} /> : "Ir para pagamento"}
+              </span>
+            </button>
+
+          </StepContainer>
+        ) : (
+          <StepContainer>
+            <StepWrapper>
+              <h2>Informações de Pagamento</h2>
+            </StepWrapper>
+            {clientSecret && (
+              <Elements options={options} stripe={stripePromise}>
+                <CheckoutForm
+                  name={name}
+                  email={email}
+                  password={password}
+                  accountType={accountType}
+                  subscriptionID={subscriptionID}
+                  customerID={customerID}
+                  planID={planID}
+                />
+              </Elements>
+            )}
+          </StepContainer>
+        )}
+      </Content>
     </Container>
   );
 };

@@ -1,8 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300&family=Oswald&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins&family=Roboto&display=swap');
+
 
 :root {
-  font-family: 'Nunito', sans-serif;
-  font-family: 'Oswald', sans-serif;
+  font-family: 'Poppins', sans-serif;
   line-height: 1.5;
   font-weight: 400;
 }
@@ -48,4 +49,16 @@ h1 {
 .react-flow__node-group.selectable:focus,
 .react-flow__node-group.selectable:focus-visible {
   box-shadow: none;
+}
+
+.react-flow__panel.left {
+  left: auto;
+}
+
+.react-flow__node-group {
+  background-color: transparent;
+}
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+  display: none;
 }

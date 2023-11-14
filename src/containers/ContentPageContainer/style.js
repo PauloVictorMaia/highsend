@@ -20,7 +20,7 @@ export const HeaderContent = styled.div`
 
 export const PageContent = styled.div`
   width: 100%;
-  max-width: 1020px;
+  max-width: 1420px;
   padding: 0 20px;
   box-sizing: border-box;
 `;

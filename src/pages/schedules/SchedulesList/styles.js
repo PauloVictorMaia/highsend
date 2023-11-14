@@ -5,18 +5,19 @@ export const Container = styled.div`
   padding: 20px 0;
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   column-gap: 30px;
   row-gap: 30px;
 `;
 
 export const ScheduleCard = styled.div`
  width: 100%;
- height: 250px;
+ max-width: 350px;
+ height: 270px;
  background-color: #fff;
  border-radius: 8px;
  transition: .5s;
- padding: 10px;
+ padding: 20px;
  box-sizing: border-box;
  position: relative;
  display: flex;
@@ -72,12 +73,14 @@ export const ButtonText = styled.div`
  display: flex;
  align-items: center;
  height: 30px;
+ padding: 5px;
+ box-sizing: border-box;
 
  &:hover{
   box-sizing: border-box;
   border-radius: 4px;
-  background: ${({ hover }) => hover? '#bfbfbf' : ''};
-  padding: ${({ hover }) => hover? '2px' : ''};
+  background: ${({ hover }) => hover? '#f2f2f2' : ''};
+  /* padding: ${({ hover }) => hover? '2px' : ''}; */
  }
 
  span {
@@ -170,19 +173,19 @@ export const ModalContent = styled.div`
 `;
 
 export const CloseButton = styled.button`
-  width: 25px;
-  height: 25px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   border: none;
   outline: none;
-  background-color: red;
+  background-color: #ff4d4d;
   padding: 2px;
   position: relative;
   top: -10px;
-  right: -315px;
+  right: -310px;
   cursor: pointer;
 
   >svg {
@@ -209,7 +212,8 @@ export const Buttons = styled.div`
 `;
 
 export const Button = styled.button`
-    width: 80px;
+    width: 100px;
+    padding: 20px 60px;
     height: 25px;
     border-radius: 5px;
     background-color: ${({color}) => color};

@@ -1,24 +1,23 @@
 import { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { useStateContext } from '../../contexts/ContextProvider';
-import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import { Tooltip } from '@mui/material';
-import LogoImage from '../../assets/logohiflow.png';
 import { useNavigate } from 'react-router';
 import { Img } from 'react-image';
+import IconLogo from '../../assets/SVGComponents/iconLogo';
+import TextLogo from '../../assets/SVGComponents/textLogo';
 
 const TopBarWrapper = styled.div`
   background-color: #fff;
   width: 100%;
-  height: 66px;
+  height: 76px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 25px;
+  padding: 0 45px 0 40px;
   box-sizing: border-box;
-  border-bottom: .5px solid #e6e6e6;
 `;
 
 const UserMenu = styled.div`
@@ -34,7 +33,7 @@ const Avatar = styled.div`
   text-align: center;
   font-size: 23px;
   border-radius: 50%;
-  background-color: #F26800;
+  background-color: #4339F2;
   color: #fff;
 `;
 
@@ -70,6 +69,7 @@ const MenuItem = styled.div`
 const LogoContainer = styled.div`
  display: flex;
  align-items: center;
+ column-gap: 10px;
 `;
 
 const IconContainer = styled.div`
@@ -101,15 +101,10 @@ export const UserIconContainer = styled.div`
  }
 `;
 
-const LogoComponent = styled.img`
- width: 100px;
- height: auto;
-`;
-
 const TopBar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const { openMenu, setOpenMenu, signOut, user } = useStateContext();
+  const { openMenu, signOut, user, nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
   const navigate = useNavigate();
 
   const handleIconContainerClick = () => {
@@ -139,12 +134,13 @@ const TopBar = () => {
   };
 
   return (
-    <TopBarWrapper>
+    <TopBarWrapper onClick={() => setNodeMenuIsOpen(!nodeMenuIsOpen)}>
       <LogoContainer>
-        <IconContainer onClick={() => setOpenMenu(!openMenu)} >
+        {/* <IconContainer onClick={() => setOpenMenu(!openMenu)} >
           <MenuIcon />
-        </IconContainer>
-        <LogoComponent src={LogoImage} />
+        </IconContainer> */}
+        <IconLogo />
+        {openMenu && <TextLogo />}
       </LogoContainer>
       <UserMenu>
         <Tooltip title="Notificações">

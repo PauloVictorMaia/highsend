@@ -9,7 +9,7 @@ const Container = styled.div`
 `;
 
 const Header = styled.header`
-  background-color: #F26800;
+  background-color: #4339F2;
   color: white;
   padding: 30px 0;
   text-align: center;
@@ -51,7 +51,7 @@ const ButtonContainer = styled.div`
   margin-top: 10px;
 
   > button {
-    background: #F26800;
+    background: #4339F2;
     font-family: Arial, sans-serif;
     color: #ffffff;
     border-radius: 4px;
@@ -67,7 +67,7 @@ const ButtonContainer = styled.div`
 `;
 
 const CTASection = styled.section`
-  background-color: #F26800;
+  background-color: #4339F2;
   color: white;
   padding: 30px 0;
   text-align: center;

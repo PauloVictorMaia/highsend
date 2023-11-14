@@ -1,68 +1,130 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { InputConfig, InputPreview, NodeContainer, SwitchContainer } from "./DateInputNode.style";
-import { useReactFlow, NodeToolbar } from "reactflow";
+import { InputConfig, InputPreview, NodeContainer, SwitchContainer, CustomToolbar, CloseButton, InputConfigButton } from "./DateInputNode.style";
+import { useReactFlow } from "reactflow";
 import { useState, useEffect } from "react";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import EditCalendarOutlinedIcon from '@mui/icons-material/EditCalendarOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { Switch } from "@mui/material";
+import { useSortable } from "@dnd-kit/sortable"
+import { CSS } from "@dnd-kit/utilities"
+import ClearIcon from '@mui/icons-material/Clear';
 
-export function DateInputNode({ data, id, selected }) {
-  const { calendarsData, createCalendar } = useStateContext();
+export function DateInputNode({ data, id, groupID }) {
+  const { calendarsData, createCalendar, nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
   const [nodeValue, setNodeValue] = useState(data.value || "")
   const { setNodes } = useReactFlow();
-  const { deleteElements } = useReactFlow();
-  const onDelete = () => deleteElements({ nodes: [{ id }] });
-  const [interruptFlow, setInterruptFlow] = useState(false);
+  const [interruptFlow, setInterruptFlow] = useState(data.interruptFlow || false);
+  const [isVisible, setIsVisible] = useState(false);
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition
+  } = useSortable({
+    id: id
+  })
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    marginBottom: "10px"
+  }
 
   useEffect(() => {
     setNodes((nds) =>
       nds.map((node) => {
-        if (node.id === id) {
-          const groupID = node.parentNode
-          const parentNodes = nds.filter((node) => node.parentNode === groupID)
-          node.data.value = nodeValue
-          node.data.interruptFlow = interruptFlow
-          setNodes((nds) =>
-            nds.map((node) => {
-              if (node.id === groupID) {
-                node.data.blocks = [...parentNodes]
-              }
-              return node;
-            })
-          )
+        if (node.id === groupID) {
+          node.data.blocks.map((nodeOnBlock) => {
+            if (nodeOnBlock.id === id) {
+              nodeOnBlock.data.value = nodeValue
+              nodeOnBlock.data.interruptFlow = interruptFlow
+            }
+            return nodeOnBlock;
+          })
         }
-
         return node;
       })
     );
   }, [nodeValue, interruptFlow]);
 
-  return (
-    <NodeContainer>
+  useEffect(() => {
+    if (isVisible) {
+      setIsVisible(false);
+    }
+  }, [nodeMenuIsOpen]);
 
-      <NodeToolbar
-        offset={5}
-        align='end'
-        style={{
-          backgroundColor: '#fff',
-          color: '#595959',
-          border: '0.5px solid rgba(0,0,0,0.15)',
-          borderRadius: '3px',
-          padding: "5px",
-          boxSizing: "border-box",
-        }}
+  const deleteNode = () => {
+    setNodes((nodes) => {
+      return nodes.map((node) => {
+        if (node.id === groupID) {
+          const deletedBlock = node.data.blocks.find(block => block.id === id);
+          const deletedBlockHeight = deletedBlock.style.height;
+          const updatedBlocks = node.data.blocks.filter((block) => block.id !== id);
+          if (updatedBlocks.length === 0) {
+            return null;
+          }
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              blocks: updatedBlocks,
+            },
+            style: {
+              width: 250,
+              height: node.style.height - deletedBlockHeight - 10,
+              padding: '0px',
+              borderRadius: '8px',
+              border: "none"
+            }
+          };
+        }
+        return node;
+      }).filter(Boolean);
+    });
+  };
+
+  const openMenu = () => {
+    if (isVisible) {
+      setIsVisible(false);
+      return;
+    }
+    setNodeMenuIsOpen(!nodeMenuIsOpen);
+    setTimeout(() => {
+      setIsVisible(true);
+    }, 100);
+  }
+
+  return (
+    <NodeContainer
+      onClick={() => openMenu()}
+      style={style}
+      {...attributes}
+      {...listeners}
+      ref={setNodeRef}
+    >
+
+      <CustomToolbar
+        isvisible={isVisible}
       >
-        <DeleteOutlineIcon style={{ cursor: 'pointer', fontSize: 'large' }} onClick={onDelete} />
-      </NodeToolbar>
+        <DeleteOutlineIcon style={{ cursor: 'pointer', fontSize: 'large' }} onClick={() => deleteNode()} />
+      </CustomToolbar>
 
       <InputPreview>
         <EditCalendarOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
         <span>Escolha uma data...</span>
       </InputPreview>
 
-      <InputConfig isvisible={selected}>
+      <InputConfig isvisible={isVisible} onClick={(e) => e.stopPropagation()}>
+        <CloseButton
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsVisible(false)
+          }
+          }>
+          <ClearIcon />
+        </CloseButton>
 
         {
           calendarsData && calendarsData.length > 0 ?
@@ -80,7 +142,7 @@ export function DateInputNode({ data, id, selected }) {
             :
             <>
               <span>Você ainda não possui uma agenda.</span>
-              <button onClick={() => createCalendar()}>Criar primeira agenda</button>
+              <InputConfigButton onClick={() => createCalendar()}>Criar primeira agenda</InputConfigButton>
             </>
         }
 

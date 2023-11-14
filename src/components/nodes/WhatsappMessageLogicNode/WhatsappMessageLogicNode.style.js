@@ -2,7 +2,7 @@ import { styled } from "styled-components";
 
 export const NodeContainer = styled.div`
   width: 100%;
-  height: 100%;
+  height: 40px;
   color: #333;
   display: Flex;
   align-items: center;
@@ -11,6 +11,7 @@ export const NodeContainer = styled.div`
   border-radius: 8px;
   padding: 0 0 0 10px;
   box-sizing: border-box;
+  position: relative;
 `;
 
 export const Label = styled.div`
@@ -28,7 +29,7 @@ export const InputConfig = styled.div`
   flex-direction: column;
   box-sizing: border-box;
   left: -325px;
-  top: -40px;
+  top: -20px;
   border-radius: 5px;
   background-color: #fff;
   padding: 10px;
@@ -37,22 +38,7 @@ export const InputConfig = styled.div`
 
   >span {
     font-size: 1rem;
-  }
-
-  >button {
-    width: 200px;
-    height: 40px;
-    border-radius: 5px;
-    background-color: #E67200;
-    outline: none;
-    border: none;
-    cursor: pointer;
-    color: #fff;
-    font-size: 0.9rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 10px;
+    text-align: left;
   }
   
   >select {
@@ -69,6 +55,21 @@ export const InputConfig = styled.div`
       outline: 2px solid #9999FF;
     }
   }
+`;
+
+export const InputConfigButton = styled.button`
+  width: 170px;
+  height: 40px;
+  border-radius: 5px;
+  background-color: #4339F2;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const MessageInput = styled.textarea`
@@ -105,4 +106,43 @@ export const MessageInput = styled.textarea`
   &::-webkit-scrollbar-track {
     background-color: #f0f0f0;
   }
+`;
+
+export const CloseButton = styled.button`
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  outline: none;
+  background-color: #ff4d4d;
+  padding: 2px;
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  cursor: pointer;
+
+  >svg {
+    width: 100%;
+    height: 100%;
+    color: #fff;
+  }
+`;
+
+export const CustomToolbar = styled.div`
+  display: ${({ isvisible }) => isvisible ? "flex" : "none"};
+  width: 30px;
+  height: 30px;
+  background-color: #fff;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  box-sizing: border-box;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 3px;
+  position: absolute;
+  top: -35px;
+  right: 30px;
 `;

@@ -4,7 +4,7 @@ export const scheduleMenu = [
 ]
 
 export const flowMenu = [
-  {name: 'Meus Flows'}, 
+  {name: 'Fluxos'}, 
 ]
 
 export const CalendarMenu = [
@@ -20,6 +20,10 @@ export const eventsListMenu = [
 
 export const leadsMenu = [
   {name: 'Meus Leads'}, 
+]
+
+export const integrationsMenu = [
+  {name: 'Integrações'}, 
 ]
 
 export const leadsResultsMenu = [

@@ -12,7 +12,7 @@ const StateContext = createContext();
 export const ContextProvider = ({ children }) => {
 
     const [variables, setVariables] = useState([]);
-    const [openMenu, setOpenMenu] = useState(true);
+    const [openMenu, setOpenMenu] = useState(false);
     const [login, setLogin] = useState(false);
     const [user, setUser] = useState({});
     const [flows, setFlows] = useState([]);
@@ -22,10 +22,15 @@ export const ContextProvider = ({ children }) => {
     const [integrationsDataLoaded, setIntegrationsDataLoaded] = useState(false);
     const [leadsDataLoaded, setLeadsDataLoaded] = useState(false);
     const [createCalendarIsLoading, setCreateCalendarIsLoading] = useState(false);
+    const [loadingFlows, setLoadingFlows] = useState(true);
+    const [loadingCalendars, setLoadingCalendars] = useState(true);
+    const [loadingIntegrations, setLoadingIntegrations] = useState(true);
+    const [loadingLogin, setLoadingLogin] = useState(false);
     const [cardLast4, setCardLast4] = useState(null);
     const [token, setToken] = useState(localStorage.getItem('token'));
     const navigate = useNavigate();
     const location = useLocation();
+    const [nodeMenuIsOpen, setNodeMenuIsOpen] = useState(false);
 
     useEffect(() => {
         getUser(token);
@@ -52,12 +57,11 @@ export const ContextProvider = ({ children }) => {
             if (response.status === 200) {
                 setUser(response.data);
                 setLogin(true);
-                // const location = window.location.pathname;
-                // if (location !== '/') return navigate(location);
-                // return navigate('/dashboard/fluxograms');
+                const location = window.location.pathname;
+                if (location !== '/login') return navigate(location);
+                return navigate('/dashboard/fluxograms');
             }
         } catch {
-            toast.error('Usuário não autenticado. Faça login novamente.');
             navigate('/login');
         }
     };
@@ -67,8 +71,10 @@ export const ContextProvider = ({ children }) => {
             const response = await api.get(`/flows/get-flows/${user.id}`, { headers: { authorization: token } });
             setFlows(response.data);
             setLeadsDataLoaded(true);
+            setLoadingFlows(false);
         } catch {
             toast.error('Erro ao carregar flows.');
+            setLoadingFlows(false);
         }
     };
 
@@ -78,9 +84,11 @@ export const ContextProvider = ({ children }) => {
             if (response.status === 201) {
                 setCalendarsData(response.data.filteredCalendars);
                 setSchedulesDataLoaded(true);
+                setLoadingCalendars(false);
             }
         } catch {
             toast.error('Erro ao buscar agendas.');
+            setLoadingCalendars(false);
         }
     }
 
@@ -90,8 +98,10 @@ export const ContextProvider = ({ children }) => {
             if (response.status === 200) {
                 setIntegrations(response.data.integrationsFiltered);
                 setIntegrationsDataLoaded(true);
+                setLoadingIntegrations(false);
             }
         } catch {
+            setLoadingIntegrations(false);
             return;
         }
     }
@@ -125,6 +135,8 @@ export const ContextProvider = ({ children }) => {
     const signIn = async (email, password) => {
         if (!email || !password) return toast.warning('Faltam dados!');
 
+        setLoadingLogin(true);
+
         try {
             const response = await api.post('/users/sign-in', { email, password });
             if (response.status === 200) {
@@ -133,10 +145,12 @@ export const ContextProvider = ({ children }) => {
                 localStorage.setItem('token', response.data.token);
                 setLogin(true);
                 navigate('/dashboard/fluxograms');
+                setLoadingLogin(false);
             }
         }
         catch {
             toast.warning('Usuário ou senha incorretos. Verifique os dados e tente novamente.');
+            setLoadingLogin(false);
         }
     };
 
@@ -188,7 +202,13 @@ export const ContextProvider = ({ children }) => {
                 createCalendar,
                 createCalendarIsLoading,
                 getPaymentMethod,
-                cardLast4
+                cardLast4,
+                loadingFlows,
+                loadingCalendars,
+                loadingIntegrations,
+                loadingLogin,
+                nodeMenuIsOpen,
+                setNodeMenuIsOpen
             }}
         >
             {children}

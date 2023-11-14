@@ -16,7 +16,6 @@ export const Integrations = styled.div`
   flex-wrap: wrap;
   column-gap: 30px;
   row-gap: 20px;
-  padding-left: 60px;
   margin-bottom: 10px;
 `;
 
@@ -25,9 +24,7 @@ export const Title = styled.h2`
 `;
 
 export const UserIntegrations = styled.div`
-  width: 80vw;
   min-height: 120px;
-  padding-left: 60px;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -62,6 +59,7 @@ export const ModalContent = styled.div`
   align-items: center;
   row-gap: 5px;
   position: relative;
+  padding: 15px 0%;
 
   >input {
     width: 55%;
@@ -88,12 +86,13 @@ export const ModalContent = styled.div`
 
 export const ModalButton = styled.button`
   display: flex;
-  height: 30px;
+  height: 45px;
+  margin: 10px 0;
   width: 55%;
   border-radius: 5px;
   border: none;
   outline: none;
-  background-color: #E67200;
+  background-color: #4339F2;
   color: #fff;
   justify-content: center;
   align-items: center;

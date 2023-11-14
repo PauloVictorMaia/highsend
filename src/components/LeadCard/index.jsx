@@ -6,7 +6,7 @@ function LeadCard({ name, flowID }) {
   const navigate = useNavigate();
 
   return (
-    <Container onClick={() => navigate(`/dashboard/leads/${flowID}`)}>
+    <Container onClick={() => navigate(`/dashboard/leads/${name}/${flowID}`)}>
       {name}
     </Container>
   )

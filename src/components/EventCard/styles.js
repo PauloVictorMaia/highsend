@@ -29,7 +29,7 @@ export const ScheduleTimeContainer = styled.div`
 `;
 
 export const ScheduledTime = styled.div`
-  width: 140px;
+  width: 170px;
   display: flex;
   column-gap: 10px;
 `;

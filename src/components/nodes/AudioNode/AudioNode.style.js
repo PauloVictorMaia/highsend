@@ -2,7 +2,7 @@ import { styled } from "styled-components";
 
 export const NodeContainer = styled.div`
   width: 100%;
-  height: 100%;
+  height: 40px;
   color: #333;
   display: Flex;
   align-items: center;
@@ -11,6 +11,7 @@ export const NodeContainer = styled.div`
   border-radius: 8px;
   padding: 0 0 0 10px;
   box-sizing: border-box;
+  position: relative;
 `;
 
 export const AudioPreview = styled.div`
@@ -32,10 +33,9 @@ export const AudioPreview = styled.div`
 export const AudioNodeMenu = styled.div`
   visibility: ${({isvisible}) => isvisible ? "visible" : "hidden"};
   width: 300px;
-  height: 90px;
   position: absolute;
   left: -325px;
-  top: -45px;
+  top: -55px;
   border-radius: 5px;
   background-color: #fff;
   padding: 0 10px;
@@ -63,25 +63,25 @@ export const Tabs = styled.li`
 
   &:hover {
     text-decoration: none;
-    border-bottom: 2px solid  ${({ activetab }) => activetab === "false" ? " #555" : " #E67200"};
+    border-bottom: 2px solid  ${({ activetab }) => activetab === "false" ? " #555" : " #4339F2"};
   }
 
   ${({ activetab }) =>
     activetab === "true" &&
     `
     text-decoration: none;
-    border-bottom: 2px solid  #E67200;
+    border-bottom: 2px solid  #4339F2;
   `}
 `;
 
 export const SendAudio = styled.div`
   width: 100%;
-  height: 60%;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0 10px;
   box-sizing: border-box;
+  margin-top: 10px;
 `;
 
 export const LinkInput = styled.input`
@@ -106,7 +106,7 @@ export const ChooseFileButton = styled.label`
   height: 40px;
   width: 130px;
   border-radius: 5px;
-  background-color: #E67200;
+  background-color: #4339F2;
   color: #fff;
   justify-content: center;
   align-items: center;
@@ -118,4 +118,75 @@ export const ChooseFileButton = styled.label`
 
 export const FileInput = styled.input`
   display: none;
+`;
+
+export const CustomToolbar = styled.div`
+  display: ${({ isvisible }) => isvisible ? "flex" : "none"};
+  width: 30px;
+  height: 30px;
+  background-color: #fff;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  box-sizing: border-box;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 3px;
+  position: absolute;
+  top: -35px;
+  right: 30px;
+`;
+
+export const CloseButton = styled.button`
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  outline: none;
+  background-color: #ff4d4d;
+  padding: 2px;
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  cursor: pointer;
+
+  >svg {
+    width: 100%;
+    height: 100%;
+    color: #fff;
+  }
+`;
+
+export const InputsContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  >span {
+    font-size: 10px;
+    margin-bottom: 10px;
+  }
+`;
+
+export const UploadButtonContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const SwitchContainer = styled.div`
+  width: 100%;
+  height: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+
+  >span {
+    color: #333;
+    font-size: 0.9rem;
+  }
 `;

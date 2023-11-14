@@ -71,7 +71,7 @@ export const Button = styled.button`
   justify-content: center;
   margin-top: 10px;
   margin-left: 12%;
-  background: #F26800;
+  background: #4339F2;
   color: #ffffff;
   border-radius: 4px;
   border: none;

@@ -13,32 +13,17 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Sidebar from '../../components/sidebar/Sidebar';
 import DefaultEdge from "../../components/edges/DefaultEdge/DefaultEdge";
 import { StartNode } from "../../components/nodes/StartNode/StartNode";
-import { TextNode } from "../../components/nodes/TextNode/TextNode";
-import { VideoNode } from "../../components/nodes/VideoNode/VideoNode";
-import { ImageNode } from "../../components/nodes/ImageNode/ImageNode";
-import { TextInputNode } from "../../components/nodes/TextInputNode/TextInputNode";
-import EmbedNode from "../../components/nodes/EmbedNode/EmbedNode";
-import AudioNode from "../../components/nodes/AudioNode/AudioNode";
 import GroupNode from "../../components/nodes/GroupNode/GroupNode";
-import { NumberInputNode } from "../../components/nodes/NumberInputNode/NumberInputNode";
-import { EmailInputNode } from "../../components/nodes/EmailInputNode/EmailInputNode";
-import { WebsiteInputNode } from "../../components/nodes/WebsiteInputNode/WebsiteInputNode";
-import { PhoneInputNode } from "../../components/nodes/PhoneInputNode/PhoneInputNode";
-import { DateInputNode } from "../../components/nodes/DateInputNode/DateInputNode";
-import { ButtonInputNode } from "../../components/nodes/ButtonInputNode/ButtonInputNode";
-import { sortNodes, getId, getNodePositionInsideParent } from '../../utils';
+import { sortNodes, getId } from '../../utils';
 import { useStateContext } from "../../contexts/ContextProvider";
 import { useParams } from "react-router-dom";
 import api from '../../api';
 import PanelButtons from "../../components/PanelButtons/PanelButtons";
 import lodash from 'lodash';
 import { toast } from "react-toastify";
-import DelayLogicNode from "../../components/nodes/DelayLogicNode/DelayLogicNode";
-import LinkButtonInputNode from "../../components/nodes/LInkButtonInputNode/LinkButtonInputNode";
-import RedirectLogicNode from "../../components/nodes/RedirectLogicNode/RedirectLogicNode";
-import WhatsappMessageLogicNode from "../../components/nodes/WhatsappMessageLogicNode/WhatsappMessageLogicNode";
 import clipboardCopy from 'clipboard-copy';
-import PixelFacebookLogicNode from "../../components/nodes/PixelFacebook/PixelFacebookLogicNode";
+import { ButtonInputOriginalNode } from "../../components/nodes/ButtonInputOriginalNode/ButtonInputOriginalNode";
+import GroupNodeOriginal from "../../components/nodes/GroupNodeOriginal/GroupNodeOriginal";
 
 const proOptions = {
   hideAttribution: true,
@@ -46,24 +31,9 @@ const proOptions = {
 
 const NODE_TYPES = {
   startNode: StartNode,
-  textNode: TextNode,
-  videoNode: VideoNode,
-  imageNode: ImageNode,
-  embedNode: EmbedNode,
-  audioNode: AudioNode,
-  textInputNode: TextInputNode,
   group: GroupNode,
-  numberInputNode: NumberInputNode,
-  emailInputNode: EmailInputNode,
-  websiteInputNode: WebsiteInputNode,
-  phoneInputNode: PhoneInputNode,
-  dateInputNode: DateInputNode,
-  buttonInputNode: ButtonInputNode,
-  linkButtonInputNode: LinkButtonInputNode,
-  delayLogicNode: DelayLogicNode,
-  redirectLogicNode: RedirectLogicNode,
-  whatsappMessageLogicNode: WhatsappMessageLogicNode,
-  pixelFacebookLogicNode: PixelFacebookLogicNode
+  groupOriginal: GroupNodeOriginal,
+  buttonInputNode: ButtonInputOriginalNode,
 };
 
 const EDGE_TYPES = {
@@ -79,7 +49,7 @@ const Flow = () => {
   const { setVariables, variables } = useStateContext();
   const wrapperRef = useRef(null);
   const edgeUpdateSuccessful = useRef(true);
-  const { openMenu, user } = useStateContext();
+  const { user, nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
   const token = localStorage.getItem('token');
   const { project, getIntersectingNodes } = useReactFlow();
   const store = useStoreApi();
@@ -93,13 +63,52 @@ const Flow = () => {
   const [profileImage, setProfileImage] = useState("");
   const [template, setTemplate] = useState("");
   const [profileName, setProfileName] = useState("");
+  const [flowName, setFlowName] = useState("");
   const [originalProfileImage, setOriginalProfileImage] = useState("");
   const [originalTemplate, setOriginalTemplate] = useState("");
   const [originalProfileName, setOriginalProfileName] = useState("");
   const BASE_URL = `${import.meta.env.VITE_OPEN_FRONT_URL}/fluxo-de-bot/`;
   const [isLoading, setIsLoading] = useState(false);
 
-  console.log(nodes);
+  useEffect(() => {
+    if (Object.keys(user).length > 0) {
+      getFlowData();
+    }
+  }, []);
+
+  const exportToJson = () => {
+    try {
+      const data = {
+        nodes,
+        edges,
+        variables,
+        config: {
+          profileName,
+          profileImage,
+          template
+        },
+        name: flowName,
+        id: "hiflow_jhdujmdhhbbvfkppojdb7ubdyge355mskja"
+      }
+      const json = JSON.stringify(data, null, 2);
+      const blob = new Blob([json], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `hiflow_fluxo_${data.name}.json`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+    } catch {
+      toast.error("Erro ao exportar para JSON.");
+    }
+  };
+
+  function handleHasChanged() {
+    setTimeout(() => {
+      setHasChanges(false);
+    }, 400);
+  }
 
   async function getFlowData() {
     try {
@@ -109,8 +118,8 @@ const Flow = () => {
         setNodes(response.data.nodes);
         setEdges(response.data.edges);
         setVariables(response.data.variables);
-        setOriginalNodes(response.data.nodes);
-        setOriginalEdges(response.data.edges);
+        setOriginalNodes(JSON.parse(JSON.stringify(response.data.nodes)));
+        setOriginalEdges(JSON.parse(JSON.stringify(response.data.edges)));
         setOriginalVariables(response.data.variables);
         setProfileImage(response.data.config.profileImage);
         setTemplate(response.data.config.template);
@@ -118,6 +127,8 @@ const Flow = () => {
         setOriginalProfileImage(response.data.config.profileImage);
         setOriginalTemplate(response.data.config.template);
         setOriginalProfileName(response.data.config.profileName);
+        setFlowName(response.data.name);
+        handleHasChanged();
       }
     } catch {
       toast.error('Erro ao buscar dados do flow.');
@@ -126,7 +137,9 @@ const Flow = () => {
 
   async function saveFlowData() {
 
-    const dateNodes = nodes.filter((node) => node.type === "dateInputNode");
+    const newNodesArray = nodes.flatMap(node => node.data?.blocks || []);
+
+    const dateNodes = newNodesArray.filter((node) => node.type === "dateInputNode");
     if (dateNodes.length > 0) {
       const hasEmptyValue = dateNodes.some((node) => node.data.value === "");
       if (hasEmptyValue) {
@@ -135,7 +148,7 @@ const Flow = () => {
       }
     }
 
-    const filteredNodes = nodes.filter((node) => node.type !== "dateInputNode");
+    const filteredNodes = newNodesArray.filter((node) => node.type !== "dateInputNode");
     const inputNodes = filteredNodes.filter((node) => /input/i.test(node.type));
     if (inputNodes.length > 0) {
       const hasEmptyVariables = inputNodes.some((node) => node.data.variable === "");
@@ -150,15 +163,15 @@ const Flow = () => {
       return;
     }
 
-    const whatsappMessageLogicNodes = nodes.filter((node) => node.type === "whatsappMessageLogicNode");
+    const whatsappMessageLogicNodes = newNodesArray.filter((node) => node.type === "whatsappMessageLogicNode");
     if (whatsappMessageLogicNodes.length > 0) {
       const hasEmptyValue = whatsappMessageLogicNodes.some((node) => node.data.value === "");
       const hasEmptyMessage = whatsappMessageLogicNodes.some((node) => node.data.message === "");
       if (hasEmptyValue) {
-        toast.warning('Existem nodes do tipo "Whatsapp msg" sem uma integração atribuída. Atribua uma integração Whatsapp a esses nodes.');
+        toast.warning('Existem nodes do tipo "Zap Msg" sem uma integração atribuída. Atribua uma integração Whatsapp a esses nodes.');
         return;
       } else if (hasEmptyMessage) {
-        toast.warning('Existem nodes do tipo "Whatsapp msg" sem uma mensagem. Digite a mensagem que deve ser enviada.');
+        toast.warning('Existem nodes do tipo "Zap Msg" sem uma mensagem. Digite a mensagem que deve ser enviada.');
         return;
       }
     }
@@ -181,20 +194,7 @@ const Flow = () => {
     }
   }
 
-  document.addEventListener("beforeunload", function (event) {
-    event.preventDefault();
-    event.returnValue = "";
-    return "";
-  });
-
   useEffect(() => {
-    if (Object.keys(user).length > 0) {
-      getFlowData();
-    }
-  }, []);
-
-  useEffect(() => {
-
     const nodesChanged = !lodash.isEqual(
       nodes.map(node => lodash.omit(node, 'selected')),
       originalNodes.map(node => lodash.omit(node, 'selected'))
@@ -233,7 +233,9 @@ const Flow = () => {
     setEdges((eds) => addEdge(connection, eds))
   }, [edges]);
 
+
   const onDragOver = useCallback((event) => {
+
     event.preventDefault();
     event.dataTransfer.dropEffect = 'move';
   }, []);
@@ -258,13 +260,15 @@ const Flow = () => {
     event.preventDefault();
 
     if (wrapperRef.current) {
+
+
       const wrapperBounds = wrapperRef.current.getBoundingClientRect();
       const type = event.dataTransfer.getData('application/reactflow/type');
       const subType = event.dataTransfer.getData('application/reactflow/subtype');
       const heightString = event.dataTransfer.getData('application/reactflow/height');
       const height = parseFloat(heightString);
       let position = project({ x: event.clientX - wrapperBounds.x - 20, y: event.clientY - wrapperBounds.top - 20 });
-      const nodeStyle = type === 'group' ? {
+      const nodeStyle = type === 'group' || type === 'groupOriginal' ? {
         width: 250,
         height: height + 60,
         border: "none",
@@ -280,10 +284,19 @@ const Flow = () => {
       }).filter((n) => n.type === 'group');
       const groupNode = intersections[0];
 
+      const intersectionsOfButtons = getIntersectingNodes({
+        x: position.x,
+        y: position.y,
+        width: 40,
+        height: 40,
+      }).filter((n) => n.type === 'groupOriginal');
+      const groupNodeOriginal = intersectionsOfButtons[0];
+
       let newNode = {
         id: getId(),
         type,
         position,
+        dragHandle: '.custom-drag-handle',
         data: {
           label: getLabel(),
           blocks: [],
@@ -304,44 +317,95 @@ const Flow = () => {
 
       newNode.data.blocks = [newSubnode];
 
+      if (groupNodeOriginal) {
+
+        if (subType !== "buttonInputNode") {
+          toast.warning('Esse grupo só aceita nodes do tipo "Botão"');
+          return;
+        }
+        if (subType === "buttonInputNode") {
+          const parentNodes = nodes.filter((node) => node.parentNode === groupNodeOriginal.id);
+          const lastParentNode = parentNodes[parentNodes.length - 1];
+          const rowGap = 5
+          const initialGroupHeight = nodeStyle.height
+          let parentNodesHeight = parentNodes.reduce((totalHeight, node) => {
+            return totalHeight + node.style.height;
+          }, 0);
+          const totalGroupHeight = ((initialGroupHeight + parentNodesHeight) + ((parentNodes.length + 1) * rowGap));
+
+          newSubnode.position = { x: 20, y: lastParentNode.position.y + (lastParentNode.style.height + rowGap) };
+          newSubnode.parentNode = groupNodeOriginal?.id;
+          newSubnode.extent = groupNodeOriginal ? 'parent' : undefined;
+          newSubnode.type = subType;
+
+          let newNodesGroup = nodes.map((node) => {
+            if (node.id === groupNodeOriginal.id) {
+              node.style = {
+                width: 250,
+                height: totalGroupHeight,
+                border: "none",
+                padding: '0',
+                borderRadius: '8px'
+              };
+              node.data.blocks = [...node.data.blocks, newSubnode]
+              return node;
+            }
+            return node;
+          });
+
+          const sortedNodes = [...newNodesGroup, newSubnode];
+          setNodes(sortedNodes);
+          return;
+        }
+      }
 
       if (groupNode) {
-        const parentNodes = nodes.filter((node) => node.parentNode === groupNode.id);
-        const lastParentNode = parentNodes[parentNodes.length - 1];
-        const rowGap = 5
-        const initialGroupHeight = nodeStyle.height
+        if (subType === "buttonInputNode") {
+          toast.warning('Nodes do tipo "Botão" devem ser criados em um grupo separado');
+          return;
+        }
+
+        const initialGroupHeight = nodeStyle.height;
+        const rowGap = 10;
+        const parentNodes = groupNode.data.blocks;
         let parentNodesHeight = parentNodes.reduce((totalHeight, node) => {
           return totalHeight + node.style.height;
         }, 0);
         const totalGroupHeight = ((initialGroupHeight + parentNodesHeight) + ((parentNodes.length + 1) * rowGap));
-
-        newSubnode.position = { x: 20, y: lastParentNode.position.y + (lastParentNode.style.height + rowGap) };
         newSubnode.parentNode = groupNode?.id;
-        newSubnode.extent = groupNode ? 'parent' : undefined;
+
         newSubnode.type = subType;
+
 
         let newNodesGroup = nodes.map((node) => {
           if (node.id === groupNode.id) {
             node.style = {
               width: 250,
               height: totalGroupHeight,
-              backgroundColor: '#fff',
               border: "none",
               padding: '0',
               borderRadius: '8px'
             };
             node.data.blocks = [...node.data.blocks, newSubnode]
+            node.selected = !node.selected //isso faz a renderização funcionar
             return node;
           }
           return node;
         });
 
-        const sortedNodes = [...newNodesGroup, newSubnode];
+
+
+        const sortedNodes = [...newNodesGroup];
         setNodes(sortedNodes);
       }
 
       if (!groupNode) {
-        const sortedNodes = store.getState().getNodes().concat(newNode, newSubnode).sort(sortNodes);
+        if (subType === "buttonInputNode") {
+          const sortedNodes = store.getState().getNodes().concat(newNode, newSubnode).sort(sortNodes);
+          setNodes(sortedNodes);
+          return;
+        }
+        const sortedNodes = store.getState().getNodes().concat(newNode).sort(sortNodes);
         setNodes(sortedNodes);
       }
 
@@ -386,7 +450,6 @@ const Flow = () => {
                   height: groupNodeHeight,
                   padding: '0px',
                   borderRadius: '8px',
-                  backgroundColor: '#fff',
                   border: "none"
                 }
               }
@@ -419,77 +482,6 @@ const Flow = () => {
     [nodes, edges]
   );
 
-  const onNodeDragStop = useCallback(
-    (_, node) => {
-      if (node.type !== 'node' && !node.parentNode) {
-        return;
-      }
-
-      const intersections = getIntersectingNodes(node).filter((n) => n.type === 'group');
-      const groupNode = intersections[0];
-
-      if (intersections.length && node.parentNode !== groupNode?.id) {
-        const nextNodes = store
-          .getState()
-          .getNodes()
-          .map((n) => {
-            if (n.id === groupNode.id) {
-              return {
-                ...n,
-                className: '',
-              };
-            } else if (n.id === node.id) {
-              const position = getNodePositionInsideParent(n, groupNode) ?? { x: 0, y: 0 };
-
-              return {
-                ...n,
-                position,
-                parentNode: groupNode.id,
-                dragging: false,
-                extent: 'parent',
-              };
-            }
-
-            return n;
-          })
-          .sort(sortNodes);
-
-        setNodes(nextNodes);
-      }
-    },
-    [getIntersectingNodes, setNodes, store]
-  );
-
-  const onNodeDrag = useCallback(
-    (_, node) => {
-      if (node.type !== 'node' && !node.parentNode) {
-        return;
-      }
-
-      const intersections = getIntersectingNodes(node).filter((n) => n.type === 'group');
-      const groupClassName = intersections.length && node.parentNode !== intersections[0]?.id ? 'active' : '';
-
-      setNodes((nds) => {
-        return nds.map((n) => {
-          if (n.type === 'group') {
-            return {
-              ...n,
-              className: groupClassName,
-            };
-          } else if (n.id === node.id) {
-            return {
-              ...n,
-              position: node.position,
-            };
-          }
-
-          return { ...n };
-        });
-      });
-    },
-    [getIntersectingNodes, setNodes]
-  );
-
   const copyURL = () => {
     try {
       const URL = `${BASE_URL}${user.id}/${params.flowid}`;
@@ -513,28 +505,28 @@ const Flow = () => {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         onDrop={onDrop}
-        onNodeDrag={onNodeDrag}
-        onNodeDragStop={onNodeDragStop}
         proOptions={proOptions}
         onDragOver={onDragOver}
         onEdgeUpdate={onEdgeUpdate}
         onEdgeUpdateStart={onEdgeUpdateStart}
         onEdgeUpdateEnd={onEdgeUpdateEnd}
         zoomOnDoubleClick={false}
+        onPaneClick={() => setNodeMenuIsOpen(!nodeMenuIsOpen)}
       >
 
         <Background
           gap={34}
           size={2}
-          color="#C6D0E1"
-          style={{ backgroundColor: "#f4f5f8" }}
+          // color="#C6D0E1"
+          color="transparent"
+          style={{ backgroundColor: "#F8F8F8" }}
         />
         <Controls position="bottom-right" style={{ bottom: '100px' }} />
       </ReactFlow>
-      <Panel position="top-left" style={openMenu ? { left: 230, top: -15 } : { left: 90 }}>
+      <Panel position="top-left">
         <Sidebar />
       </Panel>
-      <Panel position="top-right" style={{ top: 60 }}>
+      <Panel position="top-right" style={{ top: 85 }}>
         <PanelButtons
           save={saveFlowData}
           hasChanges={hasChanges}
@@ -548,6 +540,7 @@ const Flow = () => {
           setProfileName={setProfileName}
           copyURL={copyURL}
           isLoading={isLoading}
+          exportToJson={exportToJson}
         />
       </Panel>
     </FlowContainer>

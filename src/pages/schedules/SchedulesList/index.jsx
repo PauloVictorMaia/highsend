@@ -1,7 +1,7 @@
 
 import { Container, ScheduleCard, CardTitle, CardDetails, ButtonCard, ButtonText, TitleContainer, CardColor, DropMenuCard, MenuCardButtons, SwitchContainer, Modal, ModalContent, DeleteCalendar, CloseButton, Buttons, Button } from "./styles";
 import CopyAllIcon from '@mui/icons-material/CopyAll';
-import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
+import SettingsIcon from '@mui/icons-material/Settings';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useEffect, useState, useRef } from "react";
 import { months } from "../../../data/menus";
@@ -20,7 +20,7 @@ import { Ring } from "@uiball/loaders";
 function SchedulesList() {
   const [indexDrop, setIndexDrop] = useState(null);
   const navigate = useNavigate();
-  const { user, calendarsData, getCalendars, schedulesDataLoaded } = useStateContext();
+  const { user, calendarsData, getCalendars, schedulesDataLoaded, loadingCalendars } = useStateContext();
   const token = localStorage.getItem('token');
   const [modalIsVisible, setModalIsVisible] = useState(false);
   const menuRef = useRef(null);
@@ -29,6 +29,7 @@ function SchedulesList() {
   const [deleteIsLoading, setDeleteIsLoading] = useState(false);
   const [desativeIsLoading, setDesativeIsLoading] = useState(false);
   const [cloning, setCloning] = useState(false);
+  const [indexModal, setIndexModal] = useState(null);
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
@@ -119,7 +120,7 @@ function SchedulesList() {
 
   return (
     <Container>
-      {!calendarsData.length &&
+      {loadingCalendars &&
         <>
           <Skeleton width={320} height={250} animation="wave" variant="rectangular" style={{ borderRadius: '8px' }} />
           <Skeleton width={320} height={250} animation="wave" variant="rectangular" style={{ borderRadius: '8px' }} />
@@ -136,7 +137,7 @@ function SchedulesList() {
               hover
               ref={ref => (buttonRefs.current[index] = ref)}
             >
-              <SettingsApplicationsIcon />
+              <SettingsIcon fontSize="100px" />
               <ArrowDropDownIcon />
             </ButtonText>
           </TitleContainer>
@@ -205,6 +206,7 @@ function SchedulesList() {
                 onClick={(e) => {
                   e.stopPropagation();
                   openDeleteModal();
+                  setIndexModal(index);
                 }}
               >
                 <DeleteOutlineOutlinedIcon />
@@ -222,7 +224,7 @@ function SchedulesList() {
 
             </DropMenuCard>
           }
-          <Modal onClick={(e) => e.stopPropagation()} isvisible={modalIsVisible}>
+          <Modal onClick={(e) => e.stopPropagation()} isvisible={modalIsVisible && index === indexModal}>
             <ModalContent>
               <CloseButton onClick={() => setModalIsVisible(false)}>
                 <ClearIcon />
@@ -232,7 +234,7 @@ function SchedulesList() {
                 <span>Tem certeza que deseja excluir a agenda "{calendar.room.title}" ?</span>
                 <Buttons>
                   <Button
-                    color="green"
+                    color="#91D6AC"
                     onClick={() => handleActive(calendar.room.id, false)}
                     disabled={desativeIsLoading}
                   >
@@ -240,7 +242,7 @@ function SchedulesList() {
                   </Button>
                   <Button
                     disabled={deleteIsLoading}
-                    color="red"
+                    color="#ff4d4d"
                     onClick={() => deleteCalendar(calendar.room.id)}
                   >
                     {deleteIsLoading ? <Ring color="#fff" size={20} /> : "Excluir"}
