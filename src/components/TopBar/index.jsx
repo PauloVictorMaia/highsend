@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router';
 import { Img } from 'react-image';
 import IconLogo from '../../assets/SVGComponents/iconLogo';
 import TextLogo from '../../assets/SVGComponents/textLogo';
+import { Link } from 'react-router-dom';
 
 const TopBarWrapper = styled.div`
   background-color: #fff;
@@ -104,7 +105,7 @@ export const UserIconContainer = styled.div`
 const TopBar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const { openMenu, signOut, user, nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
+  const { openMenu, signOut, user, nodeMenuIsOpen, setNodeMenuIsOpen, setOpenMenu } = useStateContext();
   const navigate = useNavigate();
 
   const handleIconContainerClick = () => {
@@ -135,13 +136,15 @@ const TopBar = () => {
 
   return (
     <TopBarWrapper onClick={() => setNodeMenuIsOpen(!nodeMenuIsOpen)}>
-      <LogoContainer>
-        {/* <IconContainer onClick={() => setOpenMenu(!openMenu)} >
+      <Link to="/dashboard/fluxograms/">
+        <LogoContainer onMouseMove={() => setOpenMenu(true)} onMouseLeave={() => setOpenMenu(false)}>
+          {/* <IconContainer onClick={() => setOpenMenu(!openMenu)} >
           <MenuIcon />
         </IconContainer> */}
-        <IconLogo />
-        {openMenu && <TextLogo />}
-      </LogoContainer>
+          <IconLogo />
+          {openMenu && <TextLogo />}
+        </LogoContainer>
+      </Link>
       <UserMenu>
         <Tooltip title="Notificações">
           <UserIconContainer>
