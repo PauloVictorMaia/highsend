@@ -136,7 +136,7 @@ const TopBar = () => {
 
   return (
     <TopBarWrapper onClick={() => setNodeMenuIsOpen(!nodeMenuIsOpen)}>
-      <Link to="/dashboard/fluxograms/">
+      <Link to="/dashboard/fluxograms">
         <LogoContainer onMouseMove={() => setOpenMenu(true)} onMouseLeave={() => setOpenMenu(false)}>
           {/* <IconContainer onClick={() => setOpenMenu(!openMenu)} >
           <MenuIcon />
