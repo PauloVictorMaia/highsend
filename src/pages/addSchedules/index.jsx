@@ -30,6 +30,9 @@ import {
   CheckboxContent,
   SaveButtonContainer,
   SaveButton,
+  WhatsappMessageInfo,
+  IconText,
+  VariableExample,
 } from './styles.js';
 import { CalendarMenu } from "../../data/menus";
 import { toast } from "react-toastify";
@@ -55,6 +58,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 import { Ring } from "@uiball/loaders";
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 function AddSchedule() {
   const { user, getCalendars } = useStateContext();
@@ -93,14 +97,12 @@ function AddSchedule() {
   const [whatsappIntegrations, setWhatsappIntegrations] = useState([]);
   const [googleIntegrationSelected, setGoogleIntegrationSelected] = useState("");
   const [whatsappIntegrationSelected, setWhatsappIntegrationSelected] = useState("");
-  const [whatsappMessage, setWhatsappMessage] = useState("");
+  const [whatsappMessage, setWhatsappMessage] = useState("Olá, {{nome}}, tudo bem? Seu evento foi agendado para o dia {{data}}, às {{horario}}. Por favor, confirme seus dados para contato: Email: {{email}}, tel: {{telefone}}. Obrigado e até lá.");
   const whatsappMessageTextareaRef = useRef(null);
   const [createdAt, setCreatedAt] = useState(null);
   const [timezone, setTimezone] = useState("");
   const brazilTimezones = moment.tz.zonesForCountry('BR');
   const [isLoading, setIsLoading] = useState(false);
-
-  console.log(timezone)
 
   async function getCalendarData() {
     try {
@@ -383,9 +385,11 @@ function AddSchedule() {
       setWhatsappMessage(whatsappIntegration.message);
     } else {
       setWhatsappIntegrationSelected("");
-      setWhatsappMessage("");
+      setWhatsappMessage("Olá, {{nome}}, tudo bem? Seu evento foi agendado para o dia {{data}}, às {{horario}}. Por favor, confirme seus dados para contato: Email: {{email}}, tel: {{telefone}}. Obrigado e até lá.");
     }
   };
+
+  console.log(whatsappMessage)
 
   useEffect(() => {
     if (integrations && integrations.length > 0) {
@@ -741,10 +745,44 @@ function AddSchedule() {
                                 ))
                               }
                             </Select>
+
+                            <WhatsappMessageInfo>
+                              <IconText>
+                                <InfoOutlinedIcon />
+                                <span style={{ fontWeight: "600" }}>Escritas automáticas</span>
+                              </IconText>
+                              <IconText>
+                                <span>
+                                  Em sua mensagem você pode utilizar as seguintes escritas automáticas para utilizar as informações fornecidas pelo seu cliente no agendamento.
+                                </span>
+                              </IconText>
+
+                              <IconText>
+                                <VariableExample>
+                                  {"{{nome}}"}
+                                </VariableExample>
+
+                                <VariableExample>
+                                  {"{{data}}"}
+                                </VariableExample>
+
+                                <VariableExample>
+                                  {"{{horario}}"}
+                                </VariableExample>
+
+                                <VariableExample>
+                                  {"{{email}}"}
+                                </VariableExample>
+
+                                <VariableExample>
+                                  {"{{telefone}}"}
+                                </VariableExample>
+                              </IconText>
+                            </WhatsappMessageInfo>
+
                             <WhatsappMessage
                               value={whatsappMessage}
                               onChange={(e) => setWhatsappMessage(e.target.value)}
-                              placeholder="Digite aqui a mensagem que deve ser enviada pelo Whatsapp"
                               ref={whatsappMessageTextareaRef}
                             />
                           </>

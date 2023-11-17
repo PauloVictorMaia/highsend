@@ -134,6 +134,45 @@ export const IntegrationsOptions = styled.div`
   padding: 15px 0 15px 10px;
 `;
 
+export const WhatsappMessageInfo = styled.div`
+  width: 500px;
+  border: 2px solid #4339F2;
+  border-radius: 14px;
+  background-color: #E0EAFF;
+  padding: 10px;
+  box-sizing: border-box;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+
+  span {
+    color: #1B192E;
+  }
+`;
+
+export const VariableExample = styled.div`
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #4339F2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+`;
+
+export const IconText = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+  font-size: 0.8rem;
+
+  svg {
+    color: #4339F2;
+  }
+`;
+
 export const WhatsappMessage = styled.textarea`
   display: block;
   width: 200px;
