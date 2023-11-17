@@ -97,7 +97,7 @@ function AddSchedule() {
   const [whatsappIntegrations, setWhatsappIntegrations] = useState([]);
   const [googleIntegrationSelected, setGoogleIntegrationSelected] = useState("");
   const [whatsappIntegrationSelected, setWhatsappIntegrationSelected] = useState("");
-  const [whatsappMessage, setWhatsappMessage] = useState("Olá, {{nome}}, tudo bem? Seu evento foi agendado para o dia {{data}}, às {{horario}}. Por favor, confirme seus dados para contato: Email: {{email}}, tel: {{telefone}}. Obrigado e até lá.");
+  const [whatsappMessage, setWhatsappMessage] = useState("Olá, {{nome}}, tudo bem? Seu evento foi agendado para o dia {{data}}, das {{horario}}. Por favor, confirme seus dados para contato: Email: {{email}}, tel: {{telefone}}. Obrigado e até lá.");
   const whatsappMessageTextareaRef = useRef(null);
   const [createdAt, setCreatedAt] = useState(null);
   const [timezone, setTimezone] = useState("");
@@ -385,7 +385,7 @@ function AddSchedule() {
       setWhatsappMessage(whatsappIntegration.message);
     } else {
       setWhatsappIntegrationSelected("");
-      setWhatsappMessage("Olá, {{nome}}, tudo bem? Seu evento foi agendado para o dia {{data}}, às {{horario}}. Por favor, confirme seus dados para contato: Email: {{email}}, tel: {{telefone}}. Obrigado e até lá.");
+      setWhatsappMessage("Olá, {{nome}}, tudo bem? Seu evento foi agendado para o dia {{data}}, das {{horario}}. Por favor, confirme seus dados para contato: Email: {{email}}, tel: {{telefone}}. Obrigado e até lá.");
     }
   };
 
