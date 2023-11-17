@@ -69,6 +69,7 @@ export const MenuItem = styled.div`
   color: ${({ active }) => active? "#1B192E" : "#A0B4D1"};
   font-family: 'Poppins', sans-serif;
   position: relative;
+  transition: background-color 0.6s ease;
 
   &:hover {
     background-color: #f2f2f2;
