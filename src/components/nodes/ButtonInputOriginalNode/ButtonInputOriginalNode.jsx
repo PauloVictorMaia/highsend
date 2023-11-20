@@ -97,6 +97,7 @@ export function ButtonInputOriginalNode({ data, id }) {
           value={buttonLabel}
           onChange={(e) => setButtonLabel(e.target.value)}
           style={{ border: "none", outline: "none" }}
+          maxLength={50}
         />
       </InputPreview>
 

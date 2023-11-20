@@ -35,15 +35,16 @@ export const DescriptionContainer = styled.div`
   width: 100%;
   margin: 10px 0;
   padding: 5px;
-  text-align: center;
   box-sizing: border-box;
-  font-size: 0.95rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2; 
-  -webkit-box-orient: vertical;
-  white-space: normal;
+  
+  span {
+    display: -webkit-box;
+    -webkit-line-clamp: 1; 
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: 0.95rem;
+    text-align: center;
+  }
 `;
 
 export const IconContainer = styled.div`

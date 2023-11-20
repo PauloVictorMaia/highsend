@@ -6,7 +6,7 @@ export const Container = styled.div`
   padding: 20px 0;
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: ${({ openmenu }) => openmenu ? "repeat(4, 1fr)" : "repeat(5, 1fr)"};
   column-gap: 30px;
   row-gap: 30px;
 `;
@@ -73,6 +73,7 @@ export const Buttons = styled.div`
 
 export const Content = styled.div`
   width: 100%;
+  height: 150px;
   color: #333;
   font-size: 1.5rem;
   font-weight: bold;
@@ -81,6 +82,13 @@ export const Content = styled.div`
   justify-content: center;
   cursor: pointer;
   text-align: center;
+
+  span {
+    display: -webkit-box;
+    -webkit-line-clamp: 4; 
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
 `;
 
 export const Modal = styled.div`
@@ -98,7 +106,7 @@ export const Modal = styled.div`
 
 export const ModalContent = styled.div`
   width: ${({ width }) => width? `${width}px` : '300px'};
-  height:${({ height }) => height? `${height}px` : '150px'}; ;
+  min-height:${({ height }) => height? `${height}px` : '150px'}; ;
   background-color: #fff;
   border-radius: 8px;
   padding: 30px;

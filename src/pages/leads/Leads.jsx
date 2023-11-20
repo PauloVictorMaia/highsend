@@ -9,7 +9,7 @@ import { useStateContext } from "../../contexts/ContextProvider";
 function Leads() {
 
   const [menuComponent, setMenuComponent] = useState(0);
-  const { flows, leadsDataLoaded } = useStateContext();
+  const { flows, leadsDataLoaded, openMenu } = useStateContext();
 
   return (
     <ContentPageContainer
@@ -22,7 +22,7 @@ function Leads() {
         />
       }
     >
-      <Container>
+      <Container openmenu={openMenu}>
         {
           flows && flows.length > 0 ? (
             flows.map((flow, index) => (

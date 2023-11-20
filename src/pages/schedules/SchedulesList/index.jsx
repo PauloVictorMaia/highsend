@@ -16,11 +16,12 @@ import { Skeleton, Switch } from "@mui/material";
 import ClearIcon from '@mui/icons-material/Clear';
 import clipboardCopy from "clipboard-copy";
 import { Ring } from "@uiball/loaders";
+import Tooltip from '@mui/material/Tooltip';
 
 function SchedulesList() {
   const [indexDrop, setIndexDrop] = useState(null);
   const navigate = useNavigate();
-  const { user, calendarsData, getCalendars, schedulesDataLoaded, loadingCalendars } = useStateContext();
+  const { user, calendarsData, getCalendars, schedulesDataLoaded, loadingCalendars, openMenu } = useStateContext();
   const token = localStorage.getItem('token');
   const [modalIsVisible, setModalIsVisible] = useState(false);
   const menuRef = useRef(null);
@@ -119,7 +120,7 @@ function SchedulesList() {
   }
 
   return (
-    <Container>
+    <Container openmenu={openMenu}>
       {loadingCalendars &&
         <>
           <Skeleton width={320} height={250} animation="wave" variant="rectangular" style={{ borderRadius: '8px' }} />
@@ -130,7 +131,9 @@ function SchedulesList() {
       {calendarsData.length >= 1 ? calendarsData.map((calendar, index) => (
         <ScheduleCard onClick={() => navigate(`/dashboard/schedules/edit/${calendar.room.id}`)} key={index} active={calendar.room.active}>
           <TitleContainer>
-            <CardTitle>{calendar.room.title}</CardTitle>
+            <Tooltip title={calendar.room.title}>
+              <CardTitle>{calendar.room.title}</CardTitle>
+            </Tooltip>
             <ButtonText
               onClick={(event) =>
                 handleMenuClick(event, index)}
@@ -238,14 +241,14 @@ function SchedulesList() {
                     onClick={() => handleActive(calendar.room.id, false)}
                     disabled={desativeIsLoading}
                   >
-                    {desativeIsLoading ? <Ring color="#fff" size={20} /> : "Desativar"}
+                    {desativeIsLoading ? <Ring color="#fff" size={30} /> : "Desativar"}
                   </Button>
                   <Button
                     disabled={deleteIsLoading}
                     color="#ff4d4d"
                     onClick={() => deleteCalendar(calendar.room.id)}
                   >
-                    {deleteIsLoading ? <Ring color="#fff" size={20} /> : "Excluir"}
+                    {deleteIsLoading ? <Ring color="#fff" size={30} /> : "Excluir"}
                   </Button>
                 </Buttons>
               </DeleteCalendar>

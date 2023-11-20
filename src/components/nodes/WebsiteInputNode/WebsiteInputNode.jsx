@@ -147,6 +147,7 @@ export function WebsiteInputNode({ data, id, groupID }) {
           placeholder={placeholder}
           value={placeholder}
           onChange={(e) => setPlaceholder(e.target.value)}
+          maxLength={25}
         />
         <span>Nome do botão:</span>
         <MenuInput
@@ -154,6 +155,7 @@ export function WebsiteInputNode({ data, id, groupID }) {
           placeholder={buttonLabel}
           value={buttonLabel}
           onChange={(e) => setButtonLabel(e.target.value)}
+          maxLength={10}
         />
         <span>Mensagem de nova tentativa:</span>
         <MenuInput
@@ -161,6 +163,7 @@ export function WebsiteInputNode({ data, id, groupID }) {
           placeholder={retryMessage}
           value={retryMessage}
           onChange={(e) => setRetryMessage(e.target.value)}
+          maxLength={50}
         />
         <span>Criar nova variável:</span>
         <div>

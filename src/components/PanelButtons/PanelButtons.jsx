@@ -90,6 +90,7 @@ function PanelButtons({
               type="text"
               value={profileName}
               onChange={(e) => setProfileName(e.target.value)}
+              maxLength={25}
             />
           </TemplateContainer>
         }

@@ -48,7 +48,7 @@ import PublishIcon from '@mui/icons-material/Publish';
 function Fluxograms() {
   const [menuComponent, setMenuComponent] = useState(0);
   const navigate = useNavigate();
-  const { user, getFlows, flows, loadingFlows } = useStateContext();
+  const { user, getFlows, flows, loadingFlows, openMenu } = useStateContext();
   const token = localStorage.getItem('token');
   const [modalEditIsVisible, setModalEditIsVisible] = useState(false);
   const [modalDeleteIsVisible, setModalDeleteIsVisible] = useState(false);
@@ -209,7 +209,7 @@ function Fluxograms() {
       }
     >
 
-      <Container>
+      <Container openmenu={openMenu}>
         <NewFluxogramCard onClick={() => openModalNewFlow()}>
           <AddIcon style={{ fontSize: "2.2rem" }} />
           <span>Novo Flow</span>
@@ -249,7 +249,9 @@ function Fluxograms() {
                 </Tooltip>
               </Buttons>
               <Content>
-                <span>{flow.name}</span>
+                <Tooltip title={flow.name}>
+                  <span>{flow.name}</span>
+                </Tooltip>
               </Content>
               <IconContainer>
 

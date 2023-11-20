@@ -20,6 +20,13 @@ export const AddLink = styled.div`
   align-items: center;
   column-gap: 5px;
 
+  span {
+    display: -webkit-box;
+    -webkit-line-clamp: 1; 
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
   > svg {
     color: #E67200;
   }

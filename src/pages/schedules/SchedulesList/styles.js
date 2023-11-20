@@ -5,7 +5,7 @@ export const Container = styled.div`
   padding: 20px 0;
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: ${({ openmenu }) => openmenu ? "repeat(3, 1fr)" : "repeat(4, 1fr)"};
   column-gap: 30px;
   row-gap: 30px;
 `;
@@ -162,14 +162,16 @@ export const Modal = styled.div`
   align-items: center;
   top: 0;
   left: 0;
+  z-index: 5000;
 `;
 
 export const ModalContent = styled.div`
-  width: 330px;
-  height: 200px;
-  text-align: center;
+  width: ${({ width }) => width? `${width}px` : '300px'};
+  min-height:${({ height }) => height? `${height}px` : '150px'}; ;
   background-color: #fff;
   border-radius: 8px;
+  padding: 30px;
+  position: relative;
 `;
 
 export const CloseButton = styled.button`
@@ -183,9 +185,9 @@ export const CloseButton = styled.button`
   outline: none;
   background-color: #ff4d4d;
   padding: 2px;
-  position: relative;
+  position: absolute;
   top: -10px;
-  right: -310px;
+  right: -10px;
   cursor: pointer;
 
   >svg {
@@ -202,6 +204,10 @@ export const DeleteCalendar = styled.div`
   padding: 0 10px;
   box-sizing: border-box;
   row-gap: 20px;
+
+  span {
+    text-align: center;
+  }
 `;
 
 export const Buttons = styled.div`

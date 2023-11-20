@@ -167,6 +167,7 @@ export function NumberInputNode({ data, id, groupID }) {
           placeholder={placeholder}
           value={placeholder}
           onChange={(e) => setPlaceholder(e.target.value)}
+          maxLength={25}
         />
         <span>Nome do botão:</span>
         <MenuInput
@@ -174,6 +175,7 @@ export function NumberInputNode({ data, id, groupID }) {
           placeholder={buttonLabel}
           defaultValue={buttonLabel}
           onChange={(e) => setButtonLabel(e.target.value)}
+          maxLength={10}
         />
         <span>Min:</span>
         <MenuInput

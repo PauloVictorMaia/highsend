@@ -113,7 +113,7 @@ export function DateInputNode({ data, id, groupID }) {
 
       <InputPreview>
         <EditCalendarOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
-        <span>Escolha uma data...</span>
+        <span>Escolha uma agenda...</span>
       </InputPreview>
 
       <InputConfig isvisible={isVisible} onClick={(e) => e.stopPropagation()}>

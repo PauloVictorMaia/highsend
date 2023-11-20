@@ -9,6 +9,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../contexts/ContextProvider";
 import api from "../../api";
+import Tooltip from '@mui/material/Tooltip';
 
 function UserIntegrationCard({ img, description, id, name }) {
 
@@ -47,7 +48,9 @@ function UserIntegrationCard({ img, description, id, name }) {
       <ImgContainer>
         <IntegrationImg src={img} alt="Imagem" />
       </ImgContainer>
-      <DescriptionContainer>{description}</DescriptionContainer>
+      <Tooltip title={description}>
+        <DescriptionContainer><span>{description}</span></DescriptionContainer>
+      </Tooltip>
       <IconContainer>
         <EditIcon onClick={() => navigate(`/dashboard/integrations/edit-integration/${name}/${id}`)} />
         <DeleteIcon onClick={() => openModal()} />

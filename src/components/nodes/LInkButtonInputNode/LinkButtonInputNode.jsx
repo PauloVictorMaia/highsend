@@ -9,6 +9,7 @@ import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 import ClearIcon from '@mui/icons-material/Clear';
 import { useStateContext } from "../../../contexts/ContextProvider";
+import Tooltip from '@mui/material/Tooltip';
 
 function LinkButtonInputNode({ data, id, groupID }) {
 
@@ -113,7 +114,11 @@ function LinkButtonInputNode({ data, id, groupID }) {
 
       <AddLink>
         <LinkOutlinedIcon />
-        {buttonName}
+        <Tooltip title={buttonName}>
+          <span>
+            {buttonName}
+          </span>
+        </Tooltip>
       </AddLink>
 
       <LinkInputContainer isvisible={isVisible} onClick={(e) => e.stopPropagation()}>
