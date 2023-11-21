@@ -10,7 +10,7 @@ export const Container = styled.div`
   row-gap: 30px;
 
   @media(min-width: 1500px){
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
 `;
 
