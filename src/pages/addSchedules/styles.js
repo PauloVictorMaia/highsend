@@ -268,7 +268,7 @@ export const SaveButtonContainer = styled.div`
 
 export const SaveButton = styled.button`
   width: 150px;
-  height: 40px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
