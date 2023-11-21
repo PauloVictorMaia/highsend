@@ -14,7 +14,7 @@ export const Container = styled.div`
 
   @media(min-width: 768px){
     height: auto;
-    min-heigth: 100vh;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
