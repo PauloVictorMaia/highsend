@@ -14,17 +14,20 @@ const PageContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
   background-color: #F8F8F8;
   padding: 20px;
   box-sizing: border-box;
+  height: 100vh;
+
+  @media(min-width: 768px){
+    height: auto;
+  }
 `;
 
 const Content = styled.div`
  background-color: transparent;
  width: 100%;
  max-width: 500px;
- max-height: 90vh;
  display: flex;
  flex-direction: column;
 

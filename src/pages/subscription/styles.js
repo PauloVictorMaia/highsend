@@ -3,7 +3,7 @@ import { TextField } from "@mui/material";
 
 export const Container = styled.div`
   width: 100%;
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11,6 +11,10 @@ export const Container = styled.div`
   background-color: #F8F8F8;
   padding: 20px;
   box-sizing: border-box;
+
+  @media(min-width: 768px){
+    height: auto;
+  }
 
   .icons {
     margin-bottom: 30px;
@@ -26,7 +30,6 @@ export const Content = styled.div`
  background-color: transparent;
  width: 100%;
  max-width: 700px;
- max-height: 90vh;
  display: flex;
  flex-direction: column;
 `;
