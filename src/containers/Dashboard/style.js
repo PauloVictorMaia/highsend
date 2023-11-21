@@ -27,6 +27,8 @@ export const DashContent = styled.div`
   height: 700px;
   max-height: 100%;
   border-radius: 0 0 15px 0;
+  overflow-y: auto;
+  overflow-x: hidden;
 `;
 
 export const IconContainer = styled.div`
