@@ -175,7 +175,7 @@ export const IconText = styled.div`
 
 export const WhatsappMessage = styled.textarea`
   display: block;
-  width: 200px;
+  width: 500px;
   height: 200px;
   background-color: #fff;
   border: 0.5px solid rgba(0,0,0,0.15);
