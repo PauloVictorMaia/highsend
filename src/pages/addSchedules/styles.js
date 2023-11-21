@@ -272,8 +272,9 @@ export const SaveButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 10px 15px;
   border: none;
-  border-radius: 200px;
+  border-radius: 15px;
   color: #fff;
   background-color: #4339F2;
   outline: none;
