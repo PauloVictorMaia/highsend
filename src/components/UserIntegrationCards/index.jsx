@@ -45,15 +45,18 @@ function UserIntegrationCard({ img, description, id, name }) {
 
   return (
     <Container>
+      <div style={{ width: '100%', display: 'flex', alignItems: 'center' }}>
+        <Tooltip title={description}>
+          <DescriptionContainer><span>{description}</span></DescriptionContainer>
+        </Tooltip>
+        <EditIcon style={{ width: '20px', cursor: 'pointer' }} onClick={() => navigate(`/dashboard/integrations/edit-integration/${name}/${id}`)} />
+      </div>
       <ImgContainer>
         <IntegrationImg src={img} alt="Imagem" />
       </ImgContainer>
-      <Tooltip title={description}>
-        <DescriptionContainer><span>{description}</span></DescriptionContainer>
-      </Tooltip>
       <IconContainer>
-        <EditIcon onClick={() => navigate(`/dashboard/integrations/edit-integration/${name}/${id}`)} />
-        <DeleteIcon onClick={() => openModal()} />
+        {/* <DeleteIcon onClick={() => openModal()} /> */}
+        <span onClick={() => openModal()}>Desconectar</span>
       </IconContainer>
 
       <Modal isvisible={integrationModalIsVisible} onClick={(e) => e.stopPropagation()}>

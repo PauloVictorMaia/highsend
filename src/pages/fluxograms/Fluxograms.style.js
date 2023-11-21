@@ -9,6 +9,10 @@ export const Container = styled.div`
   grid-template-columns: ${({ openmenu }) => openmenu ? "repeat(4, 1fr)" : "repeat(5, 1fr)"};
   column-gap: 30px;
   row-gap: 30px;
+
+  @media(min-width: 1500px){
+    grid-template-columns: repeat(5, 1fr);
+  }
 `;
 
 export const NewFluxogramCard = styled.div`

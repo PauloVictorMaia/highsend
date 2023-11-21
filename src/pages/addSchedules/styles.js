@@ -175,7 +175,7 @@ export const IconText = styled.div`
 
 export const WhatsappMessage = styled.textarea`
   display: block;
-  width: 200px;
+  width: 500px;
   height: 200px;
   background-color: #fff;
   border: 0.5px solid rgba(0,0,0,0.15);
@@ -268,12 +268,13 @@ export const SaveButtonContainer = styled.div`
 
 export const SaveButton = styled.button`
   width: 150px;
-  height: 40px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 10px 15px;
   border: none;
-  border-radius: 200px;
+  border-radius: 15px;
   color: #fff;
   background-color: #4339F2;
   outline: none;

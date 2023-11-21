@@ -11,6 +11,7 @@ const Container = styled.div`
   padding: 50px;
   box-sizing: border-box;
   width: 100%;
+  max-width: 100%;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -47,7 +48,7 @@ const PlanSection = styled.section`
 
 const PlanCard = styled.div`
   width: 360px;
-  height: ${({ height }) => height ? '670px' : '570px'};
+  height: ${({ height }) => height ? '670px' : '600px'};
   background-color: ${({ height }) => height ? '#E0EAFF' : '#fff'};
   border: ${({ height }) => height ? '2px solid #4339F2' : '2px solid #A0B4D1'};
   border-bottom: ${({ height }) => height ? '4px solid #4339F2' : '4px solid #A0B4D1'};
@@ -58,10 +59,10 @@ const PlanCard = styled.div`
   flex-direction: column;
   align-items: center;
   position: relative;
+  box-sizing: border-box;
 
   @media (max-width: 768px) {
     width: 100%;
-    height: auto;
   }
 
 

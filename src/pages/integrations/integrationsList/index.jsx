@@ -2,8 +2,8 @@
 import { Container, Integrations, Title, UserIntegrations, Modal, ModalContent, CloseButton, ModalButton } from "./styles.js";
 import api from '../../../api';
 import { useStateContext } from '../../../contexts/ContextProvider';
-import GoogleCalendarImg from '../../../assets/google-calendar.png';
-import WhatsappImg from '../../../assets/whatsapp-logo.png';
+import GoogleCalendarImg from '../../../assets/google.png';
+import WhatsappImg from '../../../assets/whatsapp.png';
 import IntegrationCard from "../../../components/IntegrationCard";
 import UserIntegrationCard from "../../../components/UserIntegrationCards";
 import { useState } from 'react'
@@ -98,13 +98,15 @@ function IntegrationsList() {
             description={"Todos os eventos agendados na sua agenda Hiflow também serão agendados no Google Calendar."}
             integrationFunction={googleLogin}
             padding="0 50px"
+            title="Google"
           />
 
           <IntegrationCard
             img={WhatsappImg}
-            description={"Seu cliente receberá no whatsapp a mensagem que você escolher na sua agenda Hiflow."}
+            description={"Seu cliente receberá no whatsapp a mensagem que você escolher na sua agenda ou fluxo Hiflow."}
             integrationFunction={openModal}
             padding="0 20px"
+            title="Whatsapp"
           />
 
           <Modal onClick={(e) => e.stopPropagation()} isvisible={modalIsVisible}>

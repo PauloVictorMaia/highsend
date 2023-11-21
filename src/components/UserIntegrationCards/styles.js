@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   width: 200px;
-  height: 110px;
+  height: 180px;
   padding: 10px;
   box-sizing: border-box;
   border: 0.5px solid rgba(0,0,0,0.15);
@@ -27,7 +27,7 @@ export const ImgContainer = styled.div`
 `;
 
 export const IntegrationImg = styled.img`
-  width: 100px;
+  width: 40px;
   height: auto;
 `;
 
@@ -42,19 +42,25 @@ export const DescriptionContainer = styled.div`
     -webkit-line-clamp: 1; 
     -webkit-box-orient: vertical;
     overflow: hidden;
-    font-size: 0.95rem;
+    font-size: 18px;
     text-align: center;
   }
 `;
 
 export const IconContainer = styled.div`
   width: 100%;
-  height: 20%;
   border-radius: 0 0 8px 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   column-gap: 30px;
+  margin-top: 30px;
+
+  span {
+    text-decoration: underline;
+    cursor: pointer;
+    color: #666;
+  }
 
   >svg {
     font-size: large;
