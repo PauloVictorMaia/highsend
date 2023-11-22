@@ -52,6 +52,10 @@ export const ContextProvider = ({ children }) => {
             return
         }
 
+        if ((location.pathname.includes('forgot-password'))) {
+            return
+        }
+
         try {
             const response = await api.get('/users/get-user', { headers: { authorization: token } });
             if (response.status === 200) {

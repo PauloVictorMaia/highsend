@@ -19,6 +19,7 @@ import Plans from "./pages/Plans";
 import MyProfile from "./pages/MyProfile/index.jsx";
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from "./Theme/Light.js";
+import ForgotPassword from "./pages/forgotPassword/index.jsx";
 // import Chatbot from "./pages/viewFluxogram";
 // import LandingPage from "./pages/LandingPage";
 // import ExternalPageShedule from "./pages/externalPageSchedule";
@@ -34,6 +35,7 @@ const App = () => {
             <Route path="/agendar-evento/:userId/:calendarId" element={<ExternalPageShedule />} />
             <Route path="/fluxo-de-bot/:userId/:flowId" element={<Chatbot />} /> */}
             <Route path="/" element={<Navigate to="/login" />} />
+            <Route path="/forgot-password/:userId/:token" element={<ForgotPassword />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/subscription/:type/:subscriptionId" element={<SubscriptionPage />} />
             <Route path="/plans" element={<Plans />} />

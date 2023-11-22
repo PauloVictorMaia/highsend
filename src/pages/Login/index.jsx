@@ -9,6 +9,9 @@ import { TextField } from '@mui/material';
 import IconLogo from '../../assets/SVGComponents/iconLogo';
 import TextLogo from '../../assets/SVGComponents/textLogo';
 import { Ring } from '@uiball/loaders';
+import { toast } from 'react-toastify';
+import { useRef } from 'react';
+import api from '../../api';
 
 const PageContainer = styled.div`
   display: flex;
@@ -200,6 +203,35 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const inputEmailRef = useRef(null);
+
+  const recoverPassword = async () => {
+
+    if (!email) {
+      toast.warning("Insira o seu email de usuário para que possamos enviar o link de alteração de senha");
+      return;
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      toast.warning("O email informado não corresponde ao formato correto. Verifique os dados e tente novamente.");
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      const response = await api.get(`/mails/recover-password/${email}`);
+      if (response.status === 200) {
+        toast.success("Enviamos um link de alteração de senha para o seu email", {
+          autoClose: 10000
+        });
+        setIsLoading(false);
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 404) {
+        toast.error(`${error.response.data.message}`);
+        setIsLoading(false);
+      }
+    }
+  }
 
   return (
     <Formik
@@ -228,6 +260,7 @@ const LoginPage = () => {
               </StepWrapper>
               <span className="info-content">informações pessoais</span>
               <InputItem
+                ref={inputEmailRef}
                 label="E-mail"
                 variant="outlined"
                 type="text"
@@ -264,7 +297,18 @@ const LoginPage = () => {
                 <Button type="submit" outlined>Criar uma conta Hiflow</Button>
               </Link>
 
-              <span className="forgot-pass">Esqueci minha senha</span>
+              {
+                isLoading ?
+                  (
+                    <Ring color="#4339F2" size={25} />
+                  )
+                  :
+                  (
+                    <span className="forgot-pass" onClick={() => recoverPassword()}>Esqueci minha senha</span>
+                  )
+              }
+
+
 
               <span className='privacy-text'>
                 Seus dados serão respeitados de acordo com nossa <span style={{ color: '#4339F2' }}>política de privacidade</span>
