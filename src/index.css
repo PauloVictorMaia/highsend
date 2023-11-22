@@ -87,5 +87,4 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 *::-webkit-scrollbar-thumb {
   background-color: #bfbfbf;
   border-radius: 20px;
-  padding: 10px;
 }

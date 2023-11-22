@@ -17,7 +17,8 @@ export const DashBoardContainer = styled.div`
 export const DashContent = styled.div`
   background: #fff;
   width: ${({openmenu}) => openmenu ? '230px' : '100px'};
-  transition: width 0.5s ease;
+  min-width: ${({openmenu}) => openmenu ? '230px' : '100px'};
+  transition: width 0.5s ease, min-width 0.5s ease;
   padding: 10px;
   box-sizing: border-box;
   display: flex;
