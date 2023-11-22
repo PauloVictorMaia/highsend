@@ -60,13 +60,9 @@ const Flow = () => {
   const [originalEdges, setOriginalEdges] = useState([]);
   const [originalVariables, setOriginalVariables] = useState([]);
   const [dropDownMenuIsVisible, setDropDownMenuIsVisible] = useState(false);
-  const [profileImage, setProfileImage] = useState("");
-  const [template, setTemplate] = useState("");
-  const [profileName, setProfileName] = useState("");
+  const [config, setConfig] = useState({});
+  const [originalConfig, setOriginalConfig] = useState({});
   const [flowName, setFlowName] = useState("");
-  const [originalProfileImage, setOriginalProfileImage] = useState("");
-  const [originalTemplate, setOriginalTemplate] = useState("");
-  const [originalProfileName, setOriginalProfileName] = useState("");
   const BASE_URL = `${import.meta.env.VITE_OPEN_FRONT_URL}/fluxo-de-bot/`;
   const [isLoading, setIsLoading] = useState(false);
 
@@ -82,11 +78,7 @@ const Flow = () => {
         nodes,
         edges,
         variables,
-        config: {
-          profileName,
-          profileImage,
-          template
-        },
+        config,
         name: flowName,
         id: "hiflow_jhdujmdhhbbvfkppojdb7ubdyge355mskja"
       }
@@ -121,12 +113,8 @@ const Flow = () => {
         setOriginalNodes(JSON.parse(JSON.stringify(response.data.nodes)));
         setOriginalEdges(JSON.parse(JSON.stringify(response.data.edges)));
         setOriginalVariables(response.data.variables);
-        setProfileImage(response.data.config.profileImage);
-        setTemplate(response.data.config.template);
-        setProfileName(response.data.config.profileName);
-        setOriginalProfileImage(response.data.config.profileImage);
-        setOriginalTemplate(response.data.config.template);
-        setOriginalProfileName(response.data.config.profileName);
+        setConfig(response.data.config);
+        setOriginalConfig(JSON.parse(JSON.stringify(response.data.config)));
         setFlowName(response.data.name);
         handleHasChanged();
       }
@@ -158,7 +146,7 @@ const Flow = () => {
       }
     }
 
-    if (template === "whatsapp" && !profileName) {
+    if (config.template === "whatsapp" && !config.profileName) {
       toast.warning('Ao escolher a template "Whatsapp" você deve informar um nome para o perfil.');
       return;
     }
@@ -179,7 +167,7 @@ const Flow = () => {
     try {
       setIsLoading(true);
       const response = await api.patch(`/flows/update-flow/${user.id}/${params.flowid}`,
-        { nodes, edges, variables, profileImage, template, profileName },
+        { nodes, edges, variables, config },
         { headers: { authorization: token } });
       if (response.status === 200) {
         toast.success('Dados salvos!');
@@ -207,19 +195,15 @@ const Flow = () => {
 
     const variablesChanged = !lodash.isEqual(variables, originalVariables);
 
-    const profileImageChanged = !lodash.isEqual(profileImage, originalProfileImage);
+    const configChanged = !lodash.isEqual(config, originalConfig);
 
-    const templateChanged = !lodash.isEqual(template, originalTemplate);
-
-    const profileNameChanged = !lodash.isEqual(profileName, originalProfileName);
-
-    if (nodesChanged || edgesChanged || variablesChanged || profileImageChanged || templateChanged || profileNameChanged) {
+    if (nodesChanged || edgesChanged || variablesChanged || configChanged) {
       setHasChanges(true);
     } else {
       setHasChanges(false);
     }
 
-  }, [nodes, edges, variables, profileImage, template, profileName]);
+  }, [nodes, edges, variables, config]);
 
   const onConnect = useCallback((connection) => {
 
@@ -532,12 +516,8 @@ const Flow = () => {
           hasChanges={hasChanges}
           dropDownMenuIsVisible={dropDownMenuIsVisible}
           setDropDownMenuIsVisible={setDropDownMenuIsVisible}
-          profileImage={profileImage}
-          setProfileImage={setProfileImage}
-          template={template}
-          setTemplate={setTemplate}
-          profileName={profileName}
-          setProfileName={setProfileName}
+          config={config}
+          setConfig={setConfig}
           copyURL={copyURL}
           isLoading={isLoading}
           exportToJson={exportToJson}

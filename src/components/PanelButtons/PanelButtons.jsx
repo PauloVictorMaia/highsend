@@ -13,7 +13,7 @@ import { Ring } from "@uiball/loaders";
 import { useStateContext } from "../../contexts/ContextProvider";
 
 function PanelButtons({
-  save, hasChanges, dropDownMenuIsVisible, setDropDownMenuIsVisible, profileImage, setProfileImage, template, setTemplate, profileName, setProfileName, copyURL, isLoading, exportToJson
+  save, hasChanges, dropDownMenuIsVisible, setDropDownMenuIsVisible, config, setConfig, copyURL, isLoading, exportToJson
 }) {
 
   const [modalIsVisible, setModalIsVisible] = useState(false);
@@ -31,7 +31,10 @@ function PanelButtons({
         });
       if (response.status === 201) {
         console.log(response.data.imageUrl);
-        setProfileImage(response.data.imageUrl);
+        setConfig(prevConfig => ({
+          ...prevConfig,
+          profileImage: response.data.imageUrl
+        }));
         setModalIsVisible(false);
         setUploading(false);
       }
@@ -71,25 +74,38 @@ function PanelButtons({
 
         <ProfileImageContainer onClick={() => setModalIsVisible(true)}>
           <span>Avatar</span>
-          <ProfileImage loading={uploading} loader={<Ring />} src={profileImage} alt="Avatar"></ProfileImage>
+          <ProfileImage loading={uploading} loader={<Ring />} src={config.profileImage} alt="Avatar"></ProfileImage>
           <span>Clique para editar</span>
         </ProfileImageContainer>
         <TemplateContainer>
           <span>Template</span>
-          <select value={template} onChange={(e) => setTemplate(e.target.value)}>
+          <select
+            value={config.template}
+            onChange={(e) => {
+              setConfig(prevConfig => ({
+                ...prevConfig,
+                template: e.target.value
+              }));
+            }}
+          >
             <option value="light">Light</option>
             <option value="dark">Dark</option>
             <option value="whatsapp">Whatsapp</option>
           </select>
         </TemplateContainer>
         {
-          template === "whatsapp" &&
+          config.template === "whatsapp" &&
           <TemplateContainer>
             <span>Nome do perfil</span>
             <ProfileNameInput
               type="text"
-              value={profileName}
-              onChange={(e) => setProfileName(e.target.value)}
+              value={config.profileName}
+              onChange={(e) => {
+                setConfig(prevConfig => ({
+                  ...prevConfig,
+                  profileName: e.target.value
+                }));
+              }}
               maxLength={25}
             />
           </TemplateContainer>
