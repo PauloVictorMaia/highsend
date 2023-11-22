@@ -83,6 +83,7 @@ export const InputItem = styled(TextField)`
 `;
 
 const FormContainer = styled.div`
+
   width: 100%;
   max-width: 500px;
   background-color: white;

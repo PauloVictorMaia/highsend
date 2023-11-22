@@ -1,4 +1,5 @@
 import { styled } from "styled-components";
+import { TextField } from '@mui/material';
 
 export const Container = styled.div`
   width: 100%;
@@ -59,7 +60,6 @@ export const ModalContent = styled.div`
   align-items: center;
   row-gap: 5px;
   position: relative;
-  padding: 15px 0%;
 
   >input {
     width: 55%;
@@ -126,4 +126,90 @@ export const CloseButton = styled.button`
     height: 100%;
     color: #fff;
   }
+`;
+
+export const FormContainer = styled.div`
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+  box-sizing: border-box;
+  align-items: center;
+
+  .forgot-pass {
+    font-size: 18px;
+    text-align: center;
+    margin-top: 20px;
+    cursor: pointer;
+    width: 200px;
+    color: #4339F2;
+    font-weight:600;
+  }
+
+  .privacy-text {
+    color: #526B92;
+    font-size: 17px;
+    padding: 5px;
+    box-sizing: border-box;
+    margin-top: 25px;
+  }
+`;
+
+export const StepWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+
+  h2 {
+    font-size: 20px;
+    font-weight: 400;
+  }
+`;
+
+export const InputItem = styled(TextField)`
+ border: 1.5px solid red;
+ border: none;
+ width: 100%;
+
+ div {
+  border-radius: 8px;
+ }
+
+ label {
+  color: #526B92;
+ }
+
+ fieldset {
+  border: 2px solid #E0EAFF;
+ }
+
+ input:focus {
+  fieldset {
+    border: 2px solid #4339F2;
+  }
+
+  label {
+    color: #4339F2;
+  }
+ }
+`;
+
+export const Button = styled.button`
+  background: ${({ outlined }) => outlined ? 'transparent' : '#4339F2'};
+  font-family: Arial, sans-serif;
+  color: ${({ outlined }) => outlined ? '#4339F2' : '#fff'};
+  border-radius: 4px;
+  border: ${({ outlined }) => outlined ? '1px solid #4339F2' : 'none'};
+  padding: 12px 16px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  border-radius: 40px;
+  height: 60px;
 `;
