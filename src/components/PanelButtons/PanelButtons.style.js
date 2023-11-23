@@ -1,5 +1,6 @@
 import { styled } from "styled-components";
 import { Img } from 'react-image';
+import { TextField } from '@mui/material';
 
 export const Container = styled.div`
   width: 60px;
@@ -135,7 +136,7 @@ export const ModalContent = styled.div`
   min-height:${({ height }) => height? `${height}px` : '150px'}; ;
   background-color: #fff;
   border-radius: 8px;
-  padding: 10px;
+  padding: 20px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -252,4 +253,65 @@ export const Tag = styled.div`
   justify-content: center;
   align-items: center;
   color: #fff;
+  position: relative;
+`;
+
+export const InputTagsContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  row-gap: 20px;
+`;
+
+export const InputItem = styled(TextField)`
+ border: 1.5px solid red;
+ border: none;
+ width: 100%;
+
+ div {
+  border-radius: 8px;
+ }
+
+ label {
+  color: #526B92;
+ }
+
+ fieldset {
+  border: 2px solid #E0EAFF;
+ }
+
+ input:focus {
+  fieldset {
+    border: 2px solid #4339F2;
+  }
+
+  label {
+    color: #4339F2;
+  }
+ }
+`;
+
+export const DeleteTagButton = styled.button`
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  outline: none;
+  background-color: #ff4d4d;
+  padding: 2px;
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  cursor: pointer;
+
+  >svg {
+    width: 100%;
+    height: 100%;
+    color: #fff;
+  }
 `;

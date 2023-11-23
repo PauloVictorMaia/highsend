@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Container, Label, Button, DropDownMenu, ProfileImage, ProfileImageContainer, TemplateContainer, Modal, ModalContent, CloseButton, ProfileNameInput, SwitchContainer, IntegrationsEmptyContainer, AddTagsButton, TagsExibitionContainer, Tag, TagsContainer } from "./PanelButtons.style"
+import { Container, Label, Button, DropDownMenu, ProfileImage, ProfileImageContainer, TemplateContainer, Modal, ModalContent, CloseButton, ProfileNameInput, SwitchContainer, IntegrationsEmptyContainer, AddTagsButton, TagsExibitionContainer, Tag, TagsContainer, InputTagsContainer, InputItem, DeleteTagButton } from "./PanelButtons.style"
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import IosShareIcon from '@mui/icons-material/IosShare';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -12,6 +12,8 @@ import CopyAllIcon from '@mui/icons-material/CopyAll';
 import { Ring } from "@uiball/loaders";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { Switch } from "@mui/material";
+import { toast } from "react-toastify";
+import { v4 as uuidv4 } from 'uuid';
 
 function PanelButtons({
   save, hasChanges, dropDownMenuIsVisible, setDropDownMenuIsVisible, config, setConfig, copyURL, isLoading, exportToJson, activeCampaignIntegrations
@@ -21,18 +23,16 @@ function PanelButtons({
   const [uploading, setUploading] = useState(false);
   const { nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
   const [tagsModalIsVisible, setTagsModalIsVisible] = useState(false);
-  const [tags, setTags] = useState([]);
+  const [newTag, setNewTag] = useState("");
 
-  console.log(config)
-
-  useEffect(() => {
-    if (config.activeCampaign) {
-      setConfig(prevConfig => ({
-        ...prevConfig,
-        tags
-      }));
-    }
-  }, [tags]);
+  // useEffect(() => {
+  //   if (config.activeCampaign) {
+  //     setConfig(prevConfig => ({
+  //       ...prevConfig,
+  //       tags: [...config.tags]
+  //     }));
+  //   }
+  // }, [config]);
 
   const uploadImage = async (file) => {
     try {
@@ -58,6 +58,36 @@ function PanelButtons({
       setUploading(false);
       return;
     }
+  }
+
+  const addNewTag = () => {
+    if (!newTag) {
+      toast.warning("Digite o nome da nova tag");
+      return;
+    }
+
+    const newTagObject = {
+      id: uuidv4(),
+      tagName: newTag
+    }
+
+    setConfig(prevConfig => ({
+      ...prevConfig,
+      tags: [...config.tags, newTagObject]
+    }));
+    cleanInput();
+  }
+
+  const cleanInput = () => {
+    setNewTag("");
+  }
+
+  const deleteTag = (id) => {
+    const newTagsArray = config.tags.filter(tag => tag.id !== id);
+    setConfig(prevConfig => ({
+      ...prevConfig,
+      tags: [...newTagsArray]
+    }));
   }
 
   return (
@@ -137,7 +167,7 @@ function PanelButtons({
                 setConfig(prevConfig => ({
                   ...prevConfig,
                   activeCampaign: true,
-                  tags
+                  tags: []
                 }));
               }
             }}
@@ -167,7 +197,7 @@ function PanelButtons({
                 </TemplateContainer>
 
                 <AddTagsButton onClick={() => setTagsModalIsVisible(true)}>
-                  {tags.length > 0 ? "Editar tags" : "Adicionar tags"}
+                  {config.tags && config.tags.length > 0 ? "Editar tags" : "Adicionar tags"}
                 </AddTagsButton>
               </>
             ) : (
@@ -217,21 +247,49 @@ function PanelButtons({
           <TagsContainer>
             <span>Tags:</span>
             <TagsExibitionContainer>
-              <Tag>Vendas</Tag>
-              <Tag>Vendas</Tag>
-              <Tag>Vendas</Tag>
-              <Tag>Vendas</Tag>
-              <Tag>Vendas</Tag>
-              <Tag>Vendas</Tag>
-              <Tag>Vendas</Tag>
-              <Tag>Vendas</Tag>
-              <Tag>Vendas</Tag>
-              <Tag>Vendas</Tag>
-              <Tag>Vendas</Tag>
-              <Tag>Vendas</Tag>
+
+              {
+                config.tags && config.tags.length > 0 &&
+                config.tags.map((tag) => (
+                  <Tag key={tag.id}>
+                    <DeleteTagButton
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        deleteTag(tag.id)
+                      }}
+                    >
+                      <ClearIcon />
+                    </DeleteTagButton>
+                    {tag.tagName}
+                  </Tag>
+                ))
+              }
+
+
             </TagsExibitionContainer>
           </TagsContainer>
 
+          <InputTagsContainer>
+            <InputItem
+              label="Nova tag"
+              variant="outlined"
+              type="text"
+              name="newtag"
+              value={newTag}
+              onChange={(e) => setNewTag(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  addNewTag();
+                }
+              }}
+            />
+            <AddTagsButton
+              style={{ width: "100px" }}
+              onClick={() => addNewTag()}
+            >
+              Adicionar
+            </AddTagsButton>
+          </InputTagsContainer>
 
         </ModalContent>
       </Modal>
