@@ -48,7 +48,7 @@ export const Label = styled.span`
 
 export const DropDownMenu = styled.div`
   position: absolute;
-  top: 0;
+  top: -10px;
   left: ${({ isvisible }) => isvisible ? "-250px" : "200px"};
   border: 0.5px solid rgba(0,0,0,0.15);
   border-radius: 5px;
@@ -59,9 +59,15 @@ export const DropDownMenu = styled.div`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  row-gap: 20px;
+  row-gap: 10px;
   text-align: center;
-  min-width: 220px;
+  width: 220px;
+  max-height: 475px;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const ProfileImageContainer = styled.div`
@@ -126,12 +132,13 @@ export const Modal = styled.div`
 
 export const ModalContent = styled.div`
   width: ${({ width }) => width? `${width}px` : '300px'};
-  height:${({ height }) => height? `${height}px` : '150px'}; ;
+  min-height:${({ height }) => height? `${height}px` : '150px'}; ;
   background-color: #fff;
   border-radius: 8px;
   padding: 10px;
   box-sizing: border-box;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   position: relative;
@@ -172,4 +179,77 @@ export const ProfileNameInput = styled.input`
   &:focus {
     outline: 2px solid #9999FF;
   }
+`;
+
+export const SwitchContainer = styled.div`
+  width: 100%;
+  height: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  >span {
+    color: #333;
+    font-size: 0.9rem;
+  }
+`;
+
+export const IntegrationsEmptyContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+
+  span {
+    font-size: 0.7rem;
+  }
+`;
+
+export const AddTagsButton = styled.button`
+  display: flex;
+  min-height: 40px;
+  width: 100%;
+  border-radius: 5px;
+  background-color: #4339F2;
+  color: #fff;
+  justify-content: center;
+  align-items: center;
+  outline: none;
+  border: none;
+  cursor: pointer;
+`;
+
+export const TagsContainer = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: center;
+`;
+
+export const TagsExibitionContainer = styled.div`
+  width: 100%;
+  min-height: 60px;
+  border: 2px solid #4339F2;
+  border-radius: 10px;
+  background-color: #E0EAFF;
+  padding: 10px;
+  box-sizing: border-box;
+  margin: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+
+
+  span {
+    color: #1B192E;
+  }
+`;
+
+export const Tag = styled.div`
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #4339F2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
 `;

@@ -1,24 +1,38 @@
 /* eslint-disable react/prop-types */
-import { Container, Label, Button, DropDownMenu, ProfileImage, ProfileImageContainer, TemplateContainer, Modal, ModalContent, CloseButton, ProfileNameInput } from "./PanelButtons.style"
+import { Container, Label, Button, DropDownMenu, ProfileImage, ProfileImageContainer, TemplateContainer, Modal, ModalContent, CloseButton, ProfileNameInput, SwitchContainer, IntegrationsEmptyContainer, AddTagsButton, TagsExibitionContainer, Tag, TagsContainer } from "./PanelButtons.style"
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import IosShareIcon from '@mui/icons-material/IosShare';
 import SettingsIcon from '@mui/icons-material/Settings';
 import CloseIcon from '@mui/icons-material/Close';
 import ClearIcon from '@mui/icons-material/Clear';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InputDropZone from "../InputDropZone";
 import api from "../../api";
 import CopyAllIcon from '@mui/icons-material/CopyAll';
 import { Ring } from "@uiball/loaders";
 import { useStateContext } from "../../contexts/ContextProvider";
+import { Switch } from "@mui/material";
 
 function PanelButtons({
-  save, hasChanges, dropDownMenuIsVisible, setDropDownMenuIsVisible, config, setConfig, copyURL, isLoading, exportToJson
+  save, hasChanges, dropDownMenuIsVisible, setDropDownMenuIsVisible, config, setConfig, copyURL, isLoading, exportToJson, activeCampaignIntegrations
 }) {
 
   const [modalIsVisible, setModalIsVisible] = useState(false);
   const [uploading, setUploading] = useState(false);
   const { nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
+  const [tagsModalIsVisible, setTagsModalIsVisible] = useState(false);
+  const [tags, setTags] = useState([]);
+
+  console.log(config)
+
+  useEffect(() => {
+    if (config.activeCampaign) {
+      setConfig(prevConfig => ({
+        ...prevConfig,
+        tags
+      }));
+    }
+  }, [tags]);
 
   const uploadImage = async (file) => {
     try {
@@ -30,7 +44,6 @@ function PanelButtons({
           headers: { 'Content-Type': 'multipart/form-data' }
         });
       if (response.status === 201) {
-        console.log(response.data.imageUrl);
         setConfig(prevConfig => ({
           ...prevConfig,
           profileImage: response.data.imageUrl
@@ -110,6 +123,63 @@ function PanelButtons({
             />
           </TemplateContainer>
         }
+
+        <SwitchContainer>
+          <span>Active Campaign</span>
+          <Switch
+            size="small"
+            checked={config.activeCampaign}
+            onChange={(e) => {
+              if (!e.target.checked) {
+                const { activeCampaignIntegration, tags, ...newConfig } = config;
+                setConfig({ ...newConfig, activeCampaign: false });
+              } else {
+                setConfig(prevConfig => ({
+                  ...prevConfig,
+                  activeCampaign: true,
+                  tags
+                }));
+              }
+            }}
+          />
+        </SwitchContainer>
+
+        {
+          config.activeCampaign && (
+            activeCampaignIntegrations && activeCampaignIntegrations.length > 0 ? (
+              <>
+                <TemplateContainer>
+                  <span>Selecionar integração</span>
+                  <select
+                    value={config.activeCampaignIntegration}
+                    onChange={(e) => {
+                      setConfig(prevConfig => ({
+                        ...prevConfig,
+                        activeCampaignIntegration: e.target.value
+                      }));
+                    }}
+                  >
+                    <option value="">Nenhuma</option>
+                    {activeCampaignIntegrations.map((integration) => (
+                      <option key={integration.id} value={integration.id}>{integration.name}</option>
+                    ))}
+                  </select>
+                </TemplateContainer>
+
+                <AddTagsButton onClick={() => setTagsModalIsVisible(true)}>
+                  {tags.length > 0 ? "Editar tags" : "Adicionar tags"}
+                </AddTagsButton>
+              </>
+            ) : (
+              <IntegrationsEmptyContainer>
+                <span>Você não possui uma integração</span>
+              </IntegrationsEmptyContainer>
+            )
+          )
+        }
+
+
+
       </DropDownMenu>
       <Modal onClick={(e) => e.stopPropagation()} isvisible={modalIsVisible}>
         <ModalContent width={300} height={200}>
@@ -131,7 +201,41 @@ function PanelButtons({
 
         </ModalContent>
       </Modal>
-    </Container>
+
+      <Modal onClick={(e) => e.stopPropagation()} isvisible={tagsModalIsVisible}>
+        <ModalContent width={450} height={200}>
+
+          <CloseButton
+            onClick={(e) => {
+              e.stopPropagation();
+              setTagsModalIsVisible(false)
+            }
+            }>
+            <ClearIcon />
+          </CloseButton>
+
+          <TagsContainer>
+            <span>Tags:</span>
+            <TagsExibitionContainer>
+              <Tag>Vendas</Tag>
+              <Tag>Vendas</Tag>
+              <Tag>Vendas</Tag>
+              <Tag>Vendas</Tag>
+              <Tag>Vendas</Tag>
+              <Tag>Vendas</Tag>
+              <Tag>Vendas</Tag>
+              <Tag>Vendas</Tag>
+              <Tag>Vendas</Tag>
+              <Tag>Vendas</Tag>
+              <Tag>Vendas</Tag>
+              <Tag>Vendas</Tag>
+            </TagsExibitionContainer>
+          </TagsContainer>
+
+
+        </ModalContent>
+      </Modal>
+    </Container >
   )
 }
 

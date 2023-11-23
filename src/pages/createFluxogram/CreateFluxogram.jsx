@@ -46,7 +46,8 @@ const getLabel = () => `Node #${label++}`;
 const Flow = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-  const { setVariables, variables } = useStateContext();
+  const { setVariables, variables, integrations } = useStateContext();
+  const activeCampaignIntegrations = integrations.filter(integrations => integrations.type === "activeCampaign");
   const wrapperRef = useRef(null);
   const edgeUpdateSuccessful = useRef(true);
   const { user, nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
@@ -518,6 +519,7 @@ const Flow = () => {
           setDropDownMenuIsVisible={setDropDownMenuIsVisible}
           config={config}
           setConfig={setConfig}
+          activeCampaignIntegrations={activeCampaignIntegrations}
           copyURL={copyURL}
           isLoading={isLoading}
           exportToJson={exportToJson}
