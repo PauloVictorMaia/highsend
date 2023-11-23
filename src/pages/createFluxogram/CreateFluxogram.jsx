@@ -165,6 +165,11 @@ const Flow = () => {
       }
     }
 
+    if (config.activeCampaign && !config.activeCampaignIntegration) {
+      toast.warning("Selecione uma integração Active Campaign");
+      return;
+    }
+
     try {
       setIsLoading(true);
       const response = await api.patch(`/flows/update-flow/${user.id}/${params.flowid}`,
