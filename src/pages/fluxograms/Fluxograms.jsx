@@ -202,7 +202,7 @@ function Fluxograms() {
       header={
         <CustomPageHeader
           menu={flowMenu}
-          name={'Fluxos de atendimento'}
+          name={'Flows'}
           setMenuComponent={setMenuComponent}
           menuComponent={menuComponent}
         />

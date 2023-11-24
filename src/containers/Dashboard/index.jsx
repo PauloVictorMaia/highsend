@@ -48,7 +48,7 @@ const DashBoard = () => {
                       <div>
                         <FluxogramIcon color={path.includes("/dashboard/fluxograms") ? "#1B192E" : "#A0B4D1"} />
                       </div>
-                      <span>Fluxos de Bot</span>
+                      <span>Flows</span>
                     </MenuItem>
                   </Link>
 
@@ -66,7 +66,7 @@ const DashBoard = () => {
                       <div>
                         <LeadsIcon color={path.includes("/dashboard/leads") ? "#1B192E" : "#A0B4D1"} />
                       </div>
-                      <span>Meus leads</span>
+                      <span>Leads</span>
                     </MenuItem>
                   </Link>
 
