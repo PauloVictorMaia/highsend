@@ -1,3 +1,4 @@
+import { TextField } from "@mui/material";
 import styled from "styled-components";
 
 export const Container = styled.div`
@@ -5,13 +6,43 @@ export const Container = styled.div`
   color: #000;
 `;
 
+export const InputItem = styled(TextField)`
+ border: 1.5px solid red;
+ border: none;
+ width: 400px;
+
+ div {
+  border-radius: 8px;
+ }
+
+ label {
+  color: #526B92;
+ }
+
+ fieldset {
+  border: 2px solid #E0EAFF;
+ }
+
+ input:focus {
+  fieldset {
+    border: 2px solid #4339F2;
+  }
+
+  label {
+    color: #4339F2;
+  }
+ }
+`;
+
 export const EditInputsContent = styled.div`
   width: 100%;
   padding: 10px;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: center;
   row-gap: 10px;
+  padding-top: 40px;
+  box-sizing: border-box;
 
   >input { 
     width: 350px;
@@ -25,8 +56,9 @@ export const EditInputsContent = styled.div`
   }
 
   >button {
-    width: 70px;
-    height: 25px;
+    width: 150px;
+    height: 55px;
+    margin-left: 10px;
     border-radius: 5px;
     background-color: #4339F2;
     outline: none;

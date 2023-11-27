@@ -1,4 +1,4 @@
-import { Container, EditInputsContent } from "./styles";
+import { Container, EditInputsContent, InputItem } from "./styles";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { useStateContext } from '../../../contexts/ContextProvider';
@@ -43,9 +43,12 @@ function EditIntegration() {
     <Container>
 
       <EditInputsContent>
-        <input
-          type="text"
-          defaultValue={integrationName}
+        <InputItem
+          label="Nome da integração"
+          variant="outlined"
+          type='text'
+          name="integration"
+          value={integrationName}
           onChange={(e) => setIntegrationName(e.target.value)}
         />
         <button onClick={() => editIntegrationName()}>

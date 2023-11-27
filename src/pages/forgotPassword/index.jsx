@@ -1,10 +1,12 @@
-import { Container, EditInputsContent, CheckBoxContainer } from "./styles";
+import { Container, EditInputsContent, CheckBoxContainer, InputItem, Content, StepWrapper } from "./styles";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import api from "../../api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { Ring } from "@uiball/loaders";
+import IconLogo from '../../assets/SVGComponents/iconLogo';
+import TextLogo from '../../assets/SVGComponents/textLogo';
 
 function ForgotPassword() {
 
@@ -49,37 +51,64 @@ function ForgotPassword() {
 
   return (
     <Container>
+      <Content>
+        <div className='icon-container'>
+          <IconLogo />
+          <TextLogo />
+        </div>
+        <EditInputsContent>
+          <StepWrapper>
+            <h2>Olá! Vamos alterar sua senha.</h2>
+          </StepWrapper>
+          {/* <input
+            type={showPassword ? "text" : "password"}
+            defaultValue={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            placeholder="Nova senha"
+            maxLength={8}
+          /> */}
 
-      <EditInputsContent>
-        <input
-          type={showPassword ? "text" : "password"}
-          defaultValue={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-          placeholder="Nova senha"
-          maxLength={8}
-        />
-        <input
-          type={showPassword ? "text" : "password"}
-          defaultValue={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          placeholder="Confirme sua nova senha"
-          maxLength={8}
-        />
-        <CheckBoxContainer>
-          <input
-            type="checkbox"
-            id="show-password"
-            style={{ width: '20px', height: '20px', cursor: 'pointer' }}
-            checked={showPassword}
-            onChange={() => setShowPassword(!showPassword)}
+          {/* <input
+            type={showPassword ? "text" : "password"}
+            defaultValue={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            placeholder="Confirme sua nova senha"
+            maxLength={8}
+          /> */}
+
+          <InputItem
+            label="Nova Senha"
+            variant="outlined"
+            type={showPassword ? "text" : "password"}
+            name="password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
           />
-          <label htmlFor="show-password" className="show-password">Mostrar senha</label>
-        </CheckBoxContainer>
-        <button onClick={() => forgotPassword()}>
-          {isLoading ? <Ring color="#fff" size={20} /> : "Alterar senha"}
-        </button>
-      </EditInputsContent>
 
+          <InputItem
+            label="Confirme a nova senha"
+            variant="outlined"
+            type={showPassword ? "text" : "password"}
+            name="confirm password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+
+          <CheckBoxContainer>
+            <input
+              type="checkbox"
+              id="show-password"
+              style={{ width: '20px', height: '20px', cursor: 'pointer' }}
+              checked={showPassword}
+              onChange={() => setShowPassword(!showPassword)}
+            />
+            <label htmlFor="show-password" className="show-password">Mostrar senha</label>
+          </CheckBoxContainer>
+          <button onClick={() => forgotPassword()}>
+            {isLoading ? <Ring color="#fff" size={20} /> : "Alterar senha"}
+          </button>
+        </EditInputsContent>
+      </Content>
     </Container>
   )
 }

@@ -217,9 +217,9 @@ function Fluxograms() {
 
         {loadingFlows &&
           <>
-            <Skeleton width={225} height={270} animation="wave" variant="rectangular" style={{ borderRadius: '8px' }} />
-            <Skeleton width={225} height={270} animation="wave" variant="rectangular" style={{ borderRadius: '8px' }} />
-            <Skeleton width={225} height={270} animation="wave" variant="rectangular" style={{ borderRadius: '8px' }} />
+            <Skeleton width={'100%'} height={270} animation="wave" variant="rectangular" style={{ borderRadius: '8px' }} />
+            <Skeleton width={'100%'} height={270} animation="wave" variant="rectangular" style={{ borderRadius: '8px' }} />
+            <Skeleton width={'100%'} height={270} animation="wave" variant="rectangular" style={{ borderRadius: '8px' }} />
           </>
         }
 
@@ -293,7 +293,6 @@ function Fluxograms() {
                   </CloseButton>
 
                   <EditFlowName>
-                    {/* <span>Nome do fluxo:</span> */}
                     <div className="modal-edit-content">
                       <InputItem
                         type="text"

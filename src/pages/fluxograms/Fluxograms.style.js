@@ -16,7 +16,8 @@ export const Container = styled.div`
 `;
 
 export const NewFluxogramCard = styled.div`
-  width: 225px;
+  width: 100%;
+  min-width: 225px;
   height: 270px;
   background-color: #14140F;
   color: white;
@@ -33,7 +34,8 @@ export const NewFluxogramCard = styled.div`
 `;
 
 export const FluxogramCard = styled.div`
-  width: 225px;
+  width: 100%;
+  min-width: 225px;
   max-height: 270px;
   min-height: 270px;
   background-color: #d9d9d9;
@@ -194,6 +196,7 @@ export const EditFlowName = styled.div`
     width: 100%;
     display: flex;
     column-gap: 10px;
+    margin-top: 30px;
 
     button {
       background-color: #4339F2;
@@ -231,6 +234,7 @@ export const DeleteFlow = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: 25px;
 
     &:disabled {
       opacity: 0.5;

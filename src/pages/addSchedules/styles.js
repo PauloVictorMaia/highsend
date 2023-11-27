@@ -1,12 +1,12 @@
 import { styled } from "styled-components";
 
 export const Container = styled.div`
- width: 97%;
+ width: 100%;
  display: flex;
  flex-direction: column;
  align-items: center;
  color: #092C4C;
- padding: 0 15px 20px 15px;
+ /* padding: 0 15px 20px 15px; */
 `;
 
 export const CheckboxContent = styled.div`
