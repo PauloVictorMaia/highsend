@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const Container = styled.div`
   width: 100%;
@@ -14,10 +14,21 @@ export const Container = styled.div`
   cursor: grab;
   overflow: hidden;
   
-
   span {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
+  ${({ isdragging }) => isdragging && css`
+    border-radius: 8px;
+    border: none;
+    background: #e6e6e6;
+    box-shadow: none;
+    cursor: grabbing;
+
+    span {
+      opacity: 0;
+    }
+  `}
 `;

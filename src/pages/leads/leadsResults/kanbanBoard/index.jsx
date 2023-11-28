@@ -7,6 +7,8 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { useState, useRef } from "react";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from 'uuid';
+import KanbanContext from "../../../../contexts/kanbanContext";
+import { produce } from "immer";
 
 function KanbanBoard() {
 
@@ -37,44 +39,68 @@ function KanbanBoard() {
     setNewListName("");
   }
 
+  function moveCard(from, to, fromList, toList) {
+    setLeadsList(produce(leadsList, draft => {
+      const dragged = draft[fromList].cards[from];
+      draft[fromList].cards.splice(from, 1);
+      draft[toList].cards.splice(to, 0, dragged);
+    }));
+  }
+
+  function moveCardToEmptyList(cardIndex, fromList, toList) {
+    setLeadsList(produce(leadsList, draft => {
+      const dragged = draft[fromList].cards[cardIndex];
+      draft[fromList].cards.splice(cardIndex, 1);
+      draft[toList].cards.push(dragged);
+    }));
+  }
+
   return (
-    <Board>
-      <Container>
-        {leadsList.map(list => <LeadsList key={list.id} data={list} />)}
+    <KanbanContext.Provider value={{ moveCard, leadsList, moveCardToEmptyList }}>
+      <Board>
+        <Container>
+          {leadsList.map((list, index) =>
+            <LeadsList
+              key={list.id}
+              data={list}
+              listIndex={index}
+            />)
+          }
 
-        {showNewListInput &&
-          <NewListInputContainer>
-            <NewListContent>
-              <NewListInput
-                ref={inputRef}
-                label="Nova lista"
-                variant="outlined"
-                type={"text"}
-                name="list"
-                value={newListName}
-                onChange={(e) => setNewListName(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    createNewColumn();
-                  }
-                }}
-                autoFocus
-              />
-              <NewListButton onClick={() => createNewColumn()}>Adicionar</NewListButton>
-            </NewListContent>
-          </NewListInputContainer>
-        }
+          {showNewListInput &&
+            <NewListInputContainer>
+              <NewListContent>
+                <NewListInput
+                  ref={inputRef}
+                  label="Nova lista"
+                  variant="outlined"
+                  type={"text"}
+                  name="list"
+                  value={newListName}
+                  onChange={(e) => setNewListName(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      createNewColumn();
+                    }
+                  }}
+                  autoFocus
+                />
+                <NewListButton onClick={() => createNewColumn()}>Adicionar</NewListButton>
+              </NewListContent>
+            </NewListInputContainer>
+          }
 
-        <ButtonContainer>
-          <AddColumnButton
-            onClick={() => setShowNewListInput(!showNewListInput)}
-            background={showNewListInput}
-          >
-            {showNewListInput ? <ClearIcon /> : <AddIcon />}
-          </AddColumnButton>
-        </ButtonContainer>
-      </Container>
-    </Board>
+          <ButtonContainer>
+            <AddColumnButton
+              onClick={() => setShowNewListInput(!showNewListInput)}
+              background={showNewListInput}
+            >
+              {showNewListInput ? <ClearIcon /> : <AddIcon />}
+            </AddColumnButton>
+          </ButtonContainer>
+        </Container>
+      </Board>
+    </KanbanContext.Provider>
   )
 }
 
