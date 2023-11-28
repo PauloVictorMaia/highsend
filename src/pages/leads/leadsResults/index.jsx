@@ -65,7 +65,7 @@ function LeadsResults() {
   };
 
   return (
-    <LeadsContext.Provider value={{ leads, variables, loaded, getLeads, getVariables, leadsList, getFormattedLeads }}>
+    <LeadsContext.Provider value={{ leads, variables, loaded, getLeads, getVariables, leadsList, setLeadsList, getFormattedLeads }}>
       <ContentPageContainer
         header={
           <CustomPageHeader
