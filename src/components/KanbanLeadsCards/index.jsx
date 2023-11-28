@@ -5,12 +5,13 @@ import { useDrag, useDrop } from 'react-dnd';
 import { useRef, useContext } from "react";
 import KanbanContext from "../../contexts/kanbanContext";
 
-function KanbanLeadsCard({ data, listIndex, cardIndex }) {
+function KanbanLeadsCard({ data, listIndex, cardIndex, listId }) {
 
   const ref = useRef();
   const { moveCard } = useContext(KanbanContext);
 
   function getTitleFromVariables(variables) {
+
     const preferredOrder = ["Nome", "Email", "Telefone"];
 
     for (const preferredName of preferredOrder) {
@@ -26,7 +27,7 @@ function KanbanLeadsCard({ data, listIndex, cardIndex }) {
 
   const [{ isDragging }, dragRef] = useDrag({
     type: 'CARD',
-    item: { cardIndex, listIndex, id: data.id },
+    item: { cardIndex, listIndex, listId },
     collect: monitor => ({
       isDragging: monitor.isDragging(),
     })

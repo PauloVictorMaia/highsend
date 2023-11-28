@@ -17,6 +17,8 @@ function KanbanBoard() {
   const [newListName, setNewListName] = useState("");
   const inputRef = useRef(null);
 
+  // console.log(leadsList)
+
   function createNewColumn() {
 
     if (!newListName) {
@@ -42,6 +44,9 @@ function KanbanBoard() {
   function moveCard(from, to, fromList, toList) {
     setLeadsList(produce(leadsList, draft => {
       const dragged = draft[fromList].cards[from];
+      if (!dragged) {
+        return;
+      }
       draft[fromList].cards.splice(from, 1);
       draft[toList].cards.splice(to, 0, dragged);
     }));
@@ -51,6 +56,9 @@ function KanbanBoard() {
     setLeadsList(produce(leadsList, draft => {
       const dragged = draft[fromList].cards[cardIndex];
       draft[fromList].cards.splice(cardIndex, 1);
+      if (!dragged) {
+        return;
+      }
       draft[toList].cards.push(dragged);
     }));
   }

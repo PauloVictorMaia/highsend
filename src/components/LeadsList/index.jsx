@@ -16,8 +16,10 @@ function LeadsList({ data, listIndex }) {
       const draggedIndex = item.cardIndex;
       const draggedList = item.listIndex;
       const targetListIndex = listIndex;
+      const draggedListId = item.listId;
+      const listId = data.id;
 
-      if (draggedList === targetListIndex) {
+      if (draggedList === targetListIndex && draggedListId === listId) {
         return;
       }
 
@@ -46,10 +48,11 @@ function LeadsList({ data, listIndex }) {
       <div>
         {data.cards.map((card, index) =>
           <KanbanLeadsCard
-            key={card.id}
+            key={index}
             data={card}
             cardIndex={index}
             listIndex={listIndex}
+            listId={data.id}
           />)
         }
       </div>
