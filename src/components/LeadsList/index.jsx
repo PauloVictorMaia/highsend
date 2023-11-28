@@ -5,13 +5,18 @@ import Tooltip from '@mui/material/Tooltip';
 import { useDrop } from "react-dnd";
 import KanbanContext from "../../contexts/kanbanContext";
 import { useContext } from "react";
+import LeadsContext from "../../pages/leads/leadsResults/context";
 
 function LeadsList({ data, listIndex }) {
 
   const { moveCardToEmptyList, leadsList } = useContext(KanbanContext);
+  const { saveLeadsList } = useContext(LeadsContext);
 
   const [, dropRef] = useDrop({
     accept: 'CARD',
+    drop() {
+      saveLeadsList();
+    },
     hover(item) {
       const draggedIndex = item.cardIndex;
       const draggedList = item.listIndex;

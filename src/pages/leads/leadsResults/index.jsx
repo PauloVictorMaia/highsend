@@ -64,8 +64,19 @@ function LeadsResults() {
     }
   };
 
+  const saveLeadsList = async () => {
+
+    try {
+      await api.patch(`/leads/save-leads-list/${params.flowId}`, { leadsList }, { headers: { authorization: token } });
+    } catch {
+      return;
+    }
+  };
+
   return (
-    <LeadsContext.Provider value={{ leads, variables, loaded, getLeads, getVariables, leadsList, setLeadsList, getFormattedLeads }}>
+    <LeadsContext.Provider
+      value={{ leads, variables, loaded, getLeads, getVariables, leadsList, setLeadsList, getFormattedLeads, saveLeadsList }}
+    >
       <ContentPageContainer
         header={
           <CustomPageHeader

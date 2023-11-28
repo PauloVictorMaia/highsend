@@ -17,8 +17,6 @@ function KanbanBoard() {
   const [newListName, setNewListName] = useState("");
   const inputRef = useRef(null);
 
-  // console.log(leadsList)
-
   function createNewColumn() {
 
     if (!newListName) {

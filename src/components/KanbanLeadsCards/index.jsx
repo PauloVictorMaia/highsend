@@ -4,11 +4,13 @@ import Tooltip from '@mui/material/Tooltip';
 import { useDrag, useDrop } from 'react-dnd';
 import { useRef, useContext } from "react";
 import KanbanContext from "../../contexts/kanbanContext";
+import LeadsContext from "../../pages/leads/leadsResults/context";
 
 function KanbanLeadsCard({ data, listIndex, cardIndex, listId }) {
 
   const ref = useRef();
   const { moveCard } = useContext(KanbanContext);
+  const { saveLeadsList } = useContext(LeadsContext);
 
   function getTitleFromVariables(variables) {
 
@@ -33,8 +35,11 @@ function KanbanLeadsCard({ data, listIndex, cardIndex, listId }) {
     })
   });
 
-  const [, dropRef] = useDrop({
+  const [{ isOver }, dropRef] = useDrop({
     accept: 'CARD',
+    drop() {
+      saveLeadsList();
+    },
     hover(item, monitor) {
       const draggedIndex = item.cardIndex;
       const targetIndex = cardIndex;
@@ -63,13 +68,16 @@ function KanbanLeadsCard({ data, listIndex, cardIndex, listId }) {
       item.cardIndex = targetIndex;
       item.listIndex = targetListIndex;
 
-    }
+    },
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver(),
+    }),
   })
 
   dragRef(dropRef(ref));
 
   return (
-    <Container ref={ref} isdragging={isDragging}>
+    <Container ref={ref} isdragging={isDragging} isOver={isOver}>
       <span>
         <Tooltip title={getTitleFromVariables(data.variables)}>
           {getTitleFromVariables(data.variables)}

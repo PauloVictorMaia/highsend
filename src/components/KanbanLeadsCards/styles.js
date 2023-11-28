@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { useDrop } from 'react-dnd';
 
 export const Container = styled.div`
   width: 100%;
@@ -23,6 +24,18 @@ export const Container = styled.div`
   ${({ isdragging }) => isdragging && css`
     border-radius: 8px;
     border: none;
+    background: #e6e6e6;
+    box-shadow: none;
+    cursor: grabbing;
+
+    span {
+      opacity: 0;
+    }
+  `}
+
+  ${({ isOver }) => isOver && css`
+    border-radius: 8px;
+    border: 2px dashed #555;
     background: #e6e6e6;
     box-shadow: none;
     cursor: grabbing;
