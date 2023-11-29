@@ -20,6 +20,7 @@ function LeadsResults() {
   const { user } = useStateContext();
   const token = localStorage.getItem('token');
   const params = useParams();
+  const [listUpdated, setListUpdated] = useState(false);
 
   useEffect(() => {
     if (Object.keys(user).length > 0) {
@@ -29,6 +30,12 @@ function LeadsResults() {
         });
     }
   }, []);
+
+  useEffect(() => {
+    if (leadsList && leadsList.length > 0) {
+      saveLeadsList()
+    }
+  }, [listUpdated]);
 
   const getLeads = async () => {
     try {
@@ -73,10 +80,27 @@ function LeadsResults() {
     }
   };
 
+  const changeLeadsStatusInBulk = async (leadsIds, status) => {
+
+    try {
+      console.log(leadsIds, status)
+      const response = await api.patch(`/leads/edit-leads-status-in-bulk/${params.flowId}`, { leadsIds, status }, { headers: { authorization: token } });
+      if (response.status === 200) {
+        console.log("sucesso")
+      }
+    } catch {
+      console.log("falha")
+      return;
+    }
+  };
+
   const updateLeadStatus = async (leadID, value) => {
 
     try {
-      await api.patch(`/leads/edit-status-lead/${params.flowId}/${leadID}`, { value }, { headers: { authorization: token } });
+      const response = await api.patch(`/leads/edit-status-lead/${params.flowId}/${leadID}`, { value }, { headers: { authorization: token } });
+      if (response.status === 200) {
+        getLeads();
+      }
     } catch {
       return;
     }
@@ -84,7 +108,7 @@ function LeadsResults() {
 
   return (
     <LeadsContext.Provider
-      value={{ leads, variables, loaded, getLeads, getVariables, leadsList, setLeadsList, getFormattedLeads, saveLeadsList, updateLeadStatus }}
+      value={{ leads, variables, loaded, getLeads, getVariables, leadsList, setLeadsList, getFormattedLeads, saveLeadsList, updateLeadStatus, listUpdated, setListUpdated, changeLeadsStatusInBulk }}
     >
       <ContentPageContainer
         header={

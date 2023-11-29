@@ -389,8 +389,6 @@ function AddSchedule() {
     }
   };
 
-  console.log(whatsappMessage)
-
   useEffect(() => {
     if (integrations && integrations.length > 0) {
       handleGoogleChecked();

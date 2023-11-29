@@ -12,7 +12,7 @@ import { produce } from "immer";
 
 function KanbanBoard() {
 
-  const { leadsList, setLeadsList, updateLeadStatus } = useContext(LeadsContext);
+  const { leadsList, setLeadsList, updateLeadStatus, listUpdated, setListUpdated, changeLeadsStatusInBulk } = useContext(LeadsContext);
   const [showNewListInput, setShowNewListInput] = useState(false);
   const [newListName, setNewListName] = useState("");
   const inputRef = useRef(null);
@@ -25,13 +25,14 @@ function KanbanBoard() {
     }
 
     const newList = {
-      id: uuidv4(),
+      listID: uuidv4(),
       title: newListName,
       cards: []
     }
 
     setLeadsList(lists => [...lists, newList]);
     closeInput();
+    setListUpdated(!listUpdated);
   }
 
   function closeInput() {
@@ -67,8 +68,31 @@ function KanbanBoard() {
     }));
   }
 
+  function moveAllCardsToList(originListIndex, targetListIndex) {
+    setLeadsList(
+      produce(leadsList, (draft) => {
+        if (
+          originListIndex < 0 ||
+          originListIndex >= draft.length ||
+          targetListIndex < 0 ||
+          targetListIndex >= draft.length ||
+          originListIndex === targetListIndex
+        ) {
+          return;
+        }
+        const movedCardIds = draft[originListIndex].cards.map((card) => card.id);
+        const targetListTitle = draft[targetListIndex].title;
+        draft[targetListIndex].cards.push(...draft[originListIndex].cards);
+        draft[originListIndex].cards = [];
+
+        setListUpdated(!listUpdated);
+        changeLeadsStatusInBulk(movedCardIds, targetListTitle);
+      })
+    );
+  }
+
   return (
-    <KanbanContext.Provider value={{ moveCard, leadsList, moveCardToEmptyList }}>
+    <KanbanContext.Provider value={{ moveCard, leadsList, moveCardToEmptyList, moveAllCardsToList }}>
       <Board>
         <Container>
           {leadsList.map((list, index) =>

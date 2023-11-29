@@ -1,29 +1,20 @@
-import { Container, LeadStatus, LeadStatusContainer, StyledTable, DropMenuCard, MenuCardButtons, StatusColor, Options, MainContainer, ExportButton } from "./styles";
+import { Container, StyledTable, Options, MainContainer, ExportButton } from "./styles";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { format } from "date-fns";
 import ptBR from "date-fns/locale/pt-BR"
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { Ring } from "@uiball/loaders";
 import * as XLSX from 'xlsx';
 import { useEffect, useState, useRef, useContext } from "react";
-import api from "../../../../api";
 import LeadsContext from "../context";
 
 function Submissions() {
 
-  const { leads, variables, getLeads, getVariables, loaded } = useContext(LeadsContext);
+  const { leads, variables, loaded } = useContext(LeadsContext);
   const params = useParams();
   const containerRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(null);
   const [scrollLeft, setScrollLeft] = useState(0);
-  const [currentLeadID, setCurrentLeadID] = useState(null);
-  const [indexDrop, setIndexDrop] = useState(null);
-  const menuRef = useRef(null);
-  const buttonRefs = useRef([]);
-  const token = localStorage.getItem('token');
-  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -58,53 +49,6 @@ function Submissions() {
       container.removeEventListener("mousemove", handleMouseMove);
     };
   }, [isDragging, startX, scrollLeft, loaded]);
-
-
-
-  const handleLeadStatus = async (value) => {
-    if (!currentLeadID) return;
-
-    try {
-      setIsLoading(true);
-      const response = await api.patch(`/leads/edit-status-lead/${params.flowId}/${currentLeadID}`, { value }, { headers: { authorization: token } });
-      if (response.status === 200) {
-        setIndexDrop(null);
-        getLeads();
-        getVariables();
-        setIsLoading(false);
-      }
-    } catch {
-      toast.error("Erro ao alterar status do lead. Tente novamente.");
-      setIsLoading(false);
-    }
-  }
-
-  const handleMenuClick = (event, index, leadID) => {
-    event.stopPropagation();
-    setCurrentLeadID(leadID);
-    if (indexDrop !== index) {
-      setIndexDrop(index);
-    } else {
-      setIndexDrop(null);
-    }
-  };
-
-  const handleClickOutside = event => {
-    if (
-      menuRef.current &&
-      !menuRef.current.contains(event.target) &&
-      !buttonRefs.current.some(buttonRef => buttonRef.contains(event.target))
-    ) {
-      setIndexDrop(null);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
 
   const exportToJson = () => {
     try {
@@ -210,7 +154,6 @@ function Submissions() {
         <StyledTable>
           <thead>
             <tr>
-              <th>Status</th>
               <th>Enviado em</th>
               {variables.map((variable) => (
                 <th key={variable.id}>{variable.name}</th>
@@ -218,54 +161,9 @@ function Submissions() {
             </tr>
           </thead>
           <tbody>
-            {leads.map((lead, index) => (
+            {leads.map((lead) => (
               <tr key={lead.id}>
-                <td>
-                  {
-                    <LeadStatusContainer>
-                      <MoreVertIcon
-                        onClick={(event) => handleMenuClick(event, index, lead.id)}
-                        ref={ref => (buttonRefs.current[index] = ref)}
-                      />
-                      <LeadStatus leadcolor={lead.status}>
-                        {lead.status}
-                      </LeadStatus>
 
-                      {indexDrop === index &&
-                        <DropMenuCard ref={menuRef}>
-
-                          {
-                            isLoading ?
-                              <Ring color="#333" size={50} />
-                              :
-                              <>
-                                <MenuCardButtons onClick={() => handleLeadStatus("Em aberto")}>
-                                  <StatusColor color={"#ddd"} />
-                                  <span>Em aberto</span>
-                                </MenuCardButtons>
-
-                                <MenuCardButtons onClick={() => handleLeadStatus("Comprou")}>
-                                  <StatusColor color={"#66ff66"} />
-                                  <span>Comprou</span>
-                                </MenuCardButtons>
-
-                                <MenuCardButtons onClick={() => handleLeadStatus("Não comprou")}>
-                                  <StatusColor color={"#ff4d4d"} />
-                                  <span>Não comprou</span>
-                                </MenuCardButtons>
-
-                                <MenuCardButtons onClick={() => handleLeadStatus("Não compareceu")}>
-                                  <StatusColor color={"#ffff66"} />
-                                  <span>Não compareceu</span>
-                                </MenuCardButtons>
-                              </>
-                          }
-
-                        </DropMenuCard>
-                      }
-                    </LeadStatusContainer>
-                  }
-                </td>
                 <td>
                   {format(new Date(lead.createdAt), "dd 'de' MMMM 'de' yyyy, 'às' HH:mm", { locale: ptBR })}
                 </td>
