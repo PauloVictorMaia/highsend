@@ -17,7 +17,7 @@ export const Container = styled.div`
 `;
 
 export const ButtonContainer = styled.div`
-  width: 50px;
+  min-width: 300px;
 `;
 
 export const AddColumnButton = styled.button`

@@ -109,3 +109,94 @@ export const ListButtons = styled.button`
     text-overflow: ellipsis;
   }
 `;
+
+export const Modal = styled.div`
+  visibility: ${({isvisible}) => isvisible ? "visible" : "hidden"};
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  z-index: 5000;
+`;
+
+export const ModalContent = styled.div`
+  width: ${({ width }) => width? `${width}px` : '300px'};
+  min-height:${({ height }) => height? `${height}px` : '150px'}; ;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 30px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 20px;
+  position: relative;
+`;
+
+export const CloseButton = styled.button`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  outline: none;
+  background-color: #ff4d4d;
+  padding: 2px;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  cursor: pointer;
+
+  >svg {
+    width: 100%;
+    height: 100%;
+    color: #fff;
+  }
+`;
+
+export const MessageDeleteModal = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  h2 {
+    color: #333;
+    text-align: center;
+  }
+
+  span {
+    color: #333;
+    font-size: 0.8rem;
+  }
+`;
+
+export const ModalDeleteListButtons = styled.button`
+  outline: none;
+  height: 40px;
+  border-radius: 8px;
+  border: none;
+  background-color: ${({ background }) => background};
+  color: #fff;
+  display: flex;
+  column-gap: 15px;
+  align-items: center;
+  padding: 0 15px;
+  cursor: pointer;
+`;
+
+export const ListOptionsInModal = styled.div`
+  width: 100%;
+  padding: 0 50px;
+  box-sizing: border-box;
+  display: ${({ isvisible }) => isvisible ? "flex" : "none"};
+  flex-direction: column;
+  row-gap: 10px;
+`;

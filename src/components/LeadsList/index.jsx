@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import KanbanLeadsCard from "../KanbanLeadsCards";
-import { Container, ListButtons, ListMenu, MenuButtons, NewContainer } from "./styles";
+import { Container, ListButtons, ListMenu, MenuButtons, NewContainer, Modal, ModalContent, CloseButton, MessageDeleteModal, ModalDeleteListButtons, ListOptionsInModal } from "./styles";
 import Tooltip from '@mui/material/Tooltip';
 import { useDrop } from "react-dnd";
 import KanbanContext from "../../contexts/kanbanContext";
@@ -10,15 +10,27 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import DriveFileMoveOutlinedIcon from '@mui/icons-material/DriveFileMoveOutlined';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ClearIcon from '@mui/icons-material/Clear';
+import { toast } from "react-toastify";
 
 function LeadsList({ data, listIndex }) {
 
-  const { moveCardToEmptyList, leadsList, moveAllCardsToList } = useContext(KanbanContext);
+  const { moveCardToEmptyList, leadsList, moveAllCardsToList, deleteListAndLeads, moveAllCardsAndDeleteList } = useContext(KanbanContext);
   const { saveLeadsList } = useContext(LeadsContext);
   const [openMenu, setOpenMenu] = useState(false);
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
   const [showListOptions, setShowListOptions] = useState(false);
+  const [modalDeleteListIsVisible, setModalDeleteListIsVisible] = useState(false);
+  const [showListOptionsInModal, setShowListOptionsInModal] = useState(false);
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const [, dropRef] = useDrop({
     accept: 'CARD',
@@ -67,13 +79,14 @@ function LeadsList({ data, listIndex }) {
     }
   };
 
-  useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+  const openModalDeleteList = () => {
+    if (listIndex === 0) {
+      toast.warning('A lista "Em aberto" não pode ser deletada');
+      return;
+    }
+    setModalDeleteListIsVisible(true);
+    handleMenu();
+  }
 
   return (
     <NewContainer>
@@ -125,11 +138,75 @@ function LeadsList({ data, listIndex }) {
           ) : null
         ))}
 
-        <MenuButtons>
+        <MenuButtons onClick={() => openModalDeleteList()}>
           <DeleteOutlineIcon />
           <span>Deletar lista</span>
         </MenuButtons>
       </ListMenu>
+
+      <Modal onClick={(e) => e.stopPropagation()} isvisible={modalDeleteListIsVisible}>
+        <ModalContent width={400} height={200}>
+
+          <CloseButton
+            onClick={(e) => {
+              e.stopPropagation();
+              setModalDeleteListIsVisible(false)
+            }
+            }>
+            <ClearIcon />
+          </CloseButton>
+
+          <MessageDeleteModal>
+            <h2>{`Pretende deletar a lista: "${data.title}" ?`}</h2>
+            <span>Escolha a opção abaixo conforme sua preferência</span>
+          </MessageDeleteModal>
+
+          {
+            data.cards.length > 0 &&
+            <ModalDeleteListButtons
+              background="#E67200"
+              onClick={() => setShowListOptionsInModal(!showListOptionsInModal)}
+            >
+              <span>Mover todos os leads e deletar lista</span>
+            </ModalDeleteListButtons>
+          }
+
+          <ListOptionsInModal isvisible={showListOptionsInModal}>
+            {showListOptionsInModal && leadsList.map((lista, index) => (
+              index !== listIndex ? (
+                <ListButtons
+                  key={index}
+                  onClick={() => {
+                    moveAllCardsAndDeleteList(listIndex, index);
+                    setTimeout(() => {
+                      setModalDeleteListIsVisible(false);
+                    }, 200);
+                  }}
+                >
+                  <ArrowForwardIcon />
+                  <Tooltip title={lista.title}>
+                    <span>{lista.title}</span>
+                  </Tooltip>
+                </ListButtons>
+              ) : null
+            ))}
+          </ListOptionsInModal>
+
+
+          <ModalDeleteListButtons
+            background="#ff4d4d"
+            onClick={() => {
+              deleteListAndLeads(listIndex);
+              setTimeout(() => {
+                setModalDeleteListIsVisible(false);
+              }, 200);
+            }}
+          >
+            <span>Deletar lista e também os leads</span>
+          </ModalDeleteListButtons>
+
+        </ModalContent>
+      </Modal>
     </NewContainer>
   )
 }
