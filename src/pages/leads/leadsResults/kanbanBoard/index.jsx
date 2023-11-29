@@ -12,7 +12,7 @@ import { produce } from "immer";
 
 function KanbanBoard() {
 
-  const { leadsList, setLeadsList } = useContext(LeadsContext);
+  const { leadsList, setLeadsList, updateLeadStatus } = useContext(LeadsContext);
   const [showNewListInput, setShowNewListInput] = useState(false);
   const [newListName, setNewListName] = useState("");
   const inputRef = useRef(null);
@@ -39,23 +39,29 @@ function KanbanBoard() {
     setNewListName("");
   }
 
-  function moveCard(from, to, fromList, toList) {
+  function moveCard(from, to, fromList, toList, cardID, listName) {
     setLeadsList(produce(leadsList, draft => {
       const dragged = draft[fromList].cards[from];
       if (!dragged) {
         return;
+      }
+      if (fromList !== toList) {
+        updateLeadStatus(cardID, listName);
       }
       draft[fromList].cards.splice(from, 1);
       draft[toList].cards.splice(to, 0, dragged);
     }));
   }
 
-  function moveCardToEmptyList(cardIndex, fromList, toList) {
+  function moveCardToEmptyList(cardIndex, fromList, toList, cardID, listName) {
     setLeadsList(produce(leadsList, draft => {
       const dragged = draft[fromList].cards[cardIndex];
       draft[fromList].cards.splice(cardIndex, 1);
       if (!dragged) {
         return;
+      }
+      if (fromList !== toList) {
+        updateLeadStatus(cardID, listName);
       }
       draft[toList].cards.push(dragged);
     }));

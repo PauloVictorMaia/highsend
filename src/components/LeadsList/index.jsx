@@ -23,6 +23,7 @@ function LeadsList({ data, listIndex }) {
       const targetListIndex = listIndex;
       const draggedListId = item.listId;
       const listId = data.id;
+      const draggedID = item.cardID;
 
       if (draggedList === targetListIndex && draggedListId === listId) {
         return;
@@ -35,7 +36,7 @@ function LeadsList({ data, listIndex }) {
         return;
       }
 
-      moveCardToEmptyList(draggedIndex, draggedList, targetListIndex);
+      moveCardToEmptyList(draggedIndex, draggedList, targetListIndex, draggedID, data.title);
 
       item.listIndex = targetListIndex;
     }
@@ -58,6 +59,7 @@ function LeadsList({ data, listIndex }) {
             cardIndex={index}
             listIndex={listIndex}
             listId={data.id}
+            listName={data.title}
           />)
         }
       </div>

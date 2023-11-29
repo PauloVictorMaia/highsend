@@ -6,7 +6,7 @@ import { useRef, useContext } from "react";
 import KanbanContext from "../../contexts/kanbanContext";
 import LeadsContext from "../../pages/leads/leadsResults/context";
 
-function KanbanLeadsCard({ data, listIndex, cardIndex, listId }) {
+function KanbanLeadsCard({ data, listIndex, cardIndex, listId, listName }) {
 
   const ref = useRef();
   const { moveCard } = useContext(KanbanContext);
@@ -29,7 +29,7 @@ function KanbanLeadsCard({ data, listIndex, cardIndex, listId }) {
 
   const [{ isDragging }, dragRef] = useDrag({
     type: 'CARD',
-    item: { cardIndex, listIndex, listId },
+    item: { cardIndex, listIndex, listId, cardID: data.id },
     collect: monitor => ({
       isDragging: monitor.isDragging(),
     })
@@ -45,6 +45,7 @@ function KanbanLeadsCard({ data, listIndex, cardIndex, listId }) {
       const targetIndex = cardIndex;
       const draggedList = item.listIndex;
       const targetListIndex = listIndex;
+      const draggedID = item.cardID;
 
       if (draggedIndex === targetIndex && draggedList === targetListIndex) {
         return;
@@ -63,7 +64,7 @@ function KanbanLeadsCard({ data, listIndex, cardIndex, listId }) {
         return;
       }
 
-      moveCard(draggedIndex, targetIndex, draggedList, targetListIndex);
+      moveCard(draggedIndex, targetIndex, draggedList, targetListIndex, draggedID, listName);
 
       item.cardIndex = targetIndex;
       item.listIndex = targetListIndex;

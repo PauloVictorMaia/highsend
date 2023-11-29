@@ -73,9 +73,18 @@ function LeadsResults() {
     }
   };
 
+  const updateLeadStatus = async (leadID, value) => {
+
+    try {
+      await api.patch(`/leads/edit-status-lead/${params.flowId}/${leadID}`, { value }, { headers: { authorization: token } });
+    } catch {
+      return;
+    }
+  };
+
   return (
     <LeadsContext.Provider
-      value={{ leads, variables, loaded, getLeads, getVariables, leadsList, setLeadsList, getFormattedLeads, saveLeadsList }}
+      value={{ leads, variables, loaded, getLeads, getVariables, leadsList, setLeadsList, getFormattedLeads, saveLeadsList, updateLeadStatus }}
     >
       <ContentPageContainer
         header={
@@ -89,12 +98,12 @@ function LeadsResults() {
       >
         {
           menuComponent === 0 &&
-          <Submissions />
+          <KanbanBoard />
         }
 
         {
           menuComponent === 1 &&
-          <KanbanBoard />
+          <Submissions />
         }
       </ContentPageContainer>
     </LeadsContext.Provider>
