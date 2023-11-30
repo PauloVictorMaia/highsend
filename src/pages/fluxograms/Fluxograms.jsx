@@ -353,7 +353,7 @@ function Fluxograms() {
         }
 
         <Modal onClick={(e) => e.stopPropagation()} isvisible={modalNewFlowIsVisible}>
-          <ModalContent width={450} height={550}>
+          <ModalContent width={600} height={550}>
             <CloseButton onClick={(e) => closeModalNewFlow(e)}>
               <ClearIcon />
             </CloseButton>

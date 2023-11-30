@@ -295,6 +295,7 @@ export const TemplatesContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
+  column-gap: 15px;
 `;
 
 export const TemplateCard = styled.button`
