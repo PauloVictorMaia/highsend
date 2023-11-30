@@ -131,7 +131,7 @@ export const CloseButton = styled.button`
 export const FormContainer = styled.div`
   width: 100%;
   border-radius: 8px;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2); */
   padding: 20px;
   display: flex;
   flex-direction: column;
