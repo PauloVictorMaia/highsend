@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import KanbanLeadsCard from "../KanbanLeadsCards";
-import { Container, ListButtons, ListMenu, MenuButtons, NewContainer, Modal, ModalContent, CloseButton, MessageDeleteModal, ModalDeleteListButtons, ListOptionsInModal } from "./styles";
+import { Container, ListButtons, ListMenu, MenuButtons, NewContainer, Modal, ModalContent, CloseButton, MessageDeleteModal, ModalDeleteListButtons, ListOptionsInModal, CardsContainer } from "./styles";
 import Tooltip from '@mui/material/Tooltip';
 import { useDrop } from "react-dnd";
 import KanbanContext from "../../contexts/kanbanContext";
@@ -98,7 +98,7 @@ function LeadsList({ data, listIndex }) {
           <MoreVertIcon onClick={() => handleMenu()} ref={buttonRef} />
         </header>
 
-        <div>
+        <CardsContainer>
           {data.cards.map((card, index) =>
             <KanbanLeadsCard
               key={index}
@@ -109,7 +109,7 @@ function LeadsList({ data, listIndex }) {
               listName={data.title}
             />)
           }
-        </div>
+        </CardsContainer>
 
       </Container>
       <ListMenu isvisible={openMenu} ref={menuRef}>

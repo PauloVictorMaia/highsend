@@ -13,7 +13,6 @@ export const Container = styled.div`
   border: 1px solid rgba(0,0,0,0.15);
   border-radius: 8px;
   box-shadow: 0 5px 7px 0 rgba(0,0,0,0.45);
-  /* flex: 0 0 250px; */
   width: 250px;
 
   header {
@@ -36,12 +35,12 @@ export const Container = styled.div`
       cursor: pointer;
     }
   }
+`;
 
-  div {
-    display: flex;
-    flex-direction: column;
-    row-gap: 10px;
-  }
+export const CardsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
 `;
 
 export const ListMenu = styled.div`

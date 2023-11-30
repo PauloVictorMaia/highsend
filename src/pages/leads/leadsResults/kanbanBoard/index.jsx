@@ -121,8 +121,26 @@ function KanbanBoard() {
     );
   }
 
+  function deleteLead(listIndex, cardIndex) {
+    setLeadsList(
+      produce(leadsList, (draft) => {
+        if (
+          listIndex >= 0 &&
+          listIndex < draft.length &&
+          cardIndex >= 0 &&
+          cardIndex < draft[listIndex].cards.length
+        ) {
+
+          draft[listIndex].cards.splice(cardIndex, 1);
+          setListUpdated(!listUpdated);
+          toast.success("Lead deletado");
+        }
+      })
+    );
+  }
+
   return (
-    <KanbanContext.Provider value={{ moveCard, leadsList, moveCardToEmptyList, moveAllCardsToList, deleteListAndLeads, moveAllCardsAndDeleteList }}>
+    <KanbanContext.Provider value={{ moveCard, leadsList, moveCardToEmptyList, moveAllCardsToList, deleteListAndLeads, moveAllCardsAndDeleteList, deleteLead }}>
       <Board>
         <Container>
           {leadsList.map((list, index) =>
