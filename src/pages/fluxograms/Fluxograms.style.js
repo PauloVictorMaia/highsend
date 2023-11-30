@@ -299,7 +299,7 @@ export const TemplatesContainer = styled.div`
 `;
 
 export const TemplateCard = styled.button`
-  width: 140px;
+  width: 100%;
   height: 200px;
   border-radius: 8px;
   border: 1px solid #4339F2;
