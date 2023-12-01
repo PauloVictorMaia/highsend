@@ -1,11 +1,12 @@
 /* eslint-disable react/prop-types */
-import { Container, Modal, ModalContent, CloseButton, LeadsContentContainer, LeadContent, VariableContent, DeleteLeadButton, ConfirmDeleteLead, ConfirmDeleteButtons, ConfirmDeleteButton, WhatsappMessageContainer, WhatsappButton, WhatsappMessage, DeleteButtonContainer, WhatsappMessageInfo, IconText, VariableExample } from "./styles";
+import { Container, Modal, ModalContent, SendMessageLead, CloseButton, LeadsContentContainer, LeadContent, VariableContent, DeleteLeadButton, ConfirmDeleteLead, ConfirmDeleteButtons, ConfirmDeleteButton, WhatsappMessageContainer, WhatsappButton, WhatsappMessage, DeleteButtonContainer, WhatsappMessageInfo, IconText, VariableExample, ButtonsBlock } from "./styles";
 import Tooltip from '@mui/material/Tooltip';
 import { useDrag, useDrop } from 'react-dnd';
 import { useRef, useContext, useState, useEffect } from "react";
 import KanbanContext from "../../contexts/kanbanContext";
 import ClearIcon from '@mui/icons-material/Clear';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import DeleteIcon from '@mui/icons-material/Delete';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
@@ -148,7 +149,7 @@ function KanbanLeadsCard({ data, listIndex, cardIndex, listId, listName }) {
 
       </Container>
       <Modal onClick={(e) => e.stopPropagation()} isvisible={modalIsVisible}>
-        <ModalContent width={500} height={200}>
+        <ModalContent width={600} height={550}>
 
           <CloseButton
             onClick={(e) => {
@@ -160,7 +161,7 @@ function KanbanLeadsCard({ data, listIndex, cardIndex, listId, listName }) {
           </CloseButton>
 
           <LeadsContentContainer>
-            <h3>Variables</h3>
+            <h3>Dados</h3>
             {
               data.variables.map((variable) => (
                 <LeadContent key={variable.id}>
@@ -173,7 +174,7 @@ function KanbanLeadsCard({ data, listIndex, cardIndex, listId, listName }) {
                 </LeadContent>
               ))
             }
-            <h3>Query Params</h3>
+            <h3>Parâmetros</h3>
             {
               data.queryParams && data.queryParams.length > 0 && data.queryParams.map((queryParam, index) => (
                 <LeadContent key={index}>
@@ -191,129 +192,141 @@ function KanbanLeadsCard({ data, listIndex, cardIndex, listId, listName }) {
                 </LeadContent>
               ))
             }
-            <WhatsappMessageContainer isvisible={phone}>
-              <WhatsappButton
-                onClick={() => setShowWhatsappOptions(!showWhatsappOptions)}
-                background="#075e54"
-              >
-                {showWhatsappOptions ? <ClearIcon /> : <WhatsAppIcon />}
-                <span>{showWhatsappOptions ? "Cancelar" : "Mensagem por Whatsapp"}</span>
-              </WhatsappButton>
+            <ButtonsBlock>
+              <WhatsappMessageContainer isvisible={phone}>
+                <WhatsappButton
+                  onClick={() => {
+                    setShowConfirmDeleteLead(false);
+                    setShowWhatsappOptions(!showWhatsappOptions)
+                  }}
+                  background="#075e54"
+                >
+                  {showWhatsappOptions ? <ClearIcon /> : <WhatsAppIcon />}
+                  <span>{showWhatsappOptions ? "Cancelar" : "Mensagem por Whatsapp"}</span>
+                </WhatsappButton>
+              </WhatsappMessageContainer>
+              <DeleteButtonContainer>
+                <DeleteLeadButton
+                  background="#ff4d4d"
+                  onClick={() => {
+                    setShowWhatsappOptions(false)
+                    setShowConfirmDeleteLead(true)
+                  }}
+                  isvisible={!showConfirmDeleteLead}
+                >
+                  <DeleteIcon />
+                </DeleteLeadButton>
+              </DeleteButtonContainer>
+            </ButtonsBlock>
 
-              {
-                showWhatsappOptions && integrations.filter(integration => integration.type === "whatsapp").length > 0 ? (
+            <SendMessageLead>
+            {
+              showWhatsappOptions && integrations.filter(integration => integration.type === "whatsapp").length > 0 ? (
 
-                  <Select
-                    IconComponent={KeyboardArrowDownIcon}
-                    value={whatsappIntegrationSelected}
-                    size="small"
-                    onChange={(e) => setWhatsappIntegrationSelected(e.target.value)}
-                    autoFocus
-                    sx={{
-                      '& .MuiSelect-select .notranslate::after': IntegrationPlaceholder
-                        ? {
-                          content: `"${IntegrationPlaceholder}"`,
-                          opacity: 0.72,
-                        }
-                        : {},
-                      '.MuiSvgIcon-root ': {
-                        fill: "#4339F2 !important",
+                <Select
+                  IconComponent={KeyboardArrowDownIcon}
+                  value={whatsappIntegrationSelected}
+                  size="large"
+                  style={{ width: '90%' }}
+                  onChange={(e) => setWhatsappIntegrationSelected(e.target.value)}
+                  autoFocus
+                  sx={{
+                    '& .MuiSelect-select .notranslate::after': IntegrationPlaceholder
+                      ? {
+                        content: `"${IntegrationPlaceholder}"`,
+                        opacity: 0.72,
+                        
                       }
-                    }}
-                  >
-                    {integrations && integrations.filter(integration => integration.type === "whatsapp").length > 0 &&
-                      integrations.filter(integration => integration.type === "whatsapp").map((integration, index) => (
-                        <MenuItem key={index} value={integration.id}>{integration.name}</MenuItem >
-                      ))
+                      : {},
+                    '.MuiSvgIcon-root ': {
+                      fill: "#4339F2 !important",
                     }
-                  </Select>
-                )
-                  :
-                  (
-                    showWhatsappOptions && integrations.filter(integration => integration.type === "whatsapp").length < 1 &&
-                    <span>Você ainda não possui uma integração com o Whatsapp. Crie uma no menu de integrações.</span>
-                  )
-              }
-
-              {
-                showWhatsappOptions && whatsappIntegrationSelected &&
-                <>
-                  <WhatsappMessageInfo>
-                    <IconText>
-                      <InfoOutlinedIcon />
-                      <span style={{ fontWeight: "600" }}>Escritas automáticas</span>
-                    </IconText>
-                    <IconText>
-                      <span>
-                        Em sua mensagem você pode utilizar escritas automáticas. Basta colocar o nome da variavel entre duas chaves conforme exemplo abaixo. OBS: Existe diferença entre letras maiúsculas e minúsculas.
-                      </span>
-                    </IconText>
-
-                    <IconText>
-                      <VariableExample>
-                        {"{{name}}"}
-                      </VariableExample>
-
-                      <VariableExample>
-                        {"{{Email}}"}
-                      </VariableExample>
-
-                      <VariableExample>
-                        {"{{phone}}"}
-                      </VariableExample>
-
-                      <VariableExample>
-                        {"{{outra}}"}
-                      </VariableExample>
-                    </IconText>
-                  </WhatsappMessageInfo>
-
-                  {
-                    showWhatsappOptions && whatsappIntegrationSelected &&
-                    <WhatsappButton
-                      onClick={() => sendWhatsappMessage()}
-                      style={{ margin: 0 }}
-                      background="#25d366"
-                      disabled={!whatsappMessage || !whatsappIntegrationSelected}
-                    >
-                      {isLoading ? <Ring size={25} color="#fff" /> : <WhatsAppIcon />}
-                      <span>Enviar mensagem</span>
-                    </WhatsappButton>
+                  }}
+                >
+                  {integrations && integrations.filter(integration => integration.type === "whatsapp").length > 0 &&
+                    integrations.filter(integration => integration.type === "whatsapp").map((integration, index) => (
+                      <MenuItem key={index} value={integration.id}>{integration.name}</MenuItem >
+                    ))
                   }
+                </Select>
+              )
+                :
+                (
+                  showWhatsappOptions && integrations.filter(integration => integration.type === "whatsapp").length < 1 &&
+                  <span>Você ainda não possui uma integração com o Whatsapp. Crie uma no menu de integrações.</span>
+                )
+            }
 
-                  <WhatsappMessage
-                    value={whatsappMessage}
-                    onChange={(e) => setWhatsappMessage(e.target.value)}
-                    placeholder="Digite a sua mensagem"
-                  />
-                </>
-              }
+            {
+              showWhatsappOptions && whatsappIntegrationSelected &&
+              <>
+                <WhatsappMessageInfo>
+                  <IconText>
+                    <InfoOutlinedIcon />
+                    <span style={{ fontWeight: "600" }}>Escritas automáticas</span>
+                  </IconText>
+                  <IconText>
+                    <span>
+                      Em sua mensagem você pode utilizar escritas automáticas. Basta colocar o nome da variavel entre duas chaves conforme exemplo abaixo. OBS: Existe diferença entre letras maiúsculas e minúsculas.
+                    </span>
+                  </IconText>
 
+                  <IconText>
+                    <VariableExample>
+                      {"{{name}}"}
+                    </VariableExample>
 
-            </WhatsappMessageContainer>
+                    <VariableExample>
+                      {"{{Email}}"}
+                    </VariableExample>
 
-            <DeleteButtonContainer>
-              <DeleteLeadButton
-                background="#ff4d4d"
-                onClick={() => setShowConfirmDeleteLead(true)}
-                isvisible={!showConfirmDeleteLead}
-              >
-                Deletar lead
-              </DeleteLeadButton>
-            </DeleteButtonContainer>
+                    <VariableExample>
+                      {"{{phone}}"}
+                    </VariableExample>
+
+                    <VariableExample>
+                      {"{{outra}}"}
+                    </VariableExample>
+                  </IconText>
+                </WhatsappMessageInfo>
+
+                <WhatsappMessage
+                  value={whatsappMessage}
+                  onChange={(e) => setWhatsappMessage(e.target.value)}
+                  placeholder="Digite a sua mensagem"
+                />
+
+                {
+                  showWhatsappOptions && whatsappIntegrationSelected &&
+                  <WhatsappButton
+                    onClick={() => sendWhatsappMessage()}
+                    style={{ marginTop: 20, width: '90%' }}
+                    background="#25d366"
+                    disabled={!whatsappMessage || !whatsappIntegrationSelected}
+                  >
+                    {isLoading ? <Ring size={25} color="#fff" /> : <WhatsAppIcon />}
+                    <span>Enviar mensagem</span>
+                  </WhatsappButton>
+                }
+              </>
+            }
+            
+
+            </SendMessageLead>
+
 
             <ConfirmDeleteLead isvisible={showConfirmDeleteLead}>
               <span>Tem certeza que quer deletar esse lead?</span>
               <ConfirmDeleteButtons>
                 <ConfirmDeleteButton
-                  background="#E67200"
+                  background="#4339F2"
                   onClick={() => setShowConfirmDeleteLead(false)}
                 >
                   Cancelar
                 </ConfirmDeleteButton>
 
                 <ConfirmDeleteButton
-                  background="#4339F2"
+                  background="#ff4d4d"
                   onClick={() => {
                     deleteLead(listIndex, cardIndex);
                     deleteCardInDb(listIndex, cardIndex);
@@ -322,7 +335,7 @@ function KanbanLeadsCard({ data, listIndex, cardIndex, listId, listName }) {
                     }, 500);
                   }}
                 >
-                  Quero deletar
+                  Deletar
                 </ConfirmDeleteButton>
               </ConfirmDeleteButtons>
 

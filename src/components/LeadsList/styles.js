@@ -6,14 +6,14 @@ export const NewContainer = styled.div`
 `;
 
 export const Container = styled.div`
-  padding: 0 15px 10px 15px;
+  padding: 10px 15px;
   height: 100%;
   max-height: calc(100vh - 280px);
   overflow-y: scroll;
   border: 1px solid rgba(0,0,0,0.15);
   border-radius: 8px;
   box-shadow: 0 5px 7px 0 rgba(0,0,0,0.45);
-  width: 250px;
+  width: 300px;
 
   header {
     width: 100%;
@@ -23,9 +23,12 @@ export const Container = styled.div`
     height: 42px;
     overflow: hidden;
     color: #333;
+    margin-bottom: 20px;
+    padding-left: 6px;
+    box-sizing: border-box;
 
     h2 {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -85,8 +88,8 @@ export const MenuButtons = styled.button`
 export const ListButtons = styled.button`
   width: 100%;
   outline: none;
-  height: 25px;
-  border-radius: 20px;
+  height: 35px;
+  border-radius: 8px;
   border: none;
   background-color: #4339F2;
   color: #fff;
@@ -134,7 +137,7 @@ export const ModalContent = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  row-gap: 20px;
+  row-gap: 10px;
   position: relative;
 `;
 
@@ -165,6 +168,7 @@ export const MessageDeleteModal = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  margin-bottom: 20px;
 
   h2 {
     color: #333;
@@ -179,12 +183,14 @@ export const MessageDeleteModal = styled.div`
 
 export const ModalDeleteListButtons = styled.button`
   outline: none;
+  width: 250px;
   height: 40px;
   border-radius: 8px;
   border: none;
   background-color: ${({ background }) => background};
   color: #fff;
   display: flex;
+  justify-content: center;
   column-gap: 15px;
   align-items: center;
   padding: 0 15px;

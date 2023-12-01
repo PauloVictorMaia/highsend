@@ -161,7 +161,7 @@ function LeadsList({ data, listIndex }) {
           {
             data.cards.length > 0 &&
             <ModalDeleteListButtons
-              background="#E67200"
+              background="#4339F2"
               onClick={() => setShowListOptionsInModal(!showListOptionsInModal)}
             >
               <span>Mover todos os leads e deletar lista</span>

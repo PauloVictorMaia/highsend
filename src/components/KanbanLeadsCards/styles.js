@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 
 export const Container = styled.div`
   width: 100%;
-  height: 40px;
+  height: 55px;
   border: 1px solid rgba(0,0,0,0.15);
   border-radius: 8px;
   display: flex;
@@ -89,8 +89,6 @@ export const CloseButton = styled.button`
   cursor: pointer;
 
   >svg {
-    width: 100%;
-    height: 100%;
     color: #fff;
   }
 `;
@@ -139,7 +137,6 @@ export const VariableContent = styled.div`
 `;
 
 export const DeleteButtonContainer = styled.div`
-  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -148,8 +145,8 @@ export const DeleteButtonContainer = styled.div`
 export const DeleteLeadButton = styled.button`
   outline: none;
   min-height: 40px;
-  width: 120px;
-  border-radius: 8px;
+  width: 40px;
+  border-radius: 50%;
   border: none;
   background-color: ${({ background }) => background};
   color: #fff;
@@ -177,6 +174,13 @@ export const ConfirmDeleteButton = styled.button`
   cursor: pointer;
 `;
 
+export const SendMessageLead = styled.div`
+width: 100%;
+display: flex;
+flex-direction: column;
+align-items: center;
+`;
+
 export const ConfirmDeleteLead = styled.div`
   width: 100%;
   display: ${({ isvisible }) => isvisible ? "flex" : "none"};
@@ -197,15 +201,23 @@ export const ConfirmDeleteButtons = styled.div`
 `;
 
 export const WhatsappMessageContainer = styled.div`
-  width: 100%;
   display: ${({ isvisible }) => isvisible ? "flex" : "none"};
   flex-direction: column;
   align-items: center;
   row-gap: 15px;
 `;
 
+export const ButtonsBlock = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+  column-gap: 20px;
+`;
+
 export const WhatsappButton = styled.button`
-  width: 220px;
+  width: 250px;
   outline: none;
   height: 40px;
   border-radius: 8px;
@@ -218,7 +230,7 @@ export const WhatsappButton = styled.button`
   padding: 0 15px;
   cursor: pointer;
   column-gap: 10px;
-  margin-top: 30px;
+  font-size: 16px;
 
   svg {
     color: #fff;
@@ -272,7 +284,7 @@ export const IconText = styled.div`
 export const WhatsappMessage = styled.textarea`
   display: block;
   width: 90%;
-  height: 200px;
+  min-height: 200px;
   background-color: #fff;
   border: 0.5px solid rgba(0,0,0,0.15);
   outline: none;
