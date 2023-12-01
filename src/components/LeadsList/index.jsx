@@ -5,7 +5,6 @@ import Tooltip from '@mui/material/Tooltip';
 import { useDrop } from "react-dnd";
 import KanbanContext from "../../contexts/kanbanContext";
 import { useContext, useState, useRef, useEffect } from "react";
-import LeadsContext from "../../pages/leads/leadsResults/context";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import DriveFileMoveOutlinedIcon from '@mui/icons-material/DriveFileMoveOutlined';
@@ -15,8 +14,7 @@ import { toast } from "react-toastify";
 
 function LeadsList({ data, listIndex }) {
 
-  const { moveCardToEmptyList, leadsList, moveAllCardsToList, deleteListAndLeads, moveAllCardsAndDeleteList } = useContext(KanbanContext);
-  const { saveLeadsList } = useContext(LeadsContext);
+  const { moveCardToEmptyList, moveCardToEmptyListInDb, leadsList, moveAllCardsToList, moveAllCardsToListInDb, deleteListAndLeads, deleteListAndCardsInDb, moveAllCardsAndDeleteList, moveAllCardsAndDeleteListInDb } = useContext(KanbanContext);
   const [openMenu, setOpenMenu] = useState(false);
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
@@ -34,10 +32,7 @@ function LeadsList({ data, listIndex }) {
 
   const [, dropRef] = useDrop({
     accept: 'CARD',
-    drop() {
-      saveLeadsList();
-    },
-    hover(item) {
+    drop(item) {
       const draggedIndex = item.cardIndex;
       const draggedList = item.listIndex;
       const targetListIndex = listIndex;
@@ -57,9 +52,10 @@ function LeadsList({ data, listIndex }) {
       }
 
       moveCardToEmptyList(draggedIndex, draggedList, targetListIndex, draggedID, data.title);
-
+      moveCardToEmptyListInDb(draggedIndex, draggedList, targetListIndex);
       item.listIndex = targetListIndex;
-    }
+    },
+
   })
 
   const handleMenu = () => {
@@ -127,6 +123,7 @@ function LeadsList({ data, listIndex }) {
               key={index}
               onClick={() => {
                 moveAllCardsToList(listIndex, index);
+                moveAllCardsToListInDb(listIndex, index);
                 handleMenu();
               }}
             >
@@ -178,6 +175,7 @@ function LeadsList({ data, listIndex }) {
                   key={index}
                   onClick={() => {
                     moveAllCardsAndDeleteList(listIndex, index);
+                    moveAllCardsAndDeleteListInDb(listIndex, index);
                     setTimeout(() => {
                       setModalDeleteListIsVisible(false);
                     }, 200);
@@ -197,6 +195,7 @@ function LeadsList({ data, listIndex }) {
             background="#ff4d4d"
             onClick={() => {
               deleteListAndLeads(listIndex);
+              deleteListAndCardsInDb(listIndex);
               setTimeout(() => {
                 setModalDeleteListIsVisible(false);
               }, 200);

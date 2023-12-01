@@ -4,7 +4,6 @@ import Tooltip from '@mui/material/Tooltip';
 import { useDrag, useDrop } from 'react-dnd';
 import { useRef, useContext, useState, useEffect } from "react";
 import KanbanContext from "../../contexts/kanbanContext";
-import LeadsContext from "../../pages/leads/leadsResults/context";
 import ClearIcon from '@mui/icons-material/Clear';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -19,8 +18,7 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 function KanbanLeadsCard({ data, listIndex, cardIndex, listId, listName }) {
 
   const ref = useRef();
-  const { moveCard, deleteLead } = useContext(KanbanContext);
-  const { saveLeadsList } = useContext(LeadsContext);
+  const { moveCard, moveCardInDb, deleteLead, deleteCardInDb } = useContext(KanbanContext);
   const [modalIsVisible, setModalIsVisible] = useState(false);
   const [showConfirmDeleteLead, setShowConfirmDeleteLead] = useState(false);
   const [phone, setPhone] = useState("");
@@ -68,10 +66,7 @@ function KanbanLeadsCard({ data, listIndex, cardIndex, listId, listName }) {
 
   const [{ isOver }, dropRef] = useDrop({
     accept: 'CARD',
-    drop() {
-      saveLeadsList();
-    },
-    hover(item, monitor) {
+    drop(item, monitor) {
       const draggedIndex = item.cardIndex;
       const targetIndex = cardIndex;
       const draggedList = item.listIndex;
@@ -96,11 +91,11 @@ function KanbanLeadsCard({ data, listIndex, cardIndex, listId, listName }) {
       }
 
       moveCard(draggedIndex, targetIndex, draggedList, targetListIndex, draggedID, listName);
-
+      moveCardInDb(draggedIndex, targetIndex, draggedList, targetListIndex);
       item.cardIndex = targetIndex;
       item.listIndex = targetListIndex;
-
     },
+
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
     }),
@@ -321,6 +316,7 @@ function KanbanLeadsCard({ data, listIndex, cardIndex, listId, listName }) {
                   background="#4339F2"
                   onClick={() => {
                     deleteLead(listIndex, cardIndex);
+                    deleteCardInDb(listIndex, cardIndex);
                     setTimeout(() => {
                       closeModal();
                     }, 500);

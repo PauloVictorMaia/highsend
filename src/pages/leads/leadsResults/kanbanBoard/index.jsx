@@ -9,15 +9,21 @@ import { toast } from "react-toastify";
 import { v4 as uuidv4 } from 'uuid';
 import KanbanContext from "../../../../contexts/kanbanContext";
 import { produce } from "immer";
+import api from "../../../../api";
+import { Ring } from "@uiball/loaders";
+import { useParams } from "react-router-dom";
 
 function KanbanBoard() {
 
-  const { leadsList, setLeadsList, updateLeadStatus, listUpdated, setListUpdated, changeLeadsStatusInBulk } = useContext(LeadsContext);
+  const { leadsList, setLeadsList, updateLeadStatus, changeLeadsStatusInBulk, getFormattedLeads } = useContext(LeadsContext);
   const [showNewListInput, setShowNewListInput] = useState(false);
   const [newListName, setNewListName] = useState("");
   const inputRef = useRef(null);
+  const token = localStorage.getItem('token');
+  const [isLoading, setIsLoading] = useState(false);
+  const params = useParams();
 
-  function createNewColumn() {
+  async function createNewList() {
 
     if (!newListName) {
       toast.warning("Defina um nome para a nova lista");
@@ -30,9 +36,20 @@ function KanbanBoard() {
       cards: []
     }
 
-    setLeadsList(lists => [...lists, newList]);
-    closeInput();
-    setListUpdated(!listUpdated);
+    try {
+      setIsLoading(true);
+      const response = await api.post(`/leads/create-new-list/${params.flowId}`, { newList },
+        { headers: { authorization: token } });
+      if (response.status === 200) {
+        setIsLoading(false);
+        getFormattedLeads();
+        closeInput();
+      }
+    } catch (error) {
+      setIsLoading(false);
+      toast.error("Erro ao criar nova lista");
+      return;
+    }
   }
 
   function closeInput() {
@@ -51,7 +68,19 @@ function KanbanBoard() {
       }
       draft[fromList].cards.splice(from, 1);
       draft[toList].cards.splice(to, 0, dragged);
+
     }));
+  }
+
+  async function moveCardInDb(from, to, fromList, toList) {
+
+    try {
+      await api.patch(`/leads/move-card/${params.flowId}`, { from, to, fromList, toList },
+        { headers: { authorization: token } });
+    } catch (error) {
+      toast.error("Erro ao mover lead");
+      getFormattedLeads();
+    }
   }
 
   function moveCardToEmptyList(cardIndex, fromList, toList, cardID, listName) {
@@ -65,7 +94,19 @@ function KanbanBoard() {
         updateLeadStatus(cardID, listName);
       }
       draft[toList].cards.push(dragged);
+
     }));
+  }
+
+  async function moveCardToEmptyListInDb(from, fromList, toList) {
+    try {
+      await api.patch(`/leads/move-card-to-empty-list/${params.flowId}`, { from, fromList, toList },
+        { headers: { authorization: token } });
+
+    } catch (error) {
+      toast.error("Erro ao mover lead");
+      getFormattedLeads();
+    }
   }
 
   function moveAllCardsToList(originListIndex, targetListIndex) {
@@ -85,10 +126,22 @@ function KanbanBoard() {
         draft[targetListIndex].cards.push(...draft[originListIndex].cards);
         draft[originListIndex].cards = [];
 
-        setListUpdated(!listUpdated);
         changeLeadsStatusInBulk(movedCardIds, targetListTitle);
+
       })
     );
+  }
+
+  async function moveAllCardsToListInDb(originListIndex, targetListIndex) {
+    try {
+      await api.patch(`/leads/move-all-cards-to-list/${params.flowId}`,
+        { originListIndex, targetListIndex },
+        { headers: { authorization: token } });
+
+    } catch (error) {
+      toast.error("Erro ao mover cards para outra lista");
+      getFormattedLeads();
+    }
   }
 
   function deleteListAndLeads(listIndex) {
@@ -96,8 +149,18 @@ function KanbanBoard() {
       if (listIndex >= 0 && listIndex < draft.length) {
         draft.splice(listIndex, 1);
       }
-      setListUpdated(!listUpdated);
     }));
+  }
+
+  async function deleteListAndCardsInDb(listIndex) {
+    try {
+      await api.patch(`/leads/delete-list-and-cards/${params.flowId}`,
+        { listIndex },
+        { headers: { authorization: token } });
+    } catch (error) {
+      toast.error("Erro ao deletar lista");
+      getFormattedLeads();
+    }
   }
 
   function moveAllCardsAndDeleteList(originListIndex, targetListIndex) {
@@ -115,10 +178,19 @@ function KanbanBoard() {
 
         draft[targetListIndex].cards.push(...draft[originListIndex].cards);
         draft.splice(originListIndex, 1);
-
-        setListUpdated(!listUpdated);
       })
     );
+  }
+
+  async function moveAllCardsAndDeleteListInDb(originListIndex, targetListIndex) {
+    try {
+      await api.patch(`/leads/move-all-cards-and-delete-list/${params.flowId}`,
+        { originListIndex, targetListIndex },
+        { headers: { authorization: token } });
+    } catch (error) {
+      toast.error("Erro ao mover cards e deletar lista");
+      getFormattedLeads();
+    }
   }
 
   function deleteLead(listIndex, cardIndex) {
@@ -132,20 +204,45 @@ function KanbanBoard() {
         ) {
 
           draft[listIndex].cards.splice(cardIndex, 1);
-          setListUpdated(!listUpdated);
           toast.success("Lead deletado");
         }
       })
     );
   }
 
+  async function deleteCardInDb(listIndex, cardIndex) {
+    try {
+      await api.patch(`/leads/delete-card/${params.flowId}`,
+        { listIndex, cardIndex },
+        { headers: { authorization: token } });
+    } catch (error) {
+      toast.error("Erro ao mover cards e deletar lista");
+      getFormattedLeads();
+    }
+  }
+
   return (
-    <KanbanContext.Provider value={{ moveCard, leadsList, moveCardToEmptyList, moveAllCardsToList, deleteListAndLeads, moveAllCardsAndDeleteList, deleteLead }}>
+    <KanbanContext.Provider
+      value={{
+        moveCard,
+        moveCardInDb,
+        moveCardToEmptyListInDb,
+        leadsList,
+        moveCardToEmptyList,
+        moveAllCardsToList,
+        moveAllCardsToListInDb,
+        deleteListAndLeads,
+        deleteListAndCardsInDb,
+        moveAllCardsAndDeleteList,
+        moveAllCardsAndDeleteListInDb,
+        deleteLead,
+        deleteCardInDb
+      }}>
       <Board>
         <Container>
           {leadsList.map((list, index) =>
             <LeadsList
-              key={list.id}
+              key={list.listID}
               data={list}
               listIndex={index}
             />)
@@ -164,12 +261,17 @@ function KanbanBoard() {
                   onChange={(e) => setNewListName(e.target.value)}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
-                      createNewColumn();
+                      createNewList();
                     }
                   }}
                   autoFocus
                 />
-                <NewListButton onClick={() => createNewColumn()}>Adicionar</NewListButton>
+                <NewListButton
+                  onClick={() => createNewList()}
+                  disabled={isLoading}
+                >
+                  {isLoading ? <Ring color="#fff" size={25} /> : "Adicionar"}
+                </NewListButton>
               </NewListContent>
             </NewListInputContainer>
           }

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import { leadsResultsMenu } from "../../../data/menus";
 import ContentPageContainer from "../../../containers/ContentPageContainer";
@@ -20,7 +21,6 @@ function LeadsResults() {
   const { user } = useStateContext();
   const token = localStorage.getItem('token');
   const params = useParams();
-  const [listUpdated, setListUpdated] = useState(false);
 
   useEffect(() => {
     if (Object.keys(user).length > 0) {
@@ -30,12 +30,6 @@ function LeadsResults() {
         });
     }
   }, []);
-
-  useEffect(() => {
-    if (leadsList && leadsList.length > 0) {
-      saveLeadsList()
-    }
-  }, [listUpdated]);
 
   const getLeads = async () => {
     try {
@@ -71,15 +65,6 @@ function LeadsResults() {
     }
   };
 
-  const saveLeadsList = async () => {
-
-    try {
-      await api.patch(`/leads/save-leads-list/${params.flowId}`, { leadsList }, { headers: { authorization: token } });
-    } catch {
-      return;
-    }
-  };
-
   const changeLeadsStatusInBulk = async (leadsIds, status) => {
 
     try {
@@ -108,7 +93,7 @@ function LeadsResults() {
 
   return (
     <LeadsContext.Provider
-      value={{ leads, variables, loaded, getLeads, getVariables, leadsList, setLeadsList, getFormattedLeads, saveLeadsList, updateLeadStatus, listUpdated, setListUpdated, changeLeadsStatusInBulk }}
+      value={{ leads, variables, loaded, getLeads, getVariables, leadsList, setLeadsList, getFormattedLeads, updateLeadStatus, changeLeadsStatusInBulk }}
     >
       <ContentPageContainer
         header={
