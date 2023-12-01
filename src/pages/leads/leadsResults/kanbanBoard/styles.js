@@ -81,7 +81,7 @@ export const NewListInput = styled(TextField)`
 
 export const NewListButton = styled.button`
   width: 25%;
-  height: 35px;
+  height: 55px;
   border-radius: 8px;
   border: none;
   outline: none;
