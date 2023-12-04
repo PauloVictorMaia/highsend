@@ -11,7 +11,7 @@ export const plans = [
       "1 Integração Google Calendar",
       "1 Integração Whatsapp"
     ],
-    price: 197
+    price: 147
   },
   {
     id: import.meta.env.VITE_STRIPE_PLAN_PRO_ID,
@@ -25,7 +25,7 @@ export const plans = [
       "2 Integrações Google Calendar",
       "2 Integrações Whatsapp"
     ],
-    price: 297
+    price: 197
   },
   {
     id: import.meta.env.VITE_STRIPE_PLAN_ENTERPRISE_ID,
