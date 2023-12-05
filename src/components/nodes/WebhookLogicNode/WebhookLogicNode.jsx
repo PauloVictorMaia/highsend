@@ -19,7 +19,7 @@ import { useStateContext } from "../../../contexts/ContextProvider";
 
 function WebhookLogicNode({ data, id, groupID }) {
 
-  const { setNodes } = useReactFlow();
+  const { setNodes, deleteElements } = useReactFlow();
   const [url, setUrl] = useState(data.url || "");
   const [advancedConfiguration, setAdvancedConfiguration] = useState(data.advancedConfiguration || false);
   // const [executeOnClient, setExecuteOnClient] = useState(data.executeOnClient || false);
@@ -86,6 +86,8 @@ function WebhookLogicNode({ data, id, groupID }) {
           const deletedBlockHeight = deletedBlock.style.height;
           const updatedBlocks = node.data.blocks.filter((block) => block.id !== id);
           if (updatedBlocks.length === 0) {
+            const id = groupID
+            deleteElements({ nodes: [{ id }] });
             return null;
           }
           return {

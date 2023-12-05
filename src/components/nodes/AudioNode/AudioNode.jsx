@@ -23,7 +23,7 @@ import { Switch } from "@mui/material";
 function AudioNode({ data, id, groupID }) {
 
   const [nodeValue, setNodeValue] = useState(data.value || "")
-  const { setNodes } = useReactFlow();
+  const { setNodes, deleteElements } = useReactFlow();
   const [activeTab, setActiveTab] = useState("tab1");
   const [uploading, setUploading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -73,6 +73,8 @@ function AudioNode({ data, id, groupID }) {
           const deletedBlockHeight = deletedBlock.style.height;
           const updatedBlocks = node.data.blocks.filter((block) => block.id !== id);
           if (updatedBlocks.length === 0) {
+            const id = groupID
+            deleteElements({ nodes: [{ id }] });
             return null;
           }
           return {

@@ -11,7 +11,7 @@ import { CSS } from "@dnd-kit/utilities"
 import ClearIcon from '@mui/icons-material/Clear';
 
 export function TextInputNode({ data, id, groupID }) {
-  const { setNodes } = useReactFlow();
+  const { setNodes, deleteElements } = useReactFlow();
   const { createNewVariable, variables, nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
   const [newVariable, setNewVariable] = useState("");
   const [placeholder, setPlaceholder] = useState(data.placeholder || "Digite sua resposta...");
@@ -65,6 +65,8 @@ export function TextInputNode({ data, id, groupID }) {
           const deletedBlockHeight = deletedBlock.style.height;
           const updatedBlocks = node.data.blocks.filter((block) => block.id !== id);
           if (updatedBlocks.length === 0) {
+            const id = groupID
+            deleteElements({ nodes: [{ id }] });
             return null;
           }
           return {

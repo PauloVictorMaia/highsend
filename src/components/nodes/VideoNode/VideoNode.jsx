@@ -16,7 +16,7 @@ export function VideoNode({ data, id, groupID }) {
   const [videoLink, setVideoLink] = useState(data.type === 'link' && data.value ? data.value : "");
   const [script, setScript] = useState(data.type === 'script' && data.value ? data.value : "");
   const [type, setType] = useState(data.type || "link");
-  const { setNodes } = useReactFlow();
+  const { setNodes, deleteElements } = useReactFlow();
   const [awaitTargetTime, setAwaitTargetTime] = useState(data.awaitTargetTime || false);
   const [targetTime, setTargetTime] = useState(data.targetTime || 10);
   const [autoplay, setAutoplay] = useState(data.autoplay || false);
@@ -89,6 +89,8 @@ export function VideoNode({ data, id, groupID }) {
           const deletedBlockHeight = deletedBlock.style.height;
           const updatedBlocks = node.data.blocks.filter((block) => block.id !== id);
           if (updatedBlocks.length === 0) {
+            const id = groupID
+            deleteElements({ nodes: [{ id }] });
             return null;
           }
           return {

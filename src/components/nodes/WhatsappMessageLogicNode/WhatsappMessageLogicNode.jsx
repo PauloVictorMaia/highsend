@@ -13,7 +13,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 
 function WhatsappMessageLogicNode({ data, id, groupID }) {
 
-  const { setNodes } = useReactFlow();
+  const { setNodes, deleteElements } = useReactFlow();
   const [nodeValue, setNodeValue] = useState(data.value || "");
   const [message, setMessage] = useState(data.message || "");
   const { integrations, variables, nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
@@ -84,6 +84,8 @@ function WhatsappMessageLogicNode({ data, id, groupID }) {
           const deletedBlockHeight = deletedBlock.style.height;
           const updatedBlocks = node.data.blocks.filter((block) => block.id !== id);
           if (updatedBlocks.length === 0) {
+            const id = groupID
+            deleteElements({ nodes: [{ id }] });
             return null;
           }
           return {

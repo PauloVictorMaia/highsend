@@ -14,7 +14,7 @@ function PixelFacebookLogicNode({ data, id, groupID }) {
 
   const [nodeValue, setNodeValue] = useState(data.value || "");
   const [tab, setTab] = useState("pixel");
-  const { setNodes } = useReactFlow();
+  const { setNodes, deleteElements } = useReactFlow();
   const [isVisible, setIsVisible] = useState(false);
   const { nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
   const {
@@ -62,6 +62,8 @@ function PixelFacebookLogicNode({ data, id, groupID }) {
           const deletedBlockHeight = deletedBlock.style.height;
           const updatedBlocks = node.data.blocks.filter((block) => block.id !== id);
           if (updatedBlocks.length === 0) {
+            const id = groupID
+            deleteElements({ nodes: [{ id }] });
             return null;
           }
           return {

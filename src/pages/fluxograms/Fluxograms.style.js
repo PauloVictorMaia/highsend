@@ -112,7 +112,7 @@ export const Modal = styled.div`
 
 export const ModalContent = styled.div`
   width: ${({ width }) => width? `${width}px` : '300px'};
-  min-height:${({ height }) => height? `${height}px` : '150px'}; ;
+  min-height:${({ height }) => height? `${height}px` : '150px'};
   background-color: #fff;
   border-radius: 8px;
   padding: 30px;
@@ -252,7 +252,23 @@ export const CreationOptions = styled.div`
 `;
 
 export const FlowNameInput = styled.div`
-  margin-top: 25px;
+  /* margin-top: 10px; */
+`;
+
+export const ToggleContainer = styled.div`
+  padding: 10px;
+  border: 2px solid #E0EAFF;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 50px;
+`;
+
+export const OptionLabel = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 `;
 
 export const CreationOptionsTitle = styled.div`
@@ -264,12 +280,13 @@ export const CreationOptionsTitle = styled.div`
   >h2 {
     margin: 0;
     color: #333;
+    font-size: 1.2rem;
   }
 `;
 
 export const FlowOption = styled.label`
   width: 100%;
-  height: 60px;
+  height: 40px;
   border: 2px solid #E0EAFF;
   border-radius: 8px;
   display: flex;
@@ -300,7 +317,7 @@ export const TemplatesContainer = styled.div`
 
 export const TemplateCard = styled.button`
   width: 100%;
-  height: 200px;
+  height: 150px;
   border-radius: 8px;
   border: 1px solid #4339F2;
   display: flex;

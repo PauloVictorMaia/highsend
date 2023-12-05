@@ -14,7 +14,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 export function DateInputNode({ data, id, groupID }) {
   const { calendarsData, createCalendar, nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
   const [nodeValue, setNodeValue] = useState(data.value || "")
-  const { setNodes } = useReactFlow();
+  const { setNodes, deleteElements } = useReactFlow();
   const [interruptFlow, setInterruptFlow] = useState(data.interruptFlow || false);
   const [isVisible, setIsVisible] = useState(false);
   const {
@@ -63,6 +63,8 @@ export function DateInputNode({ data, id, groupID }) {
           const deletedBlockHeight = deletedBlock.style.height;
           const updatedBlocks = node.data.blocks.filter((block) => block.id !== id);
           if (updatedBlocks.length === 0) {
+            const id = groupID
+            deleteElements({ nodes: [{ id }] });
             return null;
           }
           return {

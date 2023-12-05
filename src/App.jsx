@@ -22,6 +22,7 @@ import { theme } from "./Theme/Light.js";
 import ForgotPassword from "./pages/forgotPassword/index.jsx";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import CreateForm from "./pages/createForm/CreateForm.jsx";
 // import Chatbot from "./pages/viewFluxogram";
 // import LandingPage from "./pages/LandingPage";
 // import ExternalPageShedule from "./pages/externalPageSchedule";
@@ -47,6 +48,7 @@ const App = () => {
                 <Route index element={<Navigate to="fluxograms" />} />
                 <Route path="fluxograms" element={<Fluxograms />} />
                 <Route path="fluxograms/edit/:flowid" element={<CreateFluxogram />} />
+                <Route path="fluxograms/form/edit/:flowid" element={<CreateForm />} />
                 <Route path="schedules" element={<Schedules />} />
                 <Route path="schedules/edit/:id" element={<AddSchedule />} />
                 <Route path="leads" element={<Leads />} />

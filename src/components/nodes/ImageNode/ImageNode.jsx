@@ -23,7 +23,7 @@ import { useStateContext } from "../../../contexts/ContextProvider";
 export function ImageNode({ id, groupID, data }) {
 
   const [nodeValue, setNodeValue] = useState(data.value || "");
-  const { setNodes } = useReactFlow();
+  const { setNodes, deleteElements } = useReactFlow();
   const [activeTab, setActiveTab] = useState("tab1");
   const [uploading, setUploading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -94,6 +94,8 @@ export function ImageNode({ id, groupID, data }) {
           const deletedBlockHeight = deletedBlock.style.height;
           const updatedBlocks = node.data.blocks.filter((block) => block.id !== id);
           if (updatedBlocks.length === 0) {
+            const id = groupID
+            deleteElements({ nodes: [{ id }] });
             return null;
           }
           return {

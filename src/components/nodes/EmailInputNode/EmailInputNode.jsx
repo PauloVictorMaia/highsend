@@ -13,7 +13,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 export function EmailInputNode({ data, id, groupID }) {
 
   const { createNewVariable, variables, nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
-  const { setNodes } = useReactFlow();
+  const { setNodes, deleteElements } = useReactFlow();
   const [newVariable, setNewVariable] = useState("");
   const [placeholder, setPlaceholder] = useState(data.placeholder || "Digite seu email...");
   const [buttonLabel, setButtonLabel] = useState(data.buttonLabel || "Enviar");
@@ -51,6 +51,8 @@ export function EmailInputNode({ data, id, groupID }) {
           const deletedBlockHeight = deletedBlock.style.height;
           const updatedBlocks = node.data.blocks.filter((block) => block.id !== id);
           if (updatedBlocks.length === 0) {
+            const id = groupID
+            deleteElements({ nodes: [{ id }] });
             return null;
           }
           return {

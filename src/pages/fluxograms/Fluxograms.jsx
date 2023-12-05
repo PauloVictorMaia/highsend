@@ -20,7 +20,9 @@ import {
   FlowOption,
   FileInput,
   TemplateCard,
-  TemplatesContainer
+  TemplatesContainer,
+  ToggleContainer,
+  OptionLabel
 } from "./Fluxograms.style";
 import AddIcon from '@mui/icons-material/Add';
 import { useState } from "react";
@@ -44,6 +46,7 @@ import { Ring } from "@uiball/loaders";
 import { Skeleton } from "@mui/material";
 import BuildIcon from '@mui/icons-material/Build';
 import PublishIcon from '@mui/icons-material/Publish';
+import Radio from '@mui/material/Radio';
 
 function Fluxograms() {
   const [menuComponent, setMenuComponent] = useState(0);
@@ -62,7 +65,8 @@ function Fluxograms() {
   const [indexModal, setIndexModal] = useState(null);
   const [flowName, setFlowName] = useState("");
   const [newFlowName, setNewFlowName] = useState("My flow");
-  const BASE_URL = `${import.meta.env.VITE_OPEN_FRONT_URL}/fluxo-de-bot/`;
+  const [flowType, setFlowType] = useState("bot");
+  const BASE_URL = `${import.meta.env.VITE_OPEN_FRONT_URL}`;
 
   const createFlow = async () => {
     if (!newFlowName) {
@@ -71,9 +75,13 @@ function Fluxograms() {
     }
     setIsLoading(true);
     try {
-      const response = await api.post(`/flows/create-flow/${user.id}`, { flowName: newFlowName }, { headers: { authorization: token } });
-      if (response.status === 201) {
-        navigate(`/dashboard/fluxograms/edit/${response.data.id}`);
+      const response = await api.post(`/flows/create-flow/${user.id}`, { flowName: newFlowName, flowType }, { headers: { authorization: token } });
+      if (response.status === 200) {
+        if (response.data.flow.type === "bot") {
+          navigate(`/dashboard/fluxograms/edit/${response.data.id}`);
+        } else {
+          navigate(`/dashboard/fluxograms/form/edit/${response.data.id}`);
+        }
         getFlows();
         setIsLoading(false);
         setModalNewFlowIsVisible(false);
@@ -95,7 +103,7 @@ function Fluxograms() {
       const jsonFile = fileInput.files[0];
       const formData = new FormData();
       formData.append('flowJson', jsonFile);
-      const response = await api.post(`/flows/create-flow-with-json/${user.id}/${newFlowName}`, formData,
+      const response = await api.post(`/flows/create-flow-with-json/${user.id}/${newFlowName}/${flowType}`, formData,
         {
           headers: {
             authorization: token,
@@ -103,7 +111,11 @@ function Fluxograms() {
           }
         });
       if (response.status === 200) {
-        navigate(`/dashboard/fluxograms/edit/${response.data.id}`);
+        if (flowType === "bot") {
+          navigate(`/dashboard/fluxograms/edit/${response.data.id}`);
+        } else {
+          navigate(`/dashboard/fluxograms/form/edit/${response.data.id}`);
+        }
         getFlows();
         setUploadingFile(false);
         setModalNewFlowIsVisible(false);
@@ -195,6 +207,7 @@ function Fluxograms() {
     e.stopPropagation();
     setModalNewFlowIsVisible(false);
     setNewFlowName("My flow");
+    setFlowType("bot");
   }
 
   return (
@@ -226,12 +239,21 @@ function Fluxograms() {
         {
           flows &&
           flows.map((flow, index) => (
-            <FluxogramCard key={index} onClick={() => navigate(`/dashboard/fluxograms/edit/${flow.id}`)}>
+            <FluxogramCard
+              key={index}
+              onClick={() => {
+                if (flow.type && flow.type !== "bot") {
+                  navigate(`/dashboard/fluxograms/form/edit/${flow.id}`);
+                } else {
+                  navigate(`/dashboard/fluxograms/edit/${flow.id}`);
+                }
+              }}
+            >
               <Buttons>
                 <Tooltip title="Copiar link">
                   <CopyAllIcon style={{ fontSize: "1.6rem" }} onClick={(e) => {
                     e.stopPropagation();
-                    copyFlowURL(`${BASE_URL}${user.id}/${flow.id}`)
+                    copyFlowURL(`${BASE_URL}/fluxo-de-${flow.type ? flow.type : "bot"}/${user.id}/${flow.id}`)
                   }
                   } />
                 </Tooltip>
@@ -353,7 +375,7 @@ function Fluxograms() {
         }
 
         <Modal onClick={(e) => e.stopPropagation()} isvisible={modalNewFlowIsVisible}>
-          <ModalContent width={600} height={550}>
+          <ModalContent width={600} height={500}>
             <CloseButton onClick={(e) => closeModalNewFlow(e)}>
               <ClearIcon />
             </CloseButton>
@@ -369,6 +391,40 @@ function Fluxograms() {
                   onChange={(e) => setNewFlowName(e.target.value)}
                 />
               </FlowNameInput>
+
+              <ToggleContainer>
+                <OptionLabel>
+                  <Radio
+                    value="bot"
+                    checked={flowType === 'bot'}
+                    onChange={() => setFlowType("bot")}
+                    size="small"
+                    sx={{
+                      '& .MuiSvgIcon-root:not(.MuiSvgIcon-root ~ .MuiSvgIcon-root)':
+                      {
+                        color: '#4339F2',
+                      }
+                    }}
+                  />
+                  Fluxo de bot
+                </OptionLabel>
+
+                <OptionLabel>
+                  <Radio
+                    value="formulario"
+                    checked={flowType === 'formulario'}
+                    onChange={() => setFlowType("formulario")}
+                    size="small"
+                    sx={{
+                      '& .MuiSvgIcon-root:not(.MuiSvgIcon-root ~ .MuiSvgIcon-root)':
+                      {
+                        color: '#4339F2',
+                      },
+                    }}
+                  />
+                  Fluxo de formulario
+                </OptionLabel>
+              </ToggleContainer>
 
               <CreationOptionsTitle>
                 <h2>Opções de criação</h2>
