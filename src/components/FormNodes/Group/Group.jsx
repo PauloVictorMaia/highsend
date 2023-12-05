@@ -11,7 +11,7 @@ import { DndContext, closestCenter, MouseSensor, useSensor, useSensors } from "@
 import { SortableContext, verticalListSortingStrategy, arrayMove } from "@dnd-kit/sortable"
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import { Name } from '../Name/name';
-import { Email } from '../EmailNode/Email';
+import { Email } from '../EmailNode/email';
 import { ShortAnswer } from '../ShortAnswerNode/shortAnswer';
 import { LongAnswer } from '../LongAnswerNode/longAnswer';
 import { Phone } from '../PhoneNode/phone';

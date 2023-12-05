@@ -12,6 +12,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 
 
 export function Email({ data, id, groupID }) {
+
   const { setNodes, deleteElements } = useReactFlow();
   const { createNewVariable, variables, nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
   const [newVariable, setNewVariable] = useState("");
