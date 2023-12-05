@@ -10,7 +10,7 @@ import ReactFlow, {
 import 'reactflow/dist/style.css';
 import { Container } from "./CreateForm.style";
 import { useCallback, useEffect, useRef, useState } from "react";
-import FormSideBar from "../../components/FormSideBar/FormSideBar";
+import FormSideBar from '../../components/CreateFormSidebar/FormSidebar';
 import DefaultEdge from "../../components/edges/DefaultEdge/DefaultEdge";
 import { sortNodes, getId } from '../../utils';
 import { useStateContext } from "../../contexts/ContextProvider";
