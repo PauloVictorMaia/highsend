@@ -97,7 +97,7 @@ export default () => {
 
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'buttonsGroup', 'button', '40')} draggable>
           <TaskAltOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
-          Botão
+          Mult esc
         </NodeDraggable>
 
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'satisfaction', '40')} draggable>
