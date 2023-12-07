@@ -90,6 +90,8 @@ function FormPanelButtons({
     }));
   }
 
+  console.log(config)
+
   return (
     <Container onClick={() => setNodeMenuIsOpen(!nodeMenuIsOpen)}>
       <Button disabled={!hasChanges} onClick={() => save()} color={hasChanges}>
@@ -120,6 +122,20 @@ function FormPanelButtons({
           <ProfileImage loading={uploading} loader={<Ring />} src={config.profileImage} alt="logo"></ProfileImage>
           <span>Clique para editar</span>
         </ProfileImageContainer>
+
+        <SwitchContainer>
+          <span>Resp obrigatórias</span>
+          <Switch
+            size="small"
+            checked={config.mandatoryAnswers}
+            onChange={(e) => {
+              setConfig(prevConfig => ({
+                ...prevConfig,
+                mandatoryAnswers: e.target.checked,
+              }));
+            }}
+          />
+        </SwitchContainer>
 
         <SwitchContainer>
           <span>Active Campaign</span>

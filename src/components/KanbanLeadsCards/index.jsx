@@ -44,7 +44,7 @@ function KanbanLeadsCard({ data, listIndex, cardIndex, listId, listName }) {
 
   function getTitleFromVariables(variables) {
 
-    const preferredOrder = ["Nome", "Email", "Telefone"];
+    const preferredOrder = ["Nome", "name", "Email", "email", "Telefone", "phone"];
 
     for (const preferredName of preferredOrder) {
       const variable = variables.find((v) => v.name === preferredName);
@@ -220,97 +220,97 @@ function KanbanLeadsCard({ data, listIndex, cardIndex, listId, listName }) {
             </ButtonsBlock>
 
             <SendMessageLead>
-            {
-              showWhatsappOptions && integrations.filter(integration => integration.type === "whatsapp").length > 0 ? (
+              {
+                showWhatsappOptions && integrations.filter(integration => integration.type === "whatsapp").length > 0 ? (
 
-                <Select
-                  IconComponent={KeyboardArrowDownIcon}
-                  value={whatsappIntegrationSelected}
-                  size="large"
-                  style={{ width: '90%' }}
-                  onChange={(e) => setWhatsappIntegrationSelected(e.target.value)}
-                  autoFocus
-                  sx={{
-                    '& .MuiSelect-select .notranslate::after': IntegrationPlaceholder
-                      ? {
-                        content: `"${IntegrationPlaceholder}"`,
-                        opacity: 0.72,
-                        
+                  <Select
+                    IconComponent={KeyboardArrowDownIcon}
+                    value={whatsappIntegrationSelected}
+                    size="large"
+                    style={{ width: '90%' }}
+                    onChange={(e) => setWhatsappIntegrationSelected(e.target.value)}
+                    autoFocus
+                    sx={{
+                      '& .MuiSelect-select .notranslate::after': IntegrationPlaceholder
+                        ? {
+                          content: `"${IntegrationPlaceholder}"`,
+                          opacity: 0.72,
+
+                        }
+                        : {},
+                      '.MuiSvgIcon-root ': {
+                        fill: "#4339F2 !important",
                       }
-                      : {},
-                    '.MuiSvgIcon-root ': {
-                      fill: "#4339F2 !important",
-                    }
-                  }}
-                >
-                  {integrations && integrations.filter(integration => integration.type === "whatsapp").length > 0 &&
-                    integrations.filter(integration => integration.type === "whatsapp").map((integration, index) => (
-                      <MenuItem key={index} value={integration.id}>{integration.name}</MenuItem >
-                    ))
-                  }
-                </Select>
-              )
-                :
-                (
-                  showWhatsappOptions && integrations.filter(integration => integration.type === "whatsapp").length < 1 &&
-                  <span>Você ainda não possui uma integração com o Whatsapp. Crie uma no menu de integrações.</span>
-                )
-            }
-
-            {
-              showWhatsappOptions && whatsappIntegrationSelected &&
-              <>
-                <WhatsappMessageInfo>
-                  <IconText>
-                    <InfoOutlinedIcon />
-                    <span style={{ fontWeight: "600" }}>Escritas automáticas</span>
-                  </IconText>
-                  <IconText>
-                    <span>
-                      Em sua mensagem você pode utilizar escritas automáticas. Basta colocar o nome da variavel entre duas chaves conforme exemplo abaixo. OBS: Existe diferença entre letras maiúsculas e minúsculas.
-                    </span>
-                  </IconText>
-
-                  <IconText>
-                    <VariableExample>
-                      {"{{name}}"}
-                    </VariableExample>
-
-                    <VariableExample>
-                      {"{{Email}}"}
-                    </VariableExample>
-
-                    <VariableExample>
-                      {"{{phone}}"}
-                    </VariableExample>
-
-                    <VariableExample>
-                      {"{{outra}}"}
-                    </VariableExample>
-                  </IconText>
-                </WhatsappMessageInfo>
-
-                <WhatsappMessage
-                  value={whatsappMessage}
-                  onChange={(e) => setWhatsappMessage(e.target.value)}
-                  placeholder="Digite a sua mensagem"
-                />
-
-                {
-                  showWhatsappOptions && whatsappIntegrationSelected &&
-                  <WhatsappButton
-                    onClick={() => sendWhatsappMessage()}
-                    style={{ marginTop: 20, width: '90%' }}
-                    background="#25d366"
-                    disabled={!whatsappMessage || !whatsappIntegrationSelected}
+                    }}
                   >
-                    {isLoading ? <Ring size={25} color="#fff" /> : <WhatsAppIcon />}
-                    <span>Enviar mensagem</span>
-                  </WhatsappButton>
-                }
-              </>
-            }
-            
+                    {integrations && integrations.filter(integration => integration.type === "whatsapp").length > 0 &&
+                      integrations.filter(integration => integration.type === "whatsapp").map((integration, index) => (
+                        <MenuItem key={index} value={integration.id}>{integration.name}</MenuItem >
+                      ))
+                    }
+                  </Select>
+                )
+                  :
+                  (
+                    showWhatsappOptions && integrations.filter(integration => integration.type === "whatsapp").length < 1 &&
+                    <span>Você ainda não possui uma integração com o Whatsapp. Crie uma no menu de integrações.</span>
+                  )
+              }
+
+              {
+                showWhatsappOptions && whatsappIntegrationSelected &&
+                <>
+                  <WhatsappMessageInfo>
+                    <IconText>
+                      <InfoOutlinedIcon />
+                      <span style={{ fontWeight: "600" }}>Escritas automáticas</span>
+                    </IconText>
+                    <IconText>
+                      <span>
+                        Em sua mensagem você pode utilizar escritas automáticas. Basta colocar o nome da variavel entre duas chaves conforme exemplo abaixo. OBS: Existe diferença entre letras maiúsculas e minúsculas.
+                      </span>
+                    </IconText>
+
+                    <IconText>
+                      <VariableExample>
+                        {"{{name}}"}
+                      </VariableExample>
+
+                      <VariableExample>
+                        {"{{Email}}"}
+                      </VariableExample>
+
+                      <VariableExample>
+                        {"{{phone}}"}
+                      </VariableExample>
+
+                      <VariableExample>
+                        {"{{outra}}"}
+                      </VariableExample>
+                    </IconText>
+                  </WhatsappMessageInfo>
+
+                  <WhatsappMessage
+                    value={whatsappMessage}
+                    onChange={(e) => setWhatsappMessage(e.target.value)}
+                    placeholder="Digite a sua mensagem"
+                  />
+
+                  {
+                    showWhatsappOptions && whatsappIntegrationSelected &&
+                    <WhatsappButton
+                      onClick={() => sendWhatsappMessage()}
+                      style={{ marginTop: 20, width: '90%' }}
+                      background="#25d366"
+                      disabled={!whatsappMessage || !whatsappIntegrationSelected}
+                    >
+                      {isLoading ? <Ring size={25} color="#fff" /> : <WhatsAppIcon />}
+                      <span>Enviar mensagem</span>
+                    </WhatsappButton>
+                  }
+                </>
+              }
+
 
             </SendMessageLead>
 
