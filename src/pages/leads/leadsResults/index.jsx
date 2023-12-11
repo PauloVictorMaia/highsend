@@ -24,10 +24,9 @@ function LeadsResults() {
 
   useEffect(() => {
     if (Object.keys(user).length > 0) {
-      Promise.all([getLeads(), getVariables(), getFormattedLeads()])
-        .catch((error) => {
-          return error;
-        });
+      getLeads(),
+        getVariables(),
+        getFormattedLeads()
     }
   }, []);
 
