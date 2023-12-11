@@ -17,7 +17,7 @@ export function Date({ data, id, groupID }) {
   const [newVariable, setNewVariable] = useState("");
   const [question, setQuestion] = useState(data.question || "Digite a pergunta aqui...");
   const [description, setDescription] = useState(data.description || "");
-  const [placeholder, setPlaceholder] = useState(data.placeholder || "Data...");
+  const [placeholder, setPlaceholder] = useState(data.placeholder || "DD / MM / AAAA");
   const [buttonLabel, setButtonLabel] = useState(data.buttonLabel || "Responder");
   const [assignedVariable, setAssignedVariable] = useState(data.variable || "");
   const [isVisible, setIsVisible] = useState(false);
