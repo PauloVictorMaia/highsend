@@ -17,7 +17,7 @@ export function Address({ data, id, groupID }) {
   const [newVariable, setNewVariable] = useState("");
   const [question, setQuestion] = useState(data.question || "Qual é o seu endereço?");
   const [description, setDescription] = useState(data.description || "");
-  const [placeholder, setPlaceholder] = useState(data.placeholder || "R. Exemplo, 000...");
+  const [placeholder, setPlaceholder] = useState(data.placeholder || "00000-000");
   const [buttonLabel, setButtonLabel] = useState(data.buttonLabel || "Responder");
   const [assignedVariable, setAssignedVariable] = useState(data.variable || "");
   const [isVisible, setIsVisible] = useState(false);

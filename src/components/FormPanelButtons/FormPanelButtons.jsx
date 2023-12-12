@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Container, Label, Button, DropDownMenu, ProfileImage, ProfileImageContainer, TemplateContainer, Modal, ModalContent, CloseButton, SwitchContainer, IntegrationsEmptyContainer, AddTagsButton, TagsExibitionContainer, Tag, TagsContainer, InputTagsContainer, InputItem, DeleteTagButton } from "./FormPanelButton.style";
+import { Container, Label, Button, DropDownMenu, ProfileImage, ProfileImageContainer, TemplateContainer, Modal, ModalContent, CloseButton, SwitchContainer, IntegrationsEmptyContainer, AddTagsButton, TagsExibitionContainer, Tag, TagsContainer, InputTagsContainer, InputItem, DeleteTagButton, DeleteImage } from "./FormPanelButton.style";
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import IosShareIcon from '@mui/icons-material/IosShare';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -14,12 +14,14 @@ import { useStateContext } from "../../contexts/ContextProvider";
 import { Switch } from "@mui/material";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from 'uuid';
+import Tooltip from '@mui/material/Tooltip';
 
 function FormPanelButtons({
   save, hasChanges, dropDownMenuIsVisible, setDropDownMenuIsVisible, config, setConfig, copyURL, isLoading, exportToJson, activeCampaignIntegrations
 }) {
 
   const [modalIsVisible, setModalIsVisible] = useState(false);
+  const [backgroundModalIsVisible, setBackgroundModalIsVisible] = useState(false);
   const [uploading, setUploading] = useState(false);
   const { nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
   const [tagsModalIsVisible, setTagsModalIsVisible] = useState(false);
@@ -49,6 +51,32 @@ function FormPanelButtons({
           profileImage: response.data.imageUrl
         }));
         setModalIsVisible(false);
+        setUploading(false);
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 500) {
+        console.log(error.response);
+      }
+      setUploading(false);
+      return;
+    }
+  }
+
+  const uploadBackgroundImage = async (file) => {
+    try {
+      setUploading(true);
+      const formData = new FormData();
+      formData.append('avatar', file);
+      const response = await api.post('/flows/upload-avatar', formData,
+        {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        });
+      if (response.status === 201) {
+        setConfig(prevConfig => ({
+          ...prevConfig,
+          background: response.data.imageUrl
+        }));
+        setBackgroundModalIsVisible(false);
         setUploading(false);
       }
     } catch (error) {
@@ -90,7 +118,19 @@ function FormPanelButtons({
     }));
   }
 
-  console.log(config)
+  const deleteLogo = () => {
+    setConfig(prevConfig => ({
+      ...prevConfig,
+      profileImage: ""
+    }));
+  }
+
+  const deleteBackgroundImage = () => {
+    setConfig(prevConfig => ({
+      ...prevConfig,
+      background: ""
+    }));
+  }
 
   return (
     <Container onClick={() => setNodeMenuIsOpen(!nodeMenuIsOpen)}>
@@ -118,8 +158,34 @@ function FormPanelButtons({
         <span>Personalize o seu flow</span>
 
         <ProfileImageContainer onClick={() => setModalIsVisible(true)}>
+          <Tooltip title="Excluir logo">
+            <DeleteImage
+              onClick={(e) => {
+                e.stopPropagation();
+                deleteLogo();
+              }}
+            >
+              <ClearIcon />
+            </DeleteImage>
+          </Tooltip>
           <span>Logo</span>
           <ProfileImage loading={uploading} loader={<Ring />} src={config.profileImage} alt="logo"></ProfileImage>
+          <span>Clique para editar</span>
+        </ProfileImageContainer>
+
+        <ProfileImageContainer onClick={() => setBackgroundModalIsVisible(true)}>
+          <Tooltip title="Excluir background">
+            <DeleteImage
+              onClick={(e) => {
+                e.stopPropagation();
+                deleteBackgroundImage();
+              }}
+            >
+              <ClearIcon />
+            </DeleteImage>
+          </Tooltip>
+          <span>Background</span>
+          <ProfileImage loading={uploading} loader={<Ring />} src={config.background} alt="background"></ProfileImage>
           <span>Clique para editar</span>
         </ProfileImageContainer>
 
@@ -210,6 +276,27 @@ function FormPanelButtons({
             <Ring />
             :
             <InputDropZone sendFile={uploadImage} acceptedFileType="image/*" width={190} height={130} />
+          }
+
+        </ModalContent>
+      </Modal>
+
+      <Modal onClick={(e) => e.stopPropagation()} isvisible={backgroundModalIsVisible}>
+        <ModalContent width={300} height={200}>
+
+          <CloseButton
+            onClick={(e) => {
+              e.stopPropagation();
+              setBackgroundModalIsVisible(false)
+            }
+            }>
+            <ClearIcon />
+          </CloseButton>
+
+          {uploading ?
+            <Ring />
+            :
+            <InputDropZone sendFile={uploadBackgroundImage} acceptedFileType="image/*" width={190} height={130} />
           }
 
         </ModalContent>

@@ -82,6 +82,30 @@ export const ProfileImageContainer = styled.div`
   border: 0.5px dashed #9999FF;
   border-radius: 5px;
   cursor: pointer;
+  position: relative;
+`;
+
+export const DeleteImage = styled.button`
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  outline: none;
+  background-color: #ff4d4d;
+  padding: 2px;
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  cursor: pointer;
+
+  >svg {
+    width: 100%;
+    height: 100%;
+    color: #fff;
+  }
 `;
 
 export const ProfileImage = styled(Img)`
