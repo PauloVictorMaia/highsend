@@ -136,6 +136,13 @@ const Form = () => {
       return;
     }
 
+    const multChoiceNodes = newNodesArray.filter(node => node.type === "multChoice");
+    const hasEmptyOptions = multChoiceNodes.some((node) => node.data.options.length < 1);
+    if (hasEmptyOptions) {
+      toast.warning('Existe inputs do tipo "Multipla escolha" sem opções adicionadas. Adicione no mínimo uma opção para cada um desses inputs.');
+      return;
+    }
+
     const scheduleNodes = newNodesArray.filter((node) => node.type === "schedule");
     if (scheduleNodes.length > 0) {
       const hasEmptyValue = scheduleNodes.some((node) => node.data.value === "");

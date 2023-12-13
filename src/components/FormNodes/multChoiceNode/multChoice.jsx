@@ -1,30 +1,30 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { InputConfig, InputPreview, NodeContainer, MenuInput, MenuButton, CustomToolbar, CloseButton } from "./satisfaction.style";
+import { InputConfig, InputPreview, NodeContainer, MenuInput, MenuButton, CustomToolbar, CloseButton, ConfigContainer, ConfigButtonContainer, ConfigLabel, EditConfigContainer, EditConfigInputs } from "./multChoice.style";
 import { useReactFlow } from "reactflow";
 import { useState, useEffect } from "react";
+import { v4 as uuidv4 } from 'uuid';
 import { useStateContext } from "../../../contexts/ContextProvider";
-import SentimentSatisfiedAltOutlinedIcon from '@mui/icons-material/SentimentSatisfiedAltOutlined';
+import TaskAltOutlinedIcon from '@mui/icons-material/TaskAltOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 import ClearIcon from '@mui/icons-material/Clear';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 
-export function Satisfaction({ data, id, groupID }) {
+export function MultChoice({ data, id, groupID }) {
   const { setNodes, deleteElements } = useReactFlow();
   const { createNewVariable, variables, nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
   const [newVariable, setNewVariable] = useState("");
   const [question, setQuestion] = useState(data.question || "Digite a pergunta aqui...");
   const [description, setDescription] = useState(data.description || "");
   const [buttonLabel, setButtonLabel] = useState(data.buttonLabel || "Responder");
-  const [minNumber, setMinNumber] = useState(data.min || 0);
-  const [maxNumber, setMaxNumber] = useState(data.max || 10);
-  const [minSubtitle, setMinSubtitle] = useState(data.minSubtitle || "Ruim");
-  const [middleSubtitle, setMiddleSubtitle] = useState(data.middleSubtitle || "Regular");
-  const [maxSubtitle, setMaxSubtitle] = useState(data.maxSubtitle || "Ótimo");
   const [assignedVariable, setAssignedVariable] = useState(data.variable || "");
   const [isVisible, setIsVisible] = useState(false);
+  const [options, setOptions] = useState(data.options || []);
+  const [optionsIsVisible, setOptionsIsVisible] = useState(true);
   const {
     attributes,
     listeners,
@@ -56,11 +56,7 @@ export function Satisfaction({ data, id, groupID }) {
               nodeOnBlock.data.description = description
               nodeOnBlock.data.buttonLabel = buttonLabel
               nodeOnBlock.data.variable = assignedVariable
-              nodeOnBlock.data.min = minNumber
-              nodeOnBlock.data.max = maxNumber
-              nodeOnBlock.data.minSubtitle = minSubtitle
-              nodeOnBlock.data.middleSubtitle = middleSubtitle
-              nodeOnBlock.data.maxSubtitle = maxSubtitle
+              nodeOnBlock.data.options = options
             }
             return nodeOnBlock;
           })
@@ -68,7 +64,7 @@ export function Satisfaction({ data, id, groupID }) {
         return node;
       })
     );
-  }, [assignedVariable, question, description, buttonLabel, minNumber, maxNumber, minSubtitle, middleSubtitle, maxSubtitle]);
+  }, [buttonLabel, assignedVariable, question, description, options]);
 
   const deleteNode = () => {
     setNodes((nodes) => {
@@ -125,6 +121,34 @@ export function Satisfaction({ data, id, groupID }) {
     }, 100);
   }
 
+  const addNewOption = () => {
+    const newOption = {
+      id: uuidv4(),
+      value: ""
+    }
+
+    setOptions((options) => [...options, newOption]);
+
+  }
+
+  const handleOptionValue = (id, value) => {
+    const updatedOptions = options.map((option) => {
+
+      if (option.id === id) {
+        return { ...option, value: value };
+      }
+
+      return option;
+    });
+
+    setOptions(updatedOptions);
+  }
+
+  const deleteOption = (id) => {
+    const newOptionsArray = options.filter(param => param.id !== id);
+    setOptions(newOptionsArray);
+  }
+
   return (
     <NodeContainer
       onClick={() => openMenu()}
@@ -141,8 +165,8 @@ export function Satisfaction({ data, id, groupID }) {
       </CustomToolbar>
 
       <InputPreview>
-        <SentimentSatisfiedAltOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
-        <span>Escala de satisfação</span>
+        <TaskAltOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
+        <span>Multipla escolha</span>
       </InputPreview>
 
       <InputConfig isvisible={isVisible} onClick={(e) => e.stopPropagation()}>
@@ -154,7 +178,6 @@ export function Satisfaction({ data, id, groupID }) {
         >
           <ClearIcon />
         </CloseButton>
-
         <span>Pergunta:</span>
         <MenuInput
           type="text"
@@ -162,12 +185,11 @@ export function Satisfaction({ data, id, groupID }) {
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
         />
-
         <span>Descrição:</span>
         <MenuInput
           type="text"
-          value={description}
           placeholder="Adicione uma descrição caso queira."
+          value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
 
@@ -179,45 +201,41 @@ export function Satisfaction({ data, id, groupID }) {
           onChange={(e) => setButtonLabel(e.target.value)}
         />
 
-        <span>Intervalo de:</span>
-        <select style={{ marginBottom: "10px" }} value={minNumber} onChange={(e) => setMinNumber(e.target.value)}>
-          <option value={0}>0</option>
-          <option value={1}>1</option>
-        </select>
+        <ConfigContainer>
+          <ConfigLabel onClick={() => setOptionsIsVisible(!optionsIsVisible)}>
+            <span>Opções</span>
+            {optionsIsVisible ?
+              <KeyboardArrowUpIcon />
+              :
+              <KeyboardArrowDownIcon />
+            }
+          </ConfigLabel>
 
-        <span>Até:</span>
-        <select style={{ marginBottom: "10px" }} value={maxNumber} onChange={(e) => setMaxNumber(e.target.value)}>
-          <option value={2}>2</option>
-          <option value={3}>3</option>
-          <option value={4}>4</option>
-          <option value={5}>5</option>
-          <option value={6}>6</option>
-          <option value={7}>7</option>
-          <option value={8}>8</option>
-          <option value={9}>9</option>
-          <option value={10}>10</option>
-        </select>
-
-        <span>Legenda para valor mínimo:</span>
-        <MenuInput
-          type="text"
-          value={minSubtitle}
-          onChange={(e) => setMinSubtitle(e.target.value)}
-        />
-
-        <span>Legenda para valor médio:</span>
-        <MenuInput
-          type="text"
-          value={middleSubtitle}
-          onChange={(e) => setMiddleSubtitle(e.target.value)}
-        />
-
-        <span>Legenda para valor máximo:</span>
-        <MenuInput
-          type="text"
-          value={maxSubtitle}
-          onChange={(e) => setMaxSubtitle(e.target.value)}
-        />
+          {
+            optionsIsVisible &&
+            <>
+              {
+                options && options.length > 0 &&
+                options.map((option) => (
+                  <EditConfigContainer key={option.id}>
+                    <DeleteOutlineIcon onClick={() => deleteOption(option.id)} />
+                    <EditConfigInputs>
+                      <span>Opção</span>
+                      <input
+                        type="text"
+                        value={option.value}
+                        onChange={(e) => handleOptionValue(option.id, e.target.value)}
+                      />
+                    </EditConfigInputs>
+                  </EditConfigContainer>
+                ))
+              }
+              <ConfigButtonContainer>
+                <button onClick={() => addNewOption()}>Adicionar</button>
+              </ConfigButtonContainer>
+            </>
+          }
+        </ConfigContainer>
 
         <span>Criar nova variável:</span>
         <div>

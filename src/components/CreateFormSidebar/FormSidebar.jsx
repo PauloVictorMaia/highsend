@@ -15,6 +15,7 @@ import TaskAltOutlinedIcon from '@mui/icons-material/TaskAltOutlined';
 import SentimentSatisfiedAltOutlinedIcon from '@mui/icons-material/SentimentSatisfiedAltOutlined';
 import { NodesContainer, NodeDraggable, NodesType, SidebarContainer } from "./FormSidebar.style";
 import { useStateContext } from '../../contexts/ContextProvider';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
 
 /* eslint-disable react-refresh/only-export-components */
 export default () => {
@@ -95,7 +96,7 @@ export default () => {
           Endereço
         </NodeDraggable>
 
-        <NodeDraggable onDragStart={(event) => onDragStart(event, 'buttonsGroup', 'button', '40')} draggable>
+        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'multChoice', '40')} draggable>
           <TaskAltOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
           Mult esc
         </NodeDraggable>
@@ -103,6 +104,11 @@ export default () => {
         <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'satisfaction', '40')} draggable>
           <SentimentSatisfiedAltOutlinedIcon style={{ fontSize: "large", color: "#E67200" }} />
           Satisfação
+        </NodeDraggable>
+
+        <NodeDraggable onDragStart={(event) => onDragStart(event, 'group', 'thank', '40')} draggable>
+          <DoneAllIcon style={{ fontSize: "large", color: "#E67200" }} />
+          Obrigado
         </NodeDraggable>
 
       </NodesContainer>

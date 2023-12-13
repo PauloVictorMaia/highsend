@@ -23,6 +23,8 @@ import { Cnpj } from '../CnpjNode/cnpj';
 import { Number } from '../NumberNode/number';
 import { Address } from '../AddressNode/address';
 import { Satisfaction } from '../SatisfactionNode/satisfaction';
+import { MultChoice } from '../multChoiceNode/multChoice';
+import { Thank } from '../thankNode/thank';
 
 export default function Group(props) {
 
@@ -219,6 +221,12 @@ export default function Group(props) {
 
               case 'satisfaction':
                 return <Satisfaction key={node.id} id={node.id} groupID={props.id} data={node.data} />;
+
+              case 'multChoice':
+                return <MultChoice key={node.id} id={node.id} groupID={props.id} data={node.data} />;
+
+              case 'thank':
+                return <Thank key={node.id} id={node.id} groupID={props.id} data={node.data} />;
 
               default:
                 return null;
