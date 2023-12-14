@@ -136,6 +136,7 @@ const Form = () => {
       return;
     }
 
+
     const multChoiceNodes = newNodesArray.filter(node => node.type === "multChoice");
     const hasEmptyOptions = multChoiceNodes.some((node) => node.data.options.length < 1);
     if (hasEmptyOptions) {
