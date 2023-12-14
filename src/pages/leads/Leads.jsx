@@ -30,6 +30,7 @@ function Leads() {
                 key={index}
                 name={flow.name}
                 flowID={flow.id}
+                flowType={flow.type}
               />
             ))
           )

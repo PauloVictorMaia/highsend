@@ -412,8 +412,8 @@ function Fluxograms() {
                 <OptionLabel>
                   <Radio
                     value="formulario"
-                    checked={flowType === 'formulario'}
-                    onChange={() => setFlowType("formulario")}
+                    checked={flowType === 'formulário'}
+                    onChange={() => setFlowType("formulário")}
                     size="small"
                     sx={{
                       '& .MuiSvgIcon-root:not(.MuiSvgIcon-root ~ .MuiSvgIcon-root)':
@@ -422,7 +422,7 @@ function Fluxograms() {
                       },
                     }}
                   />
-                  Fluxo de formulario
+                  Fluxo de formulário
                 </OptionLabel>
               </ToggleContainer>
 
