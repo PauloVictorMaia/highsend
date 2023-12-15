@@ -15,11 +15,13 @@ import { Ring } from "@uiball/loaders";
 import api from "../../api";
 import { toast } from "react-toastify";
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import { format } from "date-fns";
+import ptBR from "date-fns/locale/pt-BR"
 
 function KanbanLeadsCard({ data, listIndex, cardIndex, listId, listName }) {
 
   const ref = useRef();
-  const { moveCard, moveCardInDb, deleteLead, deleteCardInDb } = useContext(KanbanContext);
+  const { moveCard, moveCardInDb, deleteLead, deleteCardInDb, leads } = useContext(KanbanContext);
   const [modalIsVisible, setModalIsVisible] = useState(false);
   const [showConfirmDeleteLead, setShowConfirmDeleteLead] = useState(false);
   const [phone, setPhone] = useState("");
@@ -29,6 +31,7 @@ function KanbanLeadsCard({ data, listIndex, cardIndex, listId, listName }) {
   const [whatsappIntegrationSelected, setWhatsappIntegrationSelected] = useState("");
   const { integrations } = useStateContext();
   const [isLoading, setIsLoading] = useState(false);
+  const leadObject = leads.find(lead => lead.id === data.id);
 
   useEffect(() => {
     if (data.variables && Array.isArray(data.variables)) {
@@ -162,6 +165,14 @@ function KanbanLeadsCard({ data, listIndex, cardIndex, listId, listName }) {
 
           <LeadsContentContainer>
             <h3>Dados</h3>
+            <LeadContent>
+              <VariableContent>
+                <span>Criado em:</span>
+              </VariableContent>
+              <VariableContent>
+                {format(new Date(leadObject.createdAt), "dd 'de' MMMM 'de' yyyy, 'às' HH:mm", { locale: ptBR })}
+              </VariableContent>
+            </LeadContent>
             {
               data.variables.map((variable) => (
                 <LeadContent key={variable.id}>

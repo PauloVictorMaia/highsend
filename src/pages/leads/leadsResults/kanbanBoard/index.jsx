@@ -15,7 +15,7 @@ import { useParams } from "react-router-dom";
 
 function KanbanBoard() {
 
-  const { leadsList, setLeadsList, updateLeadStatus, changeLeadsStatusInBulk, getFormattedLeads } = useContext(LeadsContext);
+  const { leadsList, setLeadsList, updateLeadStatus, changeLeadsStatusInBulk, getFormattedLeads, leads } = useContext(LeadsContext);
   const [showNewListInput, setShowNewListInput] = useState(false);
   const [newListName, setNewListName] = useState("");
   const inputRef = useRef(null);
@@ -236,7 +236,8 @@ function KanbanBoard() {
         moveAllCardsAndDeleteList,
         moveAllCardsAndDeleteListInDb,
         deleteLead,
-        deleteCardInDb
+        deleteCardInDb,
+        leads
       }}>
       <Board>
         <Container>
