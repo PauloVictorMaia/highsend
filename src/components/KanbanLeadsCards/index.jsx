@@ -170,7 +170,7 @@ function KanbanLeadsCard({ data, listIndex, cardIndex, listId, listName }) {
                 <span>Criado em:</span>
               </VariableContent>
               <VariableContent>
-                {format(new Date(leadObject.createdAt), "dd 'de' MMMM 'de' yyyy, 'às' HH:mm", { locale: ptBR })}
+                {leadObject && format(new Date(leadObject.createdAt), "dd 'de' MMMM 'de' yyyy, 'às' HH:mm", { locale: ptBR })}
               </VariableContent>
             </LeadContent>
             {
