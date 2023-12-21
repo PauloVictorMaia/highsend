@@ -49,11 +49,15 @@ export const ContextProvider = ({ children }) => {
 
     const getUser = async (token) => {
         if (!token && (location.pathname.includes('plans') || location.pathname.includes('subscription'))) {
-            return
+            return;
         }
 
         if ((location.pathname.includes('forgot-password'))) {
-            return
+            return;
+        }
+
+        if ((location.pathname.includes('subscription'))) {
+            return;
         }
 
         try {
