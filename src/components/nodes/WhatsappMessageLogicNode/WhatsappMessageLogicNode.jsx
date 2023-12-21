@@ -13,15 +13,18 @@ import ClearIcon from '@mui/icons-material/Clear';
 
 function WhatsappMessageLogicNode({ data, id, groupID }) {
 
+
+
   const { setNodes, deleteElements } = useReactFlow();
   const [nodeValue, setNodeValue] = useState(data.value || "");
   const [message, setMessage] = useState(data.message || "");
   const { integrations, variables, nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
-  const variablePhone = variables.filter(variable => variable.name === 'Telefone');
+  const variablePhone = variables.filter(variable => variable.name === 'Telefone' || variable.name === 'phone');
   const [assignedVariable, setAssignedVariable] = useState(data.variable || variablePhone[0].id);
   const whatsappIntegrations = integrations.filter(integrations => integrations.type === 'whatsapp');
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
+
   const {
     attributes,
     listeners,
