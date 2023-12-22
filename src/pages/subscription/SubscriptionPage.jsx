@@ -177,16 +177,26 @@ const SubscriptionPage = () => {
                 value={password}
                 maxLength={8}
                 onChange={(e) => setPassword(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleStep();
+                  }
+                }}
               />
 
               <InputItem
                 label="Confirmar senha"
                 variant="outlined"
-                
+
                 type={showPassword ? 'text' : 'password'}
                 value={confirmPassword}
                 maxLength={8}
                 onChange={(e) => setConfirmPassword(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleStep();
+                  }
+                }}
               />
             </div>
 

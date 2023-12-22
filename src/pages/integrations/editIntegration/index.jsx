@@ -50,6 +50,11 @@ function EditIntegration() {
           name="integration"
           value={integrationName}
           onChange={(e) => setIntegrationName(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              editIntegrationName();
+            }
+          }}
         />
         <button onClick={() => editIntegrationName()}>
           {isLoading ? <Ring color="#fff" size={20} /> : "Salvar"}

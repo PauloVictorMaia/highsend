@@ -192,6 +192,11 @@ export function PhoneInputNode({ data, id, groupID }) {
             type="text"
             placeholder="Defina o nome da nova variável"
             onChange={(e) => setNewVariable(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                sendNewVariable();
+              }
+            }}
           />
           <MenuButton onClick={sendNewVariable}>Criar</MenuButton>
         </div>

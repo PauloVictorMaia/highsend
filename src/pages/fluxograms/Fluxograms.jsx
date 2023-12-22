@@ -322,6 +322,11 @@ function Fluxograms() {
                         variant="outlined"
                         defaultValue={flow.name}
                         onChange={(e) => setFlowName(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            editFlowName(flow.id);
+                          }
+                        }}
                       />
                       <button
                         disabled={editFlowNameIsLoading}
