@@ -10,10 +10,14 @@ import { useParams } from "react-router-dom";
 import api from "../../../api";
 import LeadsContext from "./context";
 import KanbanBoard from "./kanbanBoard";
+import { LoadingContainer } from "./styles";
+import { Ring } from "@uiball/loaders";
 
 function LeadsResults() {
 
   const [leads, setLeads] = useState([]);
+  const [totalPages, setTotalPages] = useState(null);
+  const [page, setPage] = useState(1);
   const [variables, setVariables] = useState([]);
   const [leadsList, setLeadsList] = useState([]);
   const [loaded, setLoaded] = useState(false);
@@ -21,6 +25,10 @@ function LeadsResults() {
   const { user } = useStateContext();
   const token = localStorage.getItem('token');
   const params = useParams();
+  const [loadingFormattedLeads, setLoadingFormattedLeads] = useState(false);
+  const [leadsIsLoading, setLeadsIsLoading] = useState(false);
+  const [filterVariable, setFilterVariable] = useState("");
+  const [filterValue, setFilterValue] = useState("");
 
   useEffect(() => {
     if (Object.keys(user).length > 0) {
@@ -32,13 +40,18 @@ function LeadsResults() {
 
   const getLeads = async () => {
     try {
-      const response = await api.get(`/leads/get-leads/${params.flowId}`, { headers: { authorization: token } });
+      setLeadsIsLoading(true);
+      const response = await api.get(`/leads/get-leads/${params.flowId}?page=${page}&variable=${filterVariable}&value=${filterValue}`,
+        { headers: { authorization: token } });
       if (response.status === 200) {
         setLeads(response.data.leads);
+        setTotalPages(response.data.totalPages);
         setLoaded(true);
+        setLeadsIsLoading(false);
       }
     } catch {
       toast.error('Erro ao carregar leads.');
+      setLeadsIsLoading(false);
     }
   };
 
@@ -55,25 +68,26 @@ function LeadsResults() {
 
   const getFormattedLeads = async () => {
     try {
+      setLoadingFormattedLeads(true);
       const response = await api.get(`/leads/get-formatted-leads/${params.flowId}`, { headers: { authorization: token } });
       if (response.status === 200) {
         setLeadsList(response.data.leadsList);
+        setLoadingFormattedLeads(false);
       }
     } catch {
       toast.error('Erro ao carregar lista de leads.');
+      setLoadingFormattedLeads(false);
     }
   };
 
   const changeLeadsStatusInBulk = async (leadsIds, status) => {
 
     try {
-      console.log(leadsIds, status)
       const response = await api.patch(`/leads/edit-leads-status-in-bulk/${params.flowId}`, { leadsIds, status }, { headers: { authorization: token } });
       if (response.status === 200) {
         console.log("sucesso")
       }
     } catch {
-      console.log("falha")
       return;
     }
   };
@@ -92,7 +106,7 @@ function LeadsResults() {
 
   return (
     <LeadsContext.Provider
-      value={{ leads, variables, loaded, getLeads, getVariables, leadsList, setLeadsList, getFormattedLeads, updateLeadStatus, changeLeadsStatusInBulk }}
+      value={{ leads, setLeads, page, setPage, totalPages, setTotalPages, variables, loaded, leadsIsLoading, loadingFormattedLeads, getLeads, getVariables, leadsList, setLeadsList, getFormattedLeads, updateLeadStatus, changeLeadsStatusInBulk, filterVariable, setFilterVariable, filterValue, setFilterValue }}
     >
       <ContentPageContainer
         header={
@@ -105,12 +119,19 @@ function LeadsResults() {
         }
       >
         {
-          menuComponent === 0 &&
+          menuComponent === 0 && !loadingFormattedLeads &&
           <KanbanBoard />
         }
 
         {
-          menuComponent === 1 &&
+          loadingFormattedLeads &&
+          <LoadingContainer>
+            <Ring size={50} color="#333" />
+          </LoadingContainer>
+        }
+
+        {
+          menuComponent === 1 && !loadingFormattedLeads &&
           <Submissions />
         }
       </ContentPageContainer>

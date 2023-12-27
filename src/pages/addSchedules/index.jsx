@@ -266,7 +266,6 @@ function AddSchedule() {
   };
 
   const handleStartTimeChange = (index, value) => {
-    console.log(value)
     let newWeekDays = [...eventConfigurations];
     newWeekDays[index].startTime = value;
     setEventConfigurations(newWeekDays);
