@@ -30,6 +30,29 @@ function IntegrationsList() {
   const [activeCampaignApiKey, setActiveCampaignApiKey] = useState("");
 
   const googleLogin = async () => {
+    const planType = user.accountType;
+    const googleIntegrations = integrations.filter(integration => integration.type === 'google');
+    const existingIntegrations = googleIntegrations.length;
+    let planLimit;
+
+    switch (planType) {
+      case 'STARTER':
+        planLimit = 1
+        break;
+      case 'PRO':
+        planLimit = 2
+        break;
+      case 'ENTERPRISE':
+        planLimit = 5
+        break;
+    }
+
+    if (existingIntegrations >= planLimit) {
+      toast.warning('Você já atingiu o limite de criação de integrações do tipo "Google" para o seu plano atual.', {
+        autoClose: 5000
+      })
+      return;
+    }
     try {
       const response = await api.get(`/integrations/google-consentpage/${user.id}`, { headers: { authorization: token } });
       if (response.status === 200) {
@@ -64,6 +87,29 @@ function IntegrationsList() {
   }
 
   const openModal = () => {
+    const planType = user.accountType;
+    const whatsappIntegrations = integrations.filter(integration => integration.type === 'whatsapp');
+    const existingIntegrations = whatsappIntegrations.length;
+    let planLimit;
+
+    switch (planType) {
+      case 'STARTER':
+        planLimit = 1
+        break;
+      case 'PRO':
+        planLimit = 2
+        break;
+      case 'ENTERPRISE':
+        planLimit = 5
+        break;
+    }
+
+    if (existingIntegrations >= planLimit) {
+      toast.warning('Você já atingiu o limite de criação de integrações do tipo "Whatsapp" para o seu plano atual.', {
+        autoClose: 5000
+      })
+      return;
+    }
     setModalIsVisible(true);
     syncWhatsapp();
   }

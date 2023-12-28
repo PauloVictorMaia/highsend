@@ -151,6 +151,28 @@ function Fluxograms() {
 
   const cloneFlow = async (flowID, index) => {
     try {
+      const existingFlows = flows.length;
+      let planLimit;
+      const planType = user.accountType;
+
+      switch (planType) {
+        case 'STARTER':
+          planLimit = 2
+          break;
+        case 'PRO':
+          planLimit = 5
+          break;
+        case 'ENTERPRISE':
+          planLimit = 10
+          break;
+      }
+
+      if (existingFlows >= planLimit) {
+        toast.warning("Você já atingiu o limite de criação de flows para o seu plano atual.", {
+          autoClose: 5000
+        })
+        return;
+      }
       const updatedLoadingStates = [...loadingStates];
       updatedLoadingStates[index] = true;
       setLoadingStates(updatedLoadingStates);
@@ -200,6 +222,28 @@ function Fluxograms() {
   }
 
   const openModalNewFlow = () => {
+    const existingFlows = flows.length;
+    let planLimit;
+    const planType = user.accountType;
+
+    switch (planType) {
+      case 'STARTER':
+        planLimit = 2
+        break;
+      case 'PRO':
+        planLimit = 5
+        break;
+      case 'ENTERPRISE':
+        planLimit = 10
+        break;
+    }
+
+    if (existingFlows >= planLimit) {
+      toast.warning("Você já atingiu o limite de criação de flows para o seu plano atual.", {
+        autoClose: 5000
+      })
+      return;
+    }
     setModalNewFlowIsVisible(true);
   }
 

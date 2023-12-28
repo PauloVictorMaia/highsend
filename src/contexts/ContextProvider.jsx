@@ -127,6 +127,28 @@ export const ContextProvider = ({ children }) => {
 
     const createCalendar = async () => {
         try {
+            const existingCalendars = calendarsData.length;
+            let planLimit;
+            const planType = user.accountType;
+
+            switch (planType) {
+                case 'STARTER':
+                    planLimit = 2
+                    break;
+                case 'PRO':
+                    planLimit = 5
+                    break;
+                case 'ENTERPRISE':
+                    planLimit = 10
+                    break;
+            }
+
+            if (existingCalendars >= planLimit) {
+                toast.warning("Você já atingiu o limite de criação de agendas para o seu plano atual.", {
+                    autoClose: 5000
+                })
+                return;
+            }
             setCreateCalendarIsLoading(true);
             const response = await api.post(`calendars/create-calendar/${user.id}`, {}, { headers: { authorization: token } })
             if (response.status === 201) {
