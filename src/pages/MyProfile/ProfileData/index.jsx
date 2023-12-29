@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { Container, ProfileDataContent, ProfileImageDiv, ProfileImage, ProfileImageContainer, ProfileName, Modal, ModalContent, CloseButton, ProfileNameInputContainer, ProfileNameInput, ProfileNameButtonsContainer, ProfileNameSaveButton, PasswordContainer, ChangePasswordButton, PasswordInputs, PasswordInput, ShowPasswordContainer } from "./styles";
+import { Container, ProfileDataContent, ProfileImageDiv, ProfileImage, ProfileImageContainer, ProfileName, Modal, ModalContent, CloseButton, ProfileNameInputContainer, ProfileNameButtonsContainer, ProfileNameSaveButton, PasswordContainer, ChangePasswordButton, PasswordInputs, ShowPasswordContainer, EditButtonDiv, InputItem } from "./styles";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import Tooltip from '@mui/material/Tooltip';
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
@@ -12,6 +12,9 @@ import lodash from 'lodash';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { Ring } from "@uiball/loaders";
+import { InputAdornment } from "@mui/material";
+import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 function ProfileData() {
 
@@ -20,6 +23,7 @@ function ProfileData() {
   const [isLoading, setIsLoading] = useState(false);
   const [modalIsVisible, setModalIsVisible] = useState(false);
   const [profileName, setProfileName] = useState(user.name);
+  const profileEmail = user.email;
   const [profileNameInputIsDisabled, setProfileNameInputIsDisabled] = useState(true);
   const profileNameInputRef = useRef(null);
   const [profileNameHasChanges, setProfileNameHasChanges] = useState(false);
@@ -182,51 +186,108 @@ function ProfileData() {
 
             <Tooltip
               title="Editar foto de perfil"
-              style={{ color: "#333", position: "absolute", right: "-10px", top: "80px", cursor: "pointer" }}
+              style={{ color: "#333", position: "absolute", right: "0px", top: "70px", cursor: "pointer" }}
             >
-              <DriveFileRenameOutlineIcon
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setModalIsVisible(true);
-                }}
-              />
+              <EditButtonDiv>
+                <DriveFileRenameOutlineIcon
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setModalIsVisible(true);
+                  }}
+                />
+              </EditButtonDiv>
             </Tooltip>
           </ProfileImageDiv>
           <ProfileName>{Object.keys(user).length > 0 && user.name}</ProfileName>
         </ProfileImageContainer>
 
         <ProfileNameInputContainer>
-          <ProfileNameInput
+          <InputItem
             type="text"
+            label="Nome completo"
+            variant="outlined"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <CheckCircleRoundedIcon
+                    style={{ color: "#4339F2" }}
+                  />
+                </InputAdornment>
+              )
+            }}
+            sx={{
+              "& .MuiInputBase-input.Mui-disabled": {
+                WebkitTextFillColor: "rgba(0,0,0,0.7)",
+              },
+              '& .MuiOutlinedInput-root.Mui-disabled': {
+                '& fieldset': {
+                  borderColor: '#4339F2',
+                }
+              }
+            }}
             value={profileName}
             onChange={(e) => setProfileName(e.target.value)}
             disabled={profileNameInputIsDisabled}
             ref={profileNameInputRef}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                editProfileName();
+              }
+            }}
           />
+
+          <InputItem
+            type="text"
+            label="Email"
+            variant="outlined"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <CheckCircleRoundedIcon
+                    style={{ color: "#4339F2" }}
+                  />
+                </InputAdornment>
+              )
+            }}
+            sx={{
+              "& .MuiInputBase-input.Mui-disabled": {
+                WebkitTextFillColor: "rgba(0,0,0,0.7)",
+              },
+              '& .MuiOutlinedInput-root.Mui-disabled': {
+                '& fieldset': {
+                  borderColor: '#4339F2',
+                }
+              }
+            }}
+            value={profileEmail}
+            disabled
+          />
+
           <ProfileNameButtonsContainer>
             <Tooltip
               title="Editar nome"
               style={{ color: "#333", cursor: "pointer" }}
             >
-              <DriveFileRenameOutlineIcon
-                onClick={() => {
-                  setProfileNameInputIsDisabled(false);
-                }}
-              />
+              <EditButtonDiv>
+                <DriveFileRenameOutlineIcon
+                  onClick={() => {
+                    setProfileNameInputIsDisabled(false);
+                  }}
+                />
+              </EditButtonDiv>
             </Tooltip>
 
             <Tooltip
               title="Salvar"
-              style={{ color: "#333", cursor: "pointer" }}
+              style={{ color: "#333" }}
             >
               <ProfileNameSaveButton
                 onClick={() => {
                   editProfileName();
                 }}
-                color={profileNameHasChanges}
                 disabled={!profileNameHasChanges}
               >
-                {isLoading ? <Ring size={20} /> : <SaveOutlinedIcon />}
+                {isLoading ? <Ring size={15} color="#fff" /> : <SaveOutlinedIcon />}
               </ProfileNameSaveButton>
             </Tooltip>
           </ProfileNameButtonsContainer>
@@ -236,28 +297,96 @@ function ProfileData() {
           {
             passwordInputsIsVisible &&
             <PasswordInputs>
-              <PasswordInput
+              <InputItem
                 type={showPassword ? "text" : "password"}
-                placeholder="Senha anterior"
+                label="Senha anterior"
+                variant="outlined"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <LockOutlinedIcon
+                        style={{ color: "#4339F2" }}
+                      />
+                    </InputAdornment>
+                  ),
+                }}
+                inputProps={{
+                  maxLength: 8
+                }}
+                sx={{
+                  "& .MuiInputBase-input.Mui-disabled": {
+                    WebkitTextFillColor: "rgba(0,0,0,0.7)",
+                  },
+                  '& .MuiOutlinedInput-root.Mui-disabled': {
+                    '& fieldset': {
+                      borderColor: '#4339F2',
+                    }
+                  }
+                }}
                 onChange={(e) => setOriginalPassword(e.target.value)}
-                maxLength={8}
                 onKeyDown={handleKeyDown}
                 ref={originalPasswordInputRef}
               />
-              <PasswordInput
+
+              <InputItem
                 type={showPassword ? "text" : "password"}
-                placeholder="Nova senha"
+                label="Nova senha"
+                variant="outlined"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <LockOutlinedIcon
+                        style={{ color: "#4339F2" }}
+                      />
+                    </InputAdornment>
+                  ),
+                }}
+                inputProps={{
+                  maxLength: 8
+                }}
+                sx={{
+                  "& .MuiInputBase-input.Mui-disabled": {
+                    WebkitTextFillColor: "rgba(0,0,0,0.7)",
+                  },
+                  '& .MuiOutlinedInput-root.Mui-disabled': {
+                    '& fieldset': {
+                      borderColor: '#4339F2',
+                    }
+                  }
+                }}
                 onChange={(e) => setNewPassword(e.target.value)}
                 ref={newPasswordInputRef}
-                maxLength={8}
                 onKeyDown={handleKeyDown}
               />
-              <PasswordInput
+
+              <InputItem
                 type={showPassword ? "text" : "password"}
-                placeholder="Confirme a senha"
+                label="Confirme a senha"
+                variant="outlined"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <LockOutlinedIcon
+                        style={{ color: "#4339F2" }}
+                      />
+                    </InputAdornment>
+                  )
+                }}
+                inputProps={{
+                  maxLength: 8
+                }}
+                sx={{
+                  "& .MuiInputBase-input.Mui-disabled": {
+                    WebkitTextFillColor: "rgba(0,0,0,0.7)",
+                  },
+                  '& .MuiOutlinedInput-root.Mui-disabled': {
+                    '& fieldset': {
+                      borderColor: '#4339F2',
+                    }
+                  }
+                }}
                 onChange={(e) => setConfirmationPassword(e.target.value)}
                 ref={confirmationPasswordInputRef}
-                maxLength={8}
                 onKeyDown={handleKeyDown}
               />
             </PasswordInputs>

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Img } from "react-image";
+import { TextField } from "@mui/material";
 
 export const Container = styled.div`
   width: 100%;
@@ -20,6 +21,22 @@ export const ProfileImageContainer = styled.div`
   column-gap: 50px;
 `;
 
+export const EditButtonDiv = styled.div`
+  width: 30px; 
+  height: 30px;
+  border-radius: 50%;
+  background-color: #4339F2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  svg {
+    color: #fff;
+    font-size: medium;
+  }
+`;
+
 export const ProfileImageDiv = styled.div`
   width: 100px;
   height: 100px;
@@ -29,7 +46,7 @@ export const ProfileImageDiv = styled.div`
   justify-content: center;
   color: #fff;
   font-size: 3rem;
-  background-color: #4339F2;
+  background-color: rgba(67, 57, 242, 0.9);
   position: relative;
 `;
 
@@ -101,32 +118,39 @@ export const ProfileNameInputContainer = styled.div`
   column-gap: 30px;
 `;
 
-export const ProfileNameInput = styled.input`
-  width: 40%;
-  height: 40px;
-  border-radius: 3px;
-  color: #333;
-  border: 0.5px solid rgba(0,0,0,0.15);
-  outline: none;
-  padding-left: 10px;
-  box-sizing: border-box;
-  font-family: 'Oswald', sans-serif;
-  font-size: 14px;
+export const InputItem = styled(TextField)`
+ border: 1.5px solid red;
+ border: none;
+ width: 30%;
 
-  &:focus {
-    outline: 2px solid #9999FF;
+ div {
+  border-radius: 8px;
+ }
+
+ label {
+  color: #526B92;
+ }
+
+ fieldset {
+  border: 1px solid #4339F2;
+ }
+
+ input:focus {
+  fieldset {
+    border: 2px solid #4339F2 !important;
   }
 
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
+  label {
+    color: #4339F2;
   }
+ }
 `;
+
 
 export const ProfileNameButtonsContainer = styled.div`
   display: flex;
   width: 80px;
-  height: 40px;
+  height: 55px;
   justify-content: space-between;
   align-items: center;
 `;
@@ -134,13 +158,21 @@ export const ProfileNameButtonsContainer = styled.div`
 export const ProfileNameSaveButton = styled.button`
   outline: none;
   border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #4339F2; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 
   > svg {
-    color: ${({ color }) => color ? "#4339F2" : "#333"};
+    color: #fff;
+    font-size: large;
   }
 
   &:disabled {
-    opacity: 0.6;
     cursor: not-allowed;
   }
 `;
@@ -149,6 +181,7 @@ export const PasswordContainer = styled.div`
   width: 100%;
   margin-top: 20px;
   display: flex;
+  align-items: center;
   column-gap: 30px;
 `;
 
@@ -169,30 +202,22 @@ export const ChangePasswordButton = styled.button`
 `;
 
 export const PasswordInputs = styled.div`
-  width: 40%;
+  width: 50%;
   display: flex;
   justify-content: space-between;
 `;
 
-export const PasswordInput = styled.input`
-  width: 30%;
-  height: 40px;
-  border-radius: 3px;
-  color: #333;
-  border: 0.5px solid rgba(0,0,0,0.15);
-  outline: none;
-  padding-left: 10px;
-  box-sizing: border-box;
-  font-family: 'Oswald', sans-serif;
-  font-size: 14px;
-
-  &:focus {
-    outline: 2px solid #9999FF;
-  }
-`;
-
 export const ShowPasswordContainer = styled.div`
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #4339F2;
+
+  svg {
+    color: #fff;
+    font-size: medium;
+  }
 `;
