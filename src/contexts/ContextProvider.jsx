@@ -26,11 +26,11 @@ export const ContextProvider = ({ children }) => {
     const [loadingCalendars, setLoadingCalendars] = useState(true);
     const [loadingIntegrations, setLoadingIntegrations] = useState(true);
     const [loadingLogin, setLoadingLogin] = useState(false);
-    const [cardLast4, setCardLast4] = useState(null);
     const [token, setToken] = useState(localStorage.getItem('token'));
     const navigate = useNavigate();
     const location = useLocation();
     const [nodeMenuIsOpen, setNodeMenuIsOpen] = useState(false);
+    const [paymentMethod, setPaymentMethod] = useState({});
 
     useEffect(() => {
         getUser(token);
@@ -118,7 +118,13 @@ export const ContextProvider = ({ children }) => {
         try {
             const response = await api.get(`subscriptions/get-payment-method/${user.subscriptionID}`, { headers: { authorization: token } })
             if (response.status === 200) {
-                setCardLast4(response.data.last4);
+                const paymentMethodObj = {
+                    last4: response.data.last4,
+                    expMonth: response.data.expMonth,
+                    expYear: response.data.expYear,
+                    brand: response.data.brand
+                }
+                setPaymentMethod(paymentMethodObj);
             }
         } catch {
             return;
@@ -232,7 +238,7 @@ export const ContextProvider = ({ children }) => {
                 createCalendar,
                 createCalendarIsLoading,
                 getPaymentMethod,
-                cardLast4,
+                paymentMethod,
                 loadingFlows,
                 loadingCalendars,
                 loadingIntegrations,
