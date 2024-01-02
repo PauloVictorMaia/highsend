@@ -1,31 +1,24 @@
-import { ChangePaymentMethodButton, Container, Currency, CurrentPaymentMethod, FirstBlock, PaymentMethodContainer, PaymentTitle, PerMonth, PlanDescription, PlanDetailsContainer, PlanDetailsContent, PlanItemDiv, PlanItemText, PlanItemsContent, PlanPriceContent, PlanTitle, PlanTypeContent, Price, SecondBlock } from "./styles";
+import { CardDetailsContent, CardName, CardNumber, ChangePaymentMethodButton, ChangePlanButton, Container, Currency, CurrentPaymentMethod, FirstBlock, Last4, Modal, ModalContent, PaymentMethodContainer, PaymentTitle, PerMonth, PlanDescription, PlanDetailsContainer, PlanDetailsContent, PlanItemDiv, PlanItemText, PlanItemsContent, PlanPriceContent, PlanTitle, PlanTypeContent, Price, SecondBlock, UserName, UserNameDiv, ValidityDiv, CloseButton, PlansContainer, PlansTitle, Plans, Notification } from "./styles";
 import { plans } from "../../../data/plans";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import DoneAllIcon from '@mui/icons-material/DoneAll';
-// import { useState } from "react";
-// import Accordion from "../../../components/Accordion";
-// import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-// import PaymentIcon from '@mui/icons-material/Payment';
-// import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
-// import ClearIcon from '@mui/icons-material/Clear';
-// import { Ring } from "@uiball/loaders";
-// import api from "../../../api";
-// import { toast } from "react-toastify";
-// import { loadStripe } from "@stripe/stripe-js";
-// import { Elements } from "@stripe/react-stripe-js";
-// import PaymentForm from "../PaymentForm/paymentForm";
-// import CircleIcon from '@mui/icons-material/Circle';
+import ClearIcon from '@mui/icons-material/Clear';
+import { useState } from "react";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import PaymentForm from "../PaymentForm/paymentForm";
+import PlanCard from "../../../components/PlanCard/PlanCard";
+import api from "../../../api";
+import { toast } from "react-toastify";
 
 function ProfilePlan() {
 
-  const { user } = useStateContext();
+  const { user, paymentMethod, getUser } = useStateContext();
   const currentPlan = plans.find(plan => plan.type === user.accountType);
-  // const [accordion, setAccordion] = useState(1);
-  // const [modalIsVisible, setModalIsVisible] = useState(false);
-  // const [chosenPlanId, setChosenPlanId] = useState(null);
-  // const [chosenPlanType, setChosenPlanType] = useState(null);
-  // const [isLoading, setIsLoading] = useState(false);
-  // const token = localStorage.getItem('token');
+  const otherPlans = plans.filter(plan => plan.type !== user.accountType);
+  const [modalChangePaymentMethodIsVisible, setModalChangePaymentMethodIsVisible] = useState(false);
+  const [modalChangePlanIsVisible, setModalChangePlanIsVisible] = useState(false);
+  const token = localStorage.getItem('token');
 
   const getPlanTitle = (title) => {
     switch (title) {
@@ -38,38 +31,34 @@ function ProfilePlan() {
     }
   }
 
-  // const stripe = loadStripe(
-  //   import.meta.env.VITE_STRIPE_PUBLIC_KEY
-  // );
+  const stripe = loadStripe(
+    import.meta.env.VITE_STRIPE_PUBLIC_KEY
+  );
 
-  // const changeAccordionValue = (index) => {
-  //   if (index === accordion) return setAccordion(0);
-  //   return setAccordion(index);
-  // }
+  const getPlanType = (type) => {
+    const types = {
+      STARTER: "Iniciante",
+      PRO: "Pro",
+      ENTERPRISE: "Scale"
+    }
 
-  // const openModal = (id, type) => {
-  //   setChosenPlanId(id);
-  //   setChosenPlanType(type);
-  //   setModalIsVisible(true);
-  // }
+    return types[type] || type;
+  }
 
-  // const ChangePlan = async () => {
-  //   try {
-  //     setIsLoading(true);
-  //     const response = await api.patch(`subscriptions/update-signature`,
-  //       { customerID: user.customerID, priceID: chosenPlanId, planType: chosenPlanType },
-  //       { headers: { authorization: token } });
-  //     if (response.status === 200) {
-  //       toast.success("Seu plano foi alterado com sucesso.");
-  //       getUser(token);
-  //       setIsLoading(false);
-  //       setModalIsVisible(false);
-  //     }
-  //   } catch {
-  //     toast.error('Erro ao atualizar plano.');
-  //     setIsLoading(false);
-  //   }
-  // }
+  const ChangePlan = async (chosenPlanId, chosenPlanType) => {
+    try {
+      const response = await api.patch(`subscriptions/update-signature`,
+        { customerID: user.customerID, priceID: chosenPlanId, planType: chosenPlanType },
+        { headers: { authorization: token } });
+      if (response.status === 200) {
+        toast.success("Seu plano foi alterado com sucesso.");
+        getUser(token);
+        setModalChangePlanIsVisible(false);
+      }
+    } catch {
+      toast.error('Erro ao atualizar plano.');
+    }
+  }
 
   return (
     <Container>
@@ -127,19 +116,90 @@ function ProfilePlan() {
       <PaymentMethodContainer>
         <PaymentTitle>Forma de pagamento</PaymentTitle>
         <CurrentPaymentMethod>
-
+          <CardDetailsContent>
+            <CardNumber>
+              <Last4>{`**** **** **** ${paymentMethod.last4}`}</Last4>
+              <span>{paymentMethod.brand}</span>
+            </CardNumber>
+            <CardName>
+              <UserNameDiv>
+                <UserName>{user.name}</UserName>
+              </UserNameDiv>
+              <ValidityDiv>
+                <UserName>{`${paymentMethod.expMonth}/${paymentMethod.expYear}`}</UserName>
+              </ValidityDiv>
+            </CardName>
+          </CardDetailsContent>
         </CurrentPaymentMethod>
-        <ChangePaymentMethodButton>
+        <ChangePaymentMethodButton onClick={() => setModalChangePaymentMethodIsVisible(true)}>
           Alterar forma de pagamento
         </ChangePaymentMethodButton>
       </PaymentMethodContainer>
+      <ChangePlanButton onClick={() => setModalChangePlanIsVisible(true)}>Mudar plano</ChangePlanButton>
+
+      <Modal
+        isvisible={modalChangePaymentMethodIsVisible}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <ModalContent width={600} height={200}>
+          <CloseButton
+            onClick={(e) => {
+              e.stopPropagation();
+              setModalChangePaymentMethodIsVisible(false);
+            }}
+          >
+            <ClearIcon />
+          </CloseButton>
+
+          <Elements stripe={stripe}>
+            <PaymentForm setModalChangePaymentMethodIsVisible={setModalChangePaymentMethodIsVisible} />
+          </Elements>
+        </ModalContent>
+      </Modal>
+
+      <Modal
+        isvisible={modalChangePlanIsVisible}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <ModalContent width={700} height={500}>
+          <CloseButton
+            onClick={(e) => {
+              e.stopPropagation();
+              setModalChangePlanIsVisible(false);
+            }}
+          >
+            <ClearIcon />
+          </CloseButton>
+
+          <PlansContainer>
+            <PlansTitle>Escolha o plano:</PlansTitle>
+            <Plans>
+              {
+                otherPlans &&
+                otherPlans.map((plan) => (
+                  <PlanCard
+                    key={plan.id}
+                    type={getPlanType(plan.type)}
+                    description={plan.description}
+                    price={plan.price}
+                    action={ChangePlan}
+                    id={plan.id}
+                    originalType={plan.type}
+                    resources={plan.resources}
+                  />
+                ))
+              }
+            </Plans>
+            <Notification>
+              OBS: A data de pagamento do plano permanecerá a mesma. Faremos um ajuste de valores
+              automático levando em consideração os dias restantes do plano atual e o valor do novo plano. Caso o plano escolhido seja inferior ao seu plano atual, poderão ser gerados créditos que serão aproveitados em sua próxima fatura.
+            </Notification>
+          </PlansContainer>
+
+        </ModalContent>
+      </Modal>
     </Container>
   )
 }
 
 export default ProfilePlan;
-
-{/* <span>
-  OBS: A data de pagamento do plano permanecerá a mesma. Faremos um ajuste de valores
-  automático levando em consideração os dias restantes do plano atual e o valor do novo plano. Caso o plano escolhido seja inferior ao seu plano atual, poderão ser gerados créditos que serão aproveitados em sua próxima fatura.
-</span> */}

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import './paymentForm.css';
 import { useStateContext } from "../../../contexts/ContextProvider";
@@ -6,14 +7,13 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import { Ring } from "@uiball/loaders";
 
-function PaymentForm() {
+function PaymentForm({ setModalChangePaymentMethodIsVisible }) {
 
   const stripe = useStripe();
   const elements = useElements();
   const { user, getPaymentMethod } = useStateContext();
   const token = localStorage.getItem('token');
   const [isLoading, setIsLoading] = useState(false);
-  const [cardElementIsVisible, setCardElementIsVisible] = useState(false);
 
   const updatePaymentMethod = async (cardToken) => {
     try {
@@ -23,8 +23,8 @@ function PaymentForm() {
       if (response.status === 200) {
         getPaymentMethod();
         toast.success("Forma de pagamento atualizada com sucesso.");
-        setCardElementIsVisible(false);
         setIsLoading(false);
+        setModalChangePaymentMethodIsVisible(false);
       }
 
     } catch (error) {
@@ -54,23 +54,17 @@ function PaymentForm() {
 
 
   return (
-    <>
-      {
-        cardElementIsVisible &&
-        <form onSubmit={handleSubmit}>
 
-          <span className="span">Insira os dados do cartão e os 5 primeiros dígitos do seu CEP</span>
-          <CardElement className="card-element" />
-          <button disabled={isLoading} className="button" type="submit">
-            {isLoading ? <Ring size={20} color="#fff" /> : "Salvar forma de pagamento"}
-          </button>
+    <form onSubmit={handleSubmit} className="form">
 
-        </form>
-      }
-      <button className="button" onClick={() => setCardElementIsVisible(!cardElementIsVisible)}>
-        {cardElementIsVisible ? "Cancelar" : "Mudar forma de pagamento"}
+      <span className="span">Insira os dados do cartão e os 5 primeiros dígitos do seu CEP</span>
+      <CardElement className="card-element" />
+      <button disabled={isLoading} className="button" type="submit">
+        {isLoading ? <Ring size={20} color="#fff" /> : "Salvar forma de pagamento"}
       </button>
-    </>
+
+    </form>
+
   );
 }
 

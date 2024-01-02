@@ -88,3 +88,30 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   background-color: #bfbfbf;
   border-radius: 20px;
 }
+
+.card-element.StripeElement.StripeElement--empty {
+  border: 2px solid #4339F2;
+  border-bottom: 4px solid #4339F2;
+  border-radius: 5px;
+  height: 40px;
+  padding-top: 20px;
+  background-color: #E0EAFF;
+}
+
+.card-element.StripeElement.StripeElement--invalid {
+  border: 2px solid #4339F2;
+  border-bottom: 4px solid #4339F2;
+  border-radius: 5px;
+  height: 40px;
+  padding-top: 20px;
+  background-color: #E0EAFF;
+}
+
+.card-element.StripeElement.StripeElement {
+  border: 2px solid #4339F2;
+  border-bottom: 4px solid #4339F2;
+  border-radius: 5px;
+  height: 40px;
+  padding-top: 20px;
+  background-color: #E0EAFF;
+}
