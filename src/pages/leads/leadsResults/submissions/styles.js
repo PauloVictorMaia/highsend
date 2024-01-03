@@ -14,6 +14,7 @@ export const Options = styled.div`
   display: flex;
   align-items: center;
   column-gap: 30px;
+  position: relative;
 `;
 
 export const ExportButton = styled.button`
@@ -93,7 +94,26 @@ export const FilterButton = styled.button`
   border: none;
   outline: none;
   cursor: pointer;
-  position: relative;
+  z-index: 2001;
+`;
+
+export const ExportMenuButton = styled.button`
+  width: 35px; 
+  height: 35px;
+  border-radius: 50%;
+  background-color: #4339F2;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  z-index: 2001;
+
+  svg {
+    font-size: 1.3rem;
+  }
 `;
 
 export const FilterMenu = styled.div`
@@ -107,8 +127,24 @@ export const FilterMenu = styled.div`
   border: 0.5px solid rgba(0,0,0,0.15);
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   position: absolute;
-  top: 0;
-  right: -300px;
+  top: 10px;
+  left: 40px;
+  z-index: 2001;
+`;
+
+export const ExportMenu = styled.div`
+  display: ${({ isvisible }) => isvisible ? "flex" : "none"};
+  flex-direction: column;
+  row-gap: 10px;
+  width: 250px;
+  padding: 20px;
+  border-radius: 12px;
+  background-color: #fff;
+  border: 0.5px solid rgba(0,0,0,0.15);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  position: absolute;
+  top: 10px;
+  left: 110px;
   z-index: 2001;
 `;
 
@@ -164,6 +200,16 @@ export const FilterLeadsButton = styled.button`
 `;
 
 export const FilterButtonWrapper = styled.div`
+  display: ${({ isvisible }) => isvisible ? "flex" : "none"};
+  width: 100vw;
+  height: 110vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2000;
+`;
+
+export const ExportButtonWrapper = styled.div`
   display: ${({ isvisible }) => isvisible ? "flex" : "none"};
   width: 100vw;
   height: 110vh;

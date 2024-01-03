@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Container, StyledTable, Options, MainContainer, ExportButton, PaginationContainer, FilterButton, FilterButtonWrapper, FilterMenu, FilterInput, FilterLeadsButton } from "./styles";
+import { Container, StyledTable, Options, MainContainer, ExportButton, PaginationContainer, FilterButton, FilterButtonWrapper, FilterMenu, FilterInput, FilterLeadsButton, ExportMenuButton, ExportMenu, ExportButtonWrapper } from "./styles";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { format } from "date-fns";
@@ -14,6 +14,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import api from "../../../../api";
 import { Ring } from "@uiball/loaders";
 import FilterListIcon from '@mui/icons-material/FilterList';
+import IosShareIcon from '@mui/icons-material/IosShare';
 
 function Submissions() {
 
@@ -29,6 +30,7 @@ function Submissions() {
   const [exportCsvIsLoading, setExportCsvIsLoading] = useState(false);
   const [exportXslxIsLoading, setExportXslxIsLoading] = useState(false);
   const [filterMenuIsOpen, setFilterMenuIsOpen] = useState(false);
+  const [exportMenuIsOpen, setExportMenuIsOpen] = useState(false);
   const filterPlaceholder = "Variável a ser filtrada";
   const [leadsIsLoading, setLeadsIsLoading] = useState(false);
   const [filterLeadsIsLoading, setFilterLeadsIsLoading] = useState(false);
@@ -272,112 +274,141 @@ function Submissions() {
     }
   }
 
+  const openFilterMenu = () => {
+    if (exportMenuIsOpen) {
+      setExportMenuIsOpen(false);
+    }
+
+    setFilterMenuIsOpen(!filterMenuIsOpen);
+  }
+
+  const openExportMenu = () => {
+    if (filterMenuIsOpen) {
+      setFilterMenuIsOpen(false);
+    }
+
+    setExportMenuIsOpen(!exportMenuIsOpen);
+  }
+
   return (
     <MainContainer>
 
       <Options>
-        <ExportButton
-          onClick={() => exportToJson()}
-          disabled={leads && leads.length < 1}
-        >
-          {exportJsonIsLoading ? <Ring size={20} color="#fff" /> : "Exportar para JSON"}
-        </ExportButton>
 
-        <ExportButton
-          onClick={() => exportToCSV()}
-          disabled={leads && leads.length < 1}
-        >
-          {exportCsvIsLoading ? <Ring size={20} color="#fff" /> : "Exportar para CSV"}
-        </ExportButton>
+        <FilterButton onClick={() => openFilterMenu()}>
+          <FilterListIcon />
+        </FilterButton>
 
-        <ExportButton
-          onClick={() => exportToXLSX()}
-          disabled={leads && leads.length < 1}
-        >
-          {exportXslxIsLoading ? <Ring size={20} color="#fff" /> : "Exportar para XSLX"}
-        </ExportButton>
+        <ExportMenuButton onClick={() => openExportMenu(!exportMenuIsOpen)}>
+          <IosShareIcon />
+        </ExportMenuButton>
 
-        <Select
-          IconComponent={KeyboardArrowDownIcon}
-          size="small"
-          value={exportOption}
-          onChange={(e) => setExportOption(e.target.value)}
-          style={{ borderRadius: "8px" }}
-          sx={{
-            '.MuiSvgIcon-root ': {
-              fill: "#4339F2 !important",
-            }
+        <FilterMenu
+          ref={menuRef}
+          isvisible={filterMenuIsOpen}
+          onClick={(e) => {
+            e.stopPropagation();
           }}
         >
-          <MenuItem value={"currentPage"}>Página atual</MenuItem>
-          <MenuItem value={"allResults"}>Todos os resultados</MenuItem>
-        </Select>
+          <Select
+            IconComponent={KeyboardArrowDownIcon}
+            size="small"
+            value={filterVariable}
+            onChange={(e) => setFilterVariable(e.target.value)}
+            style={{ width: "100%", border: "2px solid #E0EAFF" }}
+            sx={{
+              '& .MuiSelect-select .notranslate::after': filterPlaceholder
+                ? {
+                  content: `"${filterPlaceholder}"`,
+                  opacity: 0.72,
+                }
+                : {},
 
-        <FilterButton onClick={() => setFilterMenuIsOpen(true)}>
-          <FilterListIcon />
-          <FilterMenu
-            ref={menuRef}
-            isvisible={filterMenuIsOpen}
-            onClick={(e) => {
-              e.stopPropagation();
+              '.MuiSvgIcon-root ': {
+                fill: "#4339F2 !important",
+              }
             }}
           >
-            <Select
-              IconComponent={KeyboardArrowDownIcon}
-              size="small"
-              value={filterVariable}
-              onChange={(e) => setFilterVariable(e.target.value)}
-              style={{ width: "100%", border: "2px solid #E0EAFF" }}
-              sx={{
-                '& .MuiSelect-select .notranslate::after': filterPlaceholder
-                  ? {
-                    content: `"${filterPlaceholder}"`,
-                    opacity: 0.72,
-                  }
-                  : {},
+            {variables &&
+              variables.map((variable, index) => (
+                <MenuItem key={index} value={variable.name}>{variable.name}</MenuItem>
+              ))
+            }
+          </Select>
 
-                '.MuiSvgIcon-root ': {
-                  fill: "#4339F2 !important",
-                }
-              }}
-            >
-              {variables &&
-                variables.map((variable, index) => (
-                  <MenuItem key={index} value={variable.name}>{variable.name}</MenuItem>
-                ))
+          <FilterInput
+            ref={inputRef}
+            label="Valor a ser filtrado"
+            variant="outlined"
+            type={"text"}
+            name="filter"
+            value={filterValue}
+            onChange={(e) => setFilterValue(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                filterLeads();
               }
-            </Select>
+            }}
+            autoFocus
+          />
 
-            <FilterInput
-              ref={inputRef}
-              label="Valor a ser filtrado"
-              variant="outlined"
-              type={"text"}
-              name="filter"
-              value={filterValue}
-              onChange={(e) => setFilterValue(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  filterLeads();
-                }
-              }}
-              autoFocus
-            />
+          <FilterLeadsButton background="#4339F2" onClick={() => filterLeads()}>
+            {filterLeadsIsLoading ? <Ring size={20} color="#fff" /> : "Filtrar"}
+          </FilterLeadsButton>
 
-            <FilterLeadsButton background="#4339F2" onClick={() => filterLeads()}>
-              {filterLeadsIsLoading ? <Ring size={20} color="#fff" /> : "Filtrar"}
-            </FilterLeadsButton>
+          <FilterLeadsButton background="#ff4d4d" onClick={() => removeFilter()}>
+            {leadsIsLoading ? <Ring size={20} color="#fff" /> : "Remover filtro"}
+          </FilterLeadsButton>
 
-            <FilterLeadsButton background="#ff4d4d" onClick={() => removeFilter()}>
-              {leadsIsLoading ? <Ring size={20} color="#fff" /> : "Remover filtro"}
-            </FilterLeadsButton>
+        </FilterMenu>
 
-          </FilterMenu>
-        </FilterButton>
+        <ExportMenu isvisible={exportMenuIsOpen}>
+          <ExportButton
+            onClick={() => exportToJson()}
+            disabled={leads && leads.length < 1}
+          >
+            {exportJsonIsLoading ? <Ring size={20} color="#fff" /> : "Exportar para JSON"}
+          </ExportButton>
+
+          <ExportButton
+            onClick={() => exportToCSV()}
+            disabled={leads && leads.length < 1}
+          >
+            {exportCsvIsLoading ? <Ring size={20} color="#fff" /> : "Exportar para CSV"}
+          </ExportButton>
+
+          <ExportButton
+            onClick={() => exportToXLSX()}
+            disabled={leads && leads.length < 1}
+          >
+            {exportXslxIsLoading ? <Ring size={20} color="#fff" /> : "Exportar para XSLX"}
+          </ExportButton>
+
+          <Select
+            IconComponent={KeyboardArrowDownIcon}
+            size="small"
+            value={exportOption}
+            onChange={(e) => setExportOption(e.target.value)}
+            style={{ borderRadius: "8px" }}
+            sx={{
+              '.MuiSvgIcon-root ': {
+                fill: "#4339F2 !important",
+              }
+            }}
+          >
+            <MenuItem value={"currentPage"}>Página atual</MenuItem>
+            <MenuItem value={"allResults"}>Todos os resultados</MenuItem>
+          </Select>
+        </ExportMenu>
 
         <FilterButtonWrapper
           isvisible={filterMenuIsOpen}
           onClick={() => setFilterMenuIsOpen(false)}
+        />
+
+        <ExportButtonWrapper
+          isvisible={exportMenuIsOpen}
+          onClick={() => setExportMenuIsOpen(false)}
         />
       </Options>
 
