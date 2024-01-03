@@ -22,6 +22,8 @@ function LeadsList({ data, listIndex }) {
   const [modalDeleteListIsVisible, setModalDeleteListIsVisible] = useState(false);
   const [showListOptionsInModal, setShowListOptionsInModal] = useState(false);
 
+  console.log(listIndex, data.cards.length)
+
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
 

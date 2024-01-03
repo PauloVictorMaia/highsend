@@ -3,6 +3,13 @@ import { TextField } from "@mui/material";
 
 export const Board = styled.div`
   width: 100%;
+  position: relative;
+`;
+
+export const SelectResultsPerList = styled.select`
+  position: absolute;
+  top: -10px;
+  right: 100px;
 `;
 
 export const Container = styled.div`

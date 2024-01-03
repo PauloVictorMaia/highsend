@@ -12,10 +12,13 @@ import { produce } from "immer";
 import api from "../../../../api";
 import { Ring } from "@uiball/loaders";
 import { useParams } from "react-router-dom";
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 
 function KanbanBoard() {
 
-  const { leadsList, setLeadsList, updateLeadStatus, changeLeadsStatusInBulk, getFormattedLeads, leads } = useContext(LeadsContext);
+  const { leadsList, setLeadsList, updateLeadStatus, changeLeadsStatusInBulk, getFormattedLeads, leads, resultsPerList, setResultsPerList } = useContext(LeadsContext);
   const [showNewListInput, setShowNewListInput] = useState(false);
   const [newListName, setNewListName] = useState("");
   const inputRef = useRef(null);
@@ -240,6 +243,28 @@ function KanbanBoard() {
         leads
       }}>
       <Board>
+        <Select
+          IconComponent={KeyboardArrowDownIcon}
+          size="small"
+          value={resultsPerList}
+          onChange={(e) => setResultsPerList(e.target.value)}
+          style={{
+            border: "2px solid #E0EAFF",
+            position: "absolute",
+            top: "-50px",
+            right: "10vh"
+          }}
+          sx={{
+            '.MuiSvgIcon-root ': {
+              fill: "#4339F2 !important",
+            }
+          }}
+        >
+          <MenuItem value="30">30 últimos resultados</MenuItem>
+          <MenuItem value="60">60 últimos resultados</MenuItem>
+          <MenuItem value="100">100 últimos resultados</MenuItem>
+          <MenuItem value="500">500 últimos resultados</MenuItem>
+        </Select>
         <Container>
           {leadsList.map((list, index) =>
             <LeadsList

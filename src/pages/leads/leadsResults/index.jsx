@@ -29,6 +29,11 @@ function LeadsResults() {
   const [leadsIsLoading, setLeadsIsLoading] = useState(false);
   const [filterVariable, setFilterVariable] = useState("");
   const [filterValue, setFilterValue] = useState("");
+  const [resultsPerList, setResultsPerList] = useState(localStorage.getItem('resultsPerList') || "30");
+
+  useEffect(() => {
+    getFormattedLeads();
+  }, [resultsPerList])
 
   useEffect(() => {
     if (Object.keys(user).length > 0) {
@@ -69,10 +74,14 @@ function LeadsResults() {
   const getFormattedLeads = async () => {
     try {
       setLoadingFormattedLeads(true);
-      const response = await api.get(`/leads/get-formatted-leads/${params.flowId}`, { headers: { authorization: token } });
+      const response = await api.get(`/leads/get-formatted-leads/${params.flowId}/${resultsPerList}`,
+        {
+          headers: { authorization: token },
+        });
       if (response.status === 200) {
         setLeadsList(response.data.leadsList);
         setLoadingFormattedLeads(false);
+        localStorage.setItem('resultsPerList', resultsPerList);
       }
     } catch {
       toast.error('Erro ao carregar lista de leads.');
@@ -106,7 +115,7 @@ function LeadsResults() {
 
   return (
     <LeadsContext.Provider
-      value={{ leads, setLeads, page, setPage, totalPages, setTotalPages, variables, loaded, leadsIsLoading, loadingFormattedLeads, getLeads, getVariables, leadsList, setLeadsList, getFormattedLeads, updateLeadStatus, changeLeadsStatusInBulk, filterVariable, setFilterVariable, filterValue, setFilterValue }}
+      value={{ leads, setLeads, page, setPage, totalPages, setTotalPages, variables, loaded, leadsIsLoading, loadingFormattedLeads, getLeads, getVariables, leadsList, setLeadsList, getFormattedLeads, updateLeadStatus, changeLeadsStatusInBulk, filterVariable, setFilterVariable, filterValue, setFilterValue, resultsPerList, setResultsPerList }}
     >
       <ContentPageContainer
         header={
