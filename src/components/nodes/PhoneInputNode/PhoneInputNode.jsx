@@ -13,11 +13,13 @@ import ClearIcon from '@mui/icons-material/Clear';
 
 export function PhoneInputNode({ data, id, groupID }) {
   const { createNewVariable, variables, nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
+  const variablePhone = variables.find(variable => variable.name === 'phone');
+  const variablePhoneId = variablePhone.id;
   const { setNodes, deleteElements } = useReactFlow();
   const [newVariable, setNewVariable] = useState("");
   const [placeholder, setPlaceholder] = useState(data.placeholder || "Número de telefone...");
   const [buttonLabel, setButtonLabel] = useState(data.buttonLabel || "Enviar");
-  const [assignedVariable, setAssignedVariable] = useState(data.variable || "");
+  const [assignedVariable, setAssignedVariable] = useState(data.variable || variablePhoneId);
   const [retryMessage, setRetryMessage] = useState(data.retryMessage || "Esse não é um número de telefone válido.");
   const [phoneCode, setPhoneCode] = useState(data.phoneCode || "+55");
   const [isVisible, setIsVisible] = useState(false);

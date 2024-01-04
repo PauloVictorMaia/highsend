@@ -14,12 +14,14 @@ import ClearIcon from '@mui/icons-material/Clear';
 export function Phone({ data, id, groupID }) {
   const { setNodes, deleteElements } = useReactFlow();
   const { createNewVariable, variables, nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
+  const phoneVariable = variables.find(variable => variable.name === 'phone');
+  const phoneVariableId = phoneVariable.id;
   const [newVariable, setNewVariable] = useState("");
   const [question, setQuestion] = useState(data.question || "Qual é o seu telefone?");
   const [description, setDescription] = useState(data.description || "");
   const [placeholder, setPlaceholder] = useState(data.placeholder || "(00) 00000-0000");
   const [buttonLabel, setButtonLabel] = useState(data.buttonLabel || "Responder");
-  const [assignedVariable, setAssignedVariable] = useState(data.variable || "");
+  const [assignedVariable, setAssignedVariable] = useState(data.variable || phoneVariableId);
   const [isVisible, setIsVisible] = useState(false);
   const {
     attributes,

@@ -15,12 +15,14 @@ export function Email({ data, id, groupID }) {
 
   const { setNodes, deleteElements } = useReactFlow();
   const { createNewVariable, variables, nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
+  const emailVariable = variables.find(variable => variable.name === 'email');
+  const emailVariableId = emailVariable.id;
   const [newVariable, setNewVariable] = useState("");
   const [question, setQuestion] = useState(data.question || "Qual é o seu email?");
   const [description, setDescription] = useState(data.description || "");
   const [placeholder, setPlaceholder] = useState(data.placeholder || "exemplo@exemplo.com");
   const [buttonLabel, setButtonLabel] = useState(data.buttonLabel || "Responder");
-  const [assignedVariable, setAssignedVariable] = useState(data.variable || "");
+  const [assignedVariable, setAssignedVariable] = useState(data.variable || emailVariableId);
   const [isVisible, setIsVisible] = useState(false);
   const {
     attributes,

@@ -14,12 +14,14 @@ import ClearIcon from '@mui/icons-material/Clear';
 export function Name({ data, id, groupID }) {
   const { setNodes, deleteElements } = useReactFlow();
   const { createNewVariable, variables, nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
+  const nameVariable = variables.find(variable => variable.name === 'name');
+  const nameVariableId = nameVariable.id;
   const [newVariable, setNewVariable] = useState("");
   const [question, setQuestion] = useState(data.question || "Qual é o seu nome?");
   const [description, setDescription] = useState(data.description || "");
   const [placeholder, setPlaceholder] = useState(data.placeholder || "Seu nome...");
   const [buttonLabel, setButtonLabel] = useState(data.buttonLabel || "Responder");
-  const [assignedVariable, setAssignedVariable] = useState(data.variable || "");
+  const [assignedVariable, setAssignedVariable] = useState(data.variable || nameVariableId);
   const [isVisible, setIsVisible] = useState(false);
   const {
     attributes,

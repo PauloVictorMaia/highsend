@@ -13,11 +13,13 @@ import ClearIcon from '@mui/icons-material/Clear';
 export function EmailInputNode({ data, id, groupID }) {
 
   const { createNewVariable, variables, nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
+  const variableEmail = variables.find(variable => variable.name === 'email');
+  const variableEmailId = variableEmail.id;
   const { setNodes, deleteElements } = useReactFlow();
   const [newVariable, setNewVariable] = useState("");
   const [placeholder, setPlaceholder] = useState(data.placeholder || "Digite seu email...");
   const [buttonLabel, setButtonLabel] = useState(data.buttonLabel || "Enviar");
-  const [assignedVariable, setAssignedVariable] = useState(data.variable || "");
+  const [assignedVariable, setAssignedVariable] = useState(data.variable || variableEmailId);
   const [retryMessage, setRetryMessage] = useState(data.retryMessage || "Esse não é um email válido.");
   const [isVisible, setIsVisible] = useState(false);
   const {
