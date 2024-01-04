@@ -21,6 +21,7 @@ function ProfileData() {
   const { user, getUser } = useStateContext();
   const token = localStorage.getItem('token');
   const [isLoading, setIsLoading] = useState(false);
+  const [changePasswordIsLoading, setChangePasswordIsLoading] = useState(false);
   const [modalIsVisible, setModalIsVisible] = useState(false);
   const [profileName, setProfileName] = useState(user.name);
   const profileEmail = user.email;
@@ -132,7 +133,7 @@ function ProfileData() {
     }
 
     try {
-      setIsLoading(true);
+      setChangePasswordIsLoading(true);
       const response = await api.post(`/users/edit-password/${user.id}`,
         { originalPassword, newPassword },
         { headers: { authorization: token } }
@@ -141,7 +142,7 @@ function ProfileData() {
         getUser(token);
         toast.success("Sua senha foi alterada com sucesso.");
         setPasswordInputsIsVisible(false);
-        setIsLoading(false);
+        setChangePasswordIsLoading(false);
         if (showPassword) {
           setShowPassword(false);
         }
@@ -149,7 +150,7 @@ function ProfileData() {
     } catch (error) {
       if (error.response && error.response.status === 400) {
         toast.warning('A senha anterior informada está incorreta. Verifique os dados e tente novamente.');
-        setIsLoading(false);
+        setChangePasswordIsLoading(false);
         return;
       } else {
         return
@@ -160,6 +161,9 @@ function ProfileData() {
   const handleKeyDown = (event) => {
     if (event.key === ' ') {
       event.preventDefault();
+    }
+    if (event.key === 'Enter') {
+      editPassword();
     }
   };
 
@@ -420,7 +424,7 @@ function ProfileData() {
                 color={originalPassword && newPassword && confirmationPassword}
                 disabled={passwordSaveButtonIsDisabled}
               >
-                {isLoading ? <Ring size={20} /> : <SaveOutlinedIcon />}
+                {changePasswordIsLoading ? <Ring size={15} color="#fff" /> : <SaveOutlinedIcon />}
               </ProfileNameSaveButton>
             </Tooltip>
           }

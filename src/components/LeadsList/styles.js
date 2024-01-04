@@ -8,7 +8,7 @@ export const NewContainer = styled.div`
 export const Container = styled.div`
   padding: 10px 15px;
   height: 100%;
-  max-height: calc(100vh - 280px);
+  max-height: calc(100vh - 140px);
   overflow-y: scroll;
   border: 1px solid rgba(0,0,0,0.15);
   border-radius: 8px;
