@@ -105,6 +105,7 @@ const Flow = () => {
 
   async function getFlowData() {
     try {
+      console.log("getFlowData", params.flowid, user.id)
       const response = await api.get(`/flows/get-flow/${user.id}/${params.flowid}`,
         { headers: { authorization: token } });
       if (response.status === 200) {
