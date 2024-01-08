@@ -13,7 +13,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 
 export function PhoneInputNode({ data, id, groupID }) {
   const { createNewVariable, variables, nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
-  const variablePhone = variables.find(variable => variable.name === 'phone');
+  const variablePhone = variables.find(variable => variable.name === 'phone' || variable.name === 'Telefone');
   const variablePhoneId = variablePhone.id;
   const { setNodes, deleteElements } = useReactFlow();
   const [newVariable, setNewVariable] = useState("");
