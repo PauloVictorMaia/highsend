@@ -394,7 +394,7 @@ function Fluxograms() {
                   </CloseButton>
 
                   <DeleteFlow>
-                    <span>Tem certeza que deseja deletar o flow "{flow.name}" ?</span>
+                    <span>Tem certeza que deseja deletar o flow "{flow.name}" ? Todos os leads desse flow também serão excluídos!</span>
                     <button
                       onClick={() => deleteFlow(flow.id)}
                       disabled={deleteFlowIsLoading}
