@@ -142,7 +142,7 @@ function KanbanBoard() {
         { headers: { authorization: token } });
 
     } catch (error) {
-      toast.error("Erro ao mover cards para outra lista");
+      toast.error("Erro ao mover leads para outra lista");
       getFormattedLeads();
     }
   }
@@ -191,7 +191,7 @@ function KanbanBoard() {
         { originListIndex, targetListIndex },
         { headers: { authorization: token } });
     } catch (error) {
-      toast.error("Erro ao mover cards e deletar lista");
+      toast.error("Erro ao mover leads e deletar lista");
       getFormattedLeads();
     }
   }
@@ -219,7 +219,59 @@ function KanbanBoard() {
         { listIndex, cardIndex },
         { headers: { authorization: token } });
     } catch (error) {
-      toast.error("Erro ao mover cards e deletar lista");
+      toast.error("Erro ao mover leads e deletar lista");
+      getFormattedLeads();
+    }
+  }
+
+
+  function archiveCard(listIndex, cardIndex) {
+    setLeadsList(
+      produce(leadsList, (draft) => {
+        if (
+          listIndex >= 0 &&
+          listIndex < draft.length &&
+          cardIndex >= 0 &&
+          cardIndex < draft[listIndex].cards.length
+        ) {
+
+          draft[listIndex].cards.splice(cardIndex, 1);
+
+        }
+      })
+    );
+    toast.success("Lead arquivado");
+  }
+
+  async function archiveCardInDb(listIndex, cardIndex) {
+    try {
+      await api.patch(`/leads/archive-card/${params.flowId}`,
+        { listIndex, cardIndex },
+        { headers: { authorization: token } });
+    } catch (error) {
+      toast.error("Erro ao arquivar lead");
+      getFormattedLeads();
+    }
+  }
+
+  function archiveAllCards(listIndex) {
+    setLeadsList(
+      produce(leadsList, (draft) => {
+
+        draft[listIndex].cards = [];
+
+      })
+    );
+    toast.success("Leads arquivados");
+  }
+
+  async function archiveAllCardsInDb(listIndex) {
+    try {
+      await api.patch(`/leads/archive-all-cards/${params.flowId}`,
+        { listIndex },
+        { headers: { authorization: token } });
+    } catch (error) {
+      toast.error("Erro ao arquivar leads");
       getFormattedLeads();
     }
   }
@@ -240,7 +292,11 @@ function KanbanBoard() {
         moveAllCardsAndDeleteListInDb,
         deleteLead,
         deleteCardInDb,
-        leads
+        leads,
+        archiveCard,
+        archiveCardInDb,
+        archiveAllCards,
+        archiveAllCardsInDb
       }}>
       <Board>
         <Select
@@ -262,8 +318,6 @@ function KanbanBoard() {
         >
           <MenuItem value="30">30 últimos resultados</MenuItem>
           <MenuItem value="60">60 últimos resultados</MenuItem>
-          <MenuItem value="100">100 últimos resultados</MenuItem>
-          <MenuItem value="500">500 últimos resultados</MenuItem>
         </Select>
         <Container>
           {leadsList.map((list, index) =>

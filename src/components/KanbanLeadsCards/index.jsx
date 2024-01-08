@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Container, Modal, ModalContent, SendMessageLead, CloseButton, LeadsContentContainer, LeadContent, VariableContent, DeleteLeadButton, ConfirmDeleteLead, ConfirmDeleteButtons, ConfirmDeleteButton, WhatsappMessageContainer, WhatsappButton, WhatsappMessage, DeleteButtonContainer, WhatsappMessageInfo, IconText, VariableExample, ButtonsBlock } from "./styles";
+import { Container, Modal, ModalContent, SendMessageLead, CloseButton, LeadsContentContainer, LeadContent, VariableContent, DeleteLeadButton, ConfirmDeleteLead, ConfirmDeleteButtons, ConfirmDeleteButton, WhatsappMessageContainer, WhatsappButton, WhatsappMessage, DeleteButtonContainer, WhatsappMessageInfo, IconText, VariableExample, ButtonsBlock, ArchiveButtonContainer } from "./styles";
 import Tooltip from '@mui/material/Tooltip';
 import { useDrag, useDrop } from 'react-dnd';
 import { useRef, useContext, useState, useEffect } from "react";
@@ -10,6 +10,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import ArchiveIcon from '@mui/icons-material/Archive';
 import { useStateContext } from "../../contexts/ContextProvider";
 import { Ring } from "@uiball/loaders";
 import api from "../../api";
@@ -21,7 +22,7 @@ import ptBR from "date-fns/locale/pt-BR"
 function KanbanLeadsCard({ data, listIndex, cardIndex, listId, listName }) {
 
   const ref = useRef();
-  const { moveCard, moveCardInDb, deleteLead, deleteCardInDb, leads } = useContext(KanbanContext);
+  const { moveCard, moveCardInDb, deleteLead, deleteCardInDb, leads, archiveCard, archiveCardInDb } = useContext(KanbanContext);
   const [modalIsVisible, setModalIsVisible] = useState(false);
   const [showConfirmDeleteLead, setShowConfirmDeleteLead] = useState(false);
   const [phone, setPhone] = useState("");
@@ -217,17 +218,37 @@ function KanbanLeadsCard({ data, listIndex, cardIndex, listId, listName }) {
                 </WhatsappButton>
               </WhatsappMessageContainer>
               <DeleteButtonContainer>
-                <DeleteLeadButton
-                  background="#ff4d4d"
-                  onClick={() => {
-                    setShowWhatsappOptions(false)
-                    setShowConfirmDeleteLead(true)
-                  }}
-                  isvisible={!showConfirmDeleteLead}
-                >
-                  <DeleteIcon />
-                </DeleteLeadButton>
+                <Tooltip title="Deletar lead">
+                  <DeleteLeadButton
+                    background="#ff4d4d"
+                    onClick={() => {
+                      setShowWhatsappOptions(false)
+                      setShowConfirmDeleteLead(true)
+                    }}
+                    isvisible={!showConfirmDeleteLead}
+                  >
+                    <DeleteIcon />
+                  </DeleteLeadButton>
+                </Tooltip>
               </DeleteButtonContainer>
+
+              <ArchiveButtonContainer>
+                <Tooltip title="Arquivar lead">
+                  <DeleteLeadButton
+                    background="#4339F2"
+                    onClick={() => {
+                      archiveCard(listIndex, cardIndex);
+                      archiveCardInDb(listIndex, cardIndex);
+                      setTimeout(() => {
+                        closeModal();
+                      }, 500);
+                    }}
+                    isvisible={true}
+                  >
+                    <ArchiveIcon />
+                  </DeleteLeadButton>
+                </Tooltip>
+              </ArchiveButtonContainer>
             </ButtonsBlock>
 
             <SendMessageLead>

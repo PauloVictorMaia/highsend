@@ -11,10 +11,11 @@ import DriveFileMoveOutlinedIcon from '@mui/icons-material/DriveFileMoveOutlined
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ClearIcon from '@mui/icons-material/Clear';
 import { toast } from "react-toastify";
+import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined';
 
 function LeadsList({ data, listIndex }) {
 
-  const { moveCardToEmptyList, moveCardToEmptyListInDb, leadsList, moveAllCardsToList, moveAllCardsToListInDb, deleteListAndLeads, deleteListAndCardsInDb, moveAllCardsAndDeleteList, moveAllCardsAndDeleteListInDb } = useContext(KanbanContext);
+  const { moveCardToEmptyList, moveCardToEmptyListInDb, leadsList, moveAllCardsToList, moveAllCardsToListInDb, deleteListAndLeads, deleteListAndCardsInDb, moveAllCardsAndDeleteList, moveAllCardsAndDeleteListInDb, archiveAllCards, archiveAllCardsInDb } = useContext(KanbanContext);
   const [openMenu, setOpenMenu] = useState(false);
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
@@ -113,10 +114,23 @@ function LeadsList({ data, listIndex }) {
       <ListMenu isvisible={openMenu} ref={menuRef}>
         {
           data.cards.length > 0 &&
-          <MenuButtons onClick={() => setShowListOptions(!showListOptions)}>
-            <DriveFileMoveOutlinedIcon />
-            <span>Mover todos os leads</span>
-          </MenuButtons>
+          <>
+            <MenuButtons onClick={() => setShowListOptions(!showListOptions)}>
+              <DriveFileMoveOutlinedIcon />
+              <span>Mover todos os leads</span>
+            </MenuButtons>
+
+            <MenuButtons onClick={() => {
+              archiveAllCards(listIndex);
+              archiveAllCardsInDb(listIndex);
+              setTimeout(() => {
+                handleMenu();
+              }, 500);
+            }}>
+              <ArchiveOutlinedIcon />
+              <span>Arquivar leads</span>
+            </MenuButtons>
+          </>
         }
 
         {showListOptions && leadsList.map((lista, index) => (

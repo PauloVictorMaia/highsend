@@ -142,6 +142,12 @@ export const DeleteButtonContainer = styled.div`
   align-items: center;
 `;
 
+export const ArchiveButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 export const DeleteLeadButton = styled.button`
   outline: none;
   min-height: 40px;
