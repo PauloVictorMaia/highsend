@@ -161,7 +161,7 @@ export const FormContainer = styled.div`
 export const StepWrapper = styled.div`
   display: flex;
   width: 100%;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 
   h2 {

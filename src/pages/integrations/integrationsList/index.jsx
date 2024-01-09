@@ -16,6 +16,7 @@ import activeCampaignLogo from '../../../assets/active-campaign-logo.png';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { toast } from "react-toastify";
+import webhookLogo from '../../../assets/webhook.png';
 
 function IntegrationsList() {
 
@@ -28,6 +29,8 @@ function IntegrationsList() {
   const [activeCampaignModalIsOpen, setActiveCampaignModalIsOpen] = useState(false);
   const [activeCampaignApiUrl, setActiveCampaignApiUrl] = useState("");
   const [activeCampaignApiKey, setActiveCampaignApiKey] = useState("");
+  const [webhookModalIsOpen, setWebhookModalIsIOpen] = useState(false);
+  const [webhookEndpoint, setWebhookEndpoint] = useState("");
 
   const googleLogin = async () => {
     const planType = user.accountType;
@@ -154,11 +157,45 @@ function IntegrationsList() {
     }
   }
 
+  const openWebhookIntegrationModal = () => {
+    setWebhookModalIsIOpen(true);
+  }
+
+  const closeWebhookIntegrationModal = () => {
+    setWebhookModalIsIOpen(false);
+    setWebhookEndpoint("");
+  }
+
+  const createWebhookIntegration = async () => {
+    if (!webhookEndpoint) {
+      toast.warning("O endpoint precisa ser informado para criar essa integração.");
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      const response = await api.post(`/integrations/webhook-integration/${user.id}`,
+        { webhookEndpoint },
+        { headers: { authorization: token } });
+      if (response.status === 200) {
+        toast.success("Integração por webhook criada com sucesso. Agora vá até o fluxo ou agenda desejados e associe essa integração.", {
+          autoClose: 10000
+        });
+        getIntegrations();
+        setIsLoading(false);
+        closeWebhookIntegrationModal();
+      }
+    } catch (error) {
+      toast.error("Erro ao criar nova integração.")
+    }
+  }
+
   function selectLogo(type) {
     const logos = {
       google: GoogleCalendarImg,
       whatsapp: WhatsappImg,
-      activeCampaign: activeCampaignLogo
+      activeCampaign: activeCampaignLogo,
+      webhook: webhookLogo
     };
 
     return logos[type];
@@ -202,6 +239,14 @@ function IntegrationsList() {
             integrationFunction={openActiveCampaignModal}
             padding="0 0px"
             title="Active Campaign"
+          />
+
+          <IntegrationCard
+            img={webhookLogo}
+            description={"Configure o endpoint e associe essa integração ao fluxo ou agenda desejados."}
+            integrationFunction={openWebhookIntegrationModal}
+            padding="0 0px"
+            title="Webhook"
           />
 
           <Modal onClick={(e) => e.stopPropagation()} isvisible={modalIsVisible}>
@@ -292,6 +337,54 @@ function IntegrationsList() {
                     />
 
                     <Button type="submit" onClick={() => createActiveCampaignIntegration()}>{isLoading ? <Ring color="#fff" size={25} /> : 'Criar'}</Button>
+
+                  </FormContainer>
+                </Form>
+              </Formik>
+
+
+            </ModalContent>
+          </Modal>
+
+          <Modal onClick={(e) => e.stopPropagation()} isvisible={webhookModalIsOpen}>
+            <ModalContent width={500} height={300}>
+              <CloseButton
+                onClick={(e) => {
+                  e.stopPropagation();
+                  closeWebhookIntegrationModal();
+                }
+                }>
+                <ClearIcon />
+              </CloseButton>
+
+              <Formik
+                initialValues={{ endpoint: '' }}
+                validationSchema={Yup.object({
+                  endpoint: Yup.string().required('Required'),
+                })}
+                onSubmit={(values, { setSubmitting }) => {
+                  setTimeout(() => {
+                    alert(JSON.stringify(values, null, 2));
+                    setSubmitting(false);
+                  }, 400);
+                }}
+              >
+                <Form style={{ width: "100%" }}>
+                  <FormContainer>
+                    <StepWrapper>
+                      <h2>Integração por webhook.</h2>
+                    </StepWrapper>
+                    <span className="info-content">Informe o endpoint</span>
+                    <InputItem
+                      label="URL"
+                      variant="outlined"
+                      type="text"
+                      name="endpoint"
+                      value={webhookEndpoint}
+                      onChange={(e) => setWebhookEndpoint(e.target.value)}
+                    />
+
+                    <Button type="submit" onClick={() => createWebhookIntegration()}>{isLoading ? <Ring color="#fff" size={25} /> : 'Criar'}</Button>
 
                   </FormContainer>
                 </Form>

@@ -16,7 +16,7 @@ import { toast } from "react-toastify";
 import { v4 as uuidv4 } from 'uuid';
 
 function PanelButtons({
-  save, hasChanges, dropDownMenuIsVisible, setDropDownMenuIsVisible, config, setConfig, copyURL, isLoading, exportToJson, activeCampaignIntegrations
+  save, hasChanges, dropDownMenuIsVisible, setDropDownMenuIsVisible, config, setConfig, copyURL, isLoading, exportToJson, activeCampaignIntegrations, webhookIntegrations
 }) {
 
   const [modalIsVisible, setModalIsVisible] = useState(false);
@@ -208,6 +208,55 @@ function PanelButtons({
           )
         }
 
+        <SwitchContainer>
+          <span>Webhook</span>
+          <Switch
+            size="small"
+            checked={config.webhook}
+            onChange={(e) => {
+              if (!e.target.checked) {
+                const { webhookIntegration, ...newConfig } = config;
+                setConfig({ ...newConfig, webhook: false });
+              } else {
+                setConfig(prevConfig => ({
+                  ...prevConfig,
+                  webhook: true,
+                }));
+              }
+            }}
+          />
+        </SwitchContainer>
+
+        {
+          config.webhook && (
+            webhookIntegrations && webhookIntegrations.length > 0 ? (
+              <>
+                <TemplateContainer>
+                  <span>Selecionar integração</span>
+                  <select
+                    value={config.webhookIntegration}
+                    onChange={(e) => {
+                      setConfig(prevConfig => ({
+                        ...prevConfig,
+                        webhookIntegration: e.target.value
+                      }));
+                    }}
+                  >
+                    <option value="">Nenhuma</option>
+                    {webhookIntegrations.map((integration) => (
+                      <option key={integration.id} value={integration.id}>{integration.name}</option>
+                    ))}
+                  </select>
+                </TemplateContainer>
+
+              </>
+            ) : (
+              <IntegrationsEmptyContainer>
+                <span>Você não possui uma integração</span>
+              </IntegrationsEmptyContainer>
+            )
+          )
+        }
 
 
       </DropDownMenu>

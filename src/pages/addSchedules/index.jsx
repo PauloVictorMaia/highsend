@@ -93,10 +93,13 @@ function AddSchedule() {
 
   const [googleChecked, setGoogleChecked] = useState(false);
   const [whatsappChecked, setWhatsappChecked] = useState(false);
+  const [webhookChecked, setWebhookChecked] = useState(false);
   const [googleIntegrations, setGoogleIntegrations] = useState([]);
   const [whatsappIntegrations, setWhatsappIntegrations] = useState([]);
+  const [webhookIntegrations, setWebhookIntegrations] = useState([]);
   const [googleIntegrationSelected, setGoogleIntegrationSelected] = useState("");
   const [whatsappIntegrationSelected, setWhatsappIntegrationSelected] = useState("");
+  const [webhookIntegrationSelected, setWebhookIntegrationSelected] = useState("");
   const [whatsappMessage, setWhatsappMessage] = useState("Olá, {{nome}}, tudo bem? Seu evento foi agendado para o dia: {{data}}, das {{horario}}. Por favor, confirme seus dados para contato: Email: {{email}}, Tel: {{telefone}}. Obrigado e até lá.");
   const whatsappMessageTextareaRef = useRef(null);
   const [createdAt, setCreatedAt] = useState(null);
@@ -147,11 +150,15 @@ function AddSchedule() {
         const responseIntegrations = response.data.integrationsFiltered
         const google = responseIntegrations.filter(integrations => integrations.type === 'google');
         const whatsapp = responseIntegrations.filter(integrations => integrations.type === 'whatsapp');
+        const webhook = responseIntegrations.filter(integrations => integrations.type === 'webhook');
         if (google.length > 0) {
           setGoogleIntegrations(google);
         }
         if (whatsapp.length > 0) {
           setWhatsappIntegrations(whatsapp);
+        }
+        if (webhook.length > 0) {
+          setWebhookIntegrations(webhook);
         }
       }
     } catch {
@@ -174,7 +181,7 @@ function AddSchedule() {
 
     let selectedsIntegrations = [];
 
-    if (hasIntegration && !googleChecked && !whatsappChecked) {
+    if (hasIntegration && !googleChecked && !whatsappChecked && !webhookChecked) {
       toast.warning('Marque um serviço para integração ou escolha a opção "Não atribuir integração."');
       return;
     }
@@ -199,6 +206,15 @@ function AddSchedule() {
       }
       if (whatsappIntegrationSelected && whatsappMessage) {
         selectedsIntegrations.push({ id: whatsappIntegrationSelected, type: "whatsapp", message: whatsappMessage });
+      }
+    }
+
+    if (webhookChecked) {
+      if (webhookIntegrationSelected !== "") {
+        selectedsIntegrations.push({ id: webhookIntegrationSelected, type: "webhook" });
+      } else {
+        toast.warning("Escolha uma integração para Webhook ou desmarque a opção.");
+        return;
       }
     }
 
@@ -368,6 +384,10 @@ function AddSchedule() {
     return setWhatsappChecked(integrations.some(integration => integration.type === "whatsapp"));
   }
 
+  const handleWebhookChecked = () => {
+    return setWebhookChecked(integrations.some(integration => integration.type === "webhook"));
+  }
+
   const updateGoogleIntegrationSelected = () => {
     const googleIntegration = integrations.find(integration => integration.type === "google");
     if (googleIntegration) {
@@ -388,12 +408,23 @@ function AddSchedule() {
     }
   };
 
+  const updateWebhookIntegrationSelected = () => {
+    const webhookIntegration = integrations.find(integration => integration.type === "webhook");
+    if (webhookIntegration) {
+      setWebhookIntegrationSelected(webhookIntegration.id);
+    } else {
+      setWebhookIntegrationSelected("");
+    }
+  };
+
   useEffect(() => {
     if (integrations && integrations.length > 0) {
       handleGoogleChecked();
       handleWhatsappChecked();
+      handleWebhookChecked();
       updateGoogleIntegrationSelected();
       updateWhatsappIntegrationSelected();
+      updateWebhookIntegrationSelected();
     }
   }, [integrations]);
 
@@ -787,6 +818,56 @@ function AddSchedule() {
                           whatsappChecked && <span style={{ marginLeft: "15px" }}>Você não possui integração com esse serviço. Para integrar <NavLink to={"/dashboard/integrations"}>Clique aqui.</NavLink></span>
                       }
                     </div>
+
+                    <div style={{ margin: "10px 0" }}>
+                      <Checkbox
+                        name="integration option"
+                        checked={webhookChecked}
+                        onChange={() => setWebhookChecked(!webhookChecked)}
+                        size='small'
+                        sx={{
+                          '& .MuiSvgIcon-root:not(.MuiSvgIcon-root ~ .MuiSvgIcon-root)':
+                          {
+                            color: '#4339F2',
+                          },
+                        }}
+                      />
+                      <label style={{ marginLeft: "5px" }}>Webhook</label>
+                      {
+                        webhookChecked &&
+                          webhookIntegrations.length > 0 ?
+
+                          <Select
+                            IconComponent={KeyboardArrowDownIcon}
+                            size="small"
+                            value={webhookIntegrationSelected}
+                            onChange={(e) => setWebhookIntegrationSelected(e.target.value)}
+                            style={{ marginLeft: "5px" }}
+                            sx={{
+                              '& .MuiSelect-select .notranslate::after': IntegrationPlaceholder
+                                ? {
+                                  content: `"${IntegrationPlaceholder}"`,
+                                  opacity: 0.72,
+                                }
+                                : {},
+
+                              '.MuiSvgIcon-root ': {
+                                fill: "#4339F2 !important",
+                              }
+                            }}
+                          >
+                            {webhookIntegrations &&
+                              webhookIntegrations.map((integration, index) => (
+                                <MenuItem key={index} value={integration.id}>{integration.name}</MenuItem>
+                              ))
+                            }
+                          </Select>
+                          :
+                          webhookChecked && <span style={{ marginLeft: "15px" }}>Você não possui integração com esse serviço. Para integrar <NavLink to={"/dashboard/integrations"}>Clique aqui.</NavLink></span>
+                      }
+                    </div>
+
+
                   </IntegrationsOptions>
                 }
 

@@ -48,6 +48,7 @@ const Flow = () => {
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const { setVariables, variables, integrations } = useStateContext();
   const activeCampaignIntegrations = integrations.filter(integrations => integrations.type === "activeCampaign");
+  const webhookIntegrations = integrations.filter(integrations => integrations.type === "webhook");
   const wrapperRef = useRef(null);
   const edgeUpdateSuccessful = useRef(true);
   const { user, nodeMenuIsOpen, setNodeMenuIsOpen } = useStateContext();
@@ -168,6 +169,11 @@ const Flow = () => {
 
     if (config.activeCampaign && !config.activeCampaignIntegration) {
       toast.warning("Selecione uma integração Active Campaign");
+      return;
+    }
+
+    if (config.webhook && !config.webhookIntegration) {
+      toast.warning("Selecione uma integração por webhook");
       return;
     }
 
@@ -526,6 +532,7 @@ const Flow = () => {
           config={config}
           setConfig={setConfig}
           activeCampaignIntegrations={activeCampaignIntegrations}
+          webhookIntegrations={webhookIntegrations}
           copyURL={copyURL}
           isLoading={isLoading}
           exportToJson={exportToJson}
