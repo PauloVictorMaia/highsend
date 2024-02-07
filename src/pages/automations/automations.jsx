@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { leadsMenu } from "../../data/menus";
+import { automationsMenu } from "../../data/menus";
 import ContentPageContainer from "../../containers/ContentPageContainer";
 import CustomPageHeader from "../../components/CustomPageHeader";
-import { Container } from "./Leads.style";
+import { Container } from "./automations.style";
 import LeadCard from "../../components/LeadCard";
 import { useStateContext } from "../../contexts/ContextProvider";
 
-function Leads() {
+function Automations() {
 
   const [menuComponent, setMenuComponent] = useState(0);
   const { flows, leadsDataLoaded, openMenu } = useStateContext();
@@ -15,8 +15,8 @@ function Leads() {
     <ContentPageContainer
       header={
         <CustomPageHeader
-          menu={leadsMenu}
-          name={'Leads'}
+          menu={automationsMenu}
+          name={'Automações'}
           setMenuComponent={setMenuComponent}
           menuComponent={menuComponent}
         />
@@ -31,7 +31,7 @@ function Leads() {
                 name={flow.name}
                 flowID={flow.id}
                 flowType={flow.type}
-                routeParam='leads'
+                routeParam='automations'
               />
             ))
           )
@@ -46,4 +46,4 @@ function Leads() {
 }
 
 
-export default Leads;
+export default Automations;

@@ -23,6 +23,8 @@ import ForgotPassword from "./pages/forgotPassword/index.jsx";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import CreateForm from "./pages/createForm/CreateForm.jsx";
+import Automations from "./pages/automations/automations.jsx";
+import CreateAutomations from "./pages/createAutomation/CreateAutomation.jsx";
 // import Chatbot from "./pages/viewFluxogram";
 // import LandingPage from "./pages/LandingPage";
 // import ExternalPageShedule from "./pages/externalPageSchedule";
@@ -53,10 +55,12 @@ const App = () => {
                 <Route path="schedules/edit/:id" element={<AddSchedule />} />
                 <Route path="leads" element={<Leads />} />
                 <Route path="leads/:flowName/:flowId" element={<LeadsResults />} />
+                <Route path="automations/:flowName/:flowId" element={<CreateAutomations />} />
                 <Route path="analytics" element={<Analytics />} />
                 <Route path="integrations" element={<IntegrationsList />} />
                 <Route path="integrations/edit-integration/:name/:id" element={<EditIntegration />} />
                 <Route path="profile" element={<MyProfile />} />
+                <Route path="automations" element={<Automations />} />
               </Route>
             </Routes>
           </ContextProvider>

@@ -81,18 +81,16 @@ const DashBoard = () => {
                     </MenuItem>
                   </Link>
 
-                  <Link>
-                    {/* <Link to='analytics'> */}
+                  <Link to='automations'>
                     <MenuItem
-                      //  onClick={() => setPath("/dashboard/analytics")} 
+                      onClick={() => setPath("/dashboard/automations")}
                       active={path.includes("/dashboard/automations")}
                       openmenu={openMenu}
                     >
-                      {/* {openMenu && <span className="shortly">Em breve</span>} */}
                       <div>
-                        <AutomationIcon color={'#bfbfbf'} />
+                        <AutomationIcon color={path.includes("/dashboard/automations") ? "#1B192E" : "#A0B4D1"} />
                       </div>
-                      <span style={{ color: "#bfbfbf" }} >Automações</span>
+                      <span>Automações</span>
                     </MenuItem>
                   </Link>
 

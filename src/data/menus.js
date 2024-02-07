@@ -22,6 +22,10 @@ export const leadsMenu = [
   {name: 'Meus Leads'}, 
 ]
 
+export const automationsMenu = [
+  {name: 'Minhas automações'}, 
+]
+
 export const integrationsMenu = [
   {name: 'Integrações'}, 
 ]
