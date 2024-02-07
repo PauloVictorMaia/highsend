@@ -63,11 +63,11 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   display: none;
 }
 
-/* Works on Firefox */
+/* Works on Firefox
 * {
   scrollbar-width: thin;
-  scrollbar-color: blue orange;
-}
+  scrollbar-color: #bfbfbf #f2f2f2;
+} */
 
 /* Works on Chrome, Edge, and Safari */
 *::-webkit-scrollbar {
